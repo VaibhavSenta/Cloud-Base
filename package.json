@@ -1,0 +1,19 @@
+{
+  "name": "cloud-base",
+  "version": "1.0.0",
+  "description": "Online file store which can help to find out movies, games, wallpapers, software, music and more publicly and privately for free",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "mongoose": "^8.6.1",
+    "nodemon": "^3.1.4",
+    "os": "^0.1.2",
+    "useragent": "^2.3.0"
+  }
+}

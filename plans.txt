@@ -1,0 +1,32 @@
+Route
+
+'/' - Home page - done
+'/login' - login to website - done
+'/signup' - create account to website - done
+'/logout' - logout from website
+'/reset_password' - reset password account password
+
+'/:profile' - preview profile with name, username, profilepic, cover photo, bio and more ( type = publice, private)
+                public profile :everyone can see user's full name, username, profilepic, cover photo, bio total no of uploads & all uploads
+                private profile : no one can see user's all details that will be provide in public profile, in extra account admin can see all info
+                                    like full name, username, phonenumber(optional), email, profilepic,
+'/:profile/manageaccount' - manage account details like   edit profile, birth date, gender, contact info, email, add-remove-chnage actual email & recovery email
+                            add-remove-chnage actual phonenumber( if added - it is optional), change password, reset password
+'/:profile/update'
+'/:profile/delete' - done
+
+'/movies'
+'/tvshows'
+'/webseries'
+'/songs'
+'/software'
+'/operatingsystem'
+'/games'
+'/games/mobilegames'
+'/pcgames'
+'/apps'
+
+'/wallpaper'
+'/images'
+'/news'
+
