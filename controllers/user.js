@@ -1,11 +1,12 @@
 // User Sign Up
 async function userSignup(req, res) {
+    console.log("Wellcome to login route");
 
     // Module imports
     const os = require('os');
     const { USER } = require('../models/user');
     const useragent = require('useragent');
-    
+
 
     // Capture user agent string from request
     const userAgentString = req.header('User-Agent');
@@ -68,8 +69,10 @@ async function userSignup(req, res) {
         console.log("User found in database");
         if (checkUser[0].accountStatus === 'active') {
             console.log("User alredy exist and ACTIVE \n Try different email");
+            res.send("User alredy exist and ACTIVE \n Try different email")
         } else {
             console.log("Account is DELETED, Try to recover it by varios options");
+            res.send("Seems like account is DELETED, Try to recover it by varios options or create different account using defferent email and username")
         }
     } else {
         console.log("User not found in database");
@@ -78,16 +81,21 @@ async function userSignup(req, res) {
         if (checkUsername.length != 0) {
             if (userName === checkUsername[0].userName) {
                 console.log("USERNAME not available, try different");
+                res.send("Username not available, try differen")
             }
         } else {
             console.log("USERNAME is available, You can create account ",userName);
+
             // Create USER
             const user = await USER.create(newUser);
         }
     }
 
     
-    return res.json({msg: "Account created"})
+    setTimeout(() => {
+        res.send
+    }, 4000);
+    return res.redirect('/login')
 }
 
 

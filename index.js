@@ -97,7 +97,7 @@ app.get('/',varifyToken, (req, res)=>{
 // Sign up page
 app.get('/signup', (req, res)=>{
     console.log("GET request on signup page..");
-    return res.json({msg: "wellcom to signup page"})
+    return res.render("signup")
 })
 
 // Login page
