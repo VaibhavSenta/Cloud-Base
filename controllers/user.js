@@ -97,7 +97,9 @@ async function userLogin(req, res) {
     // Import modules  & Node Modules
     const os = require('os');
     const useragent = require('useragent');
+    const cookieParser = require('cookie-parser');
     const { USER, LOGINDEVICEDETAILS } = require('../models/user');
+
 
 
     // Capture user agent string from request
@@ -108,29 +110,52 @@ async function userLogin(req, res) {
 
     console.log("POST request to Login");
     const {email, password} = req.body;
-
+    
     const user = await USER.findOne({email});
     console.log("THE login USER :",user);
     
+    
+    // Functions
+    async function setCookie(email, userName) {
+        
+        // const { USER } = require('../models/user');
+        // const cookieUser = await USER.findOne({ email: email });
+        const jwt = require('jsonwebtoken');
+
+        
+        const payload = {
+            email: email,
+            userName: userName
+        }
+        console.log("Payload User is :",payload);
+        const jwtpass = "vaibhav123"
+        const jwtToken =  jwt.sign(payload, jwtpass, {expiresIn: '10s'})
+
+        console.log("JWT Token is ;", jwtToken);
+
+
+        return res.cookie('logintoken',jwtToken)
+    }
+    // Check if user is deleted
+    async function isUSerDeleted(email) {
+        
+        
+        const tempUser = await USER.findOne({email: email})
+        if (tempUser.accountStatus === 'deleted') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    
     // Define that Login successfull or not
-    
-    
     let isLoginSuccessful = null;
     if (!user) {
         console.log("There is no user you are trying to login..");
+        res.send("There is no user you are trying to login..")
     } else {
 
-        // Check if user is deleted
-        async function isUSerDeleted(email) {
-            
-            
-            const tempUser = await USER.findOne({email: email})
-            if (tempUser.accountStatus === 'deleted') {
-                return true;
-            } else {
-                return false;
-            }
-        }
 
         const checkIfDeletedUser = (await (isUSerDeleted(email))).valueOf()
         
@@ -139,7 +164,7 @@ async function userLogin(req, res) {
             console.log("Sprry but the user is deleted from database.............");
 
             isLoginSuccessful = false
-            res.json({msg: "Sorry but the user is deleted from database"})
+            res.send("Sorry but the user is deleted from database")
         } else{
             console.log("Account found in database \n Checking password..");
             if (password === user.password) {
@@ -147,11 +172,14 @@ async function userLogin(req, res) {
                 req.loginUser = user
                 isLoginSuccessful = true
 
-                res.json({msg: "Logedin to Account"})
-                console.log("Login COMPLATE");
+                // Set JWT token to cookie by calling function
+                setCookie(email, user.userName)
+                res.redirect('/')
+                console.log("Login COMPLATE, This will logout automatically after 1H");
                 
             } else {
                 console.log("You entered wrong pasword");
+                res.send("You entered wrong pasword")
                 isLoginSuccessful = false
             }
         }
@@ -256,7 +284,7 @@ async function deleteUser(req, res) {
 
             // Deletion ststus
             isDeletionSuccessful = false
-            
+
             res.json({msg: "Delete request from unauthorized profile"})
         }
 
