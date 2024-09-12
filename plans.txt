@@ -3,7 +3,7 @@ Route
 '/' - Home page - done
 '/login' - login to website - done
 '/signup' - create account to website - done
-'/logout' - logout from website
+'/logout' - logout from website - done
 '/reset_password' - reset password account password
 
 '/:profile' - preview profile with name, username, profilepic, cover photo, bio and more ( type = publice, private)

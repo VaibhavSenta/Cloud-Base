@@ -57,6 +57,13 @@ const useSchema = new mongoose.Schema({
         required: true
     },
     
+    logedinDevices: {
+        type: Array,
+        default: [],
+        required: false
+
+    },
+
     signUpDeviceDetails: {
         type: Object,
         required: false,

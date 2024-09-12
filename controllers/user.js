@@ -69,10 +69,11 @@ async function userSignup(req, res) {
         console.log("User found in database");
         if (checkUser[0].accountStatus === 'active') {
             console.log("User alredy exist and ACTIVE \n Try different email");
-            res.send("User alredy exist and ACTIVE \n Try different email")
+            return res.send("User alredy exist and ACTIVE \n Try different email")
         } else {
             console.log("Account is DELETED, Try to recover it by varios options");
-            res.send("Seems like account is DELETED, Try to recover it by varios options or create different account using defferent email and username")
+            return res.send("Seems like account is DELETED, Try to recover it by varios options or create different account using defferent email and username")
+            
         }
     } else {
         console.log("User not found in database");
@@ -82,20 +83,18 @@ async function userSignup(req, res) {
             if (userName === checkUsername[0].userName) {
                 console.log("USERNAME not available, try different");
                 res.send("Username not available, try differen")
+                return res.redirect('/signup')
             }
         } else {
             console.log("USERNAME is available, You can create account ",userName);
 
             // Create USER
             const user = await USER.create(newUser);
+            return res.redirect('/login')
         }
     }
 
     
-    setTimeout(() => {
-        res.send
-    }, 4000);
-    return res.redirect('/login')
 }
 
 
@@ -137,7 +136,7 @@ async function userLogin(req, res) {
         }
         console.log("Payload User is :",payload);
         const jwtpass = "vaibhav123"
-        const jwtToken =  jwt.sign(payload, jwtpass, {expiresIn: '10s'})
+        const jwtToken =  jwt.sign(payload, jwtpass, {expiresIn: '1h'})
 
         console.log("JWT Token is ;", jwtToken);
 
@@ -182,6 +181,8 @@ async function userLogin(req, res) {
 
                 // Set JWT token to cookie by calling function
                 setCookie(email, user.userName)
+
+                console.log("Locals data :", user.userName);
                 res.redirect('/')
                 console.log("Login COMPLATE, This will logout automatically after 1H");
                 
@@ -275,16 +276,27 @@ async function deleteUser(req, res) {
                 res.json({msg: "Account alredy Deleted"})
             } else {
 
+
                 console.log("User found to delete operation :", deletedUser);
     
-                const afterdelete = await USER.findOneAndUpdate({email: reqemail}, {accountStatus: 'deleted'})
-                
-                // Deletion status
-                isDeletionSuccessful = true
+                if (reqpassword === deletedUser.password) {
+                    
+                    console.log("Password verified \n Now you can delete Account");
+                    const afterdelete = await USER.findOneAndUpdate({email: reqemail}, {accountStatus: 'deleted'})
+                    
+                    // Deletion status
+                    isDeletionSuccessful = true
+    
+                    console.log("Aftere deleted :",afterdelete);
+    
+                    return res.send("Account Deleted \n we are filing sad for your bad experience")
 
-                console.log("Aftere deleted :",afterdelete);
+                } else {
+                    console.log("Wrong Password >>>>>>>");
 
-                res.json({msg: "Account Deleted"})
+                    return res.send(" - - - - -  - WRONG PASSWORD - - - - - ")
+                }
+
             }
         } else {
             console.log("User name not matched");
