@@ -33,6 +33,12 @@ const useSchema = new mongoose.Schema({
 
     },
 
+    profilePic: {
+        type: String,
+        required: false,
+        default: '../public//defaultLogos/DefaultProfilePic-90.png'
+    },
+
     dob: {
         type: Date,
         required: true

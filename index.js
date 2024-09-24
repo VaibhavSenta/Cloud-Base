@@ -49,11 +49,8 @@ app.post('/login', userLogin)
 
 // Delete request to delete account
 const { deleteUser } = require('./controllers/user');
+const { log } = require('console');
 app.post('/:profile/delete', deleteUser)
-
-
-
-
 
 
 

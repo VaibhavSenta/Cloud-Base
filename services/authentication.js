@@ -28,6 +28,7 @@ async function varifyToken(req, res, next) {
             const user = await USER.findOne({ email: tokenUser.email })
            if (!user) {
             console.log("No user with this emil..");
+            res.clearCookie('logintoken')
            } else {
             // Check user account ststus
                 if (user.accountStatus === "deleted") {
