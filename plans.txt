@@ -39,3 +39,4 @@ Route
 
 Services
 1. JWT token Service - (Authenticatioon) - done
+2. Login Arrays (Discribes that howmany devices are logdedin ?)
