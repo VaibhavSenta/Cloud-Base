@@ -184,6 +184,9 @@ async function userLogin(req, res) {
 
                 console.log("Locals data :", user.userName);
                 res.redirect('/')
+
+
+
                 console.log("Login COMPLATE, This will logout automatically after 1H");
                 
             } else {
@@ -239,6 +242,18 @@ async function userLogin(req, res) {
 
         
         const loginUser = await LOGINDEVICEDETAILS.create(loginDeviceDetails)
+
+        if (isLoginSuccessful === true) {
+            console.log("Saving device to database..");
+            const { USER } = require('../models/user');
+
+            // Temp array
+            const tempArray = user.logedinDevices
+            tempArray.push(loginDeviceDetails)
+            console.log("logded in device list :",tempArray);
+
+            // const saveDevice = await USER.findByIdAndUpdate(user.id, {logedinDevices: })
+        }
     }
     return collectLoginDeviceDetails()
 }
