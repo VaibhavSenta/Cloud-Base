@@ -24,6 +24,12 @@
             flex-direction: column;
             align-items: center;
 
+            background-image: url(../public/backgrounds/background.jpg);
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            
+            
             padding: 4vw;
         }
 
@@ -44,7 +50,10 @@
             justify-content: center;
             flex-wrap: wrap;
 
-            background-color: gray;
+            background-color: rgba(32, 32, 32, 0.258);
+            backdrop-filter: blur(10px);
+            box-shadow: 40px 40px 50px -30px rgba(0, 0, 0, 0.796);
+
 
             border-radius: 30px;
 
@@ -71,7 +80,12 @@
             margin-left: 20px;
         }
         .btns {
-            background-color: gray;
+
+           
+            background-color: rgba(32, 32, 32, 0.258);
+            backdrop-filter: blur(10px);
+            box-shadow: 40px 40px 50px -30px rgba(0, 0, 0, 0.796);
+
             min-width: 300px;
             padding: 30px;
 
@@ -96,6 +110,7 @@
 </head>
 <body>
     
+    
     <h1>Profile</h1>
 
     <main>
@@ -112,6 +127,7 @@
     <div class="btns">
         <button class="logout"><a href="/<%= locals.userName %>/logout">Logout</a></button>
         <button class="logout"><a href="/<%= locals.userName %>/delete">Delete Account</a></button>
+        <button class="logout"><a href="/<%= locals.userName %>/manage">Manage Account</a></button>
     </div>
     
 

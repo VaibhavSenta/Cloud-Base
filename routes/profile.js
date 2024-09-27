@@ -16,7 +16,7 @@ router.get('/', varifyToken, (req, res)=>{
         userName: user.userName,
         firstName: user.firstName,
         lastName: user.lastName,
-        profilePic: user.profilePic
+        profilePic: user.profilePic,
     }
 
     console.log(resUser);
@@ -86,6 +86,69 @@ router.get('/update', varifyToken, (req, res) => {
     }
     
 })
+
+
+
+
+
+// Delete request to delete account
+const { deleteUser } = require('../controllers/user');
+const path = require('path');
+const { readFileSync } = require('fs');
+const { send } = require('process');
+router.post('/delete', deleteUser)
+
+
+
+
+
+
+
+// Manage Profile 0r Account
+router.get('/manage',varifyToken, async(req, res)=>{
+
+    console.log("New request to manage account..");
+
+    const userName = req.params.profile
+
+    const user = req.body.tokenUser
+    
+    
+    if (!req.body.tokenUser) {
+        console.log("There is no loggedin user..");
+        
+    }
+    if (req.body.tokenUser) {
+        console.log(user);
+
+        const userInfo = {
+            userName: user.userName,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            dob: new Date(user.dob),
+            profilePic: user.profilePic,
+            email: user.email
+
+        }
+
+        console.log("User info: ", userInfo);
+
+        // Reading HTML file\
+        const html = readFileSync(path.join(__dirname, '../views/manageaccount.ejs'), 'utf8');
+        // Rendering HTML
+        // res.send(html.replace('{{userInfo}}', JSON.stringify(userInfo)));
+        // console.log(html);
+        
+
+        return res.render('manageaccount', userInfo);
+
+    }
+    
+
+})
+
+
+
 
 
 module.exports = {

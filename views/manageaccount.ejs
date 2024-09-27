@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Account</title>
+    <link rel="stylesheet" href="../public/css/manageaccount.css" />
+  </head>
+  <body>
+    <div class="background">
+      <main>
+        <header>
+          <h1>Manage Account</h1>
+          <p>Welcome to your account, vaibhav999</p>
+        </header>
+
+        <div class="managesection">
+           
+            <!-- Profile Section -->
+            <section class="profileSection">
+                <div class="editbar">
+                    <button>Edit</button>
+                </div>
+
+                <div class="profilePic">
+                    <img src="<%= locals.profilePic %>" width="150px" alt="">
+
+                </div>
+                <h2> <%= locals.firstName %> <%= locals.lastName %> </h2>
+                <p> <%= locals.email %> </p>
+
+            </section>
+
+            <div class="otherSections">
+                
+                <!-- Personal Info -->
+                <section>
+                    <header><h1>Personal Information</h1><br></header>
+    
+                    <button>
+                        <h4>Name</h4>
+                        <p><%= locals.firstName %> <%= locals.lastName %></p>
+                    </button><br>
+    
+                    <button>
+                        <h4>Birth Date</h4>
+                        <p>09/08/2004</p>
+                    </button><br>
+    
+                    <button>
+                        <h4>Gender</h4>
+                        <p>Male</p>
+                    </button>
+    
+    
+                </section>
+                
+                <!-- Contact Info -->
+                <section>
+                    <header><h1>Contact Information</h1><br></header>
+    
+                    <button>
+                        <h4>Email</h4>
+                        <p>vaibhavsenta111@gmail.com</p>
+                    </button><br>
+    
+                    <button>
+                        <h4>Recovery Email</h4>
+                        <p>vaibhavsenta222@gmail.com</p>
+                    </button><br>
+    
+                    <button>
+                        <h4>Phone</h4>
+                        <p>+91 1234567890</p>
+                    </button>
+    
+    
+                </section>
+
+                
+                
+                
+                <!-- All Profiles -->
+                <section class="allProfiles">
+                    <header><h1>All Profiles with Cloude Base</h1><br></header>
+                    
+                    <button>
+                        <div class="profileCard">
+                            
+                            <img src="../public/backgrounds/wallpaperflare.com_wallpaper (5).jpg" alt="">
+                        </div>
+                        <br>
+                        <h4>CloudeBase</h4>
+                        <p>vaibhav999</p>
+                    </button><br>
+    
+                    
+                    
+                    <button>
+                        <div class="profileCard">
+                            
+                            <img src="../public/backgrounds/wallpaperflare.com_wallpaper (4).jpg" alt="">
+                        </div>
+                        <br>
+                        <h4>Stakker</h4>
+                        <p>vaibhav_senta</p>
+                    </button><br>
+                    
+                    <button>
+                        <div class="profileCard">
+                            
+                            <img src="../public/backgrounds/wallpaperflare.com_wallpaper (3).jpg" alt="">
+                        </div>
+                        <br>
+                        <h4>CloudeBase Account</h4>
+                        <p>vaibhav999</p>
+                    </button><br>
+                    
+                    
+                    
+                </section>
+                
+                <!-- Contact Info -->
+                <section>
+                    <header><h1>Password & Username</h1><br></header>
+    
+                    <button>
+                        <h4>vaibhav999</h4>
+                        <p> hidden </p>
+                    </button><br>
+    
+                    
+    
+    
+                </section>
+                
+                <!-- Contact Info -->
+                <section>
+                    <header><h1>Security</h1><br></header>
+    
+                    <button>
+                        <h4>Two factor Authentication</h4>
+                        <p> Off </p>
+                    </button><br>
+    
+                    
+    
+    
+                </section>
+                
+                
+                
+                
+            </div>
+        </div>
+
+      </main>
+    </div>
+  </body>
+</html>
