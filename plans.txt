@@ -53,7 +53,7 @@ Services
 /:catagory/:productname
 /:catagory/:productname/preview
 /:catagory/:productname/download
-/:catagory/:productname/
+/:catagory/:productname/reporyissue
 
 
 product model {
