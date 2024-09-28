@@ -5,7 +5,12 @@ const router = express.Router({mergeParams: true});
 
 // Varify Token
 const { varifyToken } = require('../services/authentication');
+const { resetPassword, verifyOttp, changePassword } = require('../controllers/user');
 
+
+
+
+// GET ROUTES =================================================================
 
 
 // LOGIN
@@ -18,6 +23,15 @@ router.get('/login', async(req, res)=>{
 })
 
 
+// RESET PASSWORD
+router.get('/resetpassword', async(req, res)=>{
+    
+    console.log("GET request on Reset password page..");
+    
+    
+    return res.render("resetpassword")
+})
+
 
 // SIGN UP
 router.get('/signup', async(req, res)=>{
@@ -25,6 +39,33 @@ router.get('/signup', async(req, res)=>{
     return res.render("signup")
 })
 
+
+
+
+
+
+
+
+
+// POST ROUTES =================================================================================
+
+
+// Password Reset request
+router.post('/verifyemail', resetPassword)
+
+
+
+
+// Verify OTP
+router.post('/verifyemail/verifyotp', verifyOttp)
+
+
+
+
+
+
+// Change Password
+router.post('/resetpassword/changepassword', changePassword)
 
 
 
@@ -43,7 +84,6 @@ router.get('/',varifyToken, (req, res)=>{
 
     return res.render("index",{userName: profileUserName})
 })
-
 
 
 

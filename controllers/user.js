@@ -1,3 +1,5 @@
+const { request } = require('http');
+
 // User Sign Up
 async function userSignup(req, res) {
     console.log("Wellcome to login route");
@@ -39,7 +41,7 @@ async function userSignup(req, res) {
             totalSystemMemory: os.totalmem(),
             deviceIp: req.ip,
             browser: req.headers['user-agent'],
-            wifiMacAddress: os.networkInterfaces()['Wi-Fi'][0].mac,
+            // wifiMacAddress: os.networkInterfaces()['Wi-Fi'][0].mac,
             cpuArchitecture: os.arch(),
             cpuModel: os.cpus()[0].model,
             cpuSpeed: os.cpus()[0].speed,
@@ -227,7 +229,7 @@ async function userLogin(req, res) {
             freeSystemMomory: os.freemem(),
             totalSystemMemory: os.totalmem(),
             deviceIp: req.ip,
-            wifiMacAddress: os.networkInterfaces()['Wi-Fi'][0].mac,
+            // wifiMacAddress: os.networkInterfaces()['Wi-Fi'][0].mac,
             cpuArchitecture: os.arch(),
             cpuModel: os.cpus()[0].model,
             cpuSpeed: os.cpus()[0].speed,
@@ -304,7 +306,8 @@ async function deleteUser(req, res) {
     
                     console.log("Aftere deleted :",afterdelete);
     
-                    return res.send("Account Deleted \n we are filing sad for your bad experience")
+                    res.clearCookie('logintoken')
+                    return res.end("Account Deleted \n we are filing sad for your bad experience")
 
                 } else {
                     console.log("Wrong Password >>>>>>>");
@@ -380,10 +383,247 @@ async function deleteUser(req, res) {
 
 
 
+// Reset Password
+async function resetPassword(req, res) {
+
+
+    // Functions ----------------------------------
+
+    // Now make the OTP complex
+    function makeOptComplext() {
+        
+        const inputOtp = Math.round(Math.random(10)*1000000)
+        if (inputOtp) {
+            
+            // operation 1 : multiplication
+            const result1 = inputOtp/Math.random()
+            
+            // operation 2 : addition
+            const result2 = inputOtp + Math.random()
+            
+            // operation 3 : subtraction
+            const result3 = inputOtp - Math.random()
+            
+            // operation 4 : division
+            const result4 = inputOtp * Math.random()
+            
+    
+            const result5 = inputOtp*Math.random()
+    
+            const tempOtp = Math.round(result1 + result2 + result3 + result4 + result5).toString()
+            
+            return tempOtp.slice(0, 6)
+            
+        } else {
+            return "No input provided"
+        }
+        
+    }
+
+    console.log("POST request on verify email page..");
+
+
+    const {email} = req.body;
+
+    if (email) {
+        
+        console.log("Password Reset request to +" + email);
+        
+        // Import user for verify that user exists
+        const { USER } = require('../models/user');
+        const user = await USER.findOne({email: email})
+        if (user) {
+            console.log(user.accountStatus);
+            if (user.accountStatus === 'active') {
+                console.log("User is active, request will be forwarded");
+                
+                // Calling makeOtp function
+                const finalOtp = makeOptComplext()
+            
+                console.log("Generated OTP :", finalOtp); // Send OTP to the user by email address
+                const { otpArray } = require('../services/shorttermotpstore');
+                otpArray.push(finalOtp)
+            
+                // Send OTP to email or mobile number or Registere mobile device
+                
+                const resHtml = `
+                
+                    <form action="/verifyemail/verifyotp" method="post">
+                        <label for="otp">Enter OTP</label>
+                        <input type="hidden" name="email" value="${email}">
+                        <input type="number" name="userotp" id="userotp">
+            
+                        <button type="submit">Verify</button>
+            
+                    </form>
+            
+                `
+            
+                console.log("Body User :", user.id);
+                
+                req.body.requser = user.id
+                console.log("User added to body :", req.body.requser);
+                
+                return res.send(resHtml)
+
+
+            } else {
+                console.log("User is not active, request will be rejected");
+                return res.send("Account is Deleted")
+                
+            }
+            
+        } else {
+            console.log("No user found with this email");
+            return res.send("No user found with this email")
+        }
+
+    }
+
+
+    
+
+}
+
+
+
+
+// Verify OTP
+async function verifyOttp(req, res) {
+    
+    console.log("POST request on verify otp page..");
+
+    const { userotp, email } = req.body
+
+    const { otpArray } = require('../services/shorttermotpstore');
+
+    console.log("Request at the user :", email);
+    
+
+    console.log(otpArray[0]);
+
+    if (userotp === otpArray[0]) {
+        console.log("OTP Verification Success");
+        otpArray.shift() // Remove the first element of array
+
+        const jwt = require('jsonwebtoken');
+        const otptokenpasskey = 'vaibhav9999'
+        const token = jwt.sign({ email }, otptokenpasskey, { expiresIn: '240s' });
+        if (token) {
+            
+            res.cookie('otptoken', token) // set cookie for 1 hour
+            console.log("User OTP token  :", token);
+        }
+
+        const responseHtml = `
+        <h3>OTP Verified</h3>
+        <form action="/resetpassword/changepassword" method="post">
+
+        <input type="hidden" name="email" value="${email}">
+
+
+        <label for="password">Enter new password</label>
+        <input type="password" name="password" id="password">
+
+        <label for="confirmPassword">Confirm password</label>
+        <input type="password" name="confirmPassword" id="confirmPassword">
+
+        <button type="submit">Reset Password</button>
+
+    </form>
+    
+    `
+        return res.send(responseHtml)
+        
+    } else {
+        console.log("OTP Verification Failed");
+        return res.send("OTP Verification Failed")
+        
+    }
+}
+
+
+
+
+// Change password
+async function changePassword(req, res) {
+    console.log("POST request on change password page..");
+
+    const {password, confirmPassword, email} = req.body
+
+    console.log("Password: " + password);
+    console.log("Confirm Password: " + confirmPassword);
+    console.log("Email: " + email);
+    
+    if (password === confirmPassword) {
+        console.log("Passwords match..");
+        
+        console.log("OTP cookies: " + req.cookies.otptoken);
+        const otpcookie = req.cookies.otptoken
+        if (!otpcookie) {
+            console.log("No otpcookie----------------");
+            return res.send("You have to verify your OTP again, This is for security reasons");
+        } else {
+            console.log("otpcookie found----------------");
+            
+            const jwt = require('jsonwebtoken');
+
+            try {
+                const otptokenpasskey = 'vaibhav9999'
+                const decoded = jwt.verify(otpcookie, otptokenpasskey);
+                console.log("Decoded : ",decoded);
+    
+                if (decoded && decoded.email === email) {
+    
+                    console.log("OTP cookie matched with email");
+                    console.log("OTP verified successfully");
+                    // Update password in database
+                    const { USER } = require('../models/user');
+                    // Add hashed password when hashing completed
+                    
+                    const user = await USER.findOneAndUpdate({email: email}, {password: password})
+            
+                    res.clearCookie('otptoken')
+                    
+            
+                    const resHtml = `
+                        
+                        <h2>Password changed successfully</h2>
+                        <p> Go to login page </p>
+                        <a href="/login">Login Here</a>
+                        `
+                    return res.send(resHtml)
+    
+                } else {
+                    console.log("OTP verification failed");
+                    return res.send("OTP verification failed")
+                }
+                
+            } catch (err) {
+                console.log(err.name);
+            if (err.name === 'TokenExpiredError') {
+                console.log("Error ->",err.name);
+                res.clearCookie('otptoken')
+                return res.send('Time out, verify again');
+            }
+            }
+        }
+    } else {
+        console.log("Passwords do not match..");
+        return res.send("Passwords do not match..")
+    }
+}
+
+
+
 
 
 module.exports = {
     userSignup,
     userLogin,
-    deleteUser
+    deleteUser,
+    resetPassword,
+    verifyOttp,
+    changePassword
+
 }
