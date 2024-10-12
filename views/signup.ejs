@@ -6,74 +6,265 @@
     <title>Sign Up - Cloude Base</title>
     <style>
         * {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+           font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             box-sizing: border-box;
             list-style: none;
 
             margin: 0;
             padding: 0;
 
+            color: white;
+
+            text-decoration: none;
+            box-sizing: border-box;
+
+            transition: all 0.2s ease; 
+
+        }
+        a{
+            cursor: pointer;
+            z-index: 1;
         }
         body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            /* background-color: black; */
+            background-image: url(../public/backgrounds/signupback.jpg);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            backdrop-filter: blur(0px) contrast(190%) brightness(50%);
+
             
         }
-        form {
-            width: 60%;
-            height: 80%;
 
+        main{
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            background-color: transparent;
+
+            width: 100%;
+            height: 100vh;
+
+            position: relative;
+        }
+
+
+        main header {
+            background-color: transparent;
+            width: 100%;
+            height: 100%;
+
+            position: absolute;
+
+            padding: 20px;
+        }
+
+
+        main form{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            
+            padding: 20px;
+            
+            min-width: 380px;
+            width: 40%;
+            height: max-content;
+
+            z-index: 1;
+            
+            /* background-color: rgb(33, 33, 33); */
+
+            background: linear-gradient(30deg, transparent, rgba(41, 41, 41, 0.954), rgb(5, 47, 67), transparent);
+
+            backdrop-filter: blur(100px);
+            
+            border-radius: 20px;
+        }
+        
+        .innerForm{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+
+            
+            background-color: transparent;
+
+            width: 100%;
+            height: max-content;
+
+        }
+        
+        .formeElements{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+
+            width: 100%;
+
+            background-color: transparent;
+
+            margin: 10px 0px;
+            
+        }
+
+
+        form input {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            background-color: transparent;
+
+            outline: none;
+            border: none;
+            
+            border-bottom: 1px solid rgba(255, 255, 255, 0.411);
+           
+            width: 100%;
+
+            font-size: 16px;
+
+            margin: 10px 0px;
+            padding: 5px 5px;
+
+        }
+
+        form h2 {
+            width: 100%;
+            text-align: center;
+            font-size: 30px;
+        }
+
+        .submit {
+
+            width: 100%;
+            height: max-content;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            flex-direction: row;
+
+            background-color: transparent;
+        
+        }
+
+
+        button{
+            background-color: rgb(91, 29, 185);
+            color: white;
+
+            outline: none;
+            border: none;
 
             padding: 10px;
 
-            background-color: rgba(128, 128, 128, 0.364);
-        }
+            width: 100px;
 
-        button {
+            border-radius: 5px;
 
-            padding: 4px 30px;
+            margin-top: 60px;
+
+            cursor: pointer;
+            &:hover{
+                transform: scale(1.03);
+                background-color: rgba(68, 11, 141, 0.775);
+            }
+            &:active{
+                background-color: rgb(108, 71, 187);
+            }
         }
         
+
+        label{
+            display: none;
+        }
+
+        #firstName, #lastName, #userName, #dob, #phonenumber, #countryCode {
+
+            background-color: transparent;
+
+            width: 40%;
+        }
     </style>
 </head>
 <body>
     
-    <h1>sign Up to Cloude base</h1>
+    <main>
+        
+        <header>
+            <h1>Sign U  p to Cloude base</h1>
 
-    <form action="/signup" method="post">
+        </header>
 
-        <label for="userName">enter userName</label>
-        <input type="text" name="userName" id="userName">
+        
+        <form action="/signup" method="post">
 
-        <label for="email">enter email</label>
-        <input type="email" name="email" id="email">
+            <h2>Personal Information</h2>
 
-        <label for="password">enter password</label>
-        <input type="password" name="password" id="password">
+            <div class="innerForm">
 
-        <label for="firstName">enter firstName</label>
-        <input type="text" name="firstName" id="firstName">
+                <div class="formeElements">
 
-        <label for="lastName">enter lastName</label>
-        <input type="text" name="lastName" id="lastName">
+                    <label for="firstName">enter firstName</label>
+                    <input type="text" name="firstName" id="firstName" placeholder="Enter first name" required>
+            
+                    <label for="lastName">enter lastName</label>
+                    <input type="text" name="lastName" id="lastName" placeholder="Enter last name" required>
+                </div>
+        
 
-        <label for="dob">Enter Date of Birth</label>
-        <input type="date" name="dob" id="dob">
+                <div class="formeElements">
 
-        <label for="countryCode">Enter countryCode</label>
-        <input type="number" name="countryCode" id="countryCode">
+                    <label for="email">enter email</label>
+                    <input type="email" name="email" id="email" placeholder="Enter email" required>
+            
+                    <label for="password">enter password</label>
+                    <input type="password" name="password" id="password" placeholder="Enter password" required>
+                </div>
 
+                <div class="formeElements">
 
-        <label for="countryCode">Enter phonenumber</label>
-        <input type="number" name="phonenumber" id="phonenumber">
+                    <label for="userName">enter userName</label>
+                    <input type="text" name="userName" id="userName" placeholder="Enter Username" required>
+            
+                    <label for="dob">Enter Date of Birth</label>
+                    <input type="date" name="dob" id="dob" required>
+                </div>
+        
 
-        <button type="submit">Submit</button>
+                <div class="formeElements">
+
+                    <label for="countryCode">Enter phonenumber</label>
+                    <input type="number" name="countryCode" id="countryCode" placeholder="Enter country code" required>
+                    
+                    <label for="countryCode">Enter countryCode</label>
+                    <input type="number" name="phonenumber" id="phonenumber" placeholder="Enter phonenumber" required>
+                    
+                </div>
+            
         
         
-    </form>
+            </div>
+    
+            <div class="submit">
+
+                <button type="button">Cancle</button>
+                <button type="submit">Submit</button>
+            </div>
+            
+            
+        </form>
+
+        <a href="/login">Alredy have an account ? &nbsp;&nbsp; &nbsp;&nbsp;
+        logIn hear</a>
+    </main>
+
 </body>
 </html>
