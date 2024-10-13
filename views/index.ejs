@@ -179,6 +179,82 @@
             cursor: pointer;
 
         }
+
+
+
+        main {
+            display: flex;
+            flex-direction: column;
+
+            margin-top: 40px;
+            background-color: brown;
+            width: 80%;
+            height: auto;
+        }
+
+
+
+        .card2 {
+            position: relative;
+            background-color: transparent;
+
+            min-width: 25rem;
+            min-height: 12.6rem;
+
+            max-width: 500px;
+
+            /* padding: 10px; */
+
+            margin: 2px;
+
+            border-radius: 0.4rem;
+
+            overflow: hidden;
+        }
+
+        .card2 img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+
+            position: absolute;
+
+            /* filter: blur(15px); */
+        }
+        .card2 a{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+
+            padding: 40px;
+            position: absolute;
+
+            background-color: transparent;
+
+            width: 100%;
+            height: 100%;
+
+            outline: none;
+            border: none;
+
+            opacity: 0;
+
+            text-shadow: 2px 2px 10px black;
+        }
+        .card2 a h2{
+            cursor: pointer;
+        }
+
+        .card2 a:hover{
+            opacity: 1;
+            backdrop-filter: blur(8px);
+            cursor: pointer;
+
+        }
+
+
+        
         
     </style>
 </head>
@@ -203,7 +279,7 @@
 
     <section class="section1">
         <header>
-            <h2>Categories</h2>
+            <h3>Top categories</h3>
             <a href="#">See all Categories</a>
         </header>
 
@@ -234,7 +310,50 @@
             
              
         </div>
+
     </section>
+
+
+    <main>
+
+        <section class="section1">
+            <header>
+                <h3>Top MOVIES</h3>
+                <a href="#">See all</a>
+            </header>
+    
+            <div class="allCategories">
+    
+    
+                <!-- Category Card -->
+                <div class="card2">
+                    <img src="../public/htmlphotos/movies.jpg" alt="">
+                    <a href="/movies"><h2>Movies</h2></a>
+                </div>
+    
+                <div class="card2">
+                    <img src="../public/htmlphotos/games.jpg" alt="">
+                    <a href="/games"><h2>Games</h2></a>
+                </div>
+    
+                <div class="card2">
+                    <img src="../public/htmlphotos/music.jpg" alt="">
+                    <a href="/music"><h2>Music</h2></a>
+                </div>
+    
+                <div class="card2">
+                    <img src="../public/htmlphotos/Wallpapers.jpg" alt="">
+                    <a href="/wallpapers"><h2>Wallpapers</h2></a>
+                </div>
+    
+                
+                 
+            </div>
+    
+        </section>
+    </main>
+
+    
     
 </body>
 </html>
