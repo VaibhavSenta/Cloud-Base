@@ -9,7 +9,7 @@ const { verifyOttp } = require('../controllers/user');
 
 // UPLOAD
 router.get('/',verifyOttp, async(req, res)=>{
-    console.log("GET request on signup page..");
+    console.log("GET request on Upload page..");
     return res.render("upload")
 })
 
