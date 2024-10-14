@@ -8,7 +8,7 @@ const { varifyToken } = require('../services/authentication');
 const { verifyOttp } = require('../controllers/user');
 
 // UPLOAD
-router.get('/',verifyOttp, async(req, res)=>{
+router.get('/', async(req, res)=>{
     console.log("GET request on Upload page..");
     return res.render("upload")
 })
