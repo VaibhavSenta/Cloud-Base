@@ -79,7 +79,8 @@ movie model {
     Director
     duration
     country where the movie was produced
-    language [hindi, english, japanise, tamil ...]
+    Audio Track [hindi, english, japanise, tamil ...]
+    Subtitle track
     avalilable quelites [480p, 720p, 1080p, 2160p ]
 
     movie poster(URL)
@@ -90,10 +91,35 @@ movie model {
     upload date
 
     total visits
-    visits user details
-    created by
     total downloads
     total online streams
+    total ratings
+}
+
+
+visits details(for video & audio player) [Array of details object] {
+    visited by (get it if user is loged in otherwise return unknown)
+    isLogged,
+
+    ucbid (unique encrypted ID of movie, help to get movie details)
+
+    user agent details {browser, os, device type}
+    os version
+    other os details
+    browser version
+    device type (phone, tab, laptop, desktop)
+    device model (iphone 11, 12, 13, samsumng S24,23..)
+    screen resolution
+    IP address
+    timezone
+    connection type (wifi, ethernet, 3G, 4G, 5G)
+    prefered lamguage (from settings)
+    cookies (enabled or disabled ?)
+    javascript (enabled or disabled ?)
+    processor details
+    battery details
+    touch support
+    device oriantation (Portrait, landscape)
 }
 
 stream device details(for video & audio player) [Array of details object] {

@@ -4,7 +4,10 @@ const cookieParser = require('cookie-parser');
 const app = express();  
 const path = require('path');
 
-const port = process.env.PORT || 8001;
+const port = process.env.PORT || 8003;
+
+
+const { varifyToken } = require('./services/authentication');
 
 mongoose.connect("mongodb://localhost:27017/cloudebase")
 .then(() => console.log('Connected to MongoDB . . . . '))
@@ -24,16 +27,20 @@ app.use('/public',express.static("public"))
 
 
 
+
+
+// UPLOAD Route
+const { uploadRouter } = require('./routes/upload');
+app.use('/upload', uploadRouter)
+
 // User Router
 const { userRouter } = require('./routes/user');
 app.use('/', userRouter)
 
+
 // Profile Route
 const { profileRouter } = require('./routes/profile');
 app.use('/:profile', profileRouter)
-
-
-
 
 
 // POST Request

@@ -39,7 +39,9 @@ router.get('/signup', async(req, res)=>{
     return res.render("signup")
 })
 
-
+// const { uploadRouter } = require('../routes/upload');
+// // UPLOAD
+// router.use('/upload',varifyToken, uploadRouter)
 
 
 
