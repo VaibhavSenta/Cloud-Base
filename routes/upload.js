@@ -15,7 +15,7 @@ router.get('/', async(req, res)=>{
 
 
 // POST ROUTES =================================================
-router.post('/',varifyToken, async(req, res)=>{
+router.post('/', async(req, res)=>{
     console.log("POST request on upload page..");
 
     const body = req.body;
@@ -45,6 +45,8 @@ router.post('/',varifyToken, async(req, res)=>{
                     return res.redirect(`/upload${categori}`)
                 } else {
                     return res.send(`Error uploading ${categori} details on ${categori}upload page`)
+                    console.log(err);
+                    
                 }
                 
             });
