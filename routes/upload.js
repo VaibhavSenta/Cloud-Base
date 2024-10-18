@@ -15,45 +15,58 @@ router.get('/', async(req, res)=>{
 
 
 // POST ROUTES =================================================
-router.post('/', async(req, res)=>{
+router.post('/', varifyToken,  async(req, res)=>{
     console.log("POST request on upload page..");
 
     const body = req.body;
+    
     console.log(body);
 
-    if (!body) {
-        console.log("There is an error, please provide a valid details");
-        return res.redirect('/upload')
-    } else {
-        const user = req.body.tokenUser
+    if (body) {
+        console.log("Deta collected from user");
 
-        const allCategorys = ['movie', 'trailer', 'tvshow', 'cartoon', 'webseries', 'song', 'software', 'operatingsystem', 'image', 'news', 'app','game']
+        console.log("Selected file Type is ", body.categori);
 
-        if (!allCategorys.includes(body.categori)) {
-            console.log("Invalid category, please choose from movie, trailer, tvshow, cartoon, webseries, song, software, operatingsystem, image, news, app, game");
-            return res.redirect('/upload')
-        } else {
+        const arr1 = ["movie", "trailer", "tvshow", "cartoon","webseries", "song", "software", "operatingsystem", "image", "news", "app", "game"]
+        console.log("Checking is this categori valid or not");
 
-            allCategorys.forEach(categori => {
-                
-                console.log(`Cheking ${categori} category..`);
-    
-                
-                if (body.categori === categori) {
-                    console.log(`Upload ${categori} details on ${categori}upload page..`);
+        arr1.forEach(categori => {
+            console.log("Cheking ", categori, "...");
+            if (body.categori === categori) {
+                console.log("Categori is valid");
+
+                // Fatch user frome Data Base
+                function fatchUser() {
                     
-                    return res.redirect(`/upload${categori}`)
-                } else {
-                    return res.send(`Error uploading ${categori} details on ${categori}upload page`)
-                    console.log(err);
-                    
+                    const { USER } = require('../models/user');
+
+                    const user = req.body.tokenUser
+                    const profileUserName = user.userName
+
+                    console.log(profileUserName);
+
+                    return profileUserName;
                 }
-                
-            });
-        }
 
+                const profileUserName = fatchUser()
 
+                return res.render(`upload${categori}`, {userName: profileUserName});
+
+            } else {
+                return res.status(5000)
+            }
+            
+        });
+        
+        
+    } else {
+        return console.log("No data collected from user");
+
+        
     }
+      
+
+    
     
 })
 

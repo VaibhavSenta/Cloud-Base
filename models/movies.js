@@ -36,7 +36,7 @@ const movieSchema = new mongoose.Schema({
         required: false,
         default: ''
     },
-    Director: {
+    director: {
         type: String,
         required: false,
         default: 'Detail, not available',
