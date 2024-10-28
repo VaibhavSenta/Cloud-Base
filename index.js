@@ -5,7 +5,10 @@ const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
 
-const port = process.env.PORT || 8000;
+
+
+
+const port = process.env.PORT || 8080;
 
 
 const { varifyToken } = require('./services/authentication');

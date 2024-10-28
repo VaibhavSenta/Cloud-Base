@@ -107,7 +107,12 @@ router.post('/',varifyToken ,async (req, res) => {
 
                 const profileUserName = fatchUser()
 
-                return res.render(`upload${categori}`, {
+                // return res.render(`upload${categori}`, {
+                //     userName: profileUserName,
+                //     countries: countries
+                // });
+
+                return res.render(`up`, {
                     userName: profileUserName,
                     countries: countries
                 });
@@ -138,7 +143,7 @@ router.post('/movie', varifyToken,async (req, res)=>{
     
     console.log("Active user: " + activeUser);
 
-    const body = req.body
+    const body = req.file
 
     console.log("REQUEST BODY :",body);
 
