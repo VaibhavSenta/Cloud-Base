@@ -7,6 +7,8 @@ async function varifyToken(req, res, next) {
     if (!reqToken) {
         console.log("Can't get token from request");
         res.redirect('/login')
+
+        // return next()
     } else {
 
         const jwtpasskey = "vaibhav123"
@@ -39,7 +41,10 @@ async function varifyToken(req, res, next) {
                 } else {
         
                     // Pushh the user to req.body
-                    req.body.tokenUser = user
+                    // req.body.tokenUser = user
+
+                    req.tokenUser = user
+
                     // console.log("reqCooki :",user);
                     console.log("Login token varified \n Authentication complete");
                     return next()

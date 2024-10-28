@@ -32,9 +32,9 @@ const movieSchema = new mongoose.Schema({
         default: []
     },
     searchCatagory: {
-        type: String,
+        type: Array,
         required: false,
-        default: ''
+        default: []
     },
     director: {
         type: String,
@@ -95,11 +95,6 @@ const movieSchema = new mongoose.Schema({
         default: ''
     },
     databasepath: {
-        type: String,
-        required: false,
-        default: ''
-    },
-    uploadedOnSiteAt: {
         type: String,
         required: false,
         default: ''

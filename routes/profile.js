@@ -10,7 +10,7 @@ const { varifyToken } = require('../services/authentication');
 // Preview Profile
 router.get('/', varifyToken, (req, res)=>{
 
-    const user = req.body.tokenUser
+    const user = req.tokenUser
 
     const resUser = {
         userName: user.userName,
@@ -20,7 +20,7 @@ router.get('/', varifyToken, (req, res)=>{
     }
 
     console.log(resUser);
-    req.body.tokenUser = user
+    req.tokenUser = user
 
     console.log("Request at profile");
     return res.render('profile',resUser)
@@ -37,10 +37,10 @@ router.get('/delete', varifyToken, (req, res)=>{
     console.log("GET request on delete page..");
 
     // Finding current user
-    const user = req.body.tokenUser
+    const user = req.tokenUser
     console.log("The logged user is :",user);
 
-    if (!req.body.tokenUser) {
+    if (!req.tokenUser) {
         console.log("There is no loggedin user..");
         res.status(401).send({ message: "You are not logged in" });
     } else {
@@ -66,10 +66,10 @@ router.get('/update', varifyToken, (req, res) => {
     console.log("Request to update profile information");
 
     // Finding current user
-    const user = req.body.tokenUser
+    const user = req.tokenUser
     console.log("The logged user is :",user);
 
-    if (!req.body.tokenUser) {
+    if (!req.tokenUser) {
         console.log("There is no loggedin user..");
         res.status(401).send({ message: "You are not logged in" });
     } else {
@@ -111,14 +111,14 @@ router.get('/manage',varifyToken, async(req, res)=>{
 
     const userName = req.params.profile
 
-    const user = req.body.tokenUser
+    const user = req.tokenUser
     
     
-    if (!req.body.tokenUser) {
+    if (!req.tokenUser) {
         console.log("There is no loggedin user..");
         
     }
-    if (req.body.tokenUser) {
+    if (req.tokenUser) {
         console.log(user);
 
         const userInfo = {

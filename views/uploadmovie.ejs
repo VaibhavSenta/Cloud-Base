@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Cloude Base</title>
+
     <style>
         * {
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -14,7 +16,7 @@
             margin: 0;
             padding: 0;
 
-            color: rgba(255, 255, 255, 0.899);
+            /* color: rgba(255, 255, 255, 0.899); */
 
             transition: all 0.3s ease-in-out;
             cursor: default;
@@ -139,10 +141,16 @@
 
 
         /* detailForm */
-        .detailForm{
+        .formDiv{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
             background-color: brown;
+
+            width: 100%;
+
         }
-        
 
         main {
             display: flex;
@@ -308,26 +316,104 @@
             <!-- <a href="#">See all Categories</a> -->
         </header>
 
-        <form class="detailForm" action="/upload/movie" method="post">
+        <div id="mainForm" class="formDiv">
+            <form action="/upload/movie" method="post">
 
-            <p>Enter Movie details according to the movie you want to upload.</p>
+                <p>Enter movie detail you want to upload on site</p>
 
-            <input type="text" name="title" id="title" placeholder="enter Movie title">
+                <label for="title">Enter title</label>
+                <input type="text" name="title" id="title">
 
-            <textarea name="discription" rows="10" cols="60" id="discription"></textarea>
+                <label for="discription">Enter movie discription</label>
+                <textarea name="discription" id="discription"></textarea>
 
-            <input type="datetime" name="releaseDate" id="releaseDate">
+                <label for="trailer">Enter trailer URL</label>
+                <input type="url" name="trailer" id="trailer">
 
-            <input type="text" name="director" id="director" placeholder="Enter director's name">
+                <label for="releaseDate">Enter release date</label>
+                <input type="date" name="releaseDate" id="releaseDate">
 
-            <input type="url" name="trailer" id="trailer">
+                <label for="cast">Enter cast actors name <br>
+                (seperate by comma "," )</label>
+                <textarea name="cast" id="cast"></textarea>
+
+                <label for="cast">Enter search Categories <br>
+                (seperate by comma "," )</label>
+                <textarea name="searchCatagory" id="searchCatagory"></textarea>
+
+                <label for="director">Enter movie director name</label>
+                <input type="text" name="director" id="director">
+
+                <label >Enter movie duration</label>
+                <div>
+                    <div>
+                        <label for="hour">in hour</label>
+                        <input type="number" min="0" max="24" name="hour" id="hour">
+                    </div>
+
+                    <div>
+                        <label for="minutes">in minutes</label>
+                        <input type="number" min="0" name="minutes" id="minutes">
+                    </div>
+
+                    <div>
+                        <label for="seconds">in seconds</label>
+                        <input type="number" min="0" name="seconds" id="seconds">
+                    </div>
+                </div>
+
+                <label for="size">Enter movie file size in (GB)</label>
+                <input type="number" name="size" min="0" id="size">
+
+                <label for="releasedInCountry">Select couentry where Released</label>
+                <select title="Released in" name="releasedInCountry" id="releasedInCountry">
+
+                    <option value="india">India</option>
+                    
+                </select>
+
+                <label > Select Audio Tracks</label>
+                <div>
+
+                    <input type="checkbox" name="audioTrack" id="audioTrack">
+                    <label for="audioTrack">English</label><br>
+                </div>
+
+                <label > Select Subtitle Tracks</label>
+                <div>
+
+                    <input type="checkbox" name="subtitleTrack" id="subtitleTrack">
+                    <label for="subtitleTrack">English</label><br>
+                </div>
+
+                <label > Select available resolutions</label>
+                <div>
+
+                    <input type="checkbox" name="resolutions" id="resolutions">
+                    <label for="resolutions">1080p</label><br>
+                    
+                </div>
+
+                <form id="fileForm" action="/upload/movie" method="post" enctype="multipart/form-data">
+
+                    <label for="movie">upload Movie</label>
+                    <input type="file" name="movie" id="movie">
+
+                    
+                </form>
 
 
 
 
-            <button type="submit">Submit & Upload</button>
+                <button type="submit" onchange="function submit() { 
+                    $('#fileForm').submit();
+                    $('#mainForm').submit();
+                    return console.log('Clicked');
+                    
+                }">Submit Details</button>
 
-        </form>
+            </form>
+        </div>
         
 
     </section>

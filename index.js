@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const app = express();  
 const path = require('path');
+const bodyParser = require('body-parser');
 
 const port = process.env.PORT || 8000;
 
@@ -19,7 +20,12 @@ mongoose.connect("mongodb://localhost:27017/cloudebase")
 
 // Middlewares
 app.use(cookieParser())
-app.use(express.urlencoded({extended: false}))
+
+// app.use(express.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({extended: false}))
+// app.use(bodyParser.json())
+// app.use(bodyParser)
+
 app.set('view engine', "ejs") // Set view engine
 // Serve files ststicaly
 app.use('/public',express.static("public"))

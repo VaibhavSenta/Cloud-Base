@@ -79,7 +79,7 @@ router.get('/',varifyToken, (req, res)=>{
     // console.log("Token User : ",req.body.tokenUser);
     const { USER } = require('../models/user');
 
-    const user = req.body.tokenUser
+    const user = req.tokenUser
     const profileUserName = user.userName
 
     console.log(profileUserName);
