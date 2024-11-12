@@ -112,7 +112,7 @@ router.post('/',varifyToken ,async (req, res) => {
                 //     countries: countries
                 // });
 
-                return res.render(`up`, {
+                return res.render(`uploadmovie`, {
                     userName: profileUserName,
                     countries: countries
                 });
@@ -136,7 +136,7 @@ router.post('/',varifyToken ,async (req, res) => {
 })
 
 // Upload movie
-router.post('/movie', varifyToken,async (req, res)=>{
+router.post('/movie/detail', varifyToken,async (req, res)=>{
 
     console.log("New request at movie upload....");
     const activeUser = req.tokenUser
