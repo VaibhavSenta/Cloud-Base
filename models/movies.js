@@ -10,15 +10,13 @@ const movieSchema = new mongoose.Schema({
     },
     ucbid: {
         type: String,
-        required: true,
+        required: false,
         unique: true
     },
     description:{
         type: String,
-        required: true,
+        required: false,
         default: '',
-        maxlength: 1000,
-        minlength: 10
     },
     releaseDate: {
         type: String,
@@ -39,9 +37,7 @@ const movieSchema = new mongoose.Schema({
     director: {
         type: String,
         required: false,
-        default: 'Detail, not available',
-        maxlength: 100,
-        minlength: 1
+        default: 'Detail, not available'
     },
     duration: {
         type: String,
@@ -59,30 +55,22 @@ const movieSchema = new mongoose.Schema({
     releasedInCountry: {
         type: String,
         required: false,
-        default: 'Detail not available',
-        maxlength: 100,
-        minlength: 1
+        default: 'Detail not available'
     },
     audioTrack: {
         type: Array,
         required: false,
-        default: [],
-        maxlength: 100,
-        minlength: 1,
+        default: []
     },
     subtitleTrack: {
         type: Array,
         required: false,
-        default: [],
-        maxlength: 100,
-        minlength: 1,
+        default: []
     },
     resolutions:{
         type: Array,
         required: false,
-        default: [],
-        maxlength: 100,
-        minlength: 1,
+        default: []
     },
     poster: {
         type: String,
@@ -127,3 +115,9 @@ const movieSchema = new mongoose.Schema({
 
 
 },{timestamps: true})
+
+const MOVIE = mongoose.model('MOVIE',movieSchema)
+
+module.exports = {
+    MOVIE
+}

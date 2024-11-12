@@ -157,7 +157,7 @@
         flex-direction: column;
         align-items: center;
 
-        background-color: brown;
+        background-color: transparent;
         padding: 10px;
 
         width: 100%;
@@ -170,15 +170,205 @@
         align-items: center;
         flex-wrap: wrap;
 
-        background-color: black;
+        border-radius: 30px;
+        border: 1px solid rgba(245, 245, 245, 0.04);
+
+        background-color: rgba(60, 60, 60, 0.356);
+
+        /* backdrop-filter: blur(40px); */
+        /* width: max-content; */
+        /* min-width: 300px; */
+
         color: white;
-        padding: 10px;
+        padding: 30px;
 
 
        }
 
+       .contsiner{
+        width: 100%;
+        margin: 10px;
+       }
 
+
+
+       .contsiner1{
+
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+
+        background-color: transparent;
+
+        width: 100%;
+
+
+       }
+       .contsiner1 input{
+        background-color: transparent;
+
+        width: 210px;
+
+        outline: none;
+        border: none;
+
+        border-bottom: 1px solid whitesmoke;
+
+        margin: 10px;
+
+        &::placeholder{
+            font-size: 16px;
+        }
+       }
+
+
+
+       .contsiner2{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+
+        background-color: transparent;
+
+       }
+       .contsiner2 textarea{
+        background-color: transparent;
+        border: none;
+        outline: 1px solid rgba(245, 245, 245, 0.55);
+        border-radius: 10px;
+
+        margin: 10px 0px;
+
+        width: 95%;
+        height: 130px;
+
+        &::placeholder{
+            font-size: 16px;
+            padding: 10px;
+        }
+       }
+
+
+
+       .contsiner3{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-start;
+
+        background-color: transparent;
         
+        padding: 5px;
+       }
+       .contsiner3 input{
+        
+        background-color: transparent;
+        border: none;
+        outline: 1px solid whitesmoke;
+        padding: 5px;
+        border-radius: 3px;
+       }
+
+
+
+
+
+       .contsiner4{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-start;
+        
+        background-color: transparent;
+       }
+       .contsiner4 input{
+        background-color: transparent;
+
+        border: none;
+        outline:none;
+        border: 1px solid rgba(245, 245, 245, 0.7);
+
+        width: 100px;
+
+        margin: 5px;
+        font-size: 16px;
+
+        border-radius: 3px;
+       }
+
+
+
+       .contsiner5{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-start;
+
+        background-color: transparent;
+       }
+       .contsiner5 select{
+        background-color: rgba(46, 108, 139, 0.606);
+        width: 200px;
+        margin: 10px;
+
+        border: none;
+        outline: 1px solid rgba(245, 245, 245, 0.177);
+        border-radius: 5px;
+        padding: 8px;
+       }
+
+
+
+       .contsiner6{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-start;
+
+        background-color: transparent;
+        width: 100%;
+       }
+
+       .contsiner6 div{
+        margin: 10px;
+        background: linear-gradient(to right, rgb(82, 82, 82), rgb(122, 122, 122));
+
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 30px 30px 50px -5px rgba(0, 0, 0, 0.922);
+       }
+        
+
+
+
+
+       .contsiner7{
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+
+        background-color: transparent;
+        
+       }
+       .contsiner7 button{
+        background: linear-gradient(-30deg, rgb(5, 80, 141), rgb(0, 33, 60));
+        padding: 13px;
+        border-radius: 7px;
+        height: 50px;
+        font-size: 19px;
+        box-shadow: 10px 10px 20px black;
+
+       }
         
     </style>
 </head>
@@ -214,46 +404,92 @@
 
         <div class="allCategories">
 
+            <p>Fille the form given below which collect some details about movie to help us to mantain database</p>
             <div class="detailForm">
                 
-
+                
                 <form action="/upload/movie/detail" method="POST">
 
-                    <input type="text" name="title" id="title" placeholder="Enter movie name(Title)">
-                    <input type="text" name="director" id="director" placeholder="Enter director name">
-                    <textarea name="description" id="description" placeholder="Write description"></textarea>
-                    <textarea name="cast" id="cast"></textarea>
+                    <div class="contsiner1 contsiner">
 
-                    <label for="releaseDate">Enter release date:</label>
-                    <input type="date" name="releaseDate" id="releaseDate">
+                        <input type="text" name="title" id="title" placeholder="Enter movie name(Title)">
+                        <input type="text" name="director" id="director" placeholder="Enter director name">
+                        <input type="url" name="trailer" id="trailer" placeholder="Enter trailer URL">
+                    </div>
 
-                    <input type="number" name="duration" id="hour" placeholder="hours">
-                    <input type="number" name="duration" id="minutes" placeholder="minutes">
-                    <input type="number" name="duration" id="seconds" placeholder="seconds">
+                    <div class="contsiner2 contsiner">
 
-                    <select name="releasedInCountry" id="releasedInCountry">\
-                        <option value="India">India</option>
-                    </select>
+                        <textarea name="description" id="description" placeholder="Write discription"></textarea>
+                        <textarea title="cast" name="cast" id="cast" placeholder="Enter movie cast names seperated by ',' "></textarea>
+                    </div>
 
-                    <input type="checkbox" name="audioTrack" id="audiohindi" value="hindi">
-                    <label for="audiohindi">hindi</label>
-                    <label for="audioenglish">english</label>
-                    <input type="checkbox" name="audioTrack" id="audioenglish" value="english">
-                    <label for="audiogujarati">gujarati</label>
-                    <input type="checkbox" name="audioTrack" id="audiogujarati" value="gujarati">
+                    <div class="contsiner3 contsiner">
 
-                    <label for="subtitlehindi">hindi</label>
-                    <input type="checkbox" name="subtitleTrack" id="subtitlehindi" value="hindi">
-                    <label for="subtitleenglish">english</label>
-                    <input type="checkbox" name="subtitleTrack" id="subtitleenglish" value="english">
-                    <label for="subtitlegujarati">gujarati</label>
-                    <input type="checkbox" name="subtitleTrack" id="subtitlegujarati" value="gujarati">
+                        <label for="releaseDate">Enter release date:</label>
+                        <input type="date" name="releaseDate" id="releaseDate">
+                    </div>
 
-                    <select name="resolutions" id="resolutions">
-                        <option value="1080p">1080p</option>
-                    </select>
+                    <div class="contsiner4 contsiner">
 
-                    <input type="url" name="trailer" id="trailer" placeholder="Enter trailer URL">
+                        <label for="duration">Enter duration :</label>
+                        <input type="number" name="hour" id="hour" placeholder="hours">
+                        <input type="number" name="minutes" id="minutes" placeholder="minutes">
+                        <input type="number" name="seconds" id="seconds" placeholder="seconds">
+                    </div>
+
+                    <div class="contsiner5 contsiner">
+
+                        <div>
+
+                            <label for="releasedInCountry">Select couentry where it was released :</label>
+                            <select title="releasedInCountry" name="releasedInCountry" id="releasedInCountry">
+                                <% countries.forEach(element => { %>
+                                 
+                                    <option value="<%= element %>"><%= element %></option>
+                                <% }) %>
+                            </select>
+                        </div>
+
+                        <div>
+
+                            <label for="resolutions">Select resolution :</label>
+                            <select title="resolutions" name="resolutions" id="resolutions">
+                                <% resolutions.forEach(element => { %>
+                                    
+                                    <option value="<%= element %>"><%= element %></option>
+                                <% }) %>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="contsiner6 contsiner">
+
+                        <div class="subtitle">
+    
+                            <p>Select available subtitle languages in this file :</p>
+                            <% subtitleTrack.forEach(element => { %>
+                             
+                                <input type="checkbox" name="subtitleTrack" id="subtitle<%= element %>" value="<%= element %>">
+                                <label for="subtitle<%= element %>"><%= element %></label><br>
+                            <% }) %>
+                        </div>
+
+                        <div class="audio">
+    
+                            <P>Select available audio-track languages in this file :</P>
+                            <% audioTracks.forEach(element => { %>
+                                <input type="checkbox" name="audioTrack" id="audio<%= element %>" value="<%= element %>">
+                                <label for="audio<%= element %>"><%= element %></label><br>
+
+                            <% }) %>
+                        </div>
+                        
+                    </div>
+
+                    <div class="contsiner7 contsiner">
+
+                        <button type="submit">Submit details</button>
+                    </div>
 
                 </form>
 
