@@ -394,7 +394,7 @@ router.post("/", varifyToken, async (req, res) => {
   }
 });
 
-// Upload movie
+// Upload movie details
 router.post("/movie/detail", varifyToken, async (req, res) => {
   console.log("New request at movie upload....");
   const activeUser = req.tokenUser;
@@ -422,7 +422,7 @@ router.post("/movie/detail", varifyToken, async (req, res) => {
             trailer: body.trailer,
             // categori: body.searchCatagory,
             // poster:
-            trailer: body.trailer,
+            // trailer: body.trailer,
             // databasepath
             uploadedBy: activeUser.email,
         };
@@ -476,17 +476,70 @@ router.post("/movie/detail", varifyToken, async (req, res) => {
 
 
 });
-router.post("/movie/files", varifyToken, async (req, res) => {
-    console.log("New request at movie file upload....");
 
-    if (req.body) {
-        console.log(req.body);
 
-        if
-        
-    }
+
+
+
+
+
+
+const fs = require('fs');
+const multer = require('multer');
+const path = require("path");
+const filePath = path.join('./uploads')
+
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb)=>{
+    cb(null,filePath)
+  },
+  filename: (req, file, cb)=>{
+    cb(null,Date.now()+path.extname(file.originalname))
+  }
+})
+
+const upload = multer({storage: storage})
+
+router.post("/movie/files", varifyToken,
+upload.fields([{name: 'poster', maxCount:1},{name: 'moviefile', maxCount:1}]),
+async(req, res)=>{
+  
+  console.log("==========================================================================");
+
+  console.log("UPLOADED BODY :::",req.body);
+  if(req.files) {
+    console.log("File recived");
+    console.log("UPLOADED FILES :::",req.files);
+    const fileSize = req.files.moviefile[0].size
+    console.log("UPLOADED FILES SIZE :::",fileSize);
+
     
-});
+    console.log("==========================================================================");
+    // Get movie details from cookie moviedetails
+    const movieDetails = req.cookies.moviedetails;
+    
+    // Adding extra details
+    movieDetails.size = fileSize
+    movieDetails.poster = req.files.poster[0]. path
+    movieDetails.databasepath = req.files.moviefile[0]. path
+    movieDetails.originalFileData = req.files.moviefile[0]
+    
+    console.log("Movie Details :::",movieDetails);
+    // Save movie details to database
+    const { MOVIE } = require('../models/movies');
+    const uploadMovie = await MOVIE.create(movieDetails)
+    console.log("Movie uploaded to database");
+
+    return res.status(200).clearCookie("moviedetails").json({message: "Movie uploaded successfully"})
+
+  } else {
+    console.log("File not recived");
+    return res.send("Please send file..")
+  }
+
+
+})
 
 module.exports = {
   uploadRouter: router,

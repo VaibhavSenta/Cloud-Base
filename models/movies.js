@@ -52,6 +52,11 @@ const movieSchema = new mongoose.Schema({
         default: 'Detail not available'
         
     },
+    originalFileData: {
+        type: Object,
+        required: false,
+        default:{}
+    },
     releasedInCountry: {
         type: String,
         required: false,

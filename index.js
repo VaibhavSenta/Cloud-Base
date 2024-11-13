@@ -8,8 +8,8 @@ const bodyParser = require('body-parser');
 
 
 
-const port = process.env.PORT || 8080;
-
+const port =  2240;
+// process.env.PORT ||
 
 const { varifyToken } = require('./services/authentication');
 
@@ -26,12 +26,11 @@ app.use(cookieParser())
 
 // app.use(express.urlencoded({extended: false}))
 app.use(bodyParser.urlencoded({extended: false}))
-// app.use(bodyParser.json())
-// app.use(bodyParser)
 
 app.set('view engine', "ejs") // Set view engine
 // Serve files ststicaly
 app.use('/public',express.static("public"))
+app.use('/uploads', express.static("uploads"))
 
 
 
