@@ -17,7 +17,7 @@ async function userSignup(req, res) {
     const agent = useragent.parse(userAgentString)
 
     console.log("POST request to sign up");
-    const {userName, email, password, firstName, lastName, dob} = req.body;
+    const {userName, email, password, firstName, lastName, dob, countryCode, phonenumber} = req.body;
 
     // New User
     const newUser = {
@@ -27,6 +27,8 @@ async function userSignup(req, res) {
         firstName: firstName,
         lastName: lastName,
         dob: dob,
+        countryCode: countryCode,
+        phonenumber: phonenumber,
         
         signUpDeviceDetails: {
             hostName: os.hostname(),
@@ -66,6 +68,10 @@ async function userSignup(req, res) {
     const checkUsername = await USER.find({userName: userName}) // Check user will be array of users with given username
     console.log("Check username : ",checkUsername);
 
+    // Check Username
+    const checkPhonenumber = await USER.find({phonenumber: phonenumber}) // Check user will be array of users with given phone number
+    console.log("Check username : ",checkPhonenumber);
+
     // Check unique User(Email)
     if (checkUser.length != 0) {
         console.log("User found in database");
@@ -84,15 +90,36 @@ async function userSignup(req, res) {
         if (checkUsername.length != 0) {
             if (userName === checkUsername[0].userName) {
                 console.log("USERNAME not available, try different");
-                res.send("Username not available, try differen")
-                return res.redirect('/signup')
+                return res.send("Username not available, try differen")
+                
             }
         } else {
             console.log("USERNAME is available, You can create account ",userName);
 
-            // Create USER
-            const user = await USER.create(newUser);
-            return res.redirect('/login')
+            // Ckeck Unique Phone number
+            if (checkPhonenumber.length != 0) {
+
+                console.log("Phone number arr:", checkPhonenumber);
+                
+                console.log("Phone number alredy registered, try different");
+                return res.send("Phone number alredy registered, try different")
+            } else {
+                console.log("Phone number arr:", checkPhonenumber);
+                console.log("Phone number is available to use, You can create account ",phonenumber);
+                
+                // Create USER
+                try {
+                    const user = await USER.create(newUser);
+                    return res.redirect('/login')
+                    
+                } catch (err) {
+                    if (err) {
+                        console.log(err.code);
+                        console.log(err);
+                        return res.send(err);
+                    }
+                }
+            }
         }
     }
 

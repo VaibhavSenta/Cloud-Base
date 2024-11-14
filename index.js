@@ -41,9 +41,9 @@ app.use('/uploads', express.static("uploads"))
 const { uploadRouter } = require('./routes/upload');
 app.use('/upload', uploadRouter)
 
-// User Router
-const { userRouter } = require('./routes/user');
-app.use('/', userRouter)
+// MOVIE route
+const { movieRouter } = require('./routes/movies');
+app.use('/movies', movieRouter)
 
 
 // Profile Route
@@ -62,6 +62,9 @@ const { userLogin } = require('./controllers/user');
 app.post('/login', userLogin)
 
 
+// User Router
+const { userRouter } = require('./routes/user');
+app.use('/', userRouter)
 
 
 
