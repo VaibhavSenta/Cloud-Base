@@ -73,18 +73,37 @@ router.post('/resetpassword/changepassword', changePassword)
 
 
 // HOME Page
-router.get('/',varifyToken, (req, res)=>{
+router.get('/',varifyToken, async(req, res)=>{
     console.log("New requiest at '/' ");
 
     // console.log("Token User : ",req.body.tokenUser);
     const { USER } = require('../models/user');
+
+
+    const { MOVIE } = require('../models/movies');
+    const movieList = await MOVIE.find()
+    console.log("================================ RENDERING HOME PAGE ======================================");
+    console.log(movieList);
+    let indexmovieList = []
+    if (movieList.length >= 4) {
+        
+        indexmovieList.push(movieList[0])
+        indexmovieList.push(movieList[1])
+        indexmovieList.push(movieList[2])
+        indexmovieList.push(movieList[3])
+        
+    }
+
 
     const user = req.tokenUser
     const profileUserName = user.userName
 
     console.log(profileUserName);
 
-    return res.render("index",{userName: profileUserName})
+    return res.render("index",{
+        userName: profileUserName,
+        indexmovieList: movieList
+    })
 })
 
 

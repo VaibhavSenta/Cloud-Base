@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 
 
 
-const port =  2240;
+const port =  8080;
 // process.env.PORT ||
 
 const { varifyToken } = require('./services/authentication');

@@ -404,13 +404,19 @@ router.post("/movie/detail", varifyToken, async (req, res) => {
   if (!req.body) {
     return res.status(500).json({ msg: "No data collected from user, there are some problem reciving form data" });
   } else {
+    
         const body = req.body;
+        const releaseDate = new Date(body.releaseDate).toDateString()
+        console.log("=======",releaseDate);
+
         console.log("REQUEST BODY :", body);
         const movieTitle = body.title.toUpperCase()
         const movie = {
             title: movieTitle,
+            titleName: body.title,
             description: body.description,
-            releaseDate: body.releaseDate,
+            releaseDate: releaseDate,
+            details: releaseDate.split(" ")[3] + " " + "Movie" + " " + body.resolutions ,
             cast: body.cast,
             director: body.director,
             duration: body.hour + ":" + body.minutes + ":" + body.seconds,
@@ -425,13 +431,16 @@ router.post("/movie/detail", varifyToken, async (req, res) => {
             // trailer: body.trailer,
             // databasepath
             uploadedBy: activeUser.email,
-        };
+          };
 
         // Making ucb-id
-        const crypto = require('crypto');
-        movie.ucbid = crypto.randomBytes(64).toString();
+        const shortUniqueId = require('short-unique-id');
+        const uuid = new shortUniqueId({length:20})
+        
+        movie.ucbid = uuid.rnd()
+        
         console.log("Server side movie OBJ :", movie);
-    
+            
         // Check if movie alredy avalable in database
         const {MOVIE} = require('../models/movies');
         const movieInDb = await MOVIE.find({ title: movieTitle });

@@ -8,6 +8,16 @@ const movieSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    titleName: {
+        type: String,
+        required: false,
+        unique: false
+    },
+    details: {
+        type: String,
+        required: false
+
+    },
     ucbid: {
         type: String,
         required: false,
