@@ -58,9 +58,10 @@ const useSchema = new mongoose.Schema({
     },
 
     phonenumber: {
-        type: Number,
+        type: String,
         required: false,
-        unique: true
+        unique: true,
+        default: 'not added'
     },
 
     accountStatus: {
