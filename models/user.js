@@ -15,6 +15,13 @@ const useSchema = new mongoose.Schema({
         unique: true
     },
 
+    recoveryEmail: {
+        type: String,
+        required: false,
+        default: 'not added',
+        unique: false
+    },
+
     password: {
         type: String,
         required: true

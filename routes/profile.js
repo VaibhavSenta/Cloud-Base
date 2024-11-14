@@ -127,8 +127,9 @@ router.get('/manage',varifyToken, async(req, res)=>{
             lastName: user.lastName,
             dob: new Date(user.dob),
             profilePic: user.profilePic,
-            email: user.email
-
+            email: user.email,
+            recoveryEmail: user.recoveryEmail,
+            
         }
 
         console.log("User info: ", userInfo);
