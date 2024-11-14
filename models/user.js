@@ -15,6 +15,13 @@ const useSchema = new mongoose.Schema({
         unique: true
     },
 
+    recoveryEmail: {
+        type: String,
+        required: false,
+        default: 'not added',
+        unique: false
+    },
+
     password: {
         type: String,
         required: true
@@ -51,9 +58,10 @@ const useSchema = new mongoose.Schema({
     },
 
     phonenumber: {
-        type: Number,
+        type: String,
         required: false,
-        unique: true
+        unique: true,
+        default: 'not added'
     },
 
     accountStatus: {
