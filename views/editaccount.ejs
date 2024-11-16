@@ -399,8 +399,8 @@
 
                         <label>
                             <h4>Name</h4>
-                            <input type="text" name="firstName" id="firstName" placeholder="<%= locals.firstName %>" />
-                            <input type="text" name="lastName" id="lastName" placeholder="<%= locals.lastName %>" />
+                            <input type="text" name="firstName" id="firstName" placeholder="<%= locals.firstName %>" value="<%= locals.firstName %>" />
+                            <input type="text" name="lastName" id="lastName" placeholder="<%= locals.lastName %>" value="<%= locals.lastName %>" />
                         </label><br />
 
                         <label>
@@ -408,7 +408,7 @@
                             <p>
                                 <%= locals.dob %>
                             </p>
-                            <input type="date" name="dob" id="dob" />
+                            <input type="date" name="dob" id="dob"  value="<%= locals.dob %>"/>
                         </label><br />
 
                         <label>
@@ -417,7 +417,8 @@
                                 <%= locals.gender %>
                             </p>
 
-                            <select name="gender" id="gender">
+                            <select name="gender" id="gender" onloadedmetadata="Function(document.getElementsByName('gender').values = <%= locals.gender %>)">
+                                <option value="<%= locals.gender %>"><%= locals.gender %></option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
                                 <option value="Other">Other</option>
@@ -434,19 +435,19 @@
 
                         <label>
                             <h4>Email</h4>
-                            <input type="email" name="email" id="email" placeholder="<%= locals.email %>" />
+                            <input type="email" name="email" id="email" placeholder="<%= locals.email %>" value="<%= locals.email %>"/>
                         </label><br />
 
                         <label>
                             <h4>Recovery Email</h4>
-                            <input type="email" name="recoveryEmail" id="recoveryEmail"
-                                placeholder="<%= locals.recoveryEmail %>" />
+                            <input type="text" name="recoveryEmail" id="recoveryEmail"
+                                placeholder="<%= locals.recoveryEmail %>" value="<%= locals.recoveryEmail %>"/>
                         </label><br />
 
                         <label>
                             <h4>Phone</h4>
                             <input type="number" name="phonenumber" id="phonenumber"
-                                placeholder="<%= locals.phonenumber %>" />
+                                placeholder="<%= locals.phonenumber %>" value="<%= locals.phonenumber %>"/>
                         </label>
                     </section>
 

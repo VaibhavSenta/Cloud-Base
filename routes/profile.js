@@ -239,36 +239,31 @@ router.post('/manage/edit',varifyToken , upload.single("profilePic"), async(req,
 
     const { firstName, lastName, dob, gender, email, recoveryEmail, phonenumber} = req.body
 
-    const formdata = [ firstName, lastName, dob, gender, email, recoveryEmail, phonenumber ]
-
-
+    let formdata = [ firstName, lastName, dob, gender, email, recoveryEmail, phonenumber ]
+    
+    
     console.log("Form data: ", formdata);
-
-    formdata.forEach( async fild => {
-        
-        if (fild === undefined || fild === '' || fild === "") {
-            console.log("No data in fild", fild);
-            formdata.reduce()
-            
+    
+    let arr1 = []
+    formdata.forEach(element => {
+        console.log(element);
+        if (element != "" || element != undefined && element != '' && element != null) {
+            arr1.push(element)
         } else {
-            console.log("Updating fild", fild);
-            // update user in database
-            const { USER } = require('../models/user');
-            const updateUser = await USER.findOneAndUpdate({email: user.email}, {
-                
-            });
-
-            console.log("updated user", updateUser);
+            console.log("Invalid element", element);
             
-
         }
+        
     });
+
+    console.log("Filtered form data: ", arr1);
+    console.log("Form data length: ", arr1.length);
 
 
     // update user in database
-    // const updatedUser = await User.findByIdAndUpdate(user._id, formdata, { new: true })
-    // console.log("Updated user: ", updatedUser);
-
+    const { USER } = require('../models/user');
+    // const updatedUser = await USER.findOneAndUpdate({email: user.email}, {})
+ 
     // Redirect to manage page
     return console.log("Redirect to manage page ==================");
      
