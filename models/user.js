@@ -51,6 +51,13 @@ const useSchema = new mongoose.Schema({
         required: true
 
     },
+
+    gender: {
+        type: String,
+        required: false,
+        enum: ['Male', 'Female', 'Other', 'Not selected'],
+        default: 'Not selected'
+    },
     
     countryCode: {
         type: String,

@@ -7,6 +7,16 @@ const router = express.Router({mergeParams: true});
 
 const { varifyToken } = require('../services/authentication');
 
+
+
+
+router.use('/public',express.static("public"))
+router.use('/userdocuments',express.static("userdocuments"))
+
+
+
+
+
 // Preview Profile
 router.get('/', varifyToken, (req, res)=>{
 
@@ -96,6 +106,7 @@ const { deleteUser } = require('../controllers/user');
 const path = require('path');
 const { readFileSync } = require('fs');
 const { send } = require('process');
+const { log } = require('console');
 router.post('/delete', deleteUser)
 
 
@@ -129,7 +140,10 @@ router.get('/manage',varifyToken, async(req, res)=>{
             profilePic: user.profilePic,
             email: user.email,
             recoveryEmail: user.recoveryEmail,
-            
+            phonenumber: user.phonenumber,
+            addressdob: user.dob,
+            gender: user.gender,
+            accountStatus: user.accountStatus
         }
 
         console.log("User info: ", userInfo);
@@ -150,7 +164,117 @@ router.get('/manage',varifyToken, async(req, res)=>{
 
 
 
+router.get('/manage/edit',varifyToken, async(req, res)=>{
 
+    console.log("New request to edit account..");
+
+    const userName = req.params.profile
+
+    const user = req.tokenUser
+    
+    
+    if (!req.tokenUser) {
+        console.log("There is no loggedin user..");
+        
+    }
+    if (req.tokenUser) {
+        console.log(user);
+
+        const userInfo = {
+            userName: user.userName,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            dob: new Date(user.dob),
+            profilePic: user.profilePic,
+            email: user.email,
+            recoveryEmail: user.recoveryEmail,
+            phonenumber: user.phonenumber,
+            addressdob: user.dob,
+            gender: user.gender,
+            accountStatus: user.accountStatus
+        }
+
+        console.log("User info: ", userInfo);
+
+        // Reading HTML file\
+        const html = readFileSync(path.join(__dirname, '../views/manageaccount.ejs'), 'utf8');
+        // Rendering HTML
+        // res.send(html.replace('{{userInfo}}', JSON.stringify(userInfo)));
+        // console.log(html);
+        
+
+        return res.render('editaccount', userInfo);
+
+    }
+    
+
+})
+
+
+
+
+
+
+
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './userdocuments')
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '_' + file.originalname)
+    }
+})
+
+
+const upload = multer({ storage: storage });
+
+router.post('/manage/edit',varifyToken , upload.single("profilePic"), async(req, res)=>{
+    console.log("New request to edit account..");
+
+    const userName = req.params.profile
+
+    const user = req.tokenUser
+
+    const { firstName, lastName, dob, gender, email, recoveryEmail, phonenumber} = req.body
+
+    const formdata = [ firstName, lastName, dob, gender, email, recoveryEmail, phonenumber ]
+
+
+    console.log("Form data: ", formdata);
+
+    formdata.forEach( async fild => {
+        
+        if (fild === undefined || fild === '' || fild === "") {
+            console.log("No data in fild", fild);
+            formdata.reduce()
+            
+        } else {
+            console.log("Updating fild", fild);
+            // update user in database
+            const { USER } = require('../models/user');
+            const updateUser = await USER.findOneAndUpdate({email: user.email}, {
+                
+            });
+
+            console.log("updated user", updateUser);
+            
+
+        }
+    });
+
+
+    // update user in database
+    // const updatedUser = await User.findByIdAndUpdate(user._id, formdata, { new: true })
+    // console.log("Updated user: ", updatedUser);
+
+    // Redirect to manage page
+    return console.log("Redirect to manage page ==================");
+     
+    // res.redirect('/profile/manage/')
+
+})
 
 module.exports = {
     profileRouter: router

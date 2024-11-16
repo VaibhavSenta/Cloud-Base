@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 
 
 
-const port =  8085;
+const port =  8083;
 // process.env.PORT ||
 
 const { varifyToken } = require('./services/authentication');
@@ -28,13 +28,22 @@ app.use(cookieParser())
 app.use(bodyParser.urlencoded({extended: false}))
 
 app.set('view engine', "ejs") // Set view engine
+
+
 // Serve files ststicaly
 app.use('/public',express.static("public"))
 app.use('/uploads', express.static("uploads"))
+app.use('/userdocuments',express.static("userdocuments"))
 
 
 
 
+
+
+
+// User Router
+const { userRouter } = require('./routes/user');
+app.use('/', userRouter)
 
 
 // UPLOAD Route
@@ -60,11 +69,6 @@ app.post('/signup', userSignup)
 // Post request for login
 const { userLogin } = require('./controllers/user');
 app.post('/login', userLogin)
-
-
-// User Router
-const { userRouter } = require('./routes/user');
-app.use('/', userRouter)
 
 
 

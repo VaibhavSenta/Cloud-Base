@@ -19,7 +19,9 @@
             <!-- Profile Section -->
             <section class="profileSection">
                 <div class="editbar">
-                    <button>Edit</button>
+                    <button href="">Edit
+                        <a href="/:profile/manage/edit">EDIT</a>
+                    </button/manage/editn>
                 </div>
 
                 <div class="profilePic">
@@ -44,12 +46,12 @@
     
                     <button>
                         <h4>Birth Date</h4>
-                        <p>09/08/2004</p>
+                        <p><%= locals.dob %></p>
                     </button><br>
     
                     <button>
                         <h4>Gender</h4>
-                        <p>Male</p>
+                        <p><%= locals.gender %></p>
                     </button>
     
     
@@ -71,7 +73,7 @@
     
                     <button>
                         <h4>Phone</h4>
-                        <p>+91 1234567890</p>
+                        <p><%= locals.phonenumber %></p>
                     </button>
     
     
@@ -91,7 +93,7 @@
                         </div>
                         <br>
                         <h4>CloudeBase</h4>
-                        <p>vaibhav999</p>
+                        <p><%= locals.userName %></p>
                     </button><br>
     
                     
@@ -113,7 +115,7 @@
                         </div>
                         <br>
                         <h4>CloudeBase Account</h4>
-                        <p>vaibhav999</p>
+                        <p><%= locals.userName %></p>
                     </button><br>
                     
                     

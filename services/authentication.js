@@ -6,7 +6,7 @@ async function varifyToken(req, res, next) {
     console.log("reqToken :",reqToken);
     if (!reqToken) {
         console.log("Can't get token from request");
-        res.redirect('/login')
+        return res.redirect('/login')
 
         // return next()
     } else {
