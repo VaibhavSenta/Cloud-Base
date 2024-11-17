@@ -102,7 +102,7 @@ router.get('/',varifyToken, async(req, res)=>{
 
     return res.render("index",{
         userName: profileUserName,
-        indexmovieList: movieList
+        indexmovieList: indexmovieList
     })
 })
 
