@@ -527,11 +527,13 @@ async(req, res)=>{
     console.log("==========================================================================");
     // Get movie details from cookie moviedetails
     const movieDetails = req.cookies.moviedetails;
+    const filePathResolver = path.resolve(req.files.moviefile[0]. path)
+    const filePathRelative = path.relative(__dirname, filePathResolver)
     
     // Adding extra details
     movieDetails.size = fileSize
     movieDetails.poster = req.files.poster[0]. path
-    movieDetails.databasepath = req.files.moviefile[0]. path
+    movieDetails.databasepath = filePathRelative
     movieDetails.originalFileData = req.files.moviefile[0]
     
     console.log("Movie Details :::",movieDetails);
@@ -540,7 +542,7 @@ async(req, res)=>{
     const uploadMovie = await MOVIE.create(movieDetails)
     console.log("Movie uploaded to database");
 
-    return res.status(200).clearCookie("moviedetails").json({message: "Movie uploaded successfully"})
+    return res.status(200).clearCookie("moviedetails").send("Movie uploaded successfully .....")
 
   } else {
     console.log("File not recived");

@@ -14,12 +14,20 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background-color: rgba(60, 60, 60, 0.389);
+            background-color: var(--border-dark);
             border-radius: 10px;
         }
 
         ::-webkit-scrollbar-button {
             background-color: transparent;
+        }
+
+        :root {
+            --border-dark: rgba(255, 255, 255, 0.303);
+            --border-light: rgba(0, 0, 0, 0.5);
+            --color-light: rgb(228, 228, 228);
+            --color-dark: rgba(0, 0, 0, 0.8);
+
         }
 
         * {
@@ -32,7 +40,7 @@
                 sans-serif;
             text-decoration: none;
 
-            color: rgba(18, 18, 18, 0.9);
+            color: rgba(214, 214, 214, 0.9);
         }
 
         body{
@@ -45,14 +53,18 @@
             justify-content: center;
             flex-direction: column;
 
-            background-color: rgba(0, 0, 0, 0);
+            /* background-color: rgba(0, 0, 0, 0); */
+            background: url(../public/backgrounds/background3.jpg);
+            filter: brightness(80%) contrast(140%);
+            background-position: center;
+            background-size: cover;
 
             padding: 0rem;
 
             width: 100%;
             height: 100%;
 
-            position: fixed;
+            position: absolute;
         }
 
         main {
@@ -61,9 +73,11 @@
             align-items: center;
             justify-content: space-between;
 
-            background: url(../public/backgrounds/background.jpg);
+            /* background: url(../public/backgrounds/backgropund2.jpg); */
+            background-color: transparent;
+            backdrop-filter: blur(90px);
             background-position: center;
-            background-size: cover;
+            background-size: fill;
 
             width: 100%;
             height: 100%;
@@ -90,7 +104,7 @@
 
             margin-top: 3rem;
 
-            background-color: rgba(204, 204, 204, 0.179);
+            background-color: rgba(255, 255, 255, 0.148);
             backdrop-filter: blur(30px);
 
             box-shadow: 80px 80px 220px -70px rgb(0, 0, 0),
@@ -128,13 +142,13 @@
             flex-direction: column;
 
             width: 100%;
-            max-width: 60rem;
+            max-width: 50rem;
             min-width: 10rem;
 
             height: max-content;
             
 
-            border: 1px solid rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-dark);
 
             border-radius: 2rem;
             padding: 1rem;
@@ -162,14 +176,16 @@
 
             width: max-content;
 
-            border: 2px solid rgba(0, 0, 0, 0.383);
+            border: 2px solid var(--border-dark);
 
             animation-name: zoom;
-            animation-duration: 1.5s;
+            animation-duration: 1.9s;
             animation-delay: 1;
             animation-iteration-count: infinite;
+            
         }
 
+        
         label[for="profilePic"] {
             cursor: pointer;
 
@@ -191,9 +207,9 @@
                 font-weight: 800;
                 font-size: 0.9rem;
 
-                background-color: rgb(230, 195, 82);
+                background-color: rgb(0, 54, 142);
                 border-radius: 50%;
-                border: 3px solid rgb(3, 86, 219);
+                border: 3px solid rgb(215, 215, 215);
             }
         }
 
@@ -201,17 +217,37 @@
             display: none;
         }
 
+
+        label[for="profilePic"] {
+            display: flex;
+            position: relative;
+            align-items: center;
+            justify-content: center;
+        }
+        label[for="profilePic"] img {
+            border-radius: inherit;
+
+            aspect-ratio: 1/1;
+
+            width: 150px;
+            object-fit: fill;
+            
+        }
         @keyframes zoom {
             0% {
                 transform: scale(1);
+                transform: rotate(5deg);
             }
 
             50% {
                 transform: scale(1.03);
+                box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.381);
+                
             }
 
             100% {
                 transform: scale(1);
+                transform: rotate(5deg);
             }
         }
 
@@ -236,7 +272,7 @@
             padding: 10px;
 
             transition: all ease 0.3s;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.278);
+            border-bottom: 1px solid var(--border-dark);
 
             /* &:hover {
                 background: linear-gradient(to left,
@@ -361,7 +397,7 @@
         <main>
             <header>
                 <h1>Manage Account</h1>
-                <p>Welcome to your account, <%= locals.userName %></p>
+                <p>Welcome to your account, <b> <%= locals.userName %> </b> </p>
                 <h3>Edit your details</h3>
             </header>
 
@@ -374,10 +410,14 @@
                     </div>
 
                     <label for="profilePic" class="profilePic">
-                        <img src="<%= locals.profilePic %>" width="150px" alt="" />
+                        <img src="<%= locals.profilePic %>"  alt="profile pic">
+                        
+
 
                         <!-- <img src="../public//defaultLogos/DefaultProfilePic-90.png" width="150px" alt=""> -->
                     </label>
+
+                    
                     <h2>
                         <%= locals.firstName %>
                             <%= locals.lastName %>
@@ -389,6 +429,7 @@
                     <input type="file" name="profilePic" id="profilePic" />
                 </section>
 
+                <p>You will be redirected to LOGIN page or profile management after this action....</p>
                 <div class="otherSections">
                     <!-- Personal Info -->
                     <section>
@@ -399,8 +440,8 @@
 
                         <label>
                             <h4>Name</h4>
-                            <input type="text" name="firstName" id="firstName" placeholder="<%= locals.firstName %>" value="<%= locals.firstName %>" />
-                            <input type="text" name="lastName" id="lastName" placeholder="<%= locals.lastName %>" value="<%= locals.lastName %>" />
+                            <input type="text" name="firstName" id="firstName" placeholder="<%= locals.firstName %>"  />
+                            <input type="text" name="lastName" id="lastName" placeholder="<%= locals.lastName %>" />
                         </label><br />
 
                         <label>
@@ -408,7 +449,9 @@
                             <p>
                                 <%= locals.dob %>
                             </p>
-                            <input type="date" name="dob" id="dob"  value="<%= locals.dob %>"/>
+                            <input type="date" name="dob" id="dob" onloadeddata="Function(
+                                document.getElementsByName('dob').values = '<%= locals.dob %>'
+                            )"  />
                         </label><br />
 
                         <label>
@@ -435,7 +478,9 @@
 
                         <label>
                             <h4>Email</h4>
-                            <input type="email" name="email" id="email" placeholder="<%= locals.email %>" value="<%= locals.email %>"/>
+                            <input type="email" name="email" id="email" placeholder="<%= locals.email %>" 
+                            
+                            />
                         </label><br />
 
                         <label>
@@ -447,7 +492,7 @@
                         <label>
                             <h4>Phone</h4>
                             <input type="number" name="phonenumber" id="phonenumber"
-                                placeholder="<%= locals.phonenumber %>" value="<%= locals.phonenumber %>"/>
+                                placeholder="<%= locals.phonenumber %>"/>
                         </label>
                     </section>
 
@@ -499,7 +544,7 @@
 
                         <label>
                             <h4>vaibhav999</h4>
-                            <p>hidden</p>
+                            <p><a href="/resetpassword">***********</a></p>
                         </label><br />
                     </section>
 

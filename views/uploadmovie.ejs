@@ -412,7 +412,7 @@
 
                     <div class="contsiner1 contsiner">
 
-                        <input type="text" name="title" id="title" placeholder="Enter movie name(Title)">
+                        <input type="text" name="title" id="title" placeholder="Enter movie name(Title)" required>
                         <input type="text" name="director" id="director" placeholder="Enter director name">
                         <input type="url" name="trailer" id="trailer" placeholder="Enter trailer URL">
                     </div>
@@ -432,9 +432,9 @@
                     <div class="contsiner4 contsiner">
 
                         <label for="duration">Enter duration :</label>
-                        <input type="number" name="hour" id="hour" placeholder="hours">
-                        <input type="number" name="minutes" id="minutes" placeholder="minutes">
-                        <input type="number" name="seconds" id="seconds" placeholder="seconds">
+                        <input type="number" name="hour" id="hour" placeholder="hours" min="0">
+                        <input type="number" name="minutes" id="minutes" placeholder="minutes" min="0">
+                        <input type="number" name="seconds" id="seconds" placeholder="seconds" min="0">
                     </div>
 
                     <div class="contsiner5 contsiner">

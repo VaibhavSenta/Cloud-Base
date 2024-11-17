@@ -15,6 +15,16 @@
 
 
 
+:root {
+    --border-dark: rgba(255, 255, 255, 0.303);
+    --border-light: rgba(0, 0, 0, 0.5);
+    --color-light: rgb(228, 228, 228);
+    --color-dark: rgba(0, 0, 0, 0.8);
+
+}
+
+
+
 
 
 
@@ -28,11 +38,13 @@
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     text-decoration: none;
 
-    color: rgba(18, 18, 18, 0.9);
+    color: rgba(240, 240, 240, 0.9);
 }
 
 
-
+body{
+    background-color: black;
+}
 
 
 .background{
@@ -40,8 +52,14 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    
-    background-color: black;
+
+
+    background: url(../backgrounds/background6.jpg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    border-radius: 2rem;
 
     padding: 0rem;
     
@@ -60,15 +78,13 @@ main{
     align-items: center;
     justify-content: flex-start;
 
-    background: url(../backgrounds/background.jpg);
-    background-position: center;
-    background-size: cover;
-
+    backdrop-filter: blur(100px) contrast(150%) brightness(70%);
     
     width: 100%;
     height: 100%;
 
-    border-radius: 2rem;
+    
+    border-radius: inherit;
 
     padding: 3rem;
     
@@ -92,11 +108,11 @@ main header{
 
     margin-top: 3rem;
 
-    background-color: rgba(255, 255, 255, 0.224);
-    backdrop-filter: blur(50px);
+    background-color: rgba(127, 127, 127, 0.17);
+    
 
     box-shadow: 80px 80px 220px -70px rgb(0, 0, 0),
-    -80px -80px 80px -70px rgba(104, 104, 104, 0.611);
+    -80px -80px 80px -70px rgba(25, 25, 25, 0.611);
     
     border-radius: 2rem;
 
@@ -136,7 +152,7 @@ section{
 
     height: max-content;
 
-    border: 1px solid rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border-dark);
 
     border-radius: 2rem;
     padding: 1rem;
@@ -164,13 +180,29 @@ section header {
 
     width: max-content;
 
-    border: 2px solid rgba(0, 0, 0, 0.383);
+    border: 2px solid var(--border-dark);
 
     animation-name: zoom;
     animation-duration: 1.5s;
     animation-delay: 1;
     animation-iteration-count: infinite;
 }
+
+
+
+    label[for="profilePic"] {
+        display: flex;
+        position: relative;
+        align-items: center;
+        justify-content: center;
+    }
+    .profilePic img {
+        border-radius: inherit;
+        aspect-ratio: 1/1;
+        width: 150px;
+        object-fit: fill;
+        
+    }
 
 @keyframes zoom {
     0% { 
@@ -244,6 +276,9 @@ section button{
     }
 }
 
+.editbar button a {
+    color: inherit;
+}
 .otherSections{
     display: flex;
     flex-wrap: wrap;

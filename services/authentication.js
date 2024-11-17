@@ -4,12 +4,13 @@ async function varifyToken(req, res, next) {
 
     const reqToken = req.cookies.logintoken
     console.log("reqToken :",reqToken);
-    if (!reqToken) {
+    if (!reqToken || reqToken === undefined) {
         console.log("Can't get token from request");
         return res.redirect('/login')
 
         // return next()
     } else {
+
 
         const jwtpasskey = "vaibhav123"
     

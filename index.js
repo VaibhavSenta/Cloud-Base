@@ -25,16 +25,15 @@ mongoose.connect("mongodb://localhost:27017/cloudebase")
 app.use(cookieParser())
 
 // app.use(express.urlencoded({extended: false}))
-app.use(bodyParser.urlencoded({extended: false}))
-
-app.set('view engine', "ejs") // Set view engine
-
+app.use(express.urlencoded({extended: false}))
 
 // Serve files ststicaly
 app.use('/public',express.static("public"))
 app.use('/uploads', express.static("uploads"))
-app.use('/userdocuments',express.static("userdocuments"))
+app.use('/userdocuments', express.static("userdocuments"))
 
+
+app.set('view engine', "ejs") // Set view engine
 
 
 
@@ -50,9 +49,47 @@ app.use('/', userRouter)
 const { uploadRouter } = require('./routes/upload');
 app.use('/upload', uploadRouter)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 // MOVIE route
 const { movieRouter } = require('./routes/movies');
 app.use('/movies', movieRouter)
+
+// GAME route
+app.get('/games', async (req, res) =>{
+    console.log("New request to game route");
+    return res.send("========================================== This page is unavailable now =============================")
+})
+
+// MUSIC route
+app.get('/music', async (req, res) =>{
+    console.log("New request to music route");
+    return res.send("========================================== This page is unavailable now =============================")
+})
+
+// WALLPAPER route
+app.get('/wallpapers', async (req, res) =>{
+    console.log("New request to wallpapers route");
+    return res.send("========================================== This page is unavailable now =============================")
+})
+
+
+
+
+
+
+
 
 
 // Profile Route

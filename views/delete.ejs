@@ -154,10 +154,10 @@
     <div class="btns">
         <form action="/<%= locals.userName %>/delete" method="post">
         
-            <input type="hidden" name="email" value="<%- locals.email %>">
+            <input type="hidden" name="email" value="<%- locals.email %>" required>
 
             <label for="password">Confirm password </label>
-            <input type="password" name="password">
+            <input type="password" name="password" required>
             
             <button class="logout" type="submit" style="color: brown; font-weight: 600; font-size: large;" >Delete Account</button>
         </form>
