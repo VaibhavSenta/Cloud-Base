@@ -96,6 +96,9 @@ app.get('/wallpapers', async (req, res) =>{
 const { profileRouter } = require('./routes/profile');
 app.use('/:profile', profileRouter)
 
+// Download route
+const { downloadRouter } = require('./routes/download');
+app.use('/download', downloadRouter)
 
 // POST Request
 
@@ -106,8 +109,6 @@ app.post('/signup', userSignup)
 // Post request for login
 const { userLogin } = require('./controllers/user');
 app.post('/login', userLogin)
-
-
 
 
 

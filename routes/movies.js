@@ -6,12 +6,15 @@ const router = express.Router({mergeParams: true});
 // Varify Token
 const { varifyToken } = require('../services/authentication');
 
+
+router.use('/uploads', express.static("uploads"))
+
 // GET routes =========================================================================
 router.get('/', varifyToken, async (req, res) => {
     console.log("New request to movie route");
 
     const { USER } = require('../models/user');
-    const { MOVIE } = require('../models/movies');
+    const { MOVIE, } = require('../models/movies');
 
 
     const user = req.tokenUser
@@ -27,6 +30,24 @@ router.get('/', varifyToken, async (req, res) => {
     })
 
 
+})
+
+router.get('/:ucbid',varifyToken ,async(req, res) => {
+    console.log("New request to movie route");
+    
+    console.log("Requesr perams:", req.params)
+    const ucbid = req.params.ucbid
+
+    const { MOVIE } = require('../models/movies');
+    const movie = await MOVIE.findOne({ucbid: ucbid})
+
+    console.log("UCBID MOVIE :",movie);
+    // render movie page with user name and movie details
+    return res.render("movie",{
+        userName: req.tokenUser.userName,
+        movie: movie
+    })
+    
 })
 
 

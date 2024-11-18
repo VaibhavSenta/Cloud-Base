@@ -353,6 +353,7 @@
             width: inherit;
             aspect-ratio: inherit;
             object-fit: cover;
+            position: relative;
         }
 
         .text{
@@ -380,7 +381,8 @@
             position: absolute;
             bottom: 0;
             width: 100%;
-            height: inherit;
+            height: 100%;
+            z-index: 3;
 
             background-color: transparent;
 
@@ -436,7 +438,7 @@
                             <h4><%= movie.titleName %></h4>
     
                         </div>
-                        <a type="submit" href="/movie/kkdjfkjafjafj"></a>
+                        <a  href="/movies/<%= movie.ucbid %>"></a>
                     </div>
 
                 <% }) %>
