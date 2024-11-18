@@ -102,16 +102,22 @@ router.get('/update', varifyToken, (req, res) => {
 
 
 
-// Delete request to delete account
-const { deleteUser } = require('../controllers/user');
 const path = require('path');
 const { readFileSync } = require('fs');
 const { send } = require('process');
 const { log } = require('console');
-router.post('/delete', deleteUser)
 
 
 
+
+
+
+
+
+
+// Delete USER
+const { deleteUser } = require('../controllers/user');
+router.post('/delete', varifyToken, deleteUser)
 
 
 
