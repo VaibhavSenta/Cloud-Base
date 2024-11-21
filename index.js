@@ -7,8 +7,7 @@ const bodyParser = require('body-parser');
 
 
 
-const port =  8000;
-// process.env.PORT ||
+const port = process.env.PORT || 8080;
 
 
 
