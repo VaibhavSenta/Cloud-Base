@@ -7,15 +7,29 @@ const bodyParser = require('body-parser');
 
 
 
-
-const port =  8080;
+const port =  8000;
 // process.env.PORT ||
+
+
+
+
+
+
+
+
+
+
 
 const { varifyToken } = require('./services/authentication');
 
 mongoose.connect("mongodb://localhost:27017/cloudebase")
 .then(() => console.log('Connected to MongoDB . . . . '))
 .catch(err => console.error('Could not connect to MongoDB . . . . ', err));
+
+
+
+
+
 
 
 
@@ -108,12 +122,8 @@ app.post('/signup', userSignup)
 
 // Post request for login
 const { userLogin } = require('./controllers/user');
+const { hostname } = require('os');
 app.post('/login', userLogin)
-
-
-
-
-
 
 
 
