@@ -96,6 +96,10 @@ const useSchema = new mongoose.Schema({
 
 const loginRequestDetailsSchema = new mongoose.Schema({
 
+    requestEmail: {
+        type: String
+        // required: true
+    },
     hostName: {
         type: String,
         required: false
