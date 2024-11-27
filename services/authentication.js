@@ -69,6 +69,79 @@ async function varifyToken(req, res, next) {
 
 }
 
-module.exports = {
-    varifyToken
+
+
+
+
+
+async function verifyAdmin(req, res, next) {
+    const jwt = require('jsonwebtoken');
+    const { ADMIN } = require('../models/admin');
+
+    const reqToken = req.cookies.admin
+    console.log("req admin token :",reqToken);
+    if (!reqToken || reqToken === undefined) {
+        console.log("Can't get admin token from request");
+        return res.redirect('/admin/login')
+
+        // return next()
+    } else {
+
+
+        const jwtpasskey = "adminvaibhav"
+    
+        try {
+
+
+            const tokenUser = jwt.verify(reqToken, jwtpasskey)
+            console.log("The admin token user : ", tokenUser);
+            
+            if (!tokenUser) {
+                console.log("Admin token invalid");
+                res.send(" Admin token expired or invalid, Try again or letter")
+                return res.redirect('/admin/login')
+            }
+        
+        
+            // Find User in database
+            const user = await ADMIN.findOne({ _id: tokenUser.dbid })
+           if (!user) {
+            console.log("No Admin with this database ID..");
+            res.redirect('/admin/login')
+
+            res.clearCookie('admin')
+           } else {
+
+                req.admin = user
+                console.log("Admin Login token varified \n Authentication complete");
+                return next()
+            }
+
+
+
+        } catch (err) {
+            console.log(err.name);
+            if (err.name === 'TokenExpiredError') {
+                console.log("Admin Login Error ->",err.name);
+                // res.send("Token expired, Login again..")
+                console.log("Admin token is expired, Login again");
+                
+                res.clearCookie('logintoken')
+                return res.redirect('/login')
+            }
+        }
+    }
+    
+    
+
 }
+
+
+
+module.exports = {
+    varifyToken,
+    verifyAdmin
+}
+
+
+
