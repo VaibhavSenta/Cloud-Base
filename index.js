@@ -62,8 +62,15 @@ mongoose.connect(connectionString)
             lastName: 'Chavda',
             adminId: crypto.randomInt(min, max)
         }
+        
+        const admin4 = {
+            firstName: 'Smruti',
+            lastName: 'Gaurr',
+            adminId: crypto.randomInt(min, max)
+        }
+        
     
-        const adminsArr = [ admin1, admin2, admin3 ]
+        const adminsArr = [ admin1, admin2, admin3, admin4 ]
     
         adminsArr.forEach(async admin => {
             
