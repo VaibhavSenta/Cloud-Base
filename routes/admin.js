@@ -151,6 +151,12 @@ router.get('/login', (req, res) => {
     
 })
 
+router.get('/logout', (req, res) => {
+    console.log("Logout request on admin ....");
+    
+    return res.clearCookie("admin").redirect('/admin')
+})
+
 
 router.get('/movies', verifyAdmin,async (req, res) => {
     console.log("Movie request on admin ....");
