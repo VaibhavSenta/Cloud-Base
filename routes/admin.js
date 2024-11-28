@@ -249,21 +249,7 @@ router.post('/movies/delete', verifyAdmin, async (req, res) => {
     const { MOVIE } = require('../models/movies');
     const movie = await MOVIE.findOne({ucbid: ucbid})
 
-    await MOVIE.findOneAndDelete({ucbid: ucbid}).then( (err) => {
-        if (err) {
-            console.log("Error deleting movie: ",err);
-            
-        } else {
-            
-            console.log("Movie deleted");
-            console.log("Deleteing files...");
-    
-            fs.unlink(movie.databasepath)
-            fs.unlink(movie.poster)
-        }
-        
-        
-    })
+    await MOVIE.findOneAndDelete({ucbid: ucbid})
 
     return res.send("Movie deleted")
     
