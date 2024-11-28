@@ -40,11 +40,10 @@ router.use('/userdocuments', express.static("userdocuments"))
 
 
 // GET requests =================================================
-router.get('/', verifyAdmin ,async(req, res)=>{
+router.get('/', verifyAdmin,async(req, res)=>{
     console.log("New request to admin route");
 
     const admin = req.admin
-
 
     const { MOVIE } = require('../models/movies');
     const movieList = await MOVIE.find()
@@ -54,8 +53,8 @@ router.get('/', verifyAdmin ,async(req, res)=>{
 
 
     return res.render("adminindex",{
-        firstName: admin.firstName,
-        lastName: admin.lastName
+        firstName: admin.firstName || "Admin",
+        lastName: admin.lastName || " "
         
     })
 })
@@ -200,7 +199,7 @@ router.get('/movies/:ucbid',verifyAdmin ,async(req, res) => {
 
 // POST requests =================================================================
 
-router.post('/login', verifyAdmin, async(req, res) => {
+router.post('/login', async(req, res) => {
     console.log("Login request on admin ....");
 
     const { adminid } = req.body;
@@ -229,10 +228,7 @@ router.post('/login', verifyAdmin, async(req, res) => {
             dbid: admin._id
         }
         const jwtadminCookie = jwt.sign(adminCookie, 'adminvaibhav',{expiresIn: '24h'})
-        return res.cookie('admin',jwtadminCookie).render("adminindex", {
-            firstName: admin.firstName,
-            lastName: admin.lastName
-        })
+        return res.cookie('admin',jwtadminCookie).redirect("/admin")
         
     }
     
