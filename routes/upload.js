@@ -530,9 +530,12 @@ async(req, res)=>{
     const filePathResolver = path.resolve(req.files.moviefile[0]. path)
     const filePathRelative = path.relative(__dirname, filePathResolver)
     
+    const posterFilePathResolver = path.resolve(req.files.poster[0]. path)
+    const posterFilePathRelative = path.relative(__dirname, posterFilePathResolver)
+
     // Adding extra details
     movieDetails.size = fileSize
-    movieDetails.poster = req.files.poster[0]. path
+    movieDetails.poster = posterFilePathRelative
     movieDetails.databasepath = filePathRelative
     movieDetails.originalFileData = req.files.moviefile[0]
     

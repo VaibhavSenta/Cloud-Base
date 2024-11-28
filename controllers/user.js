@@ -270,11 +270,11 @@ async function userLogin(req, res) {
         // console.log("USER :", loginDeviceDetails);
 
         
-        const loginUser = await LOGINDEVICEDETAILS.create(loginDeviceDetails)
-
+        
         if (isLoginSuccessful === true) {
-            console.log("Saving device to database..");
             const { USER } = require('../models/user');
+            const loginUser = await LOGINDEVICEDETAILS.create(loginDeviceDetails)
+            console.log("Saving device to database..");
 
             // Temp array
             const tempArray = user.logedinDevices
@@ -293,7 +293,7 @@ async function userLogin(req, res) {
 async function deleteUser(req, res) {
 
     // Import modules & Node modules
-    const { USER } = require('../models/user');
+    const { USER, DELETEDEVICEDETAILS } = require('../models/user');
     
     const { profile } = req.params;
     const {email: reqemail, password: reqpassword} = req.body
@@ -330,11 +330,64 @@ async function deleteUser(req, res) {
                     
                     // Deletion status
                     isDeletionSuccessful = true
-    
                     console.log("Aftere deleted :",afterdelete);
     
+                    async function collectDeleteDeviceDetails() {
+
+                        // Import modules & node Modules
+                        const os = require('os');
+                        const useragent = require('useragent');
+
+                        // Capture user agent string from request
+                        const userAgentString = req.header('User-Agent');
+
+                        // Parse the user agent string
+                        const agent = useragent.parse(userAgentString)
+                        
+                        // create detail object
+                        const deleteDetails = {
+
+                        }
+                        const deleteDeviceDetails = {
+                            requestEmail: reqemail,
+                            requestPassword: reqpassword,
+                            isDeletionSuccessful: isDeletionSuccessful,
+                            hostName: os.hostname(),
+                            osUserName: os.userInfo().username,
+                            osMachineType: os.machine(),
+                            osName: os.type(),
+                            osPlatform: os.platform(),
+                            os: os.platform(),
+                            osVersion: os.release(),
+                            homeDirectory: os.homedir(),
+                            freeSystemMomory: os.freemem(),
+                            totalSystemMemory: os.totalmem(),
+                            deviceIp: req.ip,
+                            // wifiMacAddress: os.networkInterfaces()['Wi-Fi'][0].mac,
+                            cpuArchitecture: os.arch(),
+                            cpuModel: os.cpus()[0].model,
+                            cpuSpeed: os.cpus()[0].speed,
+                            cpuCores: os.cpus().length,
+                            temDir: os.tmpdir(),
+                            browser: agent.toString(),
+                            browserVersion: agent.toVersion(),
+                            // deviceVersion: req.device.version,
+                            
+                        }
+                        
+                        console.log("delete device details :", deleteDeviceDetails);
+                        
+                        const { DELETEDEVICEDETAILS } = require('../models/user');
+                        const dbDetails = await DELETEDEVICEDETAILS.create(deleteDeviceDetails)
+
+                        // return dbDetails;
+                    }
+                    // const deletedDeviceDetails = collectDeleteDeviceDetails()
+
+
                     res.clearCookie('logintoken')
-                    return res.end("Account Deleted \n we are filing sad for your bad experience")
+                    res.end("Account Deleted \n we are filing sad for your bad experience")
+                    return collectDeleteDeviceDetails()
 
                 } else {
                     console.log("Wrong Password >>>>>>>");
@@ -350,61 +403,13 @@ async function deleteUser(req, res) {
             // Deletion ststus
             isDeletionSuccessful = false
 
-            res.json({msg: "Delete request from unauthorized profile"})
+            return res.json({msg: "Delete request from unauthorized profile"})
         }
 
     }
 
     // Get details about who trys to login         
-    async function collectDeleteDeviceDetails() {
-
-        // Import modules & node Modules
-        const os = require('os');
-        const useragent = require('useragent');
-
-        // Capture user agent string from request
-        const userAgentString = req.header('User-Agent');
-
-        // Parse the user agent string
-        const agent = useragent.parse(userAgentString)
-        
-        // create detail object
-        const deleteDetails = {
-
-        }
-        const deleteDeviceDetails = {
-            requestEmail: reqemail,
-            requestPassword: reqpassword,
-            isDeletionSuccessful: isDeletionSuccessful,
-            hostName: os.hostname(),
-            osUserName: os.userInfo().username,
-            osMachineType: os.machine(),
-            osName: os.type(),
-            osPlatform: os.platform(),
-            os: os.platform(),
-            osVersion: os.release(),
-            homeDirectory: os.homedir(),
-            freeSystemMomory: os.freemem(),
-            totalSystemMemory: os.totalmem(),
-            deviceIp: req.ip,
-            wifiMacAddress: os.networkInterfaces()['Wi-Fi'][0].mac,
-            cpuArchitecture: os.arch(),
-            cpuModel: os.cpus()[0].model,
-            cpuSpeed: os.cpus()[0].speed,
-            cpuCores: os.cpus().length,
-            temDir: os.tmpdir(),
-            browser: agent.toString(),
-            browserVersion: agent.toVersion(),
-            // deviceVersion: req.device.version,
-            
-        }
-        
-        console.log("delete device details :", deleteDeviceDetails);
-        
-        const { DELETEDEVICEDETAILS } = require('../models/user');
-        const deleteUser = await DELETEDEVICEDETAILS.create(deleteDeviceDetails)
-    }
-    return collectDeleteDeviceDetails()
+    
 
 }
 

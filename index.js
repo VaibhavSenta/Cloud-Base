@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 
 
 const port = process.env.PORT || 8080;
-
+const connectionString = process.env.CONNECTION || "mongodb://localhost:27017/cloudebase"
 
 
 
@@ -21,9 +21,64 @@ const port = process.env.PORT || 8080;
 
 const { varifyToken } = require('./services/authentication');
 
-mongoose.connect("mongodb://localhost:27017/cloudebase")
-.then(() => console.log('Connected to MongoDB . . . . '))
-.catch(err => console.error('Could not connect to MongoDB . . . . ', err));
+mongoose.connect(connectionString)
+.then(async() => {
+
+    console.log('Connected to MongoDB . . . . ');
+
+
+
+
+    console.log("Checking admins ......");
+    
+    
+    
+    const { ADMIN } = require('./models/admin')
+    // Find if admin there are any admins in database
+    const admins = await ADMIN.find()
+    console.log("Found admins: " + admins.length);
+    
+    if (admins.length === 0) {
+        console.log("No admins found in database : " + admins.length);
+    
+    
+        // Generate admin id
+        const crypto = require('crypto')
+        const min = 1000000000;
+        const max = 9999999999;
+    
+        const admin1 = {
+            firstName: 'Vaibhav',
+            lastName: 'Senta',
+            adminId: crypto.randomInt(min, max)
+        }
+        const admin2 = {
+            firstName: 'Sejal',
+            lastName: 'Gulhane',
+            adminId: crypto.randomInt(min, max)
+        }
+        const admin3 = {
+            firstName: 'Jeel',
+            lastName: 'Chavda',
+            adminId: crypto.randomInt(min, max)
+        }
+    
+        const adminsArr = [ admin1, admin2, admin3 ]
+    
+        adminsArr.forEach(async admin => {
+            
+            console.log(" > Adding admin: " + admin);
+            
+            await ADMIN.create(admin)
+        });
+        
+    }
+
+})
+.catch(err => console.error('Could not connect to MongoDB . . . . ', err))
+
+
+// Check if the ADMINS were already configured or not
 
 
 
@@ -45,7 +100,6 @@ app.use('/public',express.static("public"))
 app.use('/uploads', express.static("uploads"))
 app.use('/userdocuments', express.static("userdocuments"))
 
-
 app.set('view engine', "ejs") // Set view engine
 
 
@@ -64,7 +118,9 @@ app.use('/upload', uploadRouter)
 
 
 
-
+// Admin routes
+const { adminRouter } = require('./routes/admin');
+app.use('/admin', adminRouter);
 
 
 
