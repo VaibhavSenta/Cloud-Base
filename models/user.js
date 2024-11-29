@@ -8,83 +8,70 @@ const useSchema = new mongoose.Schema({
         unique: true
 
     },
-
     email: {
         type: String,
         required: true,
         unique: true
     },
-
     recoveryEmail: {
         type: String,
         required: false,
         default: 'not added',
         unique: false
     },
-
     password: {
         type: String,
         required: true
 
     },
-
     firstName: {
         type: String,
         required: true
         
     },
-
     lastName: {
         type: String,
         required: true
 
     },
-
     profilePic: {
         type: String,
         required: false,
         default: '../public//defaultLogos/DefaultProfilePic-90.png'
     },
-
     dob: {
         type: Date,
         required: true
 
     },
-
     gender: {
         type: String,
         required: false,
         enum: ['Male', 'Female', 'Other', 'Not selected'],
         default: 'Not selected'
     },
-    
     countryCode: {
         type: String,
         required: false
     },
-
     phonenumber: {
         type: String,
         required: false,
         unique: true,
         default: 'not added'
     },
-
     accountStatus: {
         type: String,
         enum: ['active', 'deleted'],
         default: 'active',
         required: true
     },
-    
     logedinDevices: {
         type: Array,
         default: [],
         required: false
 
     },
-
     signUpDeviceDetails: {
         type: Object,
         required: false,
