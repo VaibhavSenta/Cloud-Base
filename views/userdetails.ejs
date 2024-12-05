@@ -198,12 +198,13 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content:center;
+            justify-content:flex-start;
 
             position: relative;
 
             background-color: rgba(14, 14, 14, 0);
 
+            /* background-color: transparent; */
             border-radius: 20px;
 
             width: 100%;
@@ -219,13 +220,32 @@
             font-size: 30px;
             font-weight: 700;
             text-decoration: underline;
+            background-color: transparent;
         }
 
-        .center section{
+        
+        .section1 >img{
+            width: 100%;
+            height: 70%;
+            object-fit: fill;
+            filter: blur(90px) contrast(100%) brightness(90%);
+            opacity: 0.5;
+            position: absolute;
+        }
+
+
+
+
+
+
+
+
+
+
+        .section1 {
             display: flex;
             flex-direction: row;
-            flex-wrap: wrap;
-            align-items: center;
+            align-items:center ;
             justify-content: center;
 
             position: relative;
@@ -233,21 +253,8 @@
             background-color: transparent;
 
             width: 100%;
-            height: 100%;
-
-            overflow: auto;
-            overflow-x: hidden;
-
-            margin-top: 10px;
-
-        }
-        .center >img{
-            width: 100%;
-            height: 70%;
-            object-fit: cover;
-            filter: blur(90px) contrast(100%) brightness(90%);
-            opacity: 0.5;
-            position: absolute;
+            height: max-content;
+            
         }
         
         .part1, .part2{
@@ -324,10 +331,12 @@
             display: flex;
             align-items: center;
             justify-content: space-evenly;
+            position: relative;
 
             flex-direction: row;
             width: 100%;
 
+            cursor: pointer;
             background-color: transparent;
         }
         button[type="submit"]{
@@ -338,18 +347,23 @@
             outline: none;
             width: max-content;
             border-radius: 6px;
+            cursor: pointer;
+            z-index: 2;
 
         }
 
         button[class="button"]{
             margin: 4px;
             width: max-content;
+            cursor: pointer;
             
         }
         form[class="button"]{
             width: max-content;
             margin: 4px;
             background-color: aliceblue;
+            cursor: pointer;
+            position: relative;
         }
 
 
@@ -371,6 +385,13 @@
 
 
         }
+        .part3 h3{
+            width: 100%;
+            text-align: center;
+
+            font-size: 27px;
+            margin-bottom: 30px;
+        }
         .part3 div{
             display: flex;
             flex-direction: row;
@@ -389,7 +410,7 @@
             padding-left: 10px;
         }
 
-        section[class="section2"]{
+        .section2{
             display: flex;
             flex-direction: column;
 
@@ -398,30 +419,14 @@
 
             position: relative;
 
-            background-color: blue;
-            width: 300px;
+            background-color: transparent;
+            width: 100%;
             height: max-content;
 
-            overflow: auto;
+            /* overflow: auto; */
 
         }
-        .section2 header{
-            background-color: chocolate;
-            width: 100%;
-
-        }
-        .section2 div {
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-        }
-        .section2 div p{
-            margin-right: 10px;
-        }
-        .section2 div label{
-            font-weight: 700;
-        }
-
+        
 
 
 
@@ -476,71 +481,115 @@
 
         }
 
-        .movieCard{
-            display: flex;
-            flex-direction: column-reverse;
-            align-items: center;
+        .allDetails {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        flex-direction: row;
 
-            position: relative;
-            background-color: transparent;
+        width: 100%;
+        height: 100%;
+      }
+      .movieCard {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
 
-            border: 2px solid transparent;
-            border-radius: 15px;
+        position: relative;
+        background-color: rgb(44, 44, 44);
 
-            width: 200px;
+        border: 2px solid transparent;
+        border-radius: 15px;
 
-            aspect-ratio: 2/3;
+        /* min-width: 100px; */
+        /* max-width: 510px; */
+        width: 48%;
+        height: max-content;
 
-            margin: 14px;
+        /* aspect-ratio: 2/3; */
 
-            overflow: hidden;
-            box-shadow: 20px 20px 30px -5px rgba(0, 0, 0, 0.427);
+        margin: 10px;
+        padding: 10px;
+        
 
-            &:hover{
-                box-shadow: 40px 40px 40px -20px rgba(0, 0, 0, 0.87);
-                border-color: rgba(219, 219, 219, 0.732);
-                transform: scale(1.01);
-                cursor: pointer;
-            }
+        overflow: hidden;
+        box-shadow: 20px 20px 30px -5px rgba(0, 0, 0, 0.427);
+
+        &:hover {
+          box-shadow: 40px 40px 40px -20px rgba(0, 0, 0, 0.87);
+          border-color: rgba(219, 219, 219, 0.732);
+          transform: scale(1.01);
+          cursor: pointer;
         }
+      }
 
-        .movieCard img{
+      .movieCard img {
+        width: inherit;
+        aspect-ratio: inherit;
+        object-fit: cover;
+        position: relative;
+      }
 
-            width: inherit;
-            aspect-ratio: inherit;
-            object-fit: cover;
+      .text {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        align-items: center;
+        text-align: center;
+
+        position: absolute;
+        background: linear-gradient(
+          to top,
+          rgb(0, 0, 0) 10%,
+          rgba(253, 253, 253, 0) 90%
+        );
+
+        width: 100%;
+        height: 100%;
+        
+
+        padding: 6px;
+
+        text-shadow: 2px 1px 3px black;
+
+        &:hover {
+          cursor: pointer;
         }
+      }
+      .keyValue {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
 
-        .text{
-            display: flex;
-            flex-direction: column-reverse;
-            flex-wrap: wrap;
-            align-items: center;
-            text-align: center;
-            
-            position: absolute;
-            background: linear-gradient(to top, rgb(0, 0, 0)10%, rgba(253, 253, 253, 0)90%);
+        background-color: transparent;
 
-            width: 100%;
-            height: 100%;
+        width: 100%;
+        height: auto;
 
-            padding: 6px;
+        font-size: 18px;
+      }
+      .keyName {
+        color: rgb(237, 237, 237);
+        font-weight: 600;
+        font-size: 16px;
+      }
+      .value {
+        color: rgb(148, 77, 10);
+        font-weight: 500;
+        font-size: 18px;
+        text-wrap: wrap;
+      }
+      .movieCard a {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 3;
 
-            text-shadow: 2px 1px 3px black;
-
-            &:hover{
-                cursor: pointer;
-            }
-        }
-        .movieCard a{
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: inherit;
-
-            background-color: transparent;
-
-        }
+        background-color: transparent;
+      }
 
 
         
@@ -573,10 +622,10 @@
     <main>
         <div class="center">
             <!-- <img src="../uploads/1731811786723.jpg" alt=""> -->
-            <img src="<%= detail.profilePic %>" alt="movieCard">
-
+            
             <header>User details</header>
             <section class="section1">
+                <img src="<%= detail.profilePic %>" alt="movieCard">
 
              
                 <div class="part1">
@@ -619,7 +668,7 @@
                     <div class="btn">
                         <!-- <but   ton class="button" type="submit"><a href="/admin/allusers/edit/<%= detail.email %>">Edit details</a></but> -->
 
-                        <form action="/admin/allusers/edit" method="POST">
+                        <form action="/admin/allusers/user/delete" method="POST">
                             
                             <input type="email" name="email" id="email" value="<%= detail.email %>" hidden>
                             <button type="submit" > Delete from database </button>
@@ -629,6 +678,8 @@
     
                 </div>
                 <div class="part3">
+
+                    <h3>signup device detail</h3>
                     <% if (signupKeys.length > 0) { %>
                      
         
@@ -651,6 +702,30 @@
 
                 </div>
             </section>
+
+            <section class="section2">
+                <header>Login from devices</header>
+                <div class="allDetails">
+
+                    <!-- <% loginDevices.forEach(device => { %> -->
+            
+                    <div class="movieCard">
+                        <% loginKeyNames.forEach(key=> { %>
+                        
+                            <div class="keyValue">
+                            <p class="keyName"><%= key %></p>
+                            &nbsp; &nbsp; &nbsp; : &nbsp;
+                            <p class="value"><%= device[key] %></p>
+                            </div>
+                
+                            <a href="#"></a>
+                        <% }) %>
+                    </div>
+            
+                    <!-- <% }) %> -->
+                </div>
+            </section>
+        </div>
     </main>
 
     

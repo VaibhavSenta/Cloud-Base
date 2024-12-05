@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 
 
 
-const port = process.env.PORT || 8280;
+const port = process.env.PORT || 8888;
 const connectionString = process.env.CONNECTION || "mongodb://localhost:27017/cloudebase"
 
 
@@ -143,10 +143,8 @@ const { movieRouter } = require('./routes/movies');
 app.use('/movies', movieRouter)
 
 // GAME route
-app.get('/games', async (req, res) =>{
-    console.log("New request to game route");
-    return res.send("========================================== This page is unavailable now =============================")
-})
+const { gameRouter } = require('./routes/games');
+app.use('/games', gameRouter)
 
 // MUSIC route
 app.get('/music', async (req, res) =>{

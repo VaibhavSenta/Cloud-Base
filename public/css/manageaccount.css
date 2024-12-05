@@ -200,7 +200,7 @@ section header {
         border-radius: inherit;
         aspect-ratio: 1/1;
         width: 150px;
-        object-fit: fill;
+        object-fit: cover;
         
     }
 

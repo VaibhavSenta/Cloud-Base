@@ -78,6 +78,8 @@ router.get('/',varifyToken, async(req, res)=>{
 
     // console.log("Token User : ",req.body.tokenUser);
     const { USER } = require('../models/user');
+    const allUsers = await USER.find({accountStatus: 'active'});
+    console.log("Total active users : ", allUsers.length);
 
 
     const { MOVIE } = require('../models/movies');
@@ -102,7 +104,8 @@ router.get('/',varifyToken, async(req, res)=>{
 
     return res.render("index",{
         userName: profileUserName,
-        indexmovieList: indexmovieList
+        indexmovieList: indexmovieList,
+        totalusers : allUsers.length
     })
 })
 

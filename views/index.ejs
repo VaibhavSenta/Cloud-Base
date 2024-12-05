@@ -115,7 +115,29 @@
             /* margin-top: 14vh; */
         }
 
+
+        .totalUsers{
+
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+
+            width: auto;
+            height: auto;
+
+            padding: 10px;
+
+            margin: 0px 30px;
+            background-color: transparent;
+        }
         
+
+
+
+
+
+
+
         .section1 {
             width: 100%;
 
@@ -363,6 +385,11 @@
         <h1>Cloude Base</h1>
     
         <div class="profileLogo">
+
+            <div class="totalUsers">
+                <label>Total user : &nbsp;</label>
+                <p><%= totalusers %></p>
+            </div>
 
             <button>
                 

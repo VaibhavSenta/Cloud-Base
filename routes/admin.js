@@ -132,24 +132,93 @@ router.get('/allusers/:email', verifyAdmin,async(req, res)=>{
     }
 
     console.log(detail);
+
+
+
+    const loginDeviceDetails = await LOGINDEVICEDETAILS.find({requestEmail: userEmail});
+    if (loginDeviceDetails.length > 0){
+        console.log(loginDeviceDetails);
+
+        // Convert first object to object
+        const login = loginDeviceDetails[0];
+        const loginObj = login.toObject()
+        const loginKeys = Object.keys(loginObj)
+
+        console.log(loginKeys);
+        
+       
+        return res.render("userdetails",{
+            detail: detail,
+            signupKeys: signupKeys,
+            signup: signup,
+            loginDevices : loginDeviceDetails,
+            loginKeyNames : loginKeys,
+            adminName: admin.firstName + ' ' + admin.lastName
+            
+        })
+        
+    } else {
+        const keyNames = []
+        
+        return res.render("userdetails",{
+            detail: detail,
+            signupKeys: signupKeys,
+            signup: signup,
+    
+            adminName: admin.firstName + ' ' + admin.lastName
+            
+        })
+        
+    }
     
 
-    return res.render("userdetails",{
-        detail: detail,
-        signupKeys: signupKeys,
-        signup: signup,
-        adminName: admin.firstName + ' ' + admin.lastName
-        
-    })
 })
 
 
-router.get('/login', (req, res) => {
+router.get('/logindetails', verifyAdmin, async(req, res) => {
     console.log("Login request on admin ....");
 
-    return res.render("adminlogin")
+    const admin = req.admin
+
+    // Get login device details from model
+    const { LOGINDEVICEDETAILS } = require('../models/user');
+    const loginDeviceDetails = await LOGINDEVICEDETAILS.find();
+    if (loginDeviceDetails.length > 0){
+        console.log(loginDeviceDetails);
+
+        // Convert first object to object
+        const login = loginDeviceDetails[0];
+        const loginObj = login.toObject()
+        const loginKeys = Object.keys(loginObj)
+
+        console.log(loginKeys);
+        
+        return res.render("adminlogindevicedetails", {
+            adminName: admin.firstName + ' ' + admin.lastName,
+            loginDevices : loginDeviceDetails,
+            loginKeyNames : loginKeys
+    
+        })
+        
+    } else {
+        const keyNames = []
+        return res.render("adminlogindevicedetails", {
+            adminName: admin.firstName + ' ' + admin.lastName,
+            
+        })
+        
+    }
+
     
 })
+
+
+router.get('/login', async(req,res)=>{
+    console.log("Login request on admin ....");
+    const admin = req.admin
+    return res.render("adminlogin")
+})
+
 
 router.get('/logout', (req, res) => {
     console.log("Logout request on admin ....");
@@ -253,6 +322,23 @@ router.post('/movies/delete', verifyAdmin, async (req, res) => {
 
     return res.send("Movie deleted")
     
+})
+
+router.post('/allusers/user/delete', async(req, res)=>{
+    console.log("New request to delete the user from admin ");
+    const { email } = req.body
+    const { USER } = require('../models/user')
+    const user = await USER.findOne({email: email})
+    if(user) {
+
+        await USER.findOneAndDelete({email: email})
+        return res.send("User deleted")
+    } else {
+        console.log("User not found");
+        console.log("Look like you are not authorized to delete the user");
+        return res.status(403).send("Look like you are not authorized to delete the user")
+    }
+
 })
 
 
