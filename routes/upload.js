@@ -510,17 +510,34 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage: storage})
 
-router.post("/movie/files", varifyToken,
+
+async function trackUpload(req,res,next) {
+  console.log("====== Movie Reciving =========");
+  
+  let progress = 0;
+  const filesize = req.headers["content-length"];
+  req.on("data", (chunk)=>{
+    progress = progress + chunk.length
+    const percentage = (progress / filesize) * 100;
+  
+    console.log("====",Math.round(percentage),"%","====");
+  })
+  next()
+  
+}
+router.post("/movie/files", varifyToken,trackUpload,
 upload.fields([{name: 'poster', maxCount:1},{name: 'moviefile', maxCount:1}]),
 async(req, res)=>{
   
+ 
+
   console.log("==========================================================================");
 
   console.log("UPLOADED BODY :::",req.body);
   if(req.files) {
     console.log("File recived");
     console.log("UPLOADED FILES :::",req.files);
-    const fileSize = req.files.moviefile[0].size
+    const fileSize = req.files.moviefile[0].size;
     console.log("UPLOADED FILES SIZE :::",fileSize);
 
     
@@ -530,12 +547,16 @@ async(req, res)=>{
     const filePathResolver = path.resolve(req.files.moviefile[0]. path)
     const filePathRelative = path.relative(__dirname, filePathResolver)
     
-    const posterFilePathResolver = path.resolve(req.files.poster[0]. path)
-    const posterFilePathRelative = path.relative(__dirname, posterFilePathResolver)
+    if (req.files.poster) {
+
+      const posterFilePathResolver = path.resolve(req.files.poster[0]. path)
+      const posterFilePathRelative = path.relative(__dirname, posterFilePathResolver)
+      
+      movieDetails.poster = posterFilePathRelative
+    }
 
     // Adding extra details
     movieDetails.size = fileSize
-    movieDetails.poster = posterFilePathRelative
     movieDetails.databasepath = filePathRelative
     movieDetails.originalFileData = req.files.moviefile[0]
     
