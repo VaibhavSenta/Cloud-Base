@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Account</title>
+    <!-- <link rel="stylesheet" href="../public/css/editaccount.css"> -->
+
+    <style>
+        ::-webkit-scrollbar {
+            background-color: transparent;
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: var(--border-dark);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-button {
+            background-color: transparent;
+        }
+
+        :root {
+            --border-dark: rgba(255, 255, 255, 0.303);
+            --border-light: rgba(0, 0, 0, 0.5);
+            --color-light: rgb(228, 228, 228);
+            --color-dark: rgba(0, 0, 0, 0.8);
+
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+                Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+                sans-serif;
+            text-decoration: none;
+
+            color: rgba(214, 214, 214, 0.9);
+        }
+
+        body{
+            background-color: black;
+            /* background-image: url(../public/backgrounds/background.jpg); */
+        }
+        .background {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+
+            /* background-color: rgba(0, 0, 0, 0); */
+            background: url(../public/backgrounds/background3.jpg);
+            filter: brightness(80%) contrast(140%);
+            background-position: center;
+            background-size: cover;
+
+            padding: 0rem;
+
+            width: 100%;
+            height: 100%;
+
+            position: absolute;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+
+            /* background: url(../public/backgrounds/backgropund2.jpg); */
+            background-color: transparent;
+            backdrop-filter: blur(90px);
+            background-position: center;
+            background-size: fill;
+
+            width: 100%;
+            height: 100%;
+
+            border-radius: 2rem;
+
+            padding: 3rem;
+            padding-bottom: 0rem;
+        }
+
+        main header {
+            width: 100%;
+        }
+
+        .managesection {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            flex-direction: column;
+
+            width: 100%;
+            max-height: 100%;
+            height: max-content;
+
+            margin-top: 3rem;
+
+            background-color: rgba(255, 255, 255, 0.148);
+            backdrop-filter: blur(30px);
+
+            box-shadow: 80px 80px 220px -70px rgb(0, 0, 0),
+                -80px -80px 80px -70px rgba(104, 104, 104, 0.611);
+
+            border-top-left-radius: 2rem;
+            border-top-right-radius: 2rem;
+
+            padding: 2rem;
+
+            overflow-x: hidden;
+            overflow-y: auto;
+
+            animation-name: swipe-up;
+            animation-duration: 2s;
+            /* animation-iteration-count: infinite; */
+            animation-delay: 0.3s;
+        }
+
+        @keyframes swipe-up {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        section {
+            display: flex;
+
+            align-items: flex-start;
+            justify-content: center;
+            flex-direction: column;
+
+            width: 100%;
+            max-width: 50rem;
+            min-width: 10rem;
+
+            height: max-content;
+            
+
+            border: 1px solid var(--border-dark);
+
+            border-radius: 2rem;
+            padding: 1rem;
+
+            margin: 1rem 1rem;
+        }
+
+        section header {
+            font-size: 1.1rem;
+        }
+
+        .profileSection {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 100%;
+            border: none;
+        }
+
+        .profilePic {
+            background-color: rgba(30, 30, 30, 0);
+            border-radius: 100vw;
+
+            padding: 10px;
+
+            width: max-content;
+
+            border: 2px solid var(--border-dark);
+
+            animation-name: zoom;
+            animation-duration: 1.9s;
+            animation-delay: 1;
+            animation-iteration-count: infinite;
+            
+        }
+
+        
+        label[for="profilePic"] {
+            cursor: pointer;
+
+            &::after {
+                content: "Edit";
+                position: absolute;
+                top: 17%;
+                left: 85%;
+                transform: translate(-50%, -50%);
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                width: 40px;
+                /* height: 40px; */
+                aspect-ratio: 1/1;
+
+                font-weight: 800;
+                font-size: 0.9rem;
+
+                background-color: rgb(0, 54, 142);
+                border-radius: 50%;
+                border: 3px solid rgb(215, 215, 215);
+            }
+        }
+
+        input[name="profilePic"] {
+            display: none;
+        }
+
+
+        label[for="profilePic"] {
+            display: flex;
+            position: relative;
+            align-items: center;
+            justify-content: center;
+        }
+        label[for="profilePic"] img {
+            border-radius: inherit;
+
+            aspect-ratio: 1/1;
+
+            width: 150px;
+            object-fit: fill;
+            
+        }
+        @keyframes zoom {
+            0% {
+                transform: scale(1);
+                transform: rotate(5deg);
+            }
+
+            50% {
+                transform: scale(1.03);
+                box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.381);
+                
+            }
+
+            100% {
+                transform: scale(1);
+                transform: rotate(5deg);
+            }
+        }
+
+        section label {
+            display: flex;
+            flex-direction: column;
+
+            /* background-color: rgba(128, 128, 128, 0.225); */
+
+            background-color: transparent;
+
+            border: none;
+            outline: none;
+
+            min-width: max-content;
+            width: 60%;
+
+            font-size: 1.1rem;
+
+            cursor: pointer;
+
+            padding: 10px;
+
+            transition: all ease 0.3s;
+            border-bottom: 1px solid var(--border-dark);
+
+            /* &:hover {
+                background: linear-gradient(to left,
+                        rgba(255, 255, 255, 0.227),
+                        rgba(255, 255, 255, 0));
+
+                border-top-right-radius: 10vw;
+                border-bottom-right-radius: 10vw;
+
+                transform: scale(1.03);
+            } */
+        }
+
+        section label input,
+        section label select {
+            background-color: transparent;
+            font-size: 18px;
+            border: none;
+            outline: none;
+
+            cursor: pointer;
+
+            &::placeholder {
+                color: inherit;
+            }
+        }
+
+        .editbar {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+
+            width: 100%;
+        }
+
+        .editbar button {
+            background-color: transparent;
+
+            outline: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+
+            width: max-content;
+
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+            font-weight: 600;
+            border-radius: 5px;
+            letter-spacing: 0.1rem;
+            opacity: 0.5;
+
+            &:hover {
+                transform: scale(1.2);
+                opacity: 1;
+                text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.29);
+            }
+        }
+
+        .otherSections {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-evenly;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .allProfiles {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .allProfiles label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly;
+
+            transform: scale(0.95);
+
+            background-color: rgba(255, 255, 255, 0.13);
+
+            &:hover {
+                box-shadow: 10px 30px 50px -20px rgba(0, 0, 0, 0.759);
+                border-radius: 1rem;
+                transform: scale(1);
+            }
+
+            border-radius: 1rem;
+
+            padding: 0.5rem;
+
+            width: 10rem;
+            height: 13rem;
+        }
+
+        .profileCard {
+            width: 5rem;
+            height: 5rem;
+
+            border-radius: 100vw;
+            overflow: hidden;
+        }
+
+        .profileCard img {
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+        }
+    </style>
+    <% if (vercelSpeedInsights) { %>
+    <!-- Vercel Speed Insights -->
+    <script>
+    (function() {
+        // Initialize Vercel Speed Insights for page performance monitoring
+        // This script runs on the client side only
+        import('@vercel/speed-insights').then(({ injectSpeedInsights }) => {
+            injectSpeedInsights();
+        }).catch(err => {
+            // Speed Insights failed to load - this is non-critical
+            console.debug('Speed Insights initialization failed:', err);
+        });
+    })();
+    </script>
+    <% } %>
+
+</head>
+
+<body>
+    <div class="background">
+
+        
+        <main>
+            <header>
+                <h1>Manage Account</h1>
+                <p>Welcome to your account, <b> <%= locals.userName %> </b> </p>
+                <h3>Edit your details</h3>
+            </header>
+
+            <form action="/:profile/manage/edit" method="POST" enctype="multipart/form-data" class="managesection">
+                <!-- Profile Section -->
+                <section class="profileSection">
+                    <div class="editbar">
+                        <!-- <button>Edit</button> -->
+                        <button type="submit">Done</button>
+                    </div>
+
+                    <label for="profilePic" class="profilePic">
+                        <img src="<%= locals.profilePic %>"  alt="profile pic">
+                        
+
+
+                        <!-- <img src="../public//defaultLogos/DefaultProfilePic-90.png" width="150px" alt=""> -->
+                    </label>
+
+                    
+                    <h2>
+                        <%= locals.firstName %>
+                            <%= locals.lastName %>
+                    </h2>
+                    <p>
+                        <%= locals.email %>
+                    </p>
+                    <!-- <label for="profilePic">Edit profile image</label> -->
+                    <input type="file" name="profilePic" id="profilePic" />
+                </section>
+
+                <p>You will be redirected to LOGIN page or profile management after this action....</p>
+                <div class="otherSections">
+                    <!-- Personal Info -->
+                    <section>
+                        <header>
+                            <h1>Personal Information</h1>
+                            <br />
+                        </header>
+
+                        <label>
+                            <h4>Name</h4>
+                            <input type="text" name="firstName" id="firstName" placeholder="<%= locals.firstName %>"  />
+                            <input type="text" name="lastName" id="lastName" placeholder="<%= locals.lastName %>" />
+                        </label><br />
+
+                        <label>
+                            <h4>Birth Date</h4>
+                            <p>
+                                <%= locals.dob %>
+                            </p>
+                            <input type="date" name="dob" id="dob" onloadeddata="Function(
+                                document.getElementsByName('dob').values = '<%= locals.dob %>'
+                            )"  />
+                        </label><br />
+
+                        <label>
+                            <h4>Gender</h4>
+                            <p>
+                                <%= locals.gender %>
+                            </p>
+
+                            <select name="gender" id="gender" onloadedmetadata="Function(document.getElementsByName('gender').values = <%= locals.gender %>)">
+                                <option value="<%= locals.gender %>"><%= locals.gender %></option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </label>
+                    </section>
+
+                    <!-- Contact Info -->
+                    <section>
+                        <header>
+                            <h1>Contact Information</h1>
+                            <br />
+                        </header>
+
+                        <label>
+                            <h4>Email</h4>
+                            <input type="email" name="email" id="email" placeholder="<%= locals.email %>" 
+                            
+                            />
+                        </label><br />
+
+                        <label>
+                            <h4>Recovery Email</h4>
+                            <input type="text" name="recoveryEmail" id="recoveryEmail"
+                                placeholder="<%= locals.recoveryEmail %>" value="<%= locals.recoveryEmail %>"/>
+                        </label><br />
+
+                        <label>
+                            <h4>Phone</h4>
+                            <input type="number" name="phonenumber" id="phonenumber"
+                                placeholder="<%= locals.phonenumber %>"/>
+                        </label>
+                    </section>
+
+                    <!-- All Profiles -->
+                    <section class="allProfiles">
+                        <header>
+                            <h1>All Profiles with Cloude Base</h1>
+                            <br />
+                        </header>
+
+                        <label>
+                            <div class="profileCard">
+                                <img src="../public/backgrounds/wallpaperflare.com_wallpaper (5).jpg" alt="" />
+                            </div>
+                            <br />
+                            <h4>CloudeBase</h4>
+                            <p>
+                                <%= locals.userName %>
+                            </p>
+                        </label><br />
+
+                        <label>
+                            <div class="profileCard">
+                                <img src="../public/backgrounds/wallpaperflare.com_wallpaper (4).jpg" alt="" />
+                            </div>
+                            <br />
+                            <h4>Stakker</h4>
+                            <p>vaibhav_senta</p>
+                        </label><br />
+
+                        <label>
+                            <div class="profileCard">
+                                <img src="../public/backgrounds/wallpaperflare.com_wallpaper (3).jpg" alt="" />
+                            </div>
+                            <br />
+                            <h4>CloudeBase Account</h4>
+                            <p>
+                                <%= locals.userName %>
+                            </p>
+                        </label><br />
+                    </section>
+
+                    <!-- Contact Info -->
+                    <section>
+                        <header>
+                            <h1>Password & Username</h1>
+                            <br />
+                        </header>
+
+                        <label>
+                            <h4>vaibhav999</h4>
+                            <p><a href="/resetpassword">***********</a></p>
+                        </label><br />
+                    </section>
+
+                    <!-- Contact Info -->
+                    <section>
+                        <header>
+                            <h1>Security</h1>
+                            <br />
+                        </header>
+
+                        <label>
+                            <h4>Two factor Authentication</h4>
+                            <p>Off</p>
+                        </label><br />
+                    </section>
+                </div>
+            </form>
+        </main>
+    </div>
+</body>
+
+</html>

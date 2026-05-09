@@ -1,0 +1,11 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "Live Preview",
+			"workspacePath": "/home/sender/Documents/Cloud-Base",
+			"problemMatcher": [],
+			"label": "Live Preview: Run Server"
+		}
+	]
+}
