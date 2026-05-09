@@ -1,0 +1,125 @@
+.login-container {
+    min-height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+}
+
+.login-card {
+    background: rgba(44, 44, 44, 0.6);
+    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
+    padding: 3rem 2rem;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.login-logo {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #ebebeb; /* Navbar logo color */
+    cursor: pointer;
+    letter-spacing: -1px;
+    margin-bottom: 1.5rem;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.login-logo:hover {
+    transform: scale(1.05);
+    color: #2563eb; /* Blue accent on hover */
+}
+
+/* Card ki spacing thoda adjust karne ke liye */
+.login-card h2 {
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem; /* Logo ke baad h2 ko thoda chota kiya balance ke liye */
+    color: white;
+}
+
+
+.login-card h2 {
+    margin-bottom: 0.5rem;
+    font-size: 1.8rem;
+    color: white;
+}
+
+.login-card p {
+    color: #a1a1a1;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+}
+
+.input-group {
+    margin-bottom: 1.2rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.8rem 1.2rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+    border-color: #2563eb;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.login-footer {
+    margin-top: 1.5rem;
+    font-size: 0.85rem;
+    color: #a1a1a1;
+}
+
+.login-footer a {
+    color: #2563eb;
+    font-weight: 600;
+}
+
+.w-full {
+    width: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+@media (max-width: 480px) {
+    .login-container {
+        padding: 20px; /* Screen ke kinaro se thoda gap */
+    }
+
+    .login-card {
+        padding: 2rem 1.5rem; /* Mobile pe thoda kam padding taaki form bada dikhe */
+        border-radius: 20px; /* Thode kam round corners */
+    }
+
+    .login-logo {
+        font-size: 1.5rem; /* Mobile pe logo thoda chota */
+    }
+
+    .login-card h2 {
+        font-size: 1.3rem;
+    }
+
+    .input-group input {
+        font-size: 16px; /* Mobile inputs pe 16px zaroori hai taaki iOS auto-zoom na kare */
+        padding: 0.7rem 1rem;
+    }
+}

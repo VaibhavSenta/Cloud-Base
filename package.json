@@ -1,0 +1,24 @@
+{
+  "name": "cloud-base",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cloud Base Monorepo",
+  "workspaces": [
+    "apps/*",
+    "services/*"
+  ],
+  "scripts": {
+    "dev:api": "npm run dev --workspace=services/user-api",
+    "dev:portal": "npm run dev --workspace=apps/user-portal",
+    "dev": "npx concurrently \"npm run dev:api\" \"npm run dev:portal\"",
+    "install:all": "npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "axios": "^1.15.0",
+    "lucide-react": "^1.8.0",
+    "socket.io-client": "^4.8.3"
+  }
+}
