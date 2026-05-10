@@ -12,7 +12,7 @@ const globalErrorHandler = require('./middlewares/errorMiddleware');
 
 
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
 const connectionString = process.env.CONNECTION || "mongodb://localhost:27017/cloudbase"
 
 
@@ -53,15 +53,6 @@ app.use((req, res, next) => {
 });
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
-
-// Serve files ststicaly
-app.use('/public',express.static("public"))
-app.use('/uploads', express.static("uploads"))
-app.use('/userdocuments', express.static("userdocuments"))
-
-app.set('view engine', "ejs") // Set view engine
-
-
 
 
 const { API } = require('./routes/api');

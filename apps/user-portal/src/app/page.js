@@ -34,22 +34,31 @@ export default function Home() {
         </header>
 
         <div className="allCategories">
-          {categories.map((element, index) => (
-            <div className="card1" key={element._id || index}>
-              <Image 
-                fill 
-                src={element.thubnailsurl} 
-                alt={element.name} 
-                className="category-img"
-                priority
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              />
-              <a href={`/category/${element.name}`}>
-                <h2>{element.name}</h2>
-              </a>
-            </div>  
-          ))}
+          {categories.length > 0 ? (
+
+            categories.map((element, index) => (
+              <div className="card1" key={element._id || index}>
+                <Image 
+                  fill 
+                  src={element.thubnailsurl} 
+                  alt={element.name} 
+                  className="category-img"
+                  priority
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+                <a href={`/category/${element.name}`}>
+                  <h2>{element.name}</h2>
+                </a>
+              </div>  
+            ))
+
+          )  : (
+            <div>NO Categories</div>
+          )}
+
         </div>
+
+
       </section>
 
       <main className="main-content">
