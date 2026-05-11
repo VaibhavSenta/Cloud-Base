@@ -1,8 +1,9 @@
 
 
 const express = require('express');
-const { USER } = require('../models/centralstation');
+const { ADMIN } = require('../models/centralstation');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 
 
@@ -20,19 +21,17 @@ async function login(loginid, password) {
         throw new Error("Please enter login details");
     }
 
-    // 2. Find User (Email ya Username dono se search karega)
-    // password ko select mein rakha hai comparison ke liye
-    const user = await USER.findOne({ 
+    // 2. Find Admin 
+    const user = await ADMIN.findOne({ 
         $or: [
-            { userName: loginid },
-            { email: loginid }
+            { loginid: loginid }
         ] 
-    }).select('userName password email firstName lastName profilePic dob gender accountStatus');
+    }).select('firstname lastname password');
     
     if (!user) {
         // Security tip: Zyada specific mat bano (e.g., "User not found") 
         // taaki attackers ko pata na chale ki kaunsi detail galat hai.
-        throw new Error("Wrong email ID or Password");
+        throw new Error("Wrong login details ");
     }
 
     // 3. Password Verification
@@ -50,20 +49,19 @@ async function login(loginid, password) {
         const loginToken = jwt.sign(
             tokenData, 
             process.env.JWT_SECRET_KEY, 
-            { expiresIn: '30d' }
+            { expiresIn: '1d' }
         );
         
-        let userInfo = new Object()
-        userInfo.userName = tokenData.userName
-        userInfo.profilePic = tokenData.profilePic
-        userInfo.isloggedin = true
+        let adminInfo = new Object()
+        adminInfo.firstname = tokenData.firstname
+        adminInfo.lastname = tokenData.lastname
+        adminInfo.isloggedin = true
 
-        console.log("TOKEN DATA :", tokenData);
         
         
         return {
             token: loginToken,
-            user: userInfo,
+            user: adminInfo,
             message: "Login verified...",
             success: true
         };
@@ -74,53 +72,30 @@ async function login(loginid, password) {
     }
 }
 
-async function signup(email, password, userName) {
-    console.log("Signup services called");
+async function signup(firstname, lastname) {
+    console.log("Add admin services called");
     
-     if (!email || !password || !userName) {
-        throw new Error("Please enter signup details");
+     if (!firstname || !lastname) {
+        throw new Error("Please enter required details");
     }
 
-    // Check if user alredy exist
-    try {
-        
-        const userExists = await USER.findOne({
-            $or: [
-                { email: email },
-                { userName: userName }
-            ]
-        });
     
-        if (userExists) {
-            if (userExists.email === email && userExists.userName === userName) {
-                throw new Error("Email and Username already taken");
-                
-            } else if (userExists.email === email) {
-                throw new Error("Email already registered");
-                
-            } else {
-                throw new Error("Username already taken");
-                
-            }
-        }
-    } catch (error) {
-        console.error(error)
-        throw new Error(error.message);
-        
-    }
 
     // Create Account
     try {
         
-        const newUser = new USER({
-            email,
-            userName,
-            password: await bcrypt.hash(password, 10)
+        const randompass = await (crypto.randomBytes(10).toString('hex'));
+        const newUser = new ADMIN({
+            firstname,
+            lastname,
+            loginid: await crypto.randomBytes(10).toString('hex'),
+            password: await bcrypt.hash(randompass, 10)
         })
         console.log("New User :",newUser);
         
         await newUser.save();
 
+        newUser.password = randompass
         return newUser;
 
     } catch (error) {

@@ -18,8 +18,8 @@ router.get('/logout', verifyToken, async(req, res)=>{return res.json({msg: "Are 
 router.post('/logout', verifyToken, authController.logout);
 
 // Signup route
-// router.get('/signup', async(req,res)=>{return res.json({msg: `Create new ccount`})});
-// router.post('/signup', loginLimiter, validateSignup, authController.signup);
+router.get('/addadmin', async(req,res)=>{return res.json({msg: `Add new admin`})});
+router.post('/addadmin', loginLimiter, validateSignup, authController.signup);
 
 
 

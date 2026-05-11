@@ -16,20 +16,17 @@ const loginSchema = Joi.object({
 
 // Define rules for Signup
 const signupSchema = Joi.object({
-    userName: Joi.string().required().messages({
-        'string.empty': 'Username is required',
-        'any.required': 'username is required'
+    firstname: Joi.string().required().messages({
+        'string.empty': 'first name is required',
+        'any.required': 'first name is required'
     }),
 
-    email: Joi.string().required().messages({
-        'string.empty': 'Email ID is required',
-        'any.required': 'Email ID is required'
+    lastname: Joi.string().required().messages({
+        'string.empty': 'last name is required',
+        'any.required': 'last name is required'
     }),
     
-    password: Joi.string().min(4).required().messages({
-        'string.min': 'Password must be at least 4 characters long',
-        'string.empty': 'Password is required'
-    })
+    
 });
 
 
@@ -37,7 +34,6 @@ const signupSchema = Joi.object({
 
 // Middleware function
 const validateLogin = (req, res, next) => {
-    console.log("Validator ::", req.body);
     
     const { error } = loginSchema.validate(req.body);
     
@@ -74,6 +70,6 @@ const validateSignup = (req, res, next) => {
 
 
 module.exports = { 
-    validateLogin
-    // validateSignup
+    validateLogin,
+    validateSignup
  };
