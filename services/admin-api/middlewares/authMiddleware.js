@@ -14,7 +14,7 @@ const verifyToken = (req, res, next) => {
         // Service ko bulaya kaam karne ke liye
         const userData = SecurityService.verifyLoginToken(token);
         req.user = userData; 
-        console.log("User verified:");
+        // console.log("User verified:");
         next();
     } catch (err) {
         console.log("Error verifying token:", err.message);

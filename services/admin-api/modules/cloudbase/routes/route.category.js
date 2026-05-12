@@ -15,10 +15,10 @@ const CategoryController = require('../controllers/category.controller');
 router.post('/add', CategoryController.addCategory)
 
 // Get all categories
-router.get('list', CategoryController.getAllCategories)
+router.get('/list', CategoryController.getAllCategories)
 
 // Update category
-router.post('update', CategoryController.updateCategory)
+router.post('/update', CategoryController.updateCategory)
 
 
 

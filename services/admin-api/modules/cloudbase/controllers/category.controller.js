@@ -3,6 +3,7 @@ const categoryService = require('../services/category.service');
 // 1. Add Category
 const addCategory = async (req, res, next) => {
     try {
+        
         const { name, description, thumbnail } = req.body;
 
         // [Controller Check]: Body validation 
@@ -40,13 +41,19 @@ const getAllCategories = async (req, res, next) => {
 
 // 3. Update
 const updateCategory = async (req, res, next) => {
+    console.log("Tring to update");
     try {
-        const { id } = req.params;
-
-        // [Controller Check]: ID check (Agar ID format hi galat hai)
-        if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-            return res.status(400).json({ success: false, message: "Invalid Category ID format" });
+        
+        const { id } = req.query;
+        console.log("ID :", id);
+        
+        if (!id) { 
+            return res.status(400).json({ success: false, message: "Category not provided" });
         }
+        // [Controller Check]: ID check (Agar ID format hi galat hai)
+        // if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+        //     return res.status(400).json({ success: false, message: "Invalid Category ID format" });
+        // }
 
         const updated = await categoryService.updateCategoryById(id, req.body);
         
@@ -56,6 +63,8 @@ const updateCategory = async (req, res, next) => {
 
         res.status(200).json({ success: true, data: updated });
     } catch (error) {
+        console.log(error);
+        
         next(error);
     }
 };

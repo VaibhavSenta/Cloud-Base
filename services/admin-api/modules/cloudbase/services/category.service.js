@@ -1,3 +1,4 @@
+const { name } = require('ejs');
 const { CATEGORYLIST } = require('../models/central.models');
 const slugify = require('slugify');
 
@@ -31,8 +32,17 @@ const createCategory = async (categoryData) => {
 
 // 2. Fetch Categories 
 
-const fetchAllCategories = async () => {
-    return await CATEGORYLIST.find().sort({ createdAt: -1 });
+const fetchAllCategories = async (page = 1, limit = 50) => {
+    const skip = (page - 1) * limit;
+    const total = await CATEGORYLIST.countDocuments(filter); // Frontend ko pagination dikhane ke liye total chahiye hoga
+
+    const categories = await CATEGORYLIST.find(filter)
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit);
+    
+
+    return { categories, total, page, pages: Math.ceil(total / limit) };
 };
 
 
@@ -44,11 +54,23 @@ const updateCategoryById = async (id, updateData) => {
         updateData.slug = slugify(updateData.name, { lower: true, strict: true });
     }
 
-    return await CATEGORYLIST.findByIdAndUpdate(
-        id,
-        { $set: updateData },
-        { new: true, runValidators: true }
-    );
+
+    try {
+        
+        const result = await CATEGORYLIST.findOneAndUpdate(
+            {name: id},
+            { $set: updateData },
+            { new: true, runValidators: true }
+        );
+        return result
+
+    } catch (error) {
+        console.log(`=============== Error in category.service.js   START ===============`);
+        console.log(error);
+        console.log(`=============== Error in category.service.js   END ===============`);
+        
+        throw error
+    }
 };
 
 module.exports = {
