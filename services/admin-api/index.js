@@ -31,10 +31,6 @@ mongoose.connect(connectionString)
 .catch(err => console.error('Could not connect to MongoDB . . . . ', err))
 
 
-// Check if the ADMINS were already configured or not
-
-
-
 
 
 

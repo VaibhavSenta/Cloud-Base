@@ -8,44 +8,14 @@ const router = express.Router({mergeParams: true});
 
 
 // Home page
-router.get('/', (req, res)=>{
-
-    // Get basic detail of cloud base platform
-    console.log("Getting basic details...");
-    const basicDetails = new Object({
-        noOfUsers: 36,
-        activeUsers: 35,
-
-    })
-    console.log("Complete");
-    
-
-    return res.json({
-        success: true,
-        msg: "Accesseing Cloud Base",
-        basicDetails
-    })
-})
+const { CATEGORIES } = require('./route.category')
+router.use('/mediacategories', CATEGORIES )
 
 
 
 
 
-// Add categories
-router.get('/mediacategories', async(req, res)=>{
-    console.log("Adding media categories ...");
 
-    const { CATEGORYLIST } = require('../models/central.models');
-
-    const a = await CATEGORYLIST
-
-    console.log(a);
-    
-    return res.json({
-        success: true
-    })
-    
-})
 
 
 
