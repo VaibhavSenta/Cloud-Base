@@ -7,11 +7,13 @@ const router = express.Router({mergeParams: true});
 
 
 
-// Home page
+// Categories
 const { CATEGORIES } = require('./route.category')
 router.use('/mediacategories', CATEGORIES )
 
-
+// Items
+const { ITEM } = require('./route.item');
+router.use('/mediaitems', ITEM);
 
 
 

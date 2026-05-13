@@ -14,7 +14,7 @@ const itemSchema = new mongoose.Schema({
     },
     category: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'CATEGORYLIST', // Category table se connection
+        ref: 'CATEGORYLIST',
         required: true
     },
     description: {
@@ -30,13 +30,19 @@ const itemSchema = new mongoose.Schema({
 
     downloadUrl: {
         type: String, // Actual content/file ka link
-        required: true
+        required: false,
+        default: null
     },
 
 
     // FLEXIBLE METADATA: Dynamic fields will be here accordig to category
     metadata: {
         type: mongoose.Schema.Types.Mixed, 
+        default: {}
+    },
+    // METADATA of original file caried with the file by default
+    originalFileDetails: {
+        type: mongoose.Schema.Types.Mixed,
         default: {}
     },
 
@@ -59,7 +65,8 @@ const itemSchema = new mongoose.Schema({
         default: 0
     }
 }, { 
-    timestamps: true // createdAt aur updatedAt automatic handle honge
+    timestamps: true, // createdAt aur updatedAt automatic handle honge
+    minimize: false
 });
 
 

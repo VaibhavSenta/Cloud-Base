@@ -1,4 +1,5 @@
 const { ITEMLIST } = require('../models/central.models');
+// require('../models/categoryList');
 const slugify = require('slugify');
 
 const createItemDetails = async (itemData) => {
