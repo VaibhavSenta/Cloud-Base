@@ -49,7 +49,7 @@ const startUpload = (req, res) => {
                     const storageEntry = await storageCollection.insertOne({
                         fileId: driveResponse.id, // default by google drive
                         originalName: filename,
-                        uniqueName: `${Date.now()}-${filename}`, // jo Collaction me uniq hoga
+                        uniqueName: driveResponse.name, // jo Collaction me uniq hoga
                         mimeType: mimeType,
                         size: parseInt(req.headers['content-length']), 
                         provider: 'google-drive',

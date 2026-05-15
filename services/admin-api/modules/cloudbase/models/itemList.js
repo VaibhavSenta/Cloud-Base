@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { type } = require('os');
 
 const itemSchema = new mongoose.Schema({
     title: {
@@ -22,11 +23,20 @@ const itemSchema = new mongoose.Schema({
         trim: true,
         default: ""
     },
+    hasMultipleFiles: {
+        type: Boolean,
+        default: false
+    },
     thumbnail: {
         type: String, // Thumbnail image ka URL
         default: null
     },
 
+    // fileIds of selected files from 'Storage'
+    fileReferences: [ { 
+        type: [mongoose.Schema.Types.Mixed],
+        default: []
+    } ],
 
     downloadUrl: {
         type: String, // Actual content/file ka link
@@ -40,10 +50,11 @@ const itemSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.Mixed, 
         default: {}
     },
+    
     // METADATA of original file caried with the file by default
     originalFileDetails: {
-        type: mongoose.Schema.Types.Mixed,
-        default: {}
+        type: [mongoose.Schema.Types.Mixed],
+        default: [] 
     },
 
     // Esy for filer: It will becomes true when file will be uploade
@@ -59,6 +70,10 @@ const itemSchema = new mongoose.Schema({
     isActive: {
         type: Boolean,
         default: true
+    },
+    isArchived: {
+        type: Boolean,
+        default: false
     },
     views: {
         type: Number,
