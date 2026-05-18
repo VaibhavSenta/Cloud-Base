@@ -13,7 +13,7 @@ const globalErrorHandler = require('./middlewares/errorMiddleware');
 
 
 const port = process.env.PORT || 5001;
-const connectionString = process.env.CONNECTION_URI || "mongodb://localhost:27017/cloudbase"
+const connectionString = process.env.CONNECTION || "mongodb://localhost:27017/cloudbase"
 
 
 
