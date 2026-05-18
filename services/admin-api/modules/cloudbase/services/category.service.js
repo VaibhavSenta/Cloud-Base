@@ -34,6 +34,9 @@ const createCategory = async (categoryData) => {
 
 const fetchAllCategories = async (page = 1, limit = 50) => {
     const skip = (page - 1) * limit;
+
+    const filter = { };
+
     const total = await CATEGORYLIST.countDocuments(filter); // Frontend ko pagination dikhane ke liye total chahiye hoga
 
     const categories = await CATEGORYLIST.find(filter)

@@ -12,7 +12,7 @@ const checkLoginStatus = async (req, res) => {
     const decoded = jwt.verify(loginToken, process.env.JWT_SECRET_KEY);
     return res.json({
       msg: "Already logged in",
-      redirectUrl: "/",
+      redirectUrl: "/dashboard",
       user: decoded,
     });
   } catch (err) {
@@ -50,6 +50,7 @@ const signup = async (req, res, next) => {
 
 // Login controller
 const login = async (req, res, next) => {
+  
   const { loginid, password } = req.body;
 
   // 1. Check if alredy loggedin
@@ -89,7 +90,7 @@ const login = async (req, res, next) => {
 
     return res.json({
       msg: "Login successful",
-      redirectUrl: "/",
+      redirectUrl: "/dashboard",
       user: result.user,
       success: true,
     });

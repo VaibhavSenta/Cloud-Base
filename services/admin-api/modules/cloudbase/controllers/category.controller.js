@@ -27,6 +27,8 @@ const addCategory = async (req, res, next) => {
 const getAllCategories = async (req, res, next) => {
     try {
         
+        console.log("Fatching Cat List...");
+        
         const categories = await categoryService.fetchAllCategories();
         
         res.status(200).json({ 

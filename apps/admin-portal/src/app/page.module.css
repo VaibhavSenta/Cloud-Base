@@ -1,0 +1,100 @@
+.loginContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0f0f0f;
+  padding: 20px;
+}
+
+.loginCard {
+  width: 100%;
+  max-width: 400px;
+  background: #161616;
+  border: 1px solid #262626;
+  border-radius: 12px;
+  padding: 32px 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.logoText {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.logoText span {
+  color: #0070f3; /* Premium Neon Blue Accent */
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #888888;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #cccccc;
+}
+
+/* Mobile & Touch Friendly Inputs */
+.input {
+  width: 100%;
+  height: 48px; /* Tapping space for thumbs on mobile */
+  background: #222222;
+  border: 1px solid #333333;
+  border-radius: 8px;
+  padding: 0 16px;
+  color: #ffffff;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input:focus {
+  border-color: #0070f3;
+  box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.2);
+}
+
+/* Premium Custom Button Style */
+.submitBtn {
+  width: 100%;
+  height: 48px;
+  background: #0070f3;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin-top: 8px;
+}
+
+.submitBtn:hover {
+  background: #0051a8;
+}
+
+.submitBtn:active {
+  background: #004085;
+}
