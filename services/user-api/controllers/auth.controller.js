@@ -22,7 +22,6 @@ const checkLoginStatus = async (req, res) => {
 
 
 const signup = async (req, res, next) => {
-    console.log("Auth controller called");
     const { email, password, userName } = req.body;
 
     

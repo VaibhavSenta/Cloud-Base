@@ -11,7 +11,7 @@ router.use('/uploads', express.static("uploads"))
 
 // GET routes =========================================================================
 router.get('/', varifyToken, async (req, res) => {
-    console.log("New request to movie route");
+    // console.log("New request to movie route");
 
     const { USER } = require('../models/user');
     const { MOVIE, } = require('../models/movies');

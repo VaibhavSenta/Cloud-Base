@@ -11,7 +11,7 @@ router.use('/uploads', express.static("uploads"))
 
 // GET routes =========================================================================
 router.get('/', varifyToken, async (req, res) => {
-    console.log("New request to movie route");
+    // console.log("New request to movie route");
 
     const { USER } = require('../models/user');
     const { MOVIE, } = require('../models/movies');
@@ -33,9 +33,9 @@ router.get('/', varifyToken, async (req, res) => {
 })
 
 router.get('/:ucbid',varifyToken ,async(req, res) => {
-    console.log("New request to movie route");
+    // console.log("New request to movie route");
     
-    console.log("Requesr perams:", req.params)
+    // console.log("Requesr perams:", req.params)
     const ucbid = req.params.ucbid
 
     const { MOVIE } = require('../models/movies');
@@ -44,7 +44,7 @@ router.get('/:ucbid',varifyToken ,async(req, res) => {
     const updateVisits = movie.totalVisis + 1;
     await MOVIE.findOneAndUpdate({ucbid: ucbid}, {totalVisis: updateVisits})
 
-    console.log("UCBID MOVIE :",movie);
+    // console.log("UCBID MOVIE :",movie);
     // render movie page with user name and movie details
     return res.render("movie",{
         userName: req.tokenUser.userName,

@@ -11,10 +11,8 @@ const { verifyOttp } = require("../controllers/user");
 
 
 router.get('/:ucbid', async(req, res)=>{
-    console.log("New request to file download.....");
     const {ucbid} = req.params;
 
-    console.log(ucbid);
 
     const path = require('path');
     const fs = require('fs');
@@ -26,7 +24,7 @@ router.get('/:ucbid', async(req, res)=>{
     if (movie) {
 
         const databasepath = movie.databasepath
-        console.log(path.basename(databasepath));
+        // console.log(path.basename(databasepath));
         
         const filePath = path.resolve(__dirname, '..', 'uploads', path.basename(databasepath))
         
@@ -45,7 +43,7 @@ router.get('/:ucbid', async(req, res)=>{
              // Create a read stream and pipe it to the response
             const fileStream = fs.createReadStream(filePath);
             fileStream.pipe(res).on('finish', async() => {
-                console.log("Downloaded ====================");
+                // console.log("Downloaded ====================");
                 const updateDownloads = movie.totalDownloads + 1;
                 await MOVIE.updateOne({ucbid: ucbid}, {totalDownloads: updateDownloads})
 

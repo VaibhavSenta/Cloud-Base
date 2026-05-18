@@ -4,9 +4,6 @@ const mongoose = require('mongoose');
 
 async function getHomeData(req, res, next) {
     // fatch require data for home
-    console.log( " Wellcome to home route.");
-    console.log('fatching all required things ..');
-    
     try {
         const categories = await mongoose.connection.db.collection('categories')
         .find({status: "active"}).project({

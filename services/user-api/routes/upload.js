@@ -9,22 +9,15 @@ const { verifyOttp } = require("../controllers/user");
 
 // UPLOAD
 router.get("/", async (req, res) => {
-  console.log("GET request on Upload page..");
+  // console.log("GET request on Upload page..");
   return res.render("upload");
 });
 
 // POST ROUTES =================================================
 router.post("/", varifyToken, async (req, res) => {
-  console.log("POST request on upload page..");
 
-  const body = req.body;
+    const body = req.body;
 
-  console.log(body);
-
-  if (body) {
-    console.log("Deta collected from user");
-
-    console.log("Selected file Type is ", body.categori);
 
     const arr1 = [
       "movie",
@@ -40,12 +33,9 @@ router.post("/", varifyToken, async (req, res) => {
       "app",
       "game",
     ];
-    console.log("Checking is this categori valid or not");
 
     arr1.forEach((categori) => {
-      console.log("Cheking ", categori, "...");
       if (body.categori === categori) {
-        console.log("Categori is valid");
 
         // Fatch user frome Data Base
         function fatchUser() {
@@ -55,9 +45,7 @@ router.post("/", varifyToken, async (req, res) => {
           const user = req.tokenUser;
 
           const profileUserName = user.userName;
-
-          console.log(profileUserName);
-
+          
           return profileUserName;
         }
 
@@ -389,17 +377,13 @@ router.post("/", varifyToken, async (req, res) => {
         return res.status(5000);
       }
     });
-  } else {
-    return console.log("No data collected from user");
-  }
+
 });
 
 // Upload movie details
 router.post("/movie/detail", varifyToken, async (req, res) => {
-  console.log("New request at movie upload....");
+  // console.log("New request at movie upload....");
   const activeUser = req.tokenUser;
-
-  console.log("Active user: " + activeUser);
 
   if (!req.body) {
     return res.status(500).json({ msg: "No data collected from user, there are some problem reciving form data" });
@@ -407,9 +391,6 @@ router.post("/movie/detail", varifyToken, async (req, res) => {
     
         const body = req.body;
         const releaseDate = new Date(body.releaseDate).toDateString()
-        console.log("=======",releaseDate);
-
-        console.log("REQUEST BODY :", body);
         const movieTitle = body.title.toUpperCase()
         const movie = {
             title: movieTitle,
@@ -438,21 +419,15 @@ router.post("/movie/detail", varifyToken, async (req, res) => {
         const uuid = new shortUniqueId({length:20})
         
         movie.ucbid = uuid.rnd()
-        
-        console.log("Server side movie OBJ :", movie);
             
         // Check if movie alredy avalable in database
         const {MOVIE} = require('../models/movies');
         const movieInDb = await MOVIE.find({ title: movieTitle });
-        console.log("MOVIE IN DB IS ::", movieInDb)
         if (movieInDb.length === 0) {
             
-            console.log("You can upload movie");
             // const newMovie = await MOVIE.create(movie);
 
             // Make a cooki for the movie object
-            
-            console.log("You will be redirected for file and poster upload");
             
             function fatchUser() {
                 const { USER } = require("../models/user");
@@ -462,8 +437,6 @@ router.post("/movie/detail", varifyToken, async (req, res) => {
       
                 const profileUserName = user.userName;
       
-                console.log(profileUserName);
-      
                 return profileUserName;
             }
 
@@ -472,8 +445,6 @@ router.post("/movie/detail", varifyToken, async (req, res) => {
                 userName: profileUserName,
             })
         } else {
-            
-            console.log("Mvie alredy in database....");
             return res.send("Movie alredy in database")
         }
         
@@ -512,15 +483,12 @@ const upload = multer({storage: storage})
 
 
 async function trackUpload(req,res,next) {
-  console.log("====== Movie Reciving =========");
   
   let progress = 0;
   const filesize = req.headers["content-length"];
   req.on("data", (chunk)=>{
     progress = progress + chunk.length
     const percentage = (progress / filesize) * 100;
-  
-    console.log("====",Math.round(percentage),"%","====");
   })
   next()
   
@@ -530,18 +498,8 @@ upload.fields([{name: 'poster', maxCount:1},{name: 'moviefile', maxCount:1}]),
 async(req, res)=>{
   
  
-
-  console.log("==========================================================================");
-
-  console.log("UPLOADED BODY :::",req.body);
   if(req.files) {
-    console.log("File recived");
-    console.log("UPLOADED FILES :::",req.files);
     const fileSize = req.files.moviefile[0].size;
-    console.log("UPLOADED FILES SIZE :::",fileSize);
-
-    
-    console.log("==========================================================================");
     // Get movie details from cookie moviedetails
     const movieDetails = req.cookies.moviedetails;
     const filePathResolver = path.resolve(req.files.moviefile[0]. path)
@@ -559,17 +517,13 @@ async(req, res)=>{
     movieDetails.size = fileSize
     movieDetails.databasepath = filePathRelative
     movieDetails.originalFileData = req.files.moviefile[0]
-    
-    console.log("Movie Details :::",movieDetails);
     // Save movie details to database
     const { MOVIE } = require('../models/movies');
     const uploadMovie = await MOVIE.create(movieDetails)
-    console.log("Movie uploaded to database");
 
     return res.status(200).clearCookie("moviedetails").send("Movie uploaded successfully .....")
 
   } else {
-    console.log("File not recived");
     return res.send("Please send file..")
   }
 

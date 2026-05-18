@@ -57,8 +57,6 @@ async function login(loginid, password) {
         userInfo.userName = tokenData.userName
         userInfo.profilePic = tokenData.profilePic
         userInfo.isloggedin = true
-
-        console.log("TOKEN DATA :", tokenData);
         
         
         return {
@@ -75,7 +73,7 @@ async function login(loginid, password) {
 }
 
 async function signup(email, password, userName) {
-    console.log("Signup services called");
+
     
      if (!email || !password || !userName) {
         throw new Error("Please enter signup details");
@@ -117,14 +115,11 @@ async function signup(email, password, userName) {
             userName,
             password: await bcrypt.hash(password, 10)
         })
-        console.log("New User :",newUser);
-        
         await newUser.save();
 
         return newUser;
 
     } catch (error) {
-        console.log(`Error creating new account :`,error);
         throw new Error(error);
         
     }
