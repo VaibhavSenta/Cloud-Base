@@ -5,7 +5,7 @@ const nextConfig = {
       {
         // 1. Admin API ke liye short proxy
         source: '/api/admin/:path*',
-        destination: 'http://localhost:5001/api/v1/:path*', // Seedha api/v1 par bhejega
+        destination: `${process.env.BACKEND_URL}/api/v1/:path*`, // Seedha api/v1 par bhejega
       },
       {
         // 2. Upload API ke liye short proxy
