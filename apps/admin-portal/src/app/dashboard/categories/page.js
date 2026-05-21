@@ -10,7 +10,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 export default function CategoriesPage() {
 
 
-  console.log("Exicuting JS .....");
+  // console.log("Exicuting JS .....");
   
   const [name, setName] = useState('');
   const [description, setDescription] = useState(''); 
@@ -85,7 +85,7 @@ export default function CategoriesPage() {
     setSuccessMsg('');
 
     try {
-      await axios.post('/api/admin/category/addcategory', {
+      await axios.post('/api/admin/cloudbase/mediacategories/add', {
         name: name.trim(),
         description: description.trim(),
         slug: slug.trim()
@@ -112,7 +112,7 @@ export default function CategoriesPage() {
     if (!window.confirm('Are you sure you want to delete this category?')) return;
     
     try {
-      await axios.delete(`/api/admin/category/deletecategory/${id}`);
+      await axios.post(`/api/admin/cloudbase/mediacategories/update?id=${id}`, {isActive: false});
       
       // FIX: Cache refresh trigger on delete
       queryClient.invalidateQueries({ queryKey: ['categories'] });
@@ -208,7 +208,7 @@ export default function CategoriesPage() {
                       <div className={styles.actions}>
                         <button 
                           className={styles.deleteBtn}
-                          onClick={() => handleDelete(cat._id)}
+                          onClick={() => handleDelete(cat.name)}
                         >
                           Delete
                         </button>

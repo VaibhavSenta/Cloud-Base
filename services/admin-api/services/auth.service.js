@@ -22,11 +22,7 @@ async function login(loginid, password) {
     }
 
     // 2. Find Admin 
-    const user = await ADMIN.findOne({ 
-        $or: [
-            { loginid: loginid }
-        ] 
-    }).select('firstname lastname password');
+    const user = await ADMIN.findOne({loginid: loginid}).select('firstname lastname password');
     
     if (!user) {
         // Security tip: Zyada specific mat bano (e.g., "User not found") 

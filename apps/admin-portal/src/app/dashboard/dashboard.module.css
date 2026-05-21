@@ -1,0 +1,411 @@
+/* apps/admin-portal/src/app/dashboard/dashboard.module.css */
+
+.dashboardWrapper {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.sectionBlock {
+  margin-bottom: 40px;
+  width: 100%;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.sectionHeader h2 {
+  font-family: 'Geist', sans-serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: #e0e3e5; /* var(--on-surface) fallback */
+  margin: 0;
+}
+
+.sectionSub {
+  font-size: 12px;
+  color: #bcc9cd; /* var(--on-surface-variant) fallback */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* 1. Infrastructure Stat Cards Grid Engine */
+.gridStats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+
+.statCard {
+  background-color: #1d2022; /* var(--surface-container) */
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 140px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.statCard:hover {
+  background-color: #272a2c; /* var(--surface-container-high) */
+  transform: translateY(-2px);
+}
+
+.statTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  width: 100%;
+}
+
+.statIcon {
+  padding: 12px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* width: auto; */
+  height: 44px;
+}
+
+.statBadge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.statValue {
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 4px;
+  font-family: 'Geist', sans-serif;
+  color: #e0e3e5;
+}
+
+.statLabel {
+  font-size: 14px;
+  color: #bcc9cd;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 2. Controlled Alert Banner (Overflow Isolated) */
+.alertBanner {
+  background-color: rgba(147, 0, 10, 0.15);
+  border: 1px solid rgba(255, 180, 171, 0.2);
+  border-radius: 16px;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.alertIconBox {
+  width: max-content;
+  height: 40px;
+  border-radius: 100px;
+  padding: 10px 10px;
+  background-color: #ffb4ab; /* var(--error) */
+  color: #690005; /* var(--on-error) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.alertContent {
+  flex-grow: 1;
+  min-width: 0; /* Prevents long string layout breaks */
+}
+
+.alertTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffb4ab;
+  margin-bottom: 2px;
+}
+
+.alertText {
+  font-size: 14px;
+  color: #bcc9cd;
+  line-height: 1.4;
+  word-break: break-word; /* Safe boundary wrap */
+}
+
+.alertBtn {
+  background-color: rgba(255, 180, 171, 0.2);
+  color: #ffb4ab;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.alertBtn:hover {
+  background-color: rgba(255, 180, 171, 0.3);
+}
+
+/* 3. Service Hub Responsive Grid Architecture */
+.gridServices {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+
+.serviceCard {
+  background-color: #1d2022;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 24px;
+  border-left: 4px solid #10b981; /* Default stable state color code */
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.serviceCardMaintMode {
+  composes: serviceCard;
+  border-left-color: #f59e0b; /* Maintenance mode amber switch edge */
+}
+
+.serviceTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.serviceIcon {
+  width: auto;
+  height: 44px;
+  padding: 10px 10px;
+  background-color: #0b0f10;
+  border: 1px solid rgba(61, 73, 76, 0.3);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4cd7f6;
+}
+
+.serviceInfo {
+  min-width: 0;
+  margin-bottom: 16px;
+}
+
+.serviceInfo h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #e0e3e5;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.serviceDomain {
+  font-size: 13px;
+  color: #bcc9cd;
+  word-break: break-all; /* Fixed overflow parameters for subdomains */
+}
+
+.serviceStats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 12px;
+}
+
+.trafficBadge {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #10b981;
+  padding: 4px 8px;
+  background: rgba(16, 185, 129, 0.1);
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.trafficBadgeWarning {
+  composes: trafficBadge;
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.activeCount {
+  font-size: 12px;
+  color: #bcc9cd;
+  white-space: nowrap;
+}
+
+.manageBtn {
+  width: 100%;
+  padding: 10px;
+  background-color: #3d494c;
+  color: #e0e3e5;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.manageBtn:hover {
+  background-color: #869397;
+}
+
+/* Custom Checkbox Slider UI */
+.switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  width: 40px;
+  height: 20px;
+  background-color: #323537;
+  border-radius: 999px;
+  position: relative;
+  transition: background 0.3s;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background-color: #869397;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.switch input:checked + .slider {
+  background-color: #4cd7f6;
+}
+
+.switch input:checked + .slider::before {
+  transform: translateX(20px);
+  background-color: #003640;
+}
+
+/* 4. Isolated Table Framework (Scrollable Layer Protection) */
+.tableOuterWrapper {
+  width: 100%;
+  background-color: #0b0f10;
+  border: 1px solid rgba(61, 73, 76, 0.2);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.tableContainer {
+  width: 100%;
+  overflow-x: auto; /* Absolute wrap shield for table boxes */
+  -webkit-overflow-scrolling: touch;
+}
+
+.tableElement {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  min-width: 600px; /* Forces soft scrolling on small viewports without page stretch */
+}
+
+.tableElement th {
+  background-color: #1d2022;
+  color: #bcc9cd;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 14px 24px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tableElement td {
+  padding: 16px 24px;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(61, 73, 76, 0.1);
+  color: #bcc9cd;
+  vertical-align: middle;
+}
+
+.tableElement tr:last-child td {
+  border-bottom: none;
+}
+
+.tableElement tr:hover td {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.statusPill {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.pillSuccess {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.pillProgress {
+  background: rgba(76, 215, 246, 0.1);
+  color: #4cd7f6;
+}
+
+/* Global Shimmer Control */
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+  background-size: 200% 100%;
+  animation: animationShimmer 2s infinite linear;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.15;
+}
+
+@keyframes animationShimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
