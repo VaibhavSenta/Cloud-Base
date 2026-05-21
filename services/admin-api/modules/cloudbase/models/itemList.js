@@ -85,8 +85,6 @@ const itemSchema = new mongoose.Schema({
 });
 
 
-itemSchema.index({ title: 'text', slug: 1 });
-
 const ITEMLIST = mongoose.model('ITEMLIST', itemSchema);
 
 module.exports = {
