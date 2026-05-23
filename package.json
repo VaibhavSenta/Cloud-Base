@@ -10,7 +10,12 @@
   "scripts": {
     "dev:api": "npm run dev --workspace=services/user-api",
     "dev:portal": "npm run dev --workspace=apps/user-portal",
-    "dev": "npx concurrently \"npm run dev:api\" \"npm run dev:portal\"",
+
+    "dev:admapi": "npm run dev --workspace=services/admin-api",
+    "dev:admportal": "npm run dev --workspace=apps/admin-portal",
+    
+    "dev:admuploadapi": "npm run dev --workspace=services/upload-api",
+    "dev": "npx concurrently \"npm run dev:api\" \"npm run dev:portal\" \"npm run dev:admportal\" \"npm run dev:admapi\" \"npm run dev:admuploadapi\"",
     "install:all": "npm install"
   },
   "devDependencies": {

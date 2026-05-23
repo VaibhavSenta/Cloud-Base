@@ -13,9 +13,36 @@ const {AUTH} = require('./auth.route');
 router.use('/auth', AUTH);
 
 
+// Managed Apps =======================================================================
+const { MANAGEDAPPS } = require('./managedapps.route')
+router.use('/managedapps', verifyToken, MANAGEDAPPS)
 
 
 
+
+
+
+
+
+// Main Dashboard routes = =============================================================================
+const { MAINDASHBOARD } = require('./dashboard.route')
+router.use('/dashboard', verifyToken, MAINDASHBOARD)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ====================== ALL APPS ROUTES ========================================
 
 
 

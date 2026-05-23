@@ -1,66 +1,45 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import AdminLayout from '@/components/admin/AdminLayout/AdminLayout';
 import styles from './dashboard.module.css';
 import { useRouter } from 'next/navigation';
-import App from 'next/app';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 
 export default function DashboardPage() {
-
-
   const router = useRouter();
+  const queryClient = useQueryClient();
 
-  const Apps = [
-    {
-      title: "Account",
-      name: "account",
-      maintanance: false,
-      userUrl: "account.cloudbase.com",
-      traffic: "Stable",
-      actives: "1.5k",
+  const { data: apps = [], isLoading, error, refetch, isFetching } = useQuery({
+    queryKey: ['appsList'],
+    queryFn: async () => {
+      // 🎯 Cache busting parameter taaki browser purana empty response na pakde
+      const res = await axios.get(`/api/admin/managedapps?v=${Date.now()}`);
+      if (res.status !== 200) {
+        throw new Error("Error getting app list..");
+      }
+      return res.data.data || []; // Ensure it's at least an empty array
     },
-    {
-      title: "Chat",
-      name: "chat",
-      maintanance: true,
-      userUrl: "chat.cloudbase.com",
-      traffic: "High",
-      actives: "8.4k",
-    },
-    {
-      title: "Movies",
-      name: "movies",
-      maintanance: false,
-      userUrl: "movies.cloudbase.com",
-      traffic: "Stable",
-      actives: "2.5k",
-    },
-    {
-      title: "Games",
-      name: "games",
-      maintanance: false,
-      userUrl: "games.cloudbase.com",
-      traffic: "Stable",
-      actives: "5.5k",
-    }
-  ]
-
-
-  // Service configuration maintenance mode states
-  const [maintenanceMode, setMaintenanceMode] = useState({
-    account: false,
-    chat: false,
-    movies: false, // books ko movies kar diya
-    games: false,
+    refetchOnWindowFocus: true,
   });
 
-  const toggleMaintenance = (serviceKey) => {
-    setMaintenanceMode((prevStates) => ({
-      ...prevStates,
-      [serviceKey]: !prevStates[serviceKey],
-    }));
-  };
+  // 🎯 FORCE SYNC: Jab bhi page pe wapis aaye, ek baar zor se fetch karo
+  React.useEffect(() => {
+    refetch();
+  }, [refetch]);
+
+  // 2. TOGGLE MAINTENANCE MUTATION
+  const toggleMaintMutation = useMutation({
+    mutationFn: async (appId) => {
+      const res = await axios.patch(`/api/admin/managedapps/toggle-maintenance/${appId}`);
+      return res.data;
+    },
+    onSuccess: () => {
+      // Invalidate cache to force a fresh fetch instantly
+      queryClient.invalidateQueries({ queryKey: ['appsList'] });
+    },
+  });
 
   return (
     <AdminLayout>
@@ -147,47 +126,53 @@ export default function DashboardPage() {
           </div>
 
           <div className={styles.gridServices}>
-            
-            
-            {/* Account Management Service */}
+            {isLoading ? 
+              <div style={{ color: '#bcc9cd' }}>Loading Data ...</div>
+             : error ? (
+                /* 🎯 Agar backend se 401 ya koi error aaya toh ye dikhega */
+                <div style={{ color: 'var(--error)', padding: '20px', gridColumn: '1/-1' }}>
+                  ❌ Backend Error: {error.response?.data?.msg || error.message}
+                  <br />
+                  <button onClick={() => refetch()} className={styles.manageBtn} style={{ width: 'auto', marginTop: '12px', padding: '6px 16px' }}>
+                    Retry Fetch
+                  </button>
+                </div>
+                
+              ) :
 
-
-
-            {Apps.map((details, index) => (
-              // 1. Yahan class ko dynamic kiya details.name se
-              <div key={index} className={maintenanceMode[details.name] ? styles.serviceCardMaintMode : styles.serviceCard}>
-                <div className={styles.serviceTop}>
-                  <div className={styles.serviceIcon}>
-                    <span className="material-symbols-outlined">{details.title}</span>
+              apps.map((details, index) => (
+                <div key={index} className={details.inMaintenance ? styles.serviceCardMaintMode : styles.serviceCard}>
+                  <div className={styles.serviceTop}>
+                    <div className={styles.serviceIcon}>
+                      <span className="material-symbols-outlined">{details.icon || 'apps'}</span>
+                    </div>
+                    <label className={styles.switch}>
+                      <input 
+                        type="checkbox"
+                        checked={details.inMaintenance || false} 
+                        onChange={() => toggleMaintMutation.mutate(details._id)} // Fixed: Triggers mutation with DB id
+                        disabled={toggleMaintMutation.isPending} // Spam protection
+                      />
+                      <span className={styles.slider}></span>
+                    </label>
                   </div>
-                  <label className={styles.switch}>
-                    <input 
-                      type="checkbox"
-                      // 2. Yahan checked ko bhi dynamic kiya details.name se
-                      checked={maintenanceMode[details.name]} 
-                      onChange={() => toggleMaintenance(details.name)}
-                    />
-                    <span className={styles.slider}></span>
-                  </label>
+                  <div className={styles.serviceInfo}>
+                    <h3>{details.title}</h3>
+                    <p className={styles.serviceDomain}>{details.userUrl}</p>
+                  </div>
+                  <div className={styles.serviceStats}>
+                    {details.traffic === "High" ? (
+                      <span className={styles.trafficBadgeWarning}>{details.traffic}</span>
+                    ) : (
+                      <span className={styles.trafficBadge}>{details.traffic}</span>
+                    )}
+                    <span className={styles.activeCount}>{details.actives} active</span>
+                  </div>
+                  <button onClick={() => router.push(`/${details.name}`)} className={styles.manageBtn}>Manage Hub</button>
                 </div>
-                <div className={styles.serviceInfo}>
-                  <h3>{details.title}</h3>
-                  <p className={styles.serviceDomain}>{details.userUrl}</p>
-                </div>
-                <div className={styles.serviceStats}>
-                  {details.traffic === "High" ? (
-                    <span className={styles.trafficBadgeWarning}>{details.traffic}</span>
-                  ) : (
-                    <span className={styles.trafficBadge}>{details.traffic}</span>
-                  )}
-                  <span className={styles.activeCount}>{details.actives} active</span>
-                </div>
-                <button onClick={()=> router.push(`/${details.name}`) } className={styles.manageBtn}>Manage Hub</button>
-              </div>
-            ))}
+              ))
 
-
-            
+            }
           </div>
         </section>
 

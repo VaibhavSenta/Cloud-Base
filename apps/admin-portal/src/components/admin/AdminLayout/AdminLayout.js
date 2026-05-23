@@ -94,20 +94,20 @@ export default function AdminLayout({ children }) {
           <Link href="/dashboard" className={`${styles.navItem} ${pathname === '/dashboard' ? styles.active : ''}`} onClick={closeSidebar}>
             <span>Dashboard</span>
           </Link>
-          <Link href="/dashboard/items" className={`${styles.navItem} ${pathname === '/dashboard/items' ? styles.active : ''}`} onClick={closeSidebar}>
+          <Link href="/dashboard/apps" className={`${styles.navItem} ${pathname === '/dashboard/items' ? styles.active : ''}`} onClick={closeSidebar}>
             <span>Apps</span>
           </Link>
-          <Link href="/dashboard/storage" className={`${styles.navItem} ${pathname === '/dashboard/storage' ? styles.active : ''}`} onClick={closeSidebar}>
+          <Link href="/dashboard/users" className={`${styles.navItem} ${pathname === '/dashboard/storage' ? styles.active : ''}`} onClick={closeSidebar}>
             <span>Users</span>
           </Link>
-          <Link href="/dashboard/categories" className={`${styles.navItem} ${pathname === '/dashboard/categories' ? styles.active : ''}`} onClick={closeSidebar}>
+          <Link href="/dashboard/logs" className={`${styles.navItem} ${pathname === '/dashboard/categories' ? styles.active : ''}`} onClick={closeSidebar}>
             <span>Logs</span>
           </Link>
 
         </nav>
 
         <div className={styles.navList}>
-          <Link href="/dashboard/categories" className={`${styles.navItem} ${pathname === '/dashboard/categories' ? styles.active : ''}`} onClick={closeSidebar}>
+          <Link href="/dashboard/settings" className={`${styles.navItem} ${pathname === '/dashboard/categories' ? styles.active : ''}`} onClick={closeSidebar}>
             <span>Settings</span>
           </Link>
 
