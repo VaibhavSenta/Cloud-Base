@@ -4,12 +4,25 @@ const jwt = require("jsonwebtoken");
 // Check Login Status
 const checkLoginStatus = async (req, res) => {
   const loginToken = req.cookies.login_token;
+  const { SESSION } = require('../models/centralstation');
+  const crypto = require('crypto');
+
   if (!loginToken) {
     return res.json({ msg: "Please Login to account", redirectUrl: "/login" });
   }
 
   try {
     const decoded = jwt.verify(loginToken, process.env.JWT_SECRET_KEY);
+    
+    // 🎯 Session Verification in DB
+    const tokenHash = crypto.createHash('sha256').update(loginToken).digest('hex');
+    const session = await SESSION.findOne({ tokenHash, isValid: true });
+
+    if (!session) {
+      res.clearCookie("login_token");
+      return res.json({ redirectUrl: "/login", msg: "Session invalid or expired" });
+    }
+
     return res.json({
       msg: "Already logged in",
       redirectUrl: "/dashboard",
@@ -52,6 +65,8 @@ const signup = async (req, res, next) => {
 const login = async (req, res, next) => {
   
   const { loginid, password } = req.body;
+  const ip = req.ip || req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  const userAgent = req.headers['user-agent'];
 
   // 1. Check if alredy loggedin
   const loginToken = req.cookies.login_token;
@@ -62,20 +77,20 @@ const login = async (req, res, next) => {
 
       return res.status(200).json({
         msg: "Already logged in",
-        redirectUrl: "/",
+        redirectUrl: "/dashboard",
       });
     } catch (err) {
       res.clearCookie("login_token");
       return res.status(401).json({
         msg: "Session expired, Please login again",
-        redirectUrl: "/",
+        redirectUrl: "/login",
       });
     }
   }
 
   // 2. If not loggedin
   try {
-    const result = await loginToAccount(loginid, password);
+    const result = await loginToAccount(loginid, password, ip, userAgent);
 
     res.cookie("login_token", result.token, {
       httpOnly: true,
@@ -98,23 +113,35 @@ const login = async (req, res, next) => {
     console.error("Login error:", err);
     res.clearCookie("login_token");
     return res.status(401).json({ msg: err.message });
-    next(err);
   }
 };
 
 // Logout controller
 const logout = async (req, res) => {
+  const loginToken = req.cookies.login_token;
+  const { SESSION } = require('../models/centralstation');
+  const crypto = require('crypto');
+
+  if (loginToken) {
+    try {
+      const tokenHash = crypto.createHash('sha256').update(loginToken).digest('hex');
+      await SESSION.findOneAndUpdate({ tokenHash }, { isValid: false });
+    } catch (err) {
+      console.error("Error invalidating session on logout:", err);
+    }
+  }
+
   res.clearCookie("login_token", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "Lax",
-    path: "/", // To remove cookie from entire site
+    path: "/", 
   });
   res.clearCookie("user_info", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "Lax",
-    path: "/", // To remove cookie from entire site
+    path: "/", 
   });
 
   return res.status(200).json({

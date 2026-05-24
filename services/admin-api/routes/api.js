@@ -12,6 +12,9 @@ const { verifyToken } = require('../middlewares/authMiddleware');
 const {AUTH} = require('./auth.route');
 router.use('/auth', AUTH);
 
+// Admin Profile ==========================================================================
+const { PROFILE } = require('./profile.route');
+router.use('/profile', verifyToken, PROFILE);
 
 // Managed Apps =======================================================================
 const { MANAGEDAPPS } = require('./managedapps.route')

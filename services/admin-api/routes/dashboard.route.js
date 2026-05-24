@@ -6,9 +6,15 @@ const { validateLogin, validateSignup } = require('../middlewares/validator.midd
 const { loginLimiter } = require('../middlewares/rateLimiter');
 
 
+const dashboardController = require('../controllers/dashboard.controller');
+
 // Login route
 router.get('/login', authController.checkLoginStatus);
 router.post('/login', loginLimiter, validateLogin, authController.login);
+
+// Global Maintenance Mode
+router.get('/config/maintenance', verifyToken, dashboardController.getGlobalConfig);
+router.patch('/config/maintenance', verifyToken, dashboardController.toggleGlobalMaintenance);
 
 router.get('/', async (req, res)=>{
     console.log("wellcom to dashboard");

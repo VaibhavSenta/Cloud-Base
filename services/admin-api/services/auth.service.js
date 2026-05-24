@@ -1,21 +1,13 @@
 
 
 const express = require('express');
-const { ADMIN } = require('../models/centralstation');
+const { ADMIN, SESSION } = require('../models/centralstation');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 
-
-
-
-
-
-
-
-
 // Login Service
-async function login(loginid, password) {
+async function login(loginid, password, ip, userAgent) {
     // 1. Basic Validation
     if (!loginid || !password) {
         throw new Error("Please enter login details");
@@ -23,10 +15,8 @@ async function login(loginid, password) {
 
     // 2. Find Admin 
     const user = await ADMIN.findOne({loginid: loginid}).select('firstname lastname password');
-    
+
     if (!user) {
-        // Security tip: Zyada specific mat bano (e.g., "User not found") 
-        // taaki attackers ko pata na chale ki kaunsi detail galat hai.
         throw new Error("Wrong login details ");
     }
 
@@ -36,25 +26,35 @@ async function login(loginid, password) {
         throw new Error("Wrong password, Please try again");
     }
 
-    // 4. Token Generation
+    // 4. Token & Session Generation
     try {
         const tokenData = user.toObject();
-        delete tokenData.password; // Security: Password ko token data se hatao
-        
-        // JWT Sign: tokenData mein ab _id bhi hai jo backend ke kaam aayega
+        delete tokenData.password; 
+
+        // JWT Sign
         const loginToken = jwt.sign(
             tokenData, 
             process.env.JWT_SECRET_KEY, 
             { expiresIn: '1d' }
         );
-        
+
+        // 🎯 Create Active Session in DB
+        const tokenHash = crypto.createHash('sha256').update(loginToken).digest('hex');
+
+        const newSession = new SESSION({
+            adminId: user._id,
+            tokenHash: tokenHash,
+            ipAddress: ip,
+            userAgent: userAgent,
+            deviceType: userAgent.includes('Mobile') ? 'Mobile' : 'Desktop'
+        });
+        await newSession.save();
+
         let adminInfo = new Object()
         adminInfo.firstname = tokenData.firstname
         adminInfo.lastname = tokenData.lastname
         adminInfo.isloggedin = true
 
-        
-        
         return {
             token: loginToken,
             user: adminInfo,
@@ -63,7 +63,7 @@ async function login(loginid, password) {
         };
 
     } catch (err) {
-        console.error("Error making JWT token :", err);
+        console.error("Error making security session :", err);
         throw new Error("Error generating security token");
     }
 }

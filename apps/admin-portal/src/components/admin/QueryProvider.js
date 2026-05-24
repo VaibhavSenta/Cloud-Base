@@ -2,6 +2,22 @@
 
 import React, { useState, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import axios from 'axios';
+
+// 🎯 GLOBAL AXIOS INTERCEPTOR: Catch all 401s and redirect to login
+if (typeof window !== 'undefined') {
+  axios.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      // Agar backend se 401 (Unauthorized) aaye, toh seedha login par bhej do
+      if (error.response && error.response.status === 401) {
+        console.warn("Unauthorized access detected. Redirecting to login...");
+        window.location.href = '/'; 
+      }
+      return Promise.reject(error);
+    }
+  );
+}
 
 // 🎯 GLOBAL SINGLETON: Taaki window focus ya tab switch pe client re-create na ho
 let browserQueryClient = undefined;

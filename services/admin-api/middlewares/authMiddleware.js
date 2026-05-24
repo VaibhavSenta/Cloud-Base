@@ -1,23 +1,34 @@
 const SecurityService = require('../services/SecurityService');
+const { SESSION } = require('../models/centralstation');
+const crypto = require('crypto');
 
-const verifyToken = (req, res, next) => {
+const verifyToken = async (req, res, next) => {
 
-    console.log("Verifying token...");
     const token = req.cookies.login_token;
 
     if (!token) {
-        console.log("No token found in cookies");
         return res.status(401).json({ msg: "Login Required" });
     }
 
     try {
-        // Service ko bulaya kaam karne ke liye
+        // 1. Verify JWT basic integrity
         const userData = SecurityService.verifyLoginToken(token);
+        
+        // 2. 🎯 Check if Session is still valid in DB
+        const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+        const session = await SESSION.findOne({ tokenHash, isValid: true });
+
+        if (!session) {
+            res.clearCookie('login_token');
+            return res.status(401).json({ msg: "Session Expired or Terminated" });
+        }
+
+        // Update last active timestamp (Async, don't wait)
+        SESSION.updateOne({ _id: session._id }, { lastActive: new Date() }).exec();
+
         req.user = userData; 
-        // console.log("User verified:", userData);
         next();
     } catch (err) {
-        console.log("Error verifying token:", err.message);
         return res.status(401).json({ msg: err.message });
     }
 };
