@@ -4,26 +4,54 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #101415;
+  /* background-color: #101415; */
+  background:url('../../../../public/dashboard-background.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  background-blend-mode: difference;
+  
 }
 
 /* --- HEADER DESIGN PANEL --- */
 .header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   position: fixed;
-  top: 0;
+  /* background-color: #003640; */
+
   left: 0;
   right: 0;
+  
+  padding: 10px;
+  height: auto;
+
+  z-index: 40;
+}
+.headerWraper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  justify-content: space-between;
+  width: 1400px;
+  padding: 0 24px;
+  
+  background-color: rgba(49, 49, 49, 0.459);
   height: 64px;
-  background-color: rgba(25, 28, 30, 0.8);
+  
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(61, 73, 76, 0.2);
-  z-index: 40;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
+  
+  transform: scale(0.98);
+  border-radius: 100px;
+  border-bottom: 1px solid rgba(61, 73, 76, 0.2);
   transition: left 0.3s ease;
+  
 }
 
 .headerLeft, .headerRight {
@@ -51,7 +79,7 @@
 .networkStatus {
   display: none;
   align-items: center;
-  gap: 16px;
+  gap: 6px;
   padding: 6px 16px;
   background-color: #1d2022;
   border-radius: 999px;
@@ -90,14 +118,19 @@
 }
 
 .notifBtn {
-  background: none;
-  border: none;
-  color: #bcc9cd;
-  cursor: pointer;
-  position: relative;
-  padding: 8px;
   display: flex;
   align-items: center;
+  position: relative;
+
+  background: none;
+  color: #bcc9cd;
+  border: none;
+  padding: 8px;
+  
+  cursor: pointer;
+
+  aspect-ratio: 1 / 1;
+  width: 32px;
 }
 
 .notifDot {
@@ -130,6 +163,8 @@
   top: 0;
   height: 100%;
   width: 280px;
+  border-radius: 16px;
+  transform: translateX(4px) scale(0.98);
   background-color: #1d2022;
   border-right: 1px solid rgba(134, 147, 151, 0.1);
   padding: 80px 16px 32px;

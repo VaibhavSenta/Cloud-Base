@@ -83,48 +83,54 @@ export default function AdminLayout({ children }) {
       
       {/* 1. PREMIUM HEADER */}
       <header className={styles.header}>
-        <div className={styles.headerLeft}>
-          <span className={`material-symbols-outlined ${styles.mobileMenuBtn}`} onClick={toggleSidebar}>
-            {isSidebarOpen ? 'close' : 'menu'}
-          </span>
-          <h1 className={styles.logoText}>Cloud Base</h1>
+        <div className={styles.headerWraper}>
           
-          <div className={styles.networkStatus}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div className={styles.statusDot}></div>
-              <span className={styles.statusText}>Global Network: Optimal</span>
+          <div className={styles.headerLeft}>
+            <span className={`material-symbols-outlined ${styles.mobileMenuBtn}`} onClick={toggleSidebar}>
+              {isSidebarOpen ? 'close' : '|||'}
+            </span>
+            <h1 className={styles.logoText}>Cloud Base</h1>
+            
+            <div className={styles.networkStatus}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div className={styles.statusDot}></div>
+                <span className={styles.statusText}>Global Network: Optimal</span>
+              </div>
+              <div className={styles.statusDivider}></div>
+              <span className={styles.latencyText}>Latency: 12ms</span>
             </div>
-            <div className={styles.statusDivider}></div>
-            <span className={styles.latencyText}>Latency: 12ms</span>
+          </div>
+
+          <div className={styles.headerRight}>
+            {/* Global Maintenance Switch */}
+            <div className={styles.maintModeHeader} style={{ display: 'flex' }}>
+              <span className={styles.maintLabel}>Global Maint. Mode</span>
+              <label className={styles.switch}>
+                <input 
+                  type="checkbox" 
+                  checked={isMaintActive} 
+                  onChange={handleMaintToggle} 
+                  disabled={isMaintLoading || toggleMaintMutation.isPending}
+                />
+                <span className={styles.slider}></span>
+              </label>
+            </div>
+
+            <div className={styles.userSection}>
+              <button className={styles.notifBtn}>
+                <span className="material-symbols-outlined">
+                  <Image className={styles.notification} fill src="/admin-images/notification-bell.png" alt='Notifications' />
+                </span>
+                <span className={styles.notifDot}></span>
+              </button>
+              <span className={styles.userName}>{admin?.firstname || 'Admin'}</span>
+              <div className={styles.userAvatar} onMouseEnter={()=> router.prefetch('/profile')} onClick={()=> router.push('/profile')}>
+                <img alt="Admin Profile" src="/admin-icon.png" property='true'  />
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className={styles.headerRight}>
-          {/* Global Maintenance Switch */}
-          <div className={styles.maintModeHeader} style={{ display: 'flex' }}>
-            <span className={styles.maintLabel}>Global Maint. Mode</span>
-            <label className={styles.switch}>
-              <input 
-                type="checkbox" 
-                checked={isMaintActive} 
-                onChange={handleMaintToggle} 
-                disabled={isMaintLoading || toggleMaintMutation.isPending}
-              />
-              <span className={styles.slider}></span>
-            </label>
-          </div>
-
-          <div className={styles.userSection}>
-            <button className={styles.notifBtn}>
-              <span className="material-symbols-outlined">notifications</span>
-              <span className={styles.notifDot}></span>
-            </button>
-            <span className={styles.userName}>{admin?.firstname || 'Admin'}</span>
-            <div className={styles.userAvatar} onMouseEnter={()=> router.prefetch('/profile')} onClick={()=> router.push('/profile')}>
-              <img alt="Admin Profile" src="https://lh3.googleusercontent.com/d/1ThnxTHqvV7Mrf0RtDrfTyt-0uHXPPujl" />
-            </div>
-          </div>
-        </div>
       </header>
 
       {/* 2. INFRASTRUCTURE SIDEBAR */}
@@ -172,7 +178,7 @@ export default function AdminLayout({ children }) {
           </div>
 
           <button className={styles.logoutBtn} onClick={handleLogout}>
-            <span className="material-symbols-outlined">logout</span>
+            <span className="material-symbols-outlined">{"\>"}</span>
             <span>Logout Console</span>
           </button>
         </div>
