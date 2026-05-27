@@ -42,7 +42,19 @@ export default function AdminLayout({ children }) {
     }
   }, [globalMaint]);
 
-  // 3. 🚧 Toggle Global Maintenance Mutation
+  // 3. 🚨 Infrastructure Alert Monitor (Real-time)
+  const { data: appsStatus = [] } = useQuery({
+    queryKey: ['globalAppsStatus'],
+    queryFn: async () => {
+      const res = await axios.get('/api/admin/managedapps');
+      return res.data.data || [];
+    },
+    refetchInterval: 30000, // Background check every 30s
+  });
+
+  const downApps = appsStatus.filter(app => app.status === 'down' && !app.inMaintenance);
+
+  // 4. 🚧 Toggle Global Maintenance Mutation
   const toggleMaintMutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await axios.patch('/api/admin/dashboard/config/maintenance', { value: newValue });
@@ -156,13 +168,13 @@ export default function AdminLayout({ children }) {
           <Link href="/dashboard" className={`${styles.navItem} ${pathname === '/dashboard' ? styles.active : ''}`} onClick={closeSidebar}>
             <span>Dashboard</span>
           </Link>
-          <Link href="/dashboard/apps" className={`${styles.navItem} ${pathname === '/dashboard/items' ? styles.active : ''}`} onClick={closeSidebar}>
+          <Link href="/apps" className={`${styles.navItem} ${pathname === '/apps' ? styles.active : ''}`} onClick={closeSidebar}>
             <span>Apps</span>
           </Link>
-          <Link href="/dashboard/users" className={`${styles.navItem} ${pathname === '/dashboard/storage' ? styles.active : ''}`} onClick={closeSidebar}>
+          <Link href="/dashboard/users" className={`${styles.navItem} ${pathname === '/dashboard/users' ? styles.active : ''}`} onClick={closeSidebar}>
             <span>Users</span>
           </Link>
-          <Link href="/dashboard/logs" className={`${styles.navItem} ${pathname === '/dashboard/logs' ? styles.active : ''}`} onClick={closeSidebar}>
+          <Link href="/logs" className={`${styles.navItem} ${pathname === '/logs' ? styles.active : ''}`} onClick={closeSidebar}>
             <span>Logs</span>
           </Link>
         </nav>
@@ -185,6 +197,20 @@ export default function AdminLayout({ children }) {
       </aside>
 
       <main className={styles.mainContent}>
+        {downApps.length > 0 && (
+          <div className={styles.globalAlert}>
+            <span className="material-symbols-outlined">warning</span>
+            <div className={styles.alertContent}>
+              <p><strong>Infrastructure Alert:</strong> {downApps.length} system(s) are currently unreachable.</p>
+              <div className={styles.downList}>
+                {downApps.map(app => (
+                  <span key={app._id} className={styles.downBadge}>{app.title}</span>
+                ))}
+              </div>
+            </div>
+            <button onClick={() => router.push('/apps')} className={styles.viewAppsBtn}>Resolve Now</button>
+          </div>
+        )}
         {children}
       </main>
 

@@ -20,6 +20,10 @@ router.use('/profile', verifyToken, PROFILE);
 const { MANAGEDAPPS } = require('./managedapps.route')
 router.use('/managedapps', verifyToken, MANAGEDAPPS)
 
+// Ecosystem Users =======================================================================
+const { USER_ROUTES } = require('./user.route');
+router.use('/users', verifyToken, USER_ROUTES);
+
 
 
 

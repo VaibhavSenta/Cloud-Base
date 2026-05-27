@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { type } = require('os');
 
 const ManagedAppSchema = new mongoose.Schema({
   title: { type: String, required: true },       // e.g., "Chat Engine"
@@ -20,13 +19,26 @@ const ManagedAppSchema = new mongoose.Schema({
   latency: { type: String, default: "15ms" },
   inMaintenance: { type: Boolean, default: false},
   
+  // Connectors & External Links
+  dependencies: [{
+    name: { type: String }, // e.g., "Main Database"
+    type: { type: String }, // e.g., "MongoDB", "Redis"
+    status: { type: String, enum: ['optimal', 'degraded', 'down'], default: 'optimal' }
+  }],
+  quickLinks: [{
+    label: { type: String }, // e.g., "GitHub Repo"
+    url: { type: String },
+    icon: { type: String, default: "link" }
+  }],
+  
   // Audits
   establishedAt: { type: Date, default: Date.now },
   lastDeployedAt: { type: Date, default: Date.now  },
-  updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'Admin' }
+  updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'ADMIN' }
 }, { timestamps: true });
 
 const MANAGEDAPP = mongoose.model('MANAGEDAPP', ManagedAppSchema);
+
 module.exports = {
     MANAGEDAPP
-}
+};

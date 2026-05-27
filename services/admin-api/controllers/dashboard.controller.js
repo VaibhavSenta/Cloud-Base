@@ -1,4 +1,42 @@
-const { GLOBALCONFIG } = require('../models/centralstation');
+const { GLOBALCONFIG, USER, MANAGEDAPP } = require('../models/centralstation');
+
+const getSystemAnalytics = async (req, res, next) => {
+    try {
+        // 1. Calculate User Growth (Last 7 Days)
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+        const growthData = await USER.aggregate([
+            { $match: { createdAt: { $gte: sevenDaysAgo } } },
+            {
+                $group: {
+                    _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+                    count: { $sum: 1 }
+                }
+            },
+            { $sort: { "_id": 1 } }
+        ]);
+
+        // 2. Aggregate App Metrics
+        const apps = await MANAGEDAPP.find({}, 'title actives status inMaintenance');
+        const totalActives = apps.reduce((acc, app) => acc + (parseInt(app.actives) || 0), 0);
+        
+        // 3. System Health (Simplified Backend version)
+        const activeApps = apps.filter(a => !a.inMaintenance);
+        const healthScore = activeApps.length === 0 ? 100 : 
+            (activeApps.reduce((acc, a) => acc + (a.status === 'optimal' ? 100 : a.status === 'degraded' ? 50 : 0), 0) / (activeApps.length * 100)) * 100;
+
+        return res.json({
+            success: true,
+            data: {
+                userGrowth: growthData,
+                totalActives,
+                healthScore: healthScore.toFixed(1),
+                appsSummary: apps.sort((a, b) => (parseInt(b.actives) || 0) - (parseInt(a.actives) || 0)).slice(0, 5)
+            }
+        });
+    } catch (err) { next(err); }
+};
 
 const getGlobalConfig = async (req, res, next) => {
     try {
@@ -40,5 +78,6 @@ const dashboard = async (req, res, next) => {
 module.exports = {
     getGlobalConfig,
     toggleGlobalMaintenance,
-    dashboard
+    dashboard,
+    getSystemAnalytics
 };

@@ -16,6 +16,9 @@ router.post('/login', loginLimiter, validateLogin, authController.login);
 router.get('/config/maintenance', verifyToken, dashboardController.getGlobalConfig);
 router.patch('/config/maintenance', verifyToken, dashboardController.toggleGlobalMaintenance);
 
+// System Analytics
+router.get('/analytics/summary', verifyToken, dashboardController.getSystemAnalytics);
+
 router.get('/', async (req, res)=>{
     console.log("wellcom to dashboard");
     

@@ -1,0 +1,626 @@
+.overviewWrapper {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.topNav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.backBtn {
+  background: transparent;
+  border: none;
+  color: #869397;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.backBtn:hover {
+  color: #4cd7f6;
+}
+
+.navActions {
+  display: flex;
+  gap: 12px;
+}
+
+.editBtn, .dashBtn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btnIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px; /* Standardized for buttons */
+  height: 22px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.btnIcon img {
+  object-fit: contain;
+}
+
+.nodeItem .btnIcon {
+  width: 32px; /* Slightly larger for node stats */
+  height: 32px;
+}
+
+.maintenanceBanner .btnIcon {
+  width: 28px;
+  height: 28px;
+}
+
+.editBtn, .dashBtn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e0e3e5;
+}
+
+.dashBtn {
+  background: #4cd7f6;
+  border: none;
+  color: #003640;
+}
+
+.dashBtn:hover {
+  background: #97f0ff;
+  transform: translateY(-2px);
+}
+
+/* Hero Section */
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1d2022;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  padding: 32px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.heroLeft {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.iconBox {
+  width: 80px;
+  height: 80px;
+  background: #0b0f10;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4cd7f6;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(76, 215, 246, 0.2);
+}
+
+.iconBox span {
+  font-size: 48px;
+}
+
+.titleInfo h1 {
+  font-size: 32px;
+  margin: 0 0 12px 0;
+  color: #e0e3e5;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pulseDot {
+  width: 10px;
+  height: 10px;
+  background: #10b981;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #10b981;
+  animation: pulseAnim 1.5s infinite;
+}
+
+@keyframes pulseAnim {
+  0% { transform: scale(0.9); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.6; }
+  100% { transform: scale(0.9); opacity: 1; }
+}
+
+.nodeStats {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.nodeItem {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+}
+
+.nodeItem span {
+  font-size: 24px;
+  color: #4cd7f6;
+}
+
+.nodeItem p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #e0e3e5;
+}
+
+.nodeItem small {
+  color: #869397;
+}
+
+.badgeRow {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.statusBadge, .envBadge, .versionBadge {
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.statusBadge.optimal { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+.statusBadge.degraded { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+.statusBadge.down { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+
+.errorText {
+  font-size: 11px;
+  font-weight: 700;
+  color: #ef4444;
+  text-transform: uppercase;
+  background: rgba(239, 68, 68, 0.1);
+  padding: 4px 12px;
+  border-radius: 100px;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.envBadge { background: rgba(76, 215, 246, 0.1); color: #4cd7f6; }
+.versionBadge { background: rgba(255, 255, 255, 0.05); color: #869397; }
+
+.heroRight {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.maintControl {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Custom Checkbox Slider UI */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #323537;
+  transition: .4s;
+  border-radius: 20px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #869397;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+.switch input:checked + .slider {
+  background-color: #4cd7f6;
+}
+
+.switch input:checked + .slider:before {
+  transform: translateX(16px);
+  background-color: #003640;
+}
+
+.quickStat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.statVal {
+  font-size: 28px;
+  font-weight: 700;
+  color: #e0e3e5;
+}
+
+.statLabel {
+  font-size: 12px;
+  color: #869397;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Content Grid */
+.contentGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 32px;
+}
+
+.detailsCard, .healthCard {
+  background: #1d2022;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  padding: 32px;
+}
+
+.detailsCard h3, .healthCard h3 {
+  font-size: 18px;
+  margin: 0;
+  color: #e0e3e5;
+}
+
+.sectionTitleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.manageIconBtn {
+  background: rgba(76, 215, 246, 0.1);
+  border: 1px solid rgba(76, 215, 246, 0.2);
+  color: #4cd7f6;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.manageIconBtn:hover {
+  background: #4cd7f6;
+  color: #003640;
+}
+
+.manageIconBtn span {
+  font-size: 18px;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.infoItem label, .descriptionSection label {
+  display: block;
+  font-size: 12px;
+  color: #869397;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.infoItem span, .infoItem a {
+  font-size: 16px;
+  color: #e0e3e5;
+  font-family: monospace;
+}
+
+.infoItem a {
+  color: #4cd7f6;
+  text-decoration: none;
+}
+
+.descriptionSection p {
+  color: #bcc9cd;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Health Card Metrics */
+.healthMetric {
+  margin-bottom: 24px;
+}
+
+.metricTop {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #bcc9cd;
+  margin-bottom: 12px;
+}
+
+.trafficVal {
+  font-weight: 700;
+}
+
+.progressBar {
+  width: 100%;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 100px;
+  transition: width 0.5s ease-out;
+}
+
+.maintenanceBanner {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 32px;
+  padding: 20px;
+  background: rgba(245, 158, 11, 0.05);
+  border: 1px solid rgba(245, 158, 11, 0.1);
+  border-radius: 16px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  color: #f59e0b;
+}
+
+.maintenanceBanner p {
+  margin: 0;
+  font-weight: 600;
+}
+
+.maintenanceBanner small {
+  opacity: 0.8;
+}
+
+/* Service Dependencies */
+.dependencyList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dependencyItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.depInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.depName {
+  font-size: 14px;
+  font-weight: 600;
+  color: #e0e3e5;
+}
+
+.depType {
+  font-size: 11px;
+  color: #869397;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Quick Links Grid */
+.linkGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.linkCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  color: #bcc9cd;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.linkCard:hover {
+  background: rgba(76, 215, 246, 0.1);
+  border-color: rgba(76, 215, 246, 0.3);
+  color: #4cd7f6;
+  transform: translateX(4px);
+}
+
+.emptyText {
+  font-size: 13px;
+  color: #869397;
+  text-align: center;
+  padding: 20px;
+  font-style: italic;
+}
+
+/* Audit Section */
+.auditSection {
+  grid-column: 1 / -1; /* Full width on bottom */
+  background: #1d2022;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  padding: 32px;
+  margin-top: 8px;
+}
+
+.logCount {
+  font-size: 12px;
+  color: #869397;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.logList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+/* Custom Scrollbar for Logs */
+.logList::-webkit-scrollbar { width: 4px; }
+.logList::-webkit-scrollbar-track { background: transparent; }
+.logList::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+
+.logItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+.logMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logAdmin {
+  font-size: 14px;
+  font-weight: 700;
+  color: #4cd7f6;
+}
+
+.logDate {
+  font-size: 12px;
+  color: #869397;
+}
+
+.logContent {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logAction {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.05em;
+  min-width: 140px;
+  text-align: center;
+}
+
+/* Action Colors */
+.app_registered { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+.config_updated { background: rgba(76, 215, 246, 0.1); color: #4cd7f6; }
+.maintenance_toggled { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+.infra_updated { background: rgba(139, 92, 246, 0.1); color: #a78bfa; }
+
+.logDetails {
+  font-size: 13px;
+  color: #bcc9cd;
+  font-family: monospace;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* States */
+.loading, .error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+  color: #869397;
+  font-size: 18px;
+}
+
+@media (max-width: 968px) {
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .hero {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .heroRight {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

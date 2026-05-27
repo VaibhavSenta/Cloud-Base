@@ -5,11 +5,11 @@ const { ADMIN } = require('./admin/admin');
 const { SESSION } = require('./admin/Session');
 const { GLOBALCONFIG } = require('./admin/GlobalConfig');
 
-// Main Dashboard
-const { MANAGEDAPP } = require('./ManagedApp/ManagedApp');
-
 // Drive storage model
 const { STORAGE} = require('./Storage');
+
+// Shared Ecosystem Models (from local package)
+const { USER, MANAGEDAPP, AUDITLOG } = require('schema-package');
 
 module.exports = {
   ADMIN,
@@ -17,4 +17,6 @@ module.exports = {
   GLOBALCONFIG,
   MANAGEDAPP,
   STORAGE,
+  AUDITLOG,
+  USER,
 }

@@ -288,7 +288,7 @@ export default function ProfilePage() {
                                 className={styles.dangerBtn}
                                 onClick={handleLogout}
                             >
-                                <span className="material-symbols-outlined">logout</span>
+                                <span className="material-symbols-outlined">{'>'}</span>
                                 <span>Sign Out</span>
                             </button>
                         </div>

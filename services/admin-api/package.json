@@ -31,6 +31,7 @@
     "nodemon": "^3.1.4",
     "os": "^0.1.2",
     "path": "^0.12.7",
+    "schema-package": "file:../../packages/schemaPackage",
     "short-unique-id": "^5.2.0",
     "slugify": "^1.6.9",
     "useragent": "^2.3.0"

@@ -29,4 +29,8 @@ async function updateApp(id, updateData) {
     );
 }
 
-module.exports = { addApp, getAllApps, toggleMaintenance, updateApp };
+async function getAppByName(name) {
+    return await MANAGEDAPP.findOne({ name });
+}
+
+module.exports = { addApp, getAllApps, toggleMaintenance, updateApp, getAppByName };

@@ -62,8 +62,9 @@ export default function QueryProvider({ children }) {
     };
 
     const handleBFCache = (event) => {
-      if (event.persisted) {
-        console.log("BFCache Detected: Forcing fresh data sync...");
+      const isBackForward = performance.getEntriesByType('navigation')[0]?.type === 'back_forward';
+      if (event.persisted || isBackForward) {
+        console.log("BFCache/Back-Forward Detected: Forcing fresh data sync...");
         window.location.reload(); 
       }
     };

@@ -7,6 +7,106 @@
   box-sizing: border-box;
 }
 
+/* Analytical Widgets */
+.analyticsSection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.analyticsCard {
+  background: #1d2022;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cardHeader h3 {
+  font-size: 16px;
+  color: #e0e3e5;
+  margin: 0;
+}
+
+.trendUp {
+  font-size: 12px;
+  font-weight: 800;
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.totalStats {
+  font-size: 12px;
+  color: #4cd7f6;
+  font-weight: 700;
+}
+
+.chartArea {
+  position: relative;
+  width: 100%;
+}
+
+.growthChart {
+  width: 100%;
+  height: 100px;
+}
+
+.chartLabels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 10px;
+  color: #869397;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.heatmapList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.heatmapItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.heatInfo {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #bcc9cd;
+  font-weight: 600;
+}
+
+.heatBar {
+  width: 100%;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.heatFill {
+  height: 100%;
+  background: #4cd7f6;
+  border-radius: 10px;
+  transition: width 0.5s ease-out;
+}
+
 .sectionBlock {
   margin-bottom: 40px;
   width: 100%;
@@ -106,6 +206,10 @@
 
 /* 2. Controlled Alert Banner (Overflow Isolated) */
 .alertBanner {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  
   background-color: rgba(104, 3, 10, 0.438);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
