@@ -165,7 +165,8 @@
   width: 280px;
   border-radius: 16px;
   transform: translateX(4px) scale(0.98);
-  background-color: #1d2022;
+  background-color: #3636368c;
+  backdrop-filter: blur(8px);
   border-right: 1px solid rgba(134, 147, 151, 0.1);
   padding: 80px 16px 32px;
   z-index: 35;
@@ -228,7 +229,7 @@
 .nodeBadge {
   margin-top: 12px;
   padding: 6px 12px;
-  background-color: #0b0f10;
+  background-color: transparent;
   border: 1px solid rgba(61, 73, 76, 0.2);
   border-radius: 6px;
   text-align: center;

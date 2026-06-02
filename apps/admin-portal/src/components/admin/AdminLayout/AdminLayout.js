@@ -114,19 +114,7 @@ export default function AdminLayout({ children }) {
           </div>
 
           <div className={styles.headerRight}>
-            {/* Global Maintenance Switch */}
-            <div className={styles.maintModeHeader} style={{ display: 'flex' }}>
-              <span className={styles.maintLabel}>Global Maint. Mode</span>
-              <label className={styles.switch}>
-                <input 
-                  type="checkbox" 
-                  checked={isMaintActive} 
-                  onChange={handleMaintToggle} 
-                  disabled={isMaintLoading || toggleMaintMutation.isPending}
-                />
-                <span className={styles.slider}></span>
-              </label>
-            </div>
+            
 
             <div className={styles.userSection}>
               <button className={styles.notifBtn}>
@@ -161,7 +149,21 @@ export default function AdminLayout({ children }) {
               <p className={styles.accessLabel}>Root Access</p>
             </div>
           </div>
-          <div className={styles.nodeBadge}>Node: US-EAST-1</div>
+          <div className={styles.nodeBadge}>
+            {/* Global Maintenance Switch */}
+            <div className={styles.maintModeHeader} style={{ display: 'flex' }}>
+              <span className={styles.maintLabel}>Global Maint. Mode</span>
+              <label className={styles.switch}>
+                <input 
+                  type="checkbox" 
+                  checked={isMaintActive} 
+                  onChange={handleMaintToggle} 
+                  disabled={isMaintLoading || toggleMaintMutation.isPending}
+                />
+                <span className={styles.slider}></span>
+              </label>
+            </div>
+          </div>
         </div>
 
         <nav className={styles.navList}>
