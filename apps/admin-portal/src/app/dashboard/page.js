@@ -159,14 +159,30 @@ export default function DashboardPage() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <h2>Service Hub</h2>
               <span style={{ fontSize: '11px', fontWeight: '600', padding: '4px 12px', background: '#323537', borderRadius: '999px', color: '#bcc9cd', textTransform: 'uppercase' }}>
-                {apps.length} Subdomains Managed
+                {isAppsLoading ? <Skeleton width="80px" height="12px" /> : `${apps.length} Subdomains Managed`}
               </span>
             </div>
           </div>
 
           <div className={styles.gridServices}>
             {isAppsLoading ? 
-              <div style={{ color: '#bcc9cd' }}>Syncing Systems ...</div>
+              Array(4).fill(0).map((_, i) => (
+                <div key={i} className={styles.serviceCard} style={{ opacity: 0.7 }}>
+                  <div className={styles.serviceTop}>
+                    <Skeleton width="40px" height="40px" borderRadius="10px" />
+                    <Skeleton width="44px" height="22px" borderRadius="34px" />
+                  </div>
+                  <div className={styles.serviceInfo} style={{ marginTop: '16px' }}>
+                    <Skeleton width="60%" height="20px" />
+                    <Skeleton width="40%" height="14px" style={{ marginTop: '8px' }} />
+                  </div>
+                  <div className={styles.serviceStats} style={{ marginTop: '16px' }}>
+                    <Skeleton width="50px" height="20px" />
+                    <Skeleton width="80px" height="20px" />
+                  </div>
+                  <Skeleton width="100%" height="40px" style={{ marginTop: '20px' }} />
+                </div>
+              ))
              : appsError ? (
                 <div style={{ color: '#ef4444', padding: '20px', gridColumn: '1/-1' }}>
                   ❌ Backend Error: Unable to sync with Managed Nodes.
