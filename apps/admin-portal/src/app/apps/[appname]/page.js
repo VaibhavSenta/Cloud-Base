@@ -102,7 +102,7 @@ export default function AppOverview() {
           <div className={styles.heroLeft}>
             <div className={styles.iconBox}>
                {app.icon?.startsWith('/') || app.icon?.startsWith('http') ? (
-                  <Image src={app.icon} fill alt={app.title} />
+                  <Image src={app.icon} fill alt={app.title} sizes="80px" />
                ) : (
                   <span className="material-symbols-outlined">{app.icon || 'apps'}</span>
                )}

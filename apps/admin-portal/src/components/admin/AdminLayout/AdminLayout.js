@@ -118,9 +118,7 @@ export default function AdminLayout({ children }) {
 
             <div className={styles.userSection}>
               <button className={styles.notifBtn}>
-                <span className="material-symbols-outlined">
-                  <Image className={styles.notification} fill src="/admin-images/notification-bell.png" alt='Notifications' />
-                </span>
+                <Image src="/admin-images/notification-bell.png" width={20} height={20} alt='Notifications' />
                 <span className={styles.notifDot}></span>
               </button>
               <span className={styles.userName}>{admin?.firstname || 'Admin'}</span>

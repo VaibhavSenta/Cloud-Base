@@ -136,7 +136,7 @@ export default function AppsPage() {
                 <div className={styles.cardHeader}>
                   <div className={styles.appIcon}>
                         {app.icon?.startsWith('/') || app.icon?.startsWith('http') ? (
-                           <Image fill src={app.icon} alt={app.title} style={{ objectFit: 'contain', padding: '10px' }} />
+                           <Image fill src={app.icon} alt={app.title} sizes="56px" style={{ objectFit: 'contain', padding: '10px' }} />
                         ) : (
                            <span className="material-symbols-outlined">{app.icon || 'apps'}</span>
                         )}

@@ -5,12 +5,15 @@ export const metadata = {
   title: "CloudBase Admin Console",
   description: "Secure backend admin management portal",
   manifest: '/manifest.json',
-  themeColor: '#8ab4f8',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
     title: "CB Admin",
   },
+};
+
+export const viewport = {
+  themeColor: '#8ab4f8',
 };
 
 export default function RootLayout({ children }) {
