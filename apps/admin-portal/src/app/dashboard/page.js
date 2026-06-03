@@ -6,6 +6,7 @@ import styles from './dashboard.module.css';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Switch from '@/components/admin/Switch/Switch';
+import Skeleton from '@/components/admin/Skeleton/Skeleton';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
