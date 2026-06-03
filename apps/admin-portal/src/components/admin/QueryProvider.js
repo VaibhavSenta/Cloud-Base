@@ -14,6 +14,23 @@ let encryptionConfig = {
   isFetching: false
 };
 
+// 🎯 Initialize state from LocalStorage (if available) to eliminate delay
+if (typeof window !== 'undefined') {
+  try {
+    const cached = localStorage.getItem('__cb_encryption_cache__');
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      // Only use if less than 4 hours old
+      if (Date.now() - parsed.lastFetched < 4 * 60 * 60 * 1000) {
+        encryptionConfig = { ...encryptionConfig, ...parsed };
+        console.log("💾 Encryption cache loaded from Storage.");
+      }
+    }
+  } catch (e) {
+    console.warn("Failed to load encryption cache.");
+  }
+}
+
 // 🎯 GLOBAL SINGLETON: Taaki window focus ya tab switch pe client re-create na ho
 let browserQueryClient = undefined;
 
@@ -67,6 +84,16 @@ export default function QueryProvider({ children }) {
           lastFetched: Date.now(),
           isFetching: false
         };
+
+        // 💾 Save to localStorage for persistence
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('__cb_encryption_cache__', JSON.stringify({
+            isEnabled: encryptionConfig.isEnabled,
+            publicKey: encryptionConfig.publicKey,
+            keyID: encryptionConfig.keyID,
+            lastFetched: encryptionConfig.lastFetched
+          }));
+        }
 
         console.log(`🔒 Encryption state synced. Enabled: ${encryptionConfig.isEnabled}`);
       } catch (err) {

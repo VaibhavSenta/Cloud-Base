@@ -165,26 +165,56 @@ export default function AdminLayout({ children }) {
         </div>
 
         <nav className={styles.navList}>
-          <Link href="/dashboard" className={`${styles.navItem} ${pathname === '/dashboard' ? styles.active : ''}`} onClick={closeSidebar}>
+          <Link 
+            href="/dashboard" 
+            className={`${styles.navItem} ${pathname === '/dashboard' ? styles.active : ''}`} 
+            onClick={closeSidebar}
+            onMouseEnter={() => router.prefetch('/dashboard')}
+          >
             <span>Dashboard</span>
           </Link>
-          <Link href="/apps" className={`${styles.navItem} ${pathname === '/apps' ? styles.active : ''}`} onClick={closeSidebar}>
+          <Link 
+            href="/apps" 
+            className={`${styles.navItem} ${pathname === '/apps' ? styles.active : ''}`} 
+            onClick={closeSidebar}
+            onMouseEnter={() => router.prefetch('/apps')}
+          >
             <span>Apps</span>
           </Link>
-          <Link href="/dashboard/users" className={`${styles.navItem} ${pathname === '/dashboard/users' ? styles.active : ''}`} onClick={closeSidebar}>
+          <Link 
+            href="/dashboard/users" 
+            className={`${styles.navItem} ${pathname === '/dashboard/users' ? styles.active : ''}`} 
+            onClick={closeSidebar}
+            onMouseEnter={() => router.prefetch('/dashboard/users')}
+          >
             <span>Users</span>
           </Link>
-          <Link href="/logs" className={`${styles.navItem} ${pathname === '/logs' ? styles.active : ''}`} onClick={closeSidebar}>
+          <Link 
+            href="/logs" 
+            className={`${styles.navItem} ${pathname === '/logs' ? styles.active : ''}`} 
+            onClick={closeSidebar}
+            onMouseEnter={() => router.prefetch('/logs')}
+          >
             <span>Logs</span>
           </Link>
         </nav>
 
         <div className={styles.bottomNav}>
           <div className={styles.navList}>
-            <Link href="/dashboard/settings" className={`${styles.navItem} ${pathname === '/dashboard/settings' ? styles.active : ''}`} onClick={closeSidebar}>
+            <Link 
+              href="/dashboard/settings" 
+              className={`${styles.navItem} ${pathname === '/dashboard/settings' ? styles.active : ''}`} 
+              onClick={closeSidebar}
+              onMouseEnter={() => router.prefetch('/dashboard/settings')}
+            >
               <span>Settings</span>
             </Link>
-            <Link href="/profile" className={`${styles.navItem} ${pathname === '/profile' ? styles.active : ''}`} onClick={closeSidebar}>
+            <Link 
+              href="/profile" 
+              className={`${styles.navItem} ${pathname === '/profile' ? styles.active : ''}`} 
+              onClick={closeSidebar}
+              onMouseEnter={() => router.prefetch('/profile')}
+            >
               <span>Profile</span>
             </Link>
           </div>

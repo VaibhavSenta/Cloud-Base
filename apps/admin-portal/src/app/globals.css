@@ -32,6 +32,23 @@ body {
   scroll-behavior: smooth;
 }
 
+/* 🌟 GLOBAL SKELETON SHIMMER ANIMATION */
+@keyframes shimmer {
+  0% { background-position: -468px 0; }
+  100% { background-position: 468px 0; }
+}
+
+.skeleton-base {
+  background: #1d2022;
+  background-image: linear-gradient(to right, #1d2022 0%, #25282a 20%, #1d2022 40%, #1d2022 100%);
+  background-repeat: no-repeat;
+  background-size: 800px 104px;
+  display: inline-block;
+  position: relative;
+  animation: shimmer 1.5s linear infinite forwards;
+  border-radius: 4px;
+}
+
 
 
 
