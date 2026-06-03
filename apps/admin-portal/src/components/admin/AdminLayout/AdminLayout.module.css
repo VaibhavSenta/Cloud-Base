@@ -61,7 +61,7 @@
 }
 
 .mobileMenuBtn {
-  color: #4cd7f6;
+  color: var(--primary);
   font-size: 24px;
   cursor: pointer;
   display: block;
@@ -71,7 +71,7 @@
   font-family: 'Geist', sans-serif;
   font-size: 22px;
   font-weight: 700;
-  color: #4cd7f6;
+  color: var(--primary);
   display: none;
 }
 
@@ -139,7 +139,7 @@
   right: 6px;
   width: 8px;
   height: 8px;
-  background: #4cd7f6;
+  background: var(--primary);
   border: 2px solid #191c1e;
   border-radius: 50%;
 }
@@ -165,8 +165,8 @@
   width: 280px;
   border-radius: 16px;
   transform: translateX(4px) scale(0.98);
-  background-color: #3636368c;
-  backdrop-filter: blur(8px);
+  background-color: #2c2c2cad;
+  backdrop-filter: blur(28px);
   border-right: 1px solid rgba(134, 147, 151, 0.1);
   padding: 80px 16px 32px;
   z-index: 35;
@@ -197,7 +197,7 @@
   font-family: 'Geist', sans-serif;
   font-size: 22px;
   font-weight: 700;
-  color: #4cd7f6;
+  color: var(--primary);
 }
 
 .profileSnippet {
@@ -235,7 +235,7 @@
   text-align: center;
   font-size: 10px;
   font-weight: 600;
-  color: #4cd7f6;
+  color: var(--primary);
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
@@ -278,7 +278,7 @@
 .active {
   background-color: #0566d9 !important;
   color: #e6ecff !important;
-  /* border-left: 4px solid #4cd7f6; */
+  /* border-left: 4px solid var(--primary); */
 }
 
 /* --- MAIN WORKSPACE VIEWPORT --- */
@@ -370,7 +370,7 @@
 .switch input { display: none; }
 .slider { width: 36px; height: 18px; background-color: #323537; border-radius: 999px; position: relative; transition: background 0.3s; }
 .slider:before { content: ""; position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: #869397; border-radius: 50%; transition: transform 0.3s; }
-.switch input:checked + .slider { background-color: #4cd7f6; }
+.switch input:checked + .slider { background-color: var(--primary); }
 .switch input:checked + .slider:before { transform: translateX(18px); background-color: #003640; }
 
 

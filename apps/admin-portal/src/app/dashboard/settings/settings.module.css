@@ -1,0 +1,149 @@
+.settingsContainer {
+  padding: 40px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.headerSection {
+  margin-bottom: 48px;
+}
+
+.headerSection h1 {
+  font-size: 32px;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.headerSection p {
+  color: #888;
+  font-size: 14px;
+}
+
+/* Settings Grouping */
+.settingsGroup {
+  margin-bottom: 40px;
+  background: #1d2022;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+}
+
+.groupHeader {
+  padding: 16px 24px;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.groupHeader h2 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+/* Individual Setting Row */
+.settingRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  transition: background 0.2s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.settingRow:last-child {
+  border-bottom: none;
+}
+
+.settingRow:hover {
+  background: rgba(5, 102, 217, 0.03);
+}
+
+.rowLeft {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex: 1;
+}
+
+.iconBox {
+  width: 40px;
+  height: 40px;
+  background: #0b0f10;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.info h3 {
+  font-size: 16px;
+  color: #e0e3e5;
+  margin: 0 0 4px 0;
+}
+
+.info p {
+  font-size: 13px;
+  color: #888;
+  margin: 0;
+  line-height: 1.4;
+  max-width: 500px;
+}
+
+.rowRight {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-left: 20px;
+}
+
+.statusText {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Responsive Fixes */
+@media (max-width: 768px) {
+  .settingsContainer {
+    padding: 20px 16px;
+  }
+
+  .headerSection {
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .settingRow {
+    flex-direction: row; /* Keep it horizontal but wrap text if needed */
+    padding: 16px;
+  }
+
+  .rowLeft {
+    gap: 12px;
+  }
+
+  .iconBox {
+    width: 32px;
+    height: 32px;
+  }
+
+  .info h3 {
+    font-size: 14px;
+  }
+
+  .info p {
+    font-size: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .statusText {
+    display: none; /* Hide status text on very small screens to save space */
+  }
+}

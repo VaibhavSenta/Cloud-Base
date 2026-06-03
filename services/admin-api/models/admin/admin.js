@@ -6,6 +6,11 @@ const adminSchema = new mongoose.Schema(
     lastname: { type: String, required: false, unique: false }, // Yahan lastname aayega
     loginid: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    role: { 
+      type: [String], 
+      default: ['VIEWER'],
+      enum: ['ROOT', 'MANAGER', 'VIEWER'] 
+    },
   },
   { timestamps: true },
 );

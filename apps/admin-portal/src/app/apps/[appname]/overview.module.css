@@ -24,7 +24,7 @@
 }
 
 .backBtn:hover {
-  color: #4cd7f6;
+  color: var(--primary);
 }
 
 .navActions {
@@ -76,7 +76,7 @@
 }
 
 .dashBtn {
-  background: #4cd7f6;
+  background: var(--primary);
   border: none;
   color: #003640;
 }
@@ -114,7 +114,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #4cd7f6;
+  color: var(--primary);
   position: relative;
   overflow: hidden;
   border: 1px solid rgba(76, 215, 246, 0.2);
@@ -166,7 +166,7 @@
 
 .nodeItem span {
   font-size: 24px;
-  color: #4cd7f6;
+  color: var(--primary);
 }
 
 .nodeItem p {
@@ -209,7 +209,7 @@
   border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
-.envBadge { background: rgba(76, 215, 246, 0.1); color: #4cd7f6; }
+.envBadge { background: rgba(5, 102, 217, 0.1); color: var(--primary); }
 .versionBadge { background: rgba(255, 255, 255, 0.05); color: #869397; }
 
 .heroRight {
@@ -264,7 +264,7 @@
 }
 
 .switch input:checked + .slider {
-  background-color: #4cd7f6;
+  background-color: var(--primary);
 }
 
 .switch input:checked + .slider:before {
@@ -325,9 +325,9 @@
 }
 
 .manageIconBtn {
-  background: rgba(76, 215, 246, 0.1);
+  background: rgba(5, 102, 217, 0.1);
   border: 1px solid rgba(76, 215, 246, 0.2);
-  color: #4cd7f6;
+  color: var(--primary);
   width: 32px;
   height: 32px;
   border-radius: 8px;
@@ -339,7 +339,7 @@
 }
 
 .manageIconBtn:hover {
-  background: #4cd7f6;
+  background: var(--primary);
   color: #003640;
 }
 
@@ -370,7 +370,7 @@
 }
 
 .infoItem a {
-  color: #4cd7f6;
+  color: var(--primary);
   text-decoration: none;
 }
 
@@ -493,9 +493,9 @@
 }
 
 .linkCard:hover {
-  background: rgba(76, 215, 246, 0.1);
+  background: rgba(5, 102, 217, 0.1);
   border-color: rgba(76, 215, 246, 0.3);
-  color: #4cd7f6;
+  color: var(--primary);
   transform: translateX(4px);
 }
 
@@ -558,7 +558,7 @@
 .logAdmin {
   font-size: 14px;
   font-weight: 700;
-  color: #4cd7f6;
+  color: var(--primary);
 }
 
 .logDate {
@@ -585,7 +585,7 @@
 
 /* Action Colors */
 .app_registered { background: rgba(16, 185, 129, 0.1); color: #10b981; }
-.config_updated { background: rgba(76, 215, 246, 0.1); color: #4cd7f6; }
+.config_updated { background: rgba(5, 102, 217, 0.1); color: var(--primary); }
 .maintenance_toggled { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
 .infra_updated { background: rgba(139, 92, 246, 0.1); color: #a78bfa; }
 

@@ -48,7 +48,7 @@
 
 .totalStats {
   font-size: 12px;
-  color: #4cd7f6;
+  color: var(--primary);
   font-weight: 700;
 }
 
@@ -102,7 +102,7 @@
 
 .heatFill {
   height: 100%;
-  background: #4cd7f6;
+  background: var(--primary);
   border-radius: 10px;
   transition: width 0.5s ease-out;
 }
@@ -319,7 +319,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #4cd7f6;
+  color: var(--primary);
 }
 
 .serviceInfo {
@@ -426,7 +426,7 @@
 }
 
 .switch input:checked + .slider {
-  background-color: #4cd7f6;
+  background-color: var(--primary);
 }
 
 .switch input:checked + .slider::before {
@@ -498,8 +498,8 @@
 }
 
 .pillProgress {
-  background: rgba(76, 215, 246, 0.1);
-  color: #4cd7f6;
+  background: rgba(5, 102, 217, 0.1);
+  color: var(--primary);
 }
 
 /* Global Shimmer Control */

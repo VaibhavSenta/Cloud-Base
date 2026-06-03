@@ -65,7 +65,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid #4cd7f6;
+    border: 2px solid var(--primary);
     overflow: hidden;
 }
 
@@ -120,7 +120,7 @@
 
 .inputField:focus {
     outline: none;
-    border-color: #4cd7f6;
+    border-color: var(--primary);
 }
 
 .inputField:disabled {
@@ -142,7 +142,7 @@
 
 .saveBtn {
     padding: 10px 24px;
-    background-color: #4cd7f6;
+    background-color: var(--primary);
     color: #003640;
     border: none;
     border-radius: 8px;
@@ -174,12 +174,12 @@
 
 .editToggleBtn:hover {
     background-color: #3d494c;
-    border-color: #4cd7f6;
+    border-color: var(--primary);
 }
 
 .editToggleBtn .material-symbols-outlined {
     font-size: 18px;
-    color: #4cd7f6;
+    color: var(--primary);
 }
 
 .cancelBtn {
@@ -283,8 +283,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #4cd7f6;
-    border: 1px solid rgba(76, 215, 246, 0.2);
+    color: var(--primary);
+    border: 1px solid rgba(5, 102, 217, 0.2);
 }
 .sessionIcon img {
     opacity: 0.4;
@@ -311,7 +311,7 @@
 .ipBadge {
     font-size: 10px;
     background: rgba(76, 215, 246, 0.1);
-    color: #4cd7f6;
+    color: var(--primary);
     padding: 2px 6px;
     border-radius: 4px;
     font-weight: 600;
@@ -390,12 +390,57 @@
     to { background-position: -200% 0; }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+    .profileWrapper {
+        padding: 20px 16px;
+    }
+
     .formGrid {
         grid-template-columns: 1fr;
     }
+
     .profileHeader {
         flex-direction: column;
         text-align: center;
+        gap: 16px;
+    }
+
+    .dangerZone {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+        padding: 24px;
+    }
+
+    .dangerBtn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .sessionsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .sessionCard {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sectionHeader h2 {
+        font-size: 22px;
+    }
+
+    .profileCard, .logoutCard {
+        padding: 20px;
+    }
+
+    .largeAvatar {
+        width: 80px;
+        height: 80px;
+    }
+
+    .profileTitleInfo h1 {
+        font-size: 20px;
     }
 }

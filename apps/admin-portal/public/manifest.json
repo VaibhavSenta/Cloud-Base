@@ -1,0 +1,22 @@
+{
+  "name": "Cloud Base Admin Console",
+  "short_name": "CB Admin",
+  "icons": [
+    {
+      "src": "/icons/logo-dark.jpeg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/logo-dark.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ],
+  "theme_color": "#8ab4f8",
+  "background_color": "#0f0f0f",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "orientation": "portrait"
+}

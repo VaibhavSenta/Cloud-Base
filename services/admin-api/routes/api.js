@@ -3,10 +3,10 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const router = express.Router({mergeParams: true});
 const { verifyToken } = require('../middlewares/authMiddleware');
+const decryptionMiddleware = require('../middlewares/decryptionMiddleware');
 
-
-
-
+// Apply Global Decryption Middleware
+router.use(decryptionMiddleware);
 
 // Auth routes =============================================================================
 const {AUTH} = require('./auth.route');
@@ -24,11 +24,9 @@ router.use('/managedapps', verifyToken, MANAGEDAPPS)
 const { USER_ROUTES } = require('./user.route');
 router.use('/users', verifyToken, USER_ROUTES);
 
-
-
-
-
-
+// Global Settings =======================================================================
+const { SETTINGS } = require('./settings.route');
+router.use('/settings', verifyToken, SETTINGS);
 
 
 // Main Dashboard routes = =============================================================================

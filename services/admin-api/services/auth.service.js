@@ -14,7 +14,7 @@ async function login(loginid, password, ip, userAgent) {
     }
 
     // 2. Find Admin 
-    const user = await ADMIN.findOne({loginid: loginid}).select('firstname lastname password');
+    const user = await ADMIN.findOne({loginid: loginid}).select('firstname lastname password role');
 
     if (!user) {
         throw new Error("Wrong login details ");

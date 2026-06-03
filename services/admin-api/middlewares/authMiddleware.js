@@ -37,17 +37,28 @@ const verifyToken = async (req, res, next) => {
 // Role-based access control middleware
 const checkRouteAccess = (allowedRoles) => {
     return (req, res, next) => {
-        const userRoles = req.user.role; // Role array: ['HRD0', 'HRD1']
+        if (!req.user || !req.user.role) {
+            console.error("❌ RBAC Error: No user roles found in request.");
+            return res.status(403).json({ msg: "Access Denied: No Roles Assigned" });
+        }
 
-        // Check: is there any role in userRoles that is also in allowedRoles?
-        const hasAccess = userRoles.some(role => allowedRoles.includes(role));
+        const userRoles = req.user.role; // Role array: ['ROOT', 'MANAGER']
 
-        if (hasAccess) {
-            console.log(`Access granted for roles: ${userRoles.join(", ")}`);
-            next();
-        } else {
-            console.log(`Access denied for roles: ${userRoles.join(", ")}. Required roles: ${allowedRoles.join(", ")}`);
-            return res.status(403).json({ msg: "Access Denied" });
+        try {
+            // Check: is there any role in userRoles that is also in allowedRoles?
+            const hasAccess = Array.isArray(userRoles) 
+                ? userRoles.some(role => allowedRoles.includes(role))
+                : allowedRoles.includes(userRoles);
+
+            if (hasAccess) {
+                next();
+            } else {
+                console.log(`🚫 Access denied for roles: ${userRoles}. Required roles: ${allowedRoles.join(", ")}`);
+                return res.status(403).json({ msg: "Access Denied: Insufficient Permissions" });
+            }
+        } catch (err) {
+            console.error("❌ RBAC Middleware Crash:", err.message);
+            return res.status(500).json({ msg: "Internal Security Error" });
         }
     };
 };

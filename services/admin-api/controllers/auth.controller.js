@@ -1,5 +1,49 @@
 const { loginToAccount, createAccount } = require("../services/auth.service");
 const jwt = require("jsonwebtoken");
+const EncryptionService = require("../services/EncryptionService");
+const { GLOBALCONFIG } = require("../models/centralstation");
+const crypto = require("crypto");
+
+/**
+ * handshake - Provides Public Key for Encryption
+ */
+const handshake = async (req, res) => {
+  try {
+    // 1. Check if encryption is enabled
+    const config = await GLOBALCONFIG.findOne({ key: 'is_encryption_enabled' });
+    const isEnabled = config ? config.value === true : false;
+
+    if (!isEnabled) {
+      return res.json({ isEncryptionEnabled: false });
+    }
+
+    // 2. Identify or Generate Session/Key ID
+    let keyID = req.cookies.login_token 
+      ? crypto.createHash('sha256').update(req.cookies.login_token).digest('hex')
+      : req.cookies.temp_key_id;
+
+    if (!keyID) {
+      keyID = EncryptionService.generateTempKeyID();
+      res.cookie("temp_key_id", keyID, { 
+        httpOnly: true, 
+        maxAge: 30 * 60 * 1000 // 30 mins for login process
+      });
+    }
+
+    // 3. Get Public Key
+    const publicKey = await EncryptionService.getPublicKey(keyID);
+    console.log("🤝 Handshake issued for KeyID:", keyID);
+
+    return res.json({
+      isEncryptionEnabled: true,
+      publicKey: publicKey,
+      keyID: keyID // Frontend will send this back if not using cookies
+    });
+  } catch (err) {
+    console.error("Handshake Error:", err);
+    return res.status(500).json({ msg: "Internal Server Error during handshake" });
+  }
+};
 
 // Check Login Status
 const checkLoginStatus = async (req, res) => {
@@ -152,6 +196,7 @@ const logout = async (req, res) => {
 };
 
 module.exports = {
+  handshake,
   checkLoginStatus,
   login,
   logout,

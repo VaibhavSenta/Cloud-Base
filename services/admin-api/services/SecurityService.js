@@ -9,4 +9,6 @@ const verifyLoginToken = (token) => {
     }
 };
 
-module.exports = { verifyLoginToken };
+module.exports = { 
+    verifyLoginToken
+ };

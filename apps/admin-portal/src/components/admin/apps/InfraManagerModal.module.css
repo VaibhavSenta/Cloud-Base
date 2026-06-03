@@ -68,16 +68,16 @@
 
 .sectionHeader h3 {
   font-size: 16px;
-  color: #4cd7f6;
+  color: var(--primary);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin: 0;
 }
 
 .addBtn {
-  background: rgba(76, 215, 246, 0.1);
-  border: 1px solid rgba(76, 215, 246, 0.2);
-  color: #4cd7f6;
+  background: rgba(5, 102, 217, 0.1);
+  border: 1px solid rgba(5, 102, 217, 0.2);
+  color: var(--primary);
   padding: 6px 16px;
   border-radius: 8px;
   font-size: 13px;
@@ -90,7 +90,7 @@
 }
 
 .addBtn:hover {
-  background: #4cd7f6;
+  background: var(--primary);
   color: #003640;
 }
 
@@ -121,7 +121,7 @@
 }
 
 .rowItem input:focus {
-  border-color: #4cd7f6;
+  border-color: var(--primary);
   outline: none;
 }
 
@@ -174,7 +174,7 @@
 
 .saveBtn {
   padding: 12px 32px;
-  background: #4cd7f6;
+  background: var(--primary);
   border: none;
   color: #003640;
   border-radius: 12px;

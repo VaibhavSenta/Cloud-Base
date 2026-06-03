@@ -95,7 +95,7 @@
 .inputGroup input:focus, 
 .inputGroup select:focus, 
 .inputGroup textarea:focus {
-  border-color: #4cd7f6;
+  border-color: var(--primary);
   outline: none;
 }
 
@@ -120,7 +120,7 @@
   padding: 12px 24px;
   border-radius: 10px;
   font-weight: 700;
-  background: #4cd7f6;
+  background: var(--primary);
   border: none;
   color: #003640;
   cursor: pointer;

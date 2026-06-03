@@ -5,6 +5,7 @@ import AdminLayout from '@/components/admin/AdminLayout/AdminLayout';
 import styles from './dashboard.module.css';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import Switch from '@/components/admin/Switch/Switch';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -61,12 +62,12 @@ export default function DashboardPage() {
               <svg viewBox="0 0 400 100" className={styles.growthChart}>
                 <polyline
                   fill="none"
-                  stroke="#4cd7f6"
+                  stroke="var(--primary)"
                   strokeWidth="3"
                   points={userGrowth.map((v, i) => `${(i * 400) / 6},${100 - (v * 100) / 50}`).join(' ')}
                 />
                 {userGrowth.map((v, i) => (
-                  <circle key={i} cx={(i * 400) / 6} cy={100 - (v * 100) / 50} r="4" fill="#4cd7f6" />
+                  <circle key={i} cx={(i * 400) / 6} cy={100 - (v * 100) / 50} r="4" fill="var(--primary)" />
                 ))}
               </svg>
               <div className={styles.chartLabels}>
@@ -112,8 +113,8 @@ export default function DashboardPage() {
           <div className={styles.gridStats}>
             <div className={styles.statCard}>
               <div className={styles.statTop}>
-                <div className={styles.statIcon} style={{ backgroundColor: 'rgba(76, 215, 246, 0.1)' }}>
-                  <span className="material-symbols-outlined" style={{ color: '#4cd7f6' }}>storage</span>
+                <div className={styles.statIcon} style={{ backgroundColor: 'rgba(5, 102, 217, 0.1)' }}>
+                  <span className="material-symbols-outlined" style={{ color: 'var(--primary)' }}>storage</span>
                 </div>
                 <span className={styles.statBadge} style={{ background: 'rgba(16,185,129,0.1)', color: '#10b981' }}>Stable</span>
               </div>
@@ -128,7 +129,7 @@ export default function DashboardPage() {
                 <div className={styles.statIcon} style={{ backgroundColor: 'rgba(173, 198, 255, 0.1)' }}>
                   <span className="material-symbols-outlined" style={{ color: '#adc6ff' }}>query_stats</span>
                 </div>
-                <span className={styles.statBadge} style={{ color: '#4cd7f6', background: 'rgba(76,215,246,0.05)' }}>+12.4%</span>
+                <span className={styles.statBadge} style={{ color: 'var(--primary)', background: 'rgba(5, 102, 217, 0.05)' }}>+12.4%</span>
               </div>
               <div>
                 <p className={styles.statValue}>4.8k</p>
@@ -180,15 +181,11 @@ export default function DashboardPage() {
                           <span className="material-symbols-outlined">{details.icon || 'apps'}</span>
                        )}
                     </div>
-                    <label className={styles.switch}>
-                      <input 
-                        type="checkbox"
-                        checked={details.inMaintenance || false} 
-                        onChange={() => toggleMaintMutation.mutate(details._id)}
-                        disabled={toggleMaintMutation.isPending}
-                      />
-                      <span className={styles.slider}></span>
-                    </label>
+                    <Switch 
+                      checked={details.inMaintenance || false} 
+                      onChange={() => toggleMaintMutation.mutate(details._id)}
+                      disabled={toggleMaintMutation.isPending}
+                    />
                   </div>
                   <div className={styles.serviceInfo}>
                     <h3>{details.title}</h3>

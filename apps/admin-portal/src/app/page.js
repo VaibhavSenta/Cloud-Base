@@ -49,7 +49,7 @@ export default function AdminLogin() {
       setIsLoading(false);
     }
     // Yahan tera proxy route call hoga baad mein: /api/admin/auth/login
-    console.log('Logging in with:', formData);
+    // console.log('Logging in with:', formData);
   };
 
   return (

@@ -30,7 +30,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  background: #4cd7f6;
+  background: var(--primary);
   color: #003640;
   border: none;
   padding: 12px 20px;
@@ -110,7 +110,7 @@
 }
 
 .searchBox:focus-within {
-  border-color: #4cd7f6;
+  border-color: var(--primary);
 }
 
 .searchBox span {
@@ -152,9 +152,9 @@
 }
 
 .activeChip {
-  background: #4cd7f6;
+  background: var(--primary);
   color: #003640;
-  border-color: #4cd7f6;
+  border-color: var(--primary);
 }
 
 .emptySearch {
@@ -175,8 +175,8 @@
 
 .emptySearch button {
   background: transparent;
-  border: 1px solid #4cd7f6;
-  color: #4cd7f6;
+  border: 1px solid var(--primary);
+  color: var(--primary);
   padding: 8px 20px;
   border-radius: 8px;
   cursor: pointer;
@@ -205,7 +205,7 @@
 .appCard:hover {
   background: #272a2c;
   transform: translateY(-4px);
-  border-color: rgba(76, 215, 246, 0.3);
+  border-color: rgba(5, 102, 217, 0.3);
 }
 
 .maintMode {
@@ -227,10 +227,10 @@
   height: 56px;
   
   aspect-ratio: 1 / 1;
-  color: #4cd7f6;
+  color: var(--primary);
   background: #0b0f10;
   border-radius: 16px;
-  border: 1px solid rgba(76, 215, 246, 0.2);
+  border: 1px solid rgba(5, 102, 217, 0.2);
   overflow: hidden;
 }
 
@@ -346,7 +346,7 @@
 }
 
 .primaryBtn:hover {
-  background: #4cd7f6;
+  background: var(--primary);
   color: #003640;
 }
 
@@ -389,7 +389,7 @@
 }
 
 .switch input:checked + .slider {
-  background-color: #4cd7f6;
+  background-color: var(--primary);
 }
 
 .switch input:checked + .slider:before {

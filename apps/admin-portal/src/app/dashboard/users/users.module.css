@@ -74,7 +74,7 @@
 }
 
 .searchBox:focus-within {
-  border-color: #4cd7f6;
+  border-color: var(--primary);
 }
 
 .searchBox span {
@@ -181,7 +181,7 @@
   align-items: center;
   justify-content: center;
   font-weight: 800;
-  color: #4cd7f6;
+  color: var(--primary);
   overflow: hidden;
   flex-shrink: 0;
 }
@@ -204,7 +204,7 @@
   text-transform: uppercase;
 }
 
-.root { background: rgba(5, 102, 217, 0.15); color: #4cd7f6; }
+.root { background: rgba(5, 102, 217, 0.15); color: var(--primary); }
 .admin { background: rgba(16, 185, 129, 0.15); color: #10b981; }
 .user { background: rgba(255, 255, 255, 0.05); color: #869397; }
 
@@ -247,8 +247,8 @@
 
 .iconBtn:hover {
   background: rgba(255, 255, 255, 0.08);
-  border-color: #4cd7f6;
-  color: #4cd7f6;
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 .danger:hover {
@@ -303,9 +303,9 @@
 }
 
 .activePage {
-  background: #4cd7f6;
+  background: var(--primary);
   color: #003640;
-  border-color: #4cd7f6;
+  border-color: var(--primary);
 }
 
 .noResults {

@@ -9,6 +9,9 @@ const { loginLimiter } = require('../middlewares/rateLimiter');
 // 1. GET /api/auth/login (Check if already logged in)
 // Note: Do not use 'verifyToken' middleware here, because the logic is already inside 
 
+// Handshake for Encryption
+router.get('/handshake', authController.handshake);
+
 // Login route
 router.get('/login', authController.checkLoginStatus);
 router.post('/login', loginLimiter, validateLogin, authController.login);
