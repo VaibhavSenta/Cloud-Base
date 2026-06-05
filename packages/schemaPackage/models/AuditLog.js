@@ -15,7 +15,9 @@ const AuditLogSchema = new mongoose.Schema({
       'CONFIG_UPDATED', 
       'MAINTENANCE_TOGGLED', 
       'INFRA_UPDATED', 
-      'APP_DELETED'
+      'APP_DELETED',
+      'USER_STATUS_CHANGED',
+      'USER_DELETED'
     ]
   },
   targetId: { type: mongoose.Schema.Types.ObjectId }, // ID of the ManagedApp

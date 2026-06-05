@@ -22,21 +22,6 @@ export default function DashboardPage() {
     },
   });
 
-  // 1. Fetch Real-time Analytics from Backend
-  const { data: analytics, isLoading: isAnalLoading, error: analError } = useQuery({
-    queryKey: ['systemAnalytics'],
-    queryFn: async () => {
-      const res = await axios.get('/api/admin/dashboard/analytics/summary');
-      return res.data.data;
-    },
-    refetchInterval: 60000, // Sync every minute
-  });
-
-  // Dynamic calculations or fallback to defaults
-  const userGrowth = analytics?.userGrowth?.map(d => d.count) || [0, 0, 0, 0, 0, 0, 0];
-  const totalActives = analytics?.totalActives || 0;
-  const appsSummary = analytics?.appsSummary || [];
-
   const toggleMaintMutation = useMutation({
     mutationFn: async (appId) => {
       const res = await axios.patch(`/api/admin/managedapps/toggle-maintenance/${appId}`);
@@ -51,59 +36,6 @@ export default function DashboardPage() {
     <AdminLayout>
       <div className={styles.dashboardWrapper}>
         
-        {/* TOP ANALYTICS WIDGETS */}
-        <section className={styles.analyticsSection}>
-          {/* Widget 1: User Growth Trend */}
-          <div className={styles.analyticsCard}>
-            <div className={styles.cardHeader}>
-              <h3>User Growth (7 Days)</h3>
-              <span className={styles.trendUp}>+24%</span>
-            </div>
-            <div className={styles.chartArea}>
-              <svg viewBox="0 0 400 100" className={styles.growthChart}>
-                <polyline
-                  fill="none"
-                  stroke="var(--primary)"
-                  strokeWidth="3"
-                  points={userGrowth.map((v, i) => `${(i * 400) / 6},${100 - (v * 100) / 50}`).join(' ')}
-                />
-                {userGrowth.map((v, i) => (
-                  <circle key={i} cx={(i * 400) / 6} cy={100 - (v * 100) / 50} r="4" fill="var(--primary)" />
-                ))}
-              </svg>
-              <div className={styles.chartLabels}>
-                <span>Day 1</span>
-                <span>Today</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Widget 2: App Traffic Heatmap */}
-          <div className={styles.analyticsCard}>
-            <div className={styles.cardHeader}>
-              <h3>Traffic Distribution</h3>
-              <span className={styles.totalStats}>{totalActives} Total Active</span>
-            </div>
-            <div className={styles.heatmapList}>
-              {appsSummary.map((app, i) => {
-                const percentage = (parseInt(app.actives) / (totalActives || 1)) * 100;
-                return (
-                  <div key={app._id} className={styles.heatmapItem}>
-                    <div className={styles.heatInfo}>
-                      <span>{app.title}</span>
-                      <span>{app.actives} users</span>
-                    </div>
-                    <div className={styles.heatBar}>
-                      <div className={styles.heatFill} style={{ width: `${percentage}%` }}></div>
-                    </div>
-                  </div>
-                );
-              })}
-              {appsSummary.length === 0 && !isAnalLoading && <p className={styles.emptyText}>No service data available.</p>}
-            </div>
-          </div>
-        </section>
-
         {/* SECTION 1: INFRASTRUCTURE METRICS ENGINE */}
         <section className={styles.sectionBlock}>
           <div className={styles.sectionHeader}>

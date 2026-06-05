@@ -142,4 +142,26 @@ const checkHealth = async (req, res, next) => {
     } catch (err) { next(err); }
 };
 
-module.exports = { addApp, getAllApps, toggleMaintenance, updateApp, getAppByName, checkHealth, getAppLogs, getAllLogs };
+const deleteApp = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const app = await MANAGEDAPP.findById(id); // Get info before delete for audit
+        if (!app) return res.status(404).json({ success: false, msg: "App not found" });
+
+        await managedappsServicess.deleteApp(id);
+
+        // Audit Log
+        await auditService.createLog({
+            adminId: req.user._id,
+            action: 'APP_DELETED',
+            targetId: id,
+            appTitle: app.title,
+            details: { name: app.name, reason: 'Manual deletion by admin' },
+            ipAddress: req.ip
+        });
+
+        return res.json({ success: true, msg: "App infrastructure removed permanently" });
+    } catch (err) { next(err); }
+};
+
+module.exports = { addApp, getAllApps, toggleMaintenance, updateApp, getAppByName, checkHealth, getAppLogs, getAllLogs, deleteApp };

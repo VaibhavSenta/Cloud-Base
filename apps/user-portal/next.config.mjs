@@ -1,6 +1,16 @@
+import withPWAInit from 'next-pwa';
+
+const withPWA = withPWAInit({
+  dest: 'public',
+  disable: process.env.NODE_ENV === 'development',
+  register: true,
+  skipWaiting: true,
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Existing rewrites jo tune pehle se set kiye hain
+  // Turbopack compatibility
+  transpilePackages: ['next-pwa'],
   async rewrites() {
     return [
       {
@@ -23,4 +33,4 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+export default withPWA(nextConfig);

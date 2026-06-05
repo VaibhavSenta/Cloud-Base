@@ -33,4 +33,8 @@ async function getAppByName(name) {
     return await MANAGEDAPP.findOne({ name });
 }
 
-module.exports = { addApp, getAllApps, toggleMaintenance, updateApp, getAppByName };
+async function deleteApp(id) {
+    return await MANAGEDAPP.findByIdAndDelete(id);
+}
+
+module.exports = { addApp, getAllApps, toggleMaintenance, updateApp, getAppByName, deleteApp };

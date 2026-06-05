@@ -16,6 +16,7 @@ export default function AppOverview() {
   const queryClient = useQueryClient();
   const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
   const [isInfraModalOpen, setIsInfraModalOpen] = React.useState(false);
+  const [deleteConfirm, setDeleteConfirm] = React.useState(false);
 
   // 1. Fetch Core App Details
   const { data: app, isLoading, error } = useQuery({
@@ -59,6 +60,26 @@ export default function AppOverview() {
       queryClient.invalidateQueries({ queryKey: ['appsList'] });
     },
   });
+
+  const deleteAppMutation = useMutation({
+    mutationFn: async () => {
+      const res = await axios.delete(`/api/admin/managedapps/${app._id}`);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['appsList'] });
+      router.push('/apps');
+    },
+  });
+
+  const handleDelete = () => {
+    if (!deleteConfirm) {
+      setDeleteConfirm(true);
+      setTimeout(() => setDeleteConfirm(false), 3000); // Reset after 3s
+      return;
+    }
+    deleteAppMutation.mutate();
+  };
 
   if (isLoading) return <AdminLayout><div className={styles.loading}>Accessing Secure Node...</div></AdminLayout>;
   if (error || !app) return <AdminLayout><div className={styles.error}>Infrastructure Link Failed</div></AdminLayout>;
@@ -309,6 +330,21 @@ export default function AppOverview() {
                  <p className={styles.emptyText}>No recent activity recorded for this app.</p>
                )}
             </div>
+          </section>
+
+          {/* Danger Zone: Delete Hub */}
+          <section className={styles.dangerZone}>
+             <div className={styles.dangerLeft}>
+                <h3>Danger Zone</h3>
+                <p>Removing this app will permanently delete its configuration and historical logs. This action cannot be undone.</p>
+             </div>
+             <button 
+                className={styles.deleteBtn} 
+                onClick={handleDelete}
+                disabled={deleteAppMutation.isPending}
+             >
+                {deleteAppMutation.isPending ? 'Removing...' : (deleteConfirm ? 'Are you sure? Click again' : 'Delete this Hub')}
+             </button>
           </section>
         </div>
 

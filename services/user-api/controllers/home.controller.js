@@ -1,30 +1,42 @@
-const { name } = require('ejs');
-const mongoose = require('mongoose');
+const { CATEGORY, MOVIE } = require('../models/centralstation');
 
-
-async function getHomeData(req, res, next) {
-    // fatch require data for home
+/**
+ * getHomeData - Fetches top categories and featured content
+ */
+const getHomeData = async (req, res, next) => {
     try {
-        const categories = await mongoose.connection.db.collection('categories')
-        .find({status: "active"}).project({
-            _id: 0,
-            name: 1,
-            thubnailsurl: 1
-        }).toArray();
-    
+        console.log("🏠 Home Data Request Received");
+        
+        // 1. Fetch Categories (with fallback to empty array)
+        const categories = await CATEGORY.find({ status: "active" })
+            .select('name thubnailsurl')
+            .lean() || [];
+        
+        // 2. Fetch Featured Movies (with fallback to empty array)
+        let featuredMovies = [];
+        try {
+            featuredMovies = await MOVIE.find()
+                .limit(6)
+                .sort({ createdAt: -1 })
+                .lean() || [];
+        } catch (mErr) {
+            console.warn("⚠️ Movies collection might be empty or missing:", mErr.message);
+        }
+
         return res.json({
-            msg: "Accessed home route",
-            categories: categories
-        })
+            success: true,
+            msg: "Welcome to CloudBase Hub",
+            data: {
+                categories,
+                featuredMovies
+            }
+        });
     } catch (error) {
-        console.error(error);
-        next(error)
+        console.error("❌ Home Controller Error:", error.message);
+        next(error);
     }
-    
-}
-
-
+};
 
 module.exports = {
     getHomeData
-}
+};

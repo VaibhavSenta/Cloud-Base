@@ -7,6 +7,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import styles from './AdminLayout.module.css';
+import InfraAlert from '../InfraAlert/InfraAlert';
 
 export default function AdminLayout({ children }) {
 
@@ -52,7 +53,13 @@ export default function AdminLayout({ children }) {
     refetchInterval: 30000, // Background check every 30s
   });
 
+  const [isAlertDismissed, setIsAlertDismissed] = useState(false);
   const downApps = appsStatus.filter(app => app.status === 'down' && !app.inMaintenance);
+
+  // Auto-show alert if new down apps appear
+  useEffect(() => {
+    if (downApps.length > 0) setIsAlertDismissed(false);
+  }, [downApps.length]);
 
   // 4. 🚧 Toggle Global Maintenance Mutation
   const toggleMaintMutation = useMutation({
@@ -227,20 +234,7 @@ export default function AdminLayout({ children }) {
       </aside>
 
       <main className={styles.mainContent}>
-        {downApps.length > 0 && (
-          <div className={styles.globalAlert}>
-            <span className="material-symbols-outlined">warning</span>
-            <div className={styles.alertContent}>
-              <p><strong>Infrastructure Alert:</strong> {downApps.length} system(s) are currently unreachable.</p>
-              <div className={styles.downList}>
-                {downApps.map(app => (
-                  <span key={app._id} className={styles.downBadge}>{app.title}</span>
-                ))}
-              </div>
-            </div>
-            <button onClick={() => router.push('/apps')} className={styles.viewAppsBtn}>Resolve Now</button>
-          </div>
-        )}
+        <InfraAlert downApps={downApps} />
         {children}
       </main>
 

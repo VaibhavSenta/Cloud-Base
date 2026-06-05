@@ -40,7 +40,7 @@ const toggleUserStatus = async (req, res, next) => {
         // Audit Log
         await auditService.createLog({
             adminId: req.user._id,
-            action: 'CONFIG_UPDATED', // Reusing action or adding USER_STATUS_CHANGED
+            action: 'USER_STATUS_CHANGED',
             targetId: user._id,
             appTitle: 'Ecosystem Users',
             details: { changedUser: user.email, newStatus: status },

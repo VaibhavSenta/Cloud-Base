@@ -12,17 +12,13 @@ const globalErrorHandler = require('./middlewares/errorMiddleware');
 
 
 
+const HealthMonitorService = require('./services/HealthMonitorService');
+
 const port = process.env.PORT || 5001;
 const connectionString = process.env.CONNECTION
 
-
-
-
-
-
-
-
-
+// Start Automated Infrastructure Monitoring
+HealthMonitorService.start();
 
 mongoose.connect(connectionString)
 .then(async() => {

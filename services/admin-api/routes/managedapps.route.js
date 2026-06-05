@@ -22,6 +22,9 @@ router.patch('/toggle-maintenance/:id', managedapps.toggleMaintenance);
 // 4. Update full app metrics/details
 router.put('/update/:id', managedapps.updateApp);
 
+// 5. Delete an app instance
+router.delete('/:id', managedapps.deleteApp);
+
 module.exports = {
     MANAGEDAPPS: router
 };
