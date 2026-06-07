@@ -1,0 +1,106 @@
+.statCard {
+  background: rgba(90, 90, 90, 0.274);
+  -webkit-backdrop-filter: blur(26px);
+  backdrop-filter: blur(26px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.statCard:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-5px);
+}
+
+.statTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.statIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.statIcon span {
+  font-size: 24px;
+}
+
+.statBadge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 99px;
+  text-transform: uppercase;
+}
+
+.statValue {
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.statLabel {
+  font-size: 13px;
+  color: #888;
+  margin: 4px 0 0 0;
+  font-weight: 500;
+}
+
+/* Compact Variant (Mobile Optimized) */
+.compact {
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  min-height: auto;
+}
+
+.compact .statTop {
+  margin-bottom: 0;
+}
+
+.compact .statIcon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.compact .statContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.compact .statValue {
+  font-size: 22px;
+}
+
+.compact .statLabel {
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.statBadgeCompact {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  width: fit-content;
+  margin-top: 4px;
+}

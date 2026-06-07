@@ -2,12 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import NextImage from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import styles from './AdminLayout.module.css';
 import InfraAlert from '../InfraAlert/InfraAlert';
+import Sidebar from '../Sidebar/Sidebar';
 
 export default function AdminLayout({ children }) {
 
@@ -74,7 +75,6 @@ export default function AdminLayout({ children }) {
       console.error("Failed to toggle maintenance:", err);
       // Revert local state on error
       setIsMaintActive(globalMaint);
-      alert("System Error: Failed to toggle maintenance mode.");
     }
   });
 
@@ -105,133 +105,50 @@ export default function AdminLayout({ children }) {
         <div className={styles.headerWraper}>
           
           <div className={styles.headerLeft}>
-            <span className={`material-symbols-outlined ${styles.mobileMenuBtn}`} onClick={toggleSidebar}>
-              {isSidebarOpen ? 'close' : '|||'}
-            </span>
-            <h1 className={styles.logoText}>Cloud Base</h1>
+            <button className={styles.mobileMenuBtn} onClick={toggleSidebar}>
+               {isSidebarOpen ? (
+                 <NextImage src="/admin-images/close.png" width={20} height={20} alt="Close" />
+               ) : (
+                 <NextImage src="/admin-images/menu.png" width={24} height={24} alt="Menu" />
+               )}
+            </button>
+            <h1 className={styles.logoText}>Cloud<span>Base</span></h1>
             
             <div className={styles.networkStatus}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <div className={styles.statusDot}></div>
-                <span className={styles.statusText}>Global Network: Optimal</span>
+                <span className={styles.statusText}>Live Node: Optimal</span>
               </div>
               <div className={styles.statusDivider}></div>
-              <span className={styles.latencyText}>Latency: 12ms</span>
+              <span className={styles.latencyText}>12ms</span>
             </div>
           </div>
 
           <div className={styles.headerRight}>
-            
-
             <div className={styles.userSection}>
               <button className={styles.notifBtn}>
-                <Image src="/admin-images/notification-bell.png" width={20} height={20} alt='Notifications' />
+                <NextImage src="/admin-images/notification-bell.png" width={20} height={20} alt='Notifications' />
                 <span className={styles.notifDot}></span>
               </button>
               <span className={styles.userName}>{admin?.firstname || 'Admin'}</span>
-              <div className={styles.userAvatar} onMouseEnter={()=> router.prefetch('/profile')} onClick={()=> router.push('/profile')}>
-                <img alt="Admin Profile" src="/admin-icon.png" property='true'  />
+              <div className={styles.userAvatar} onClick={()=> router.push('/profile')}>
+                <NextImage src="/admin-icon.png" width={36} height={36} alt="Admin Profile" />
               </div>
             </div>
           </div>
         </div>
-
       </header>
 
-      {/* 2. INFRASTRUCTURE SIDEBAR */}
-      <aside className={`${styles.sidebar} ${isSidebarOpen ? styles.sidebarActive : ''}`}>
-        <div className={styles.sidebarLogoSection}>
-          <div className={styles.logoWrapper}>
-            <span className={styles.sidebarLogoText}>Cloud Base</span>
-          </div>
-          
-          <div className={styles.profileSnippet}>
-            <div className={styles.profileIconBox}>
-              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>@</span>
-            </div>
-            <div className={styles.profileInfo}>
-              <p className={styles.adminLabel}>System Admin</p>
-              <p className={styles.accessLabel}>Root Access</p>
-            </div>
-          </div>
-          <div className={styles.nodeBadge}>
-            {/* Global Maintenance Switch */}
-            <div className={styles.maintModeHeader} style={{ display: 'flex' }}>
-              <span className={styles.maintLabel}>Global Maint. Mode</span>
-              <label className={styles.switch}>
-                <input 
-                  type="checkbox" 
-                  checked={isMaintActive} 
-                  onChange={handleMaintToggle} 
-                  disabled={isMaintLoading || toggleMaintMutation.isPending}
-                />
-                <span className={styles.slider}></span>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <nav className={styles.navList}>
-          <Link 
-            href="/dashboard" 
-            className={`${styles.navItem} ${pathname === '/dashboard' ? styles.active : ''}`} 
-            onClick={closeSidebar}
-            onMouseEnter={() => router.prefetch('/dashboard')}
-          >
-            <span>Dashboard</span>
-          </Link>
-          <Link 
-            href="/apps" 
-            className={`${styles.navItem} ${pathname === '/apps' ? styles.active : ''}`} 
-            onClick={closeSidebar}
-            onMouseEnter={() => router.prefetch('/apps')}
-          >
-            <span>Apps</span>
-          </Link>
-          <Link 
-            href="/dashboard/users" 
-            className={`${styles.navItem} ${pathname === '/dashboard/users' ? styles.active : ''}`} 
-            onClick={closeSidebar}
-            onMouseEnter={() => router.prefetch('/dashboard/users')}
-          >
-            <span>Users</span>
-          </Link>
-          <Link 
-            href="/logs" 
-            className={`${styles.navItem} ${pathname === '/logs' ? styles.active : ''}`} 
-            onClick={closeSidebar}
-            onMouseEnter={() => router.prefetch('/logs')}
-          >
-            <span>Logs</span>
-          </Link>
-        </nav>
-
-        <div className={styles.bottomNav}>
-          <div className={styles.navList}>
-            <Link 
-              href="/dashboard/settings" 
-              className={`${styles.navItem} ${pathname === '/dashboard/settings' ? styles.active : ''}`} 
-              onClick={closeSidebar}
-              onMouseEnter={() => router.prefetch('/dashboard/settings')}
-            >
-              <span>Settings</span>
-            </Link>
-            <Link 
-              href="/profile" 
-              className={`${styles.navItem} ${pathname === '/profile' ? styles.active : ''}`} 
-              onClick={closeSidebar}
-              onMouseEnter={() => router.prefetch('/profile')}
-            >
-              <span>Profile</span>
-            </Link>
-          </div>
-
-          <button className={styles.logoutBtn} onClick={handleLogout}>
-            <span className="material-symbols-outlined">{"\>"}</span>
-            <span>Logout Console</span>
-          </button>
-        </div>
-      </aside>
+      {/* 2. MODULAR SIDEBAR */}
+      <Sidebar 
+        isOpen={isSidebarOpen}
+        onClose={closeSidebar}
+        isMaintActive={isMaintActive}
+        handleMaintToggle={handleMaintToggle}
+        isMaintLoading={isMaintLoading}
+        isToggling={toggleMaintMutation.isPending}
+        handleLogout={handleLogout}
+      />
 
       <main className={styles.mainContent}>
         <InfraAlert downApps={downApps} />

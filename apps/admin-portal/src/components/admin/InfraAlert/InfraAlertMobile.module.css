@@ -1,0 +1,115 @@
+.mobileAlert {
+  background: linear-gradient(135deg, rgba(102, 12, 12, 0.45) 0%, rgba(69, 0, 5, 0.5) 100%);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 77, 77, 0.15);
+  border-radius: 24px;
+  padding: 16px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: slideIn 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.iconBox {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 77, 77, 0.1);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.2); }
+  70% { box-shadow: 0 0 0 10px rgba(255, 77, 77, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0); }
+}
+
+.titleArea h4 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.titleArea p {
+  margin: 2px 0 0 0;
+  font-size: 11px;
+  color: #ffb4ab;
+  opacity: 0.8;
+}
+
+.scrollArea {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 120px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.nodeCard {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nodeDot {
+  width: 6px;
+  height: 6px;
+  background: #ff4d4d;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #ff4d4d;
+}
+
+.nodeName {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  color: #e0e0e0;
+}
+
+.nodeStatus {
+  font-size: 10px;
+  font-weight: 800;
+  color: #ff4d4d;
+  background: rgba(255, 77, 77, 0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.actionBtn {
+  background: #fff;
+  color: #690005;
+  border: none;
+  padding: 14px;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s active;
+}
+
+.actionBtn:active {
+  transform: scale(0.98);
+}

@@ -195,10 +195,58 @@
 }
 
 @media (max-width: 768px) {
-  .rowItem {
-    flex-wrap: wrap;
+  .modalOverlay {
+    padding: 0;
   }
-  .rowItem input {
-    min-width: 100px;
+
+  .modalContent {
+    max-width: 100%;
+    height: 100vh;
+    border-radius: 0;
+    border: none;
+  }
+
+  .modalHeader {
+    padding: 16px 20px;
+    position: sticky;
+    top: 0;
+    background: #1d2022;
+    z-index: 10;
+  }
+
+  .modalHeader h2 {
+    font-size: 18px;
+  }
+
+  .modalBody {
+    padding: 20px;
+    gap: 32px;
+  }
+
+  .rowItem {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .smallInput {
+    max-width: 100%;
+  }
+
+  .removeBtn {
+    width: 100%;
+    padding: 12px;
+  }
+
+  .formActions {
+    padding: 16px 20px;
+    flex-direction: column-reverse;
+    gap: 12px;
+  }
+
+  .cancelBtn, .saveBtn {
+    width: 100%;
+    padding: 14px;
+    text-align: center;
   }
 }

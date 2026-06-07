@@ -1,0 +1,101 @@
+.sessionCard {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.2s ease;
+}
+
+.sessionCard:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.sessionIcon {
+  width: 44px;
+  height: 44px;
+  background: #0b0f10;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sessionInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.sessionMain {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 4px;
+}
+
+.sessionMain h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.ipBadge {
+  font-size: 10px;
+  font-family: monospace;
+  background: rgba(0, 0, 0, 0.3);
+  color: #555;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.timeMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.timeMeta p {
+  margin: 0;
+  font-size: 11px;
+  color: #666;
+}
+
+.terminateBtn {
+  width: 32px;
+  height: 32px;
+  background: rgba(239, 68, 68, 0.05);
+  border: 1px solid rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.terminateBtn:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .sessionCard {
+    padding: 12px;
+    gap: 12px;
+  }
+  
+  .sessionIcon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .sessionMain h3 { font-size: 13px; }
+}

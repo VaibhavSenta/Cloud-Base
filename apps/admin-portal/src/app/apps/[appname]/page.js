@@ -6,7 +6,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import AdminLayout from '@/components/admin/AdminLayout/AdminLayout';
 import styles from './overview.module.css';
-import Image from 'next/image';
+import NextImage from 'next/image';
 import EditAppModal from '@/components/admin/apps/EditAppModal';
 import InfraManagerModal from '@/components/admin/apps/InfraManagerModal';
 
@@ -95,14 +95,14 @@ export default function AppOverview() {
         <nav className={styles.topNav}>
           <button onClick={() => router.push('/apps')} className={styles.backBtn}>
             <div className={styles.btnIcon}>
-               <Image src={'/admin-images/left-arrow.png'} width={24} height={24} alt="" />
+               <NextImage src={'/admin-images/left-arrow.png'} width={24} height={24} alt="" />
             </div>
             <span>Back to Ecosystem</span>
           </button>
           <div className={styles.navActions}>
              <button className={styles.editBtn} onClick={() => setIsEditModalOpen(true)}>
                 <div className={styles.btnIcon}>
-                  <Image src={'/admin-images/edit-btn.png'} width={18} height={18} alt="Edit" />
+                  <NextImage src={'/admin-images/edit-btn.png'} width={18} height={18} alt="Edit" />
                 </div>
                 <span>Modify Config</span>
              </button>
@@ -111,7 +111,7 @@ export default function AppOverview() {
                 className={styles.dashBtn}
              >
                 <div className={styles.btnIcon}>
-                  <Image src={'/admin-images/dashboard-icon.png'} width={18} height={18} alt="" />
+                  <NextImage src={'/admin-images/dashboard-icon.png'} width={18} height={18} alt="" />
                 </div>
                 <span>Open Dashboard</span>
              </button>
@@ -123,7 +123,7 @@ export default function AppOverview() {
           <div className={styles.heroLeft}>
             <div className={styles.iconBox}>
                {app.icon?.startsWith('/') || app.icon?.startsWith('http') ? (
-                  <Image src={app.icon} fill alt={app.title} sizes="80px" />
+                  <NextImage src={app.icon} fill alt={app.title} sizes="80px" />
                ) : (
                   <span className="material-symbols-outlined">{app.icon || 'apps'}</span>
                )}
@@ -218,7 +218,7 @@ export default function AppOverview() {
             <div className={styles.nodeStats}>
                <div className={styles.nodeItem}>
                   <div className={styles.btnIcon}>
-                     <Image src={isLocal ? '/admin-images/local-node.png' : '/admin-images/cloud-node.png'} width={24} height={24} alt="Node" />
+                     <NextImage src={isLocal ? '/admin-images/local-node.png' : '/admin-images/cloud-node.png'} width={24} height={24} alt="Node" />
                   </div>
                   <div>
                      <p>{isLocal ? 'Local Development Node' : 'Cloud Production Node'}</p>
@@ -227,7 +227,7 @@ export default function AppOverview() {
                </div>
                <div className={styles.nodeItem}>
                   <div className={styles.btnIcon}>
-                     <Image src={isSecure ? '/admin-images/secure-ssl.png' : '/admin-images/insecure-ssl.png'} width={24} height={24} alt="Security" />
+                     <NextImage src={isSecure ? '/admin-images/secure-ssl.png' : '/admin-images/insecure-ssl.png'} width={24} height={24} alt="Security" />
                   </div>
                   <div>
                      <p>{isSecure ? 'SSL Encrypted (HTTPS)' : 'Insecure Protocol (HTTP)'}</p>
@@ -238,7 +238,7 @@ export default function AppOverview() {
 
             <div className={styles.maintenanceBanner}>
                <div className={styles.btnIcon}>
-                  <Image src={app.inMaintenance ? '/admin-images/maintenance-mode.png' : '/admin-images/systems-ok.png'} width={24} height={24} alt="Status" />
+                  <NextImage src={app.inMaintenance ? '/admin-images/maintenance-mode.png' : '/admin-images/systems-ok.png'} width={24} height={24} alt="Status" />
                </div>
                <div>
                   <p>{app.inMaintenance ? 'Service is in Maintenance Mode' : 'All Systems Operational'}</p>
@@ -253,7 +253,7 @@ export default function AppOverview() {
               <h3>Service Connectors</h3>
               <button className={styles.manageIconBtn} onClick={() => setIsInfraModalOpen(true)}>
                 <div className={styles.btnIcon}>
-                  <Image src={'/admin-images/plus.png'} width={18} height={18} alt="" />
+                  <NextImage src={'/admin-images/plus.png'} width={18} height={18} alt="" />
                 </div>
               </button>
             </div>
@@ -280,7 +280,7 @@ export default function AppOverview() {
               <h3>Ecosystem Links</h3>
               <button className={styles.manageIconBtn} onClick={() => setIsInfraModalOpen(true)}>
                 <div className={styles.btnIcon}>
-                  <Image src={'/admin-images/add-link.png'} width={18} height={18} alt="" />
+                  <NextImage src={'/admin-images/add-link.png'} width={18} height={18} alt="" />
                 </div>
               </button>
             </div>
@@ -289,7 +289,7 @@ export default function AppOverview() {
                 app.quickLinks.map((link, idx) => (
                   <a key={idx} href={link.url} target="_blank" rel="noreferrer" className={styles.linkCard}>
                     <div className={styles.btnIcon}>
-                      <Image src={'/admin-images/link.png'} width={18} height={18} alt="" />
+                      <NextImage src={'/admin-images/link.png'} width={18} height={18} alt="" />
                     </div>
                     <span>{link.label}</span>
                   </a>

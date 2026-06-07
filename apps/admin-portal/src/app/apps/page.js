@@ -4,10 +4,13 @@ import React from 'react';
 import AdminLayout from '@/components/admin/AdminLayout/AdminLayout';
 import styles from './apps.module.css';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
+import NextImage from 'next/image';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import AddAppModal from '@/components/admin/apps/AddAppModal';
+import StatCard from '@/components/admin/StatCard/StatCard';
+import AppCard from '@/components/admin/AppCard/AppCard';
+import AppFilters from '@/components/admin/AppFilters/AppFilters';
 
 export default function AppsPage() {
   const router = useRouter();
@@ -72,53 +75,46 @@ export default function AppsPage() {
           </div>
           <button className={styles.addAppBtn} onClick={() => setIsModalOpen(true)}>
             <div className={styles.btnIcon}>
-              <Image src={'/admin-images/add-link.png'} width={20} height={20} alt="" />
+              <NextImage src={'/admin-images/add-link.png'} width={20} height={20} alt="" />
             </div>
-            <span>Register New App</span>
+            <span className={styles.btnText}>Register New App</span>
           </button>
         </header>
 
-        {/* Global Metrics Bar */}
+        {/* Global Metrics Bar - Reusing Dashboard StatCards for consistency */}
         <section className={styles.globalStats}>
-          <div className={styles.statMiniCard}>
-            <span className={styles.statLabel}>Total Apps</span>
-            <span className={styles.statValue}>{apps.length}</span>
-          </div>
-          <div className={styles.statMiniCard}>
-            <span className={styles.statLabel}>System Health</span>
-            <span className={styles.statValue} style={{ color: healthColor }}>{globalHealth}%</span>
-          </div>
-          <div className={styles.statMiniCard}>
-            <span className={styles.statLabel}>Active Traffic</span>
-            <span className={styles.statValue}>
-              {apps.reduce((acc, app) => acc + (parseInt(app.actives) || 0), 0)}
-            </span>
-          </div>
+          <StatCard 
+            icon="/admin-images/cloud-node.png"
+            value={apps.length}
+            label="Total Apps Registered"
+            iconStyle={{ backgroundColor: 'rgba(5, 102, 217, 0.1)' }}
+          />
+          <StatCard 
+            icon="/admin-images/systems-ok.png"
+            value={`${globalHealth}%`}
+            label="Ecosystem Stability"
+            badgeText={globalHealth > 90 ? "Stable" : "Critical"}
+            badgeStyle={{ 
+              color: healthColor, 
+              background: `${healthColor}1a` // 10% opacity
+            }}
+            iconStyle={{ backgroundColor: 'rgba(16, 185, 129, 0.1)' }}
+          />
+          <StatCard 
+            icon="/admin-images/sync.png"
+            value={apps.reduce((acc, app) => acc + (parseInt(app.actives) || 0), 0)}
+            label="Total Active Traffic"
+            iconStyle={{ backgroundColor: 'rgba(255, 180, 171, 0.1)' }}
+          />
         </section>
 
         {/* Advanced Filters */}
-        <section className={styles.filterSection}>
-          <div className={styles.searchBox}>
-            <span className="material-symbols-outlined">search</span>
-            <input 
-              type="text" 
-              placeholder="Search apps by title or slug..." 
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-          <div className={styles.envFilters}>
-            {['all', 'production', 'staging', 'development'].map((env) => (
-              <button 
-                key={env}
-                className={`${styles.filterChip} ${envFilter === env ? styles.activeChip : ''}`}
-                onClick={() => setEnvFilter(env)}
-              >
-                {env.charAt(0).toUpperCase() + env.slice(1)}
-              </button>
-            ))}
-          </div>
-        </section>
+        <AppFilters 
+          searchTerm={searchTerm} 
+          setSearchTerm={setSearchTerm} 
+          envFilter={envFilter} 
+          setEnvFilter={setEnvFilter} 
+        />
 
         {/* Apps Grid */}
         <section className={styles.appsGrid}>
@@ -132,71 +128,14 @@ export default function AppsPage() {
             </div>
           ) : filteredApps.length > 0 ? (
             filteredApps.map((app) => (
-              <div key={app._id} className={`${styles.appCard} ${app.inMaintenance ? styles.maintMode : ''}`}>
-                <div className={styles.cardHeader}>
-                  <div className={styles.appIcon}>
-                        {app.icon?.startsWith('/') || app.icon?.startsWith('http') ? (
-                           <Image fill src={app.icon} alt={app.title} sizes="56px" style={{ objectFit: 'contain', padding: '10px' }} />
-                        ) : (
-                           <span className="material-symbols-outlined">{app.icon || 'apps'}</span>
-                        )}
-                  </div>
-                  <div className={styles.statusBadge}>
-                    <div className={`${styles.statusDot} ${styles[app.status || 'optimal']}`}></div>
-                    <span>{app.status || 'Optimal'}</span>
-                  </div>
-                </div>
-
-                <div className={styles.appInfo}>
-                  <h3>{app.title}</h3>
-                  <p className={styles.appUrl}>{app.userUrl}</p>
-                </div>
-
-                <div className={styles.appMetrics}>
-                  <div className={styles.metricItem}>
-                    <span className={styles.metricValue}>{app.actives}</span>
-                    <span className={styles.metricLabel}>Users</span>
-                  </div>
-                  <div className={styles.metricItem}>
-                    <span className={styles.metricValue}>{app.latency || '12ms'}</span>
-                    <span className={styles.metricLabel}>Latency</span>
-                  </div>
-                  <div className={styles.metricItem}>
-                    <span className={styles.metricValue}>{app.version}</span>
-                    <span className={styles.metricLabel}>Version</span>
-                  </div>
-                </div>
-
-                <div className={styles.cardActions}>
-                  <div className={styles.toggleSection}>
-                    <span>Maint. Mode</span>
-                    <label className={styles.switch}>
-                      <input 
-                        type="checkbox"
-                        checked={app.inMaintenance || false} 
-                        onChange={() => toggleMaintMutation.mutate(app._id)}
-                        disabled={toggleMaintMutation.isPending}
-                      />
-                      <span className={styles.slider}></span>
-                    </label>
-                  </div>
-                  
-                  <div className={styles.btnGroup}>
-                    <button 
-                      onClick={() => router.push(`/apps/${app.name}`)}
-                      className={styles.actionBtn}
-                    >
-                      Overview
-                    </button>
-                    <button 
-                      onClick={() => router.push(`/apps/${app.name}/dashboard`)}
-                      className={`${styles.actionBtn} ${styles.primaryBtn}`}
-                    >
-                      Dashboard
-                    </button>
-                  </div>
-                </div>
-              </div>
+              <AppCard 
+                key={app._id}
+                app={app}
+                onToggleMaintenance={(id) => toggleMaintMutation.mutate(id)}
+                onOverview={(name) => router.push(`/apps/${name}`)}
+                onDashboard={(name) => router.push(`/apps/${name}/dashboard`)}
+                isToggling={toggleMaintMutation.isPending}
+              />
             ))
           ) : (
              <div className={styles.emptySearch}>

@@ -1,0 +1,208 @@
+.logsWrapper {
+  padding: 30px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.logsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 40px;
+  gap: 20px;
+}
+
+.headerTitle h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #e0e3e5;
+  margin: 0 0 8px 0;
+}
+
+.headerTitle p {
+  color: #bcc9cd;
+  font-size: 14px;
+  margin: 0;
+}
+
+.refreshBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(99, 99, 99, 0);
+  -webkit-backdrop-filter: blur(26px);
+  backdrop-filter: blur(26px);
+  border: 1px solid rgba(255, 255, 255, 0.486);
+  color: #e0e3e5;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.refreshBtn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.logsContainer {
+  background: #15181a;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.logsTableWrapper {
+  overflow-x: auto;
+}
+
+.logsTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.logsTable th {
+  padding: 16px 24px;
+  background: rgba(255, 255, 255, 0.02);
+  color: #869397;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.logsTable td {
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  color: #e0e3e5;
+  font-size: 14px;
+}
+
+.logsTable tr:hover {
+  background: rgba(255, 255, 255, 0.01);
+}
+
+.timeCell {
+  color: #869397;
+  white-space: nowrap;
+}
+
+.adminInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.adminName {
+  font-weight: 600;
+  color: #e0e3e5;
+}
+
+.adminId {
+  font-size: 11px;
+  color: #555;
+  font-family: monospace;
+}
+
+.actionBadge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.actionBadge.login { color: #10b981; background: rgba(16, 185, 129, 0.1); }
+.actionBadge.delete { color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+.actionBadge.update { color: #3b82f6; background: rgba(59, 130, 246, 0.1); }
+.actionBadge.add { color: #8b5cf6; background: rgba(139, 92, 246, 0.1); }
+
+.detailsCell {
+  color: #bcc9cd;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.emptyLogs, .loader, .errorMessage {
+  padding: 80px;
+  text-align: center;
+  color: #869397;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.emptyLogs button, .errorMessage button {
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  padding: 8px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+@media (max-width: 968px) {
+  .logsWrapper {
+    padding: 16px;
+  }
+
+  .logsHeader {
+    flex-direction: column;
+    margin-bottom: 24px;
+    gap: 16px;
+  }
+
+  .headerTitle h1 { font-size: 22px; }
+  .headerTitle p { font-size: 12px; }
+
+  .refreshBtn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .logsTable thead { display: none; }
+  
+  .logsTable td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    border: none;
+  }
+
+  .logsTable td:first-child {
+    background: rgba(255, 255, 255, 0.02);
+    padding: 16px 24px;
+  }
+
+  .logsTable tr {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .logsTable td::before {
+    content: attr(data-label);
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #869397;
+    font-weight: 700;
+  }
+
+  .logsTable td:first-child::before { content: none; }
+  
+  .detailsCell {
+    max-width: 100%;
+    white-space: normal;
+    text-align: right;
+    padding-left: 40px;
+  }
+}

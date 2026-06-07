@@ -1,0 +1,109 @@
+.serviceCard {
+  background-color: #1d2022b7;
+  -webkit-backdrop-filter: blur(26px);
+  backdrop-filter: blur(26px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.serviceCardMaintMode {
+  composes: serviceCard;
+  border-left-color: #f59e0b; 
+}
+
+.serviceTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.serviceIcon {
+  width: 44px;
+  height: 44px;
+  background-color: #0b0f10;
+  border: 1px solid rgba(61, 73, 76, 0.3);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.serviceInfo {
+  min-width: 0;
+  margin-bottom: 16px;
+}
+
+.serviceInfo h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #e0e3e5;
+  margin: 0 0 4px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.serviceDomain {
+  font-size: 13px;
+  color: #bcc9cd;
+  word-break: break-all;
+  margin: 0;
+}
+
+.serviceStats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 12px;
+}
+
+.trafficBadge {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #10b981;
+  padding: 4px 8px;
+  background: rgba(16, 185, 129, 0.1);
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.trafficBadgeWarning {
+  composes: trafficBadge;
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.activeCount {
+  font-size: 12px;
+  color: #bcc9cd;
+  white-space: nowrap;
+}
+
+.manageBtn {
+  width: 100%;
+  padding: 10px;
+  background-color: #3d494c;
+  color: #e0e3e5;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.manageBtn:hover {
+  background-color: #869397;
+}

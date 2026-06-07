@@ -3,10 +3,11 @@
 import React from 'react';
 import AdminLayout from '@/components/admin/AdminLayout/AdminLayout';
 import styles from './settings.module.css';
-import Image from 'next/image';
-import Switch from '@/components/admin/Switch/Switch';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+
+import SettingsGroup from '@/components/admin/Settings/SettingsGroup';
+import SettingsItem from '@/components/admin/Settings/SettingsItem';
 
 export default function SettingsPage() {
   const queryClient = useQueryClient();
@@ -35,19 +36,10 @@ export default function SettingsPage() {
     },
     onError: (err) => {
       console.error("Toggle failed:", err);
-      alert("Security Error: Failed to update protocol. Please try again.");
     }
   });
 
   const isEncryptionEnabled = settings.is_encryption_enabled === true;
-
-  const handleToggleEncryption = () => {
-    // Mutation call: switch position changes ONLY after success/reload
-    toggleSettingMutation.mutate({ 
-        key: 'is_encryption_enabled', 
-        value: !isEncryptionEnabled 
-    });
-  };
 
   return (
     <AdminLayout>
@@ -57,116 +49,57 @@ export default function SettingsPage() {
           <p>Manage infrastructure protocols and system preferences.</p>
         </section>
 
-        {/* SECURITY PROTOCOLS GROUP */}
-        <div className={styles.settingsGroup}>
-          <div className={styles.groupHeader}>
-            <h2>Security Protocols</h2>
-          </div>
-          
-          {/* Row: Encryption */}
-          <div className={styles.settingRow}>
-            <div className={styles.rowLeft}>
-              <div className={styles.iconBox}>
-                <Image src="/admin-images/lock.png" width={20} height={20} alt="Lock" />
-              </div>
-              <div className={styles.info}>
-                <h3>Hybrid Encryption (RSA-AES)</h3>
-                <p>Secure all browser-server traffic. Prevents data theft on compromised networks.</p>
-              </div>
-            </div>
-            <div className={styles.rowRight}>
-              <span className={styles.statusText} style={{ color: isEncryptionEnabled ? 'var(--primary)' : '#ef4444' }}>
-                {isEncryptionEnabled ? 'Encrypted' : 'Insecure'}
-              </span>
-              <Switch 
-                checked={isEncryptionEnabled}
-                onChange={handleToggleEncryption}
-                disabled={isLoading}
-                loading={toggleSettingMutation.isPending}
-              />
-            </div>
-          </div>
+        <SettingsGroup title="Security Protocols">
+          <SettingsItem 
+            icon="/admin-images/lock.png"
+            title="Hybrid Encryption (RSA-AES)"
+            description="Secure all browser-server traffic. Prevents data theft on compromised networks."
+            statusText={isEncryptionEnabled ? 'Encrypted' : 'Insecure'}
+            statusColor={isEncryptionEnabled ? 'var(--primary)' : '#ef4444'}
+            checked={isEncryptionEnabled}
+            onChange={() => toggleSettingMutation.mutate({ key: 'is_encryption_enabled', value: !isEncryptionEnabled })}
+            disabled={isLoading}
+            loading={toggleSettingMutation.isPending}
+          />
+          <SettingsItem 
+            icon="/admin-images/history.png"
+            title="Enhanced Audit Logging"
+            description="Track every single admin action with detailed metadata and IP tracking."
+            statusText="Beta"
+            disabled={true}
+            beta={true}
+          />
+        </SettingsGroup>
 
-          {/* Row: Audit Logs (Placeholder for future) */}
-          <div className={styles.settingRow} style={{ opacity: 0.6 }}>
-            <div className={styles.rowLeft}>
-              <div className={styles.iconBox}>
-                <Image src="/admin-images/history.png" width={20} height={20} alt="History" />
-              </div>
-              <div className={styles.info}>
-                <h3>Enhanced Audit Logging</h3>
-                <p>Track every single admin action with detailed metadata and IP tracking.</p>
-              </div>
-            </div>
-            <div className={styles.rowRight}>
-              <span className={styles.statusText}>Beta</span>
-              <Switch disabled />
-            </div>
-          </div>
-        </div>
+        <SettingsGroup title="System Preferences">
+          <SettingsItem 
+            icon="/admin-images/notifications.png"
+            title="Real-time Alerts"
+            description="Receive push notifications for infrastructure failures and maintenance events."
+            statusText="Active"
+            checked={true}
+            disabled={true}
+          />
+          <SettingsItem 
+            icon="/admin-images/dark-mode.png"
+            title="Night Console (Dark Mode)"
+            description="CloudBase default high-contrast dark interface."
+            statusText="Forced"
+            checked={true}
+            disabled={true}
+          />
+        </SettingsGroup>
 
-        {/* SYSTEM PREFERENCES GROUP */}
-        <div className={styles.settingsGroup}>
-          <div className={styles.groupHeader}>
-            <h2>System Preferences</h2>
-          </div>
-
-          {/* Row: Notifications */}
-          <div className={styles.settingRow}>
-            <div className={styles.rowLeft}>
-              <div className={styles.iconBox}>
-                <Image src="/admin-images/notifications.png" width={20} height={20} alt="Notifications" />
-              </div>
-              <div className={styles.info}>
-                <h3>Real-time Alerts</h3>
-                <p>Receive push notifications for infrastructure failures and maintenance events.</p>
-              </div>
-            </div>
-            <div className={styles.rowRight}>
-              <span className={styles.statusText}>Active</span>
-              <Switch checked={true} disabled />
-            </div>
-          </div>
-
-          {/* Row: Dark Mode (Fixed) */}
-          <div className={styles.settingRow}>
-            <div className={styles.rowLeft}>
-              <div className={styles.iconBox}>
-                <Image src="/admin-images/dark-mode.png" width={20} height={20} alt="Dark Mode" />
-              </div>
-              <div className={styles.info}>
-                <h3>Night Console (Dark Mode)</h3>
-                <p>CloudBase default high-contrast dark interface.</p>
-              </div>
-            </div>
-            <div className={styles.rowRight}>
-              <span className={styles.statusText}>Forced</span>
-              <Switch checked={true} disabled />
-            </div>
-          </div>
-        </div>
-
-        {/* DATA MANAGEMENT GROUP */}
-        <div className={styles.settingsGroup}>
-          <div className={styles.groupHeader}>
-            <h2>Data Management</h2>
-          </div>
-          <div className={styles.settingRow}>
-            <div className={styles.rowLeft}>
-              <div className={styles.iconBox}>
-                <Image src="/admin-images/auto-delete.png" width={20} height={20} alt="Auto Delete" />
-              </div>
-              <div className={styles.info}>
-                <h3>Auto-Purge Expired Sessions</h3>
-                <p>Automatically remove session data from database after 30 days of inactivity.</p>
-              </div>
-            </div>
-            <div className={styles.rowRight}>
-              <span className={styles.statusText}>On</span>
-              <Switch checked={true} disabled />
-            </div>
-          </div>
-        </div>
+        <SettingsGroup title="Data Management">
+          <SettingsItem 
+            icon="/admin-images/auto-delete.png"
+            title="Auto-Purge Expired Sessions"
+            description="Automatically remove session data from database after 30 days of inactivity."
+            statusText="On"
+            checked={true}
+            disabled={true}
+          />
+        </SettingsGroup>
 
       </div>
     </AdminLayout>

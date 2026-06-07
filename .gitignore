@@ -34,6 +34,7 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 logs/
+!apps/admin-portal/src/app/logs/
 *.log
 
 # OS Metadata

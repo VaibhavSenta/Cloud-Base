@@ -61,6 +61,7 @@ function getQueryClient() {
 
 export default function QueryProvider({ children }) {
   const queryClient = getQueryClient();
+  const [securityError, setSecurityError] = useState(null);
 
   // 🎯 Setup Interceptors safely inside useEffect to avoid HMR loops
   useEffect(() => {
@@ -96,9 +97,11 @@ export default function QueryProvider({ children }) {
         }
 
         console.log(`🔒 Encryption state synced. Enabled: ${encryptionConfig.isEnabled}`);
+        setSecurityError(null); // Clear any previous error
       } catch (err) {
         console.error("Encryption Handshake Failed:", err);
         encryptionConfig.isFetching = false;
+        setSecurityError("Security Handshake Failed. Connection to secure gateway lost.");
       }
     };
 
@@ -139,6 +142,7 @@ export default function QueryProvider({ children }) {
             };
           } catch (err) {
             console.error("Encryption Interceptor Error:", err);
+            setSecurityError("Encryption Failed: Data could not be secured.");
           }
         }
         return config;
@@ -154,6 +158,29 @@ export default function QueryProvider({ children }) {
           console.warn("Unauthorized access detected. Redirecting to login...");
           window.location.href = '/'; 
         }
+
+        if (error.response && (error.response.data?.code === 'DECRYPTION_FAILED' || error.response.data?.code === 'DECRYPTION_SESSION_EXPIRED' || error.response.status === 403)) {
+          console.warn("🛡️ Security mismatch/expiry detected. Resetting handshake...");
+          setSecurityError("Security session expired. Synchronizing...");
+          
+          // Reset handshake on decryption failure/expiry
+          encryptionConfig.publicKey = null;
+          encryptionConfig.lastFetched = 0;
+          
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem('__cb_encryption_cache__');
+          }
+
+          // Try to re-handshake immediately
+          ensureHandshake().then(() => {
+            setSecurityError("Security synced. Please try your action again.");
+          });
+        }
+
+        if (error.code === 'ERR_NETWORK') {
+          setSecurityError("Network Error: Gateway is unreachable. Please check your connection.");
+        }
+
         return Promise.reject(error);
       }
     );
@@ -195,6 +222,50 @@ export default function QueryProvider({ children }) {
 
   return (
     <QueryClientProvider client={queryClient}>
+      {securityError && (
+        <div style={{
+          position: 'fixed',
+          top: '20px',
+          right: '20px',
+          zIndex: 9999,
+          background: '#1a1a1a',
+          borderLeft: '4px solid #ff4d4d',
+          padding: '16px 24px',
+          borderRadius: '8px',
+          boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '15px',
+          color: '#fff',
+          maxWidth: '400px',
+          animation: 'slideIn 0.3s ease-out'
+        }}>
+          <span style={{ color: '#ff4d4d', fontSize: '24px' }}>⚠️</span>
+          <div>
+            <h4 style={{ margin: 0, fontSize: '14px', color: '#ff4d4d' }}>Security Alert</h4>
+            <p style={{ margin: '4px 0 0', fontSize: '13px', opacity: 0.8 }}>{securityError}</p>
+          </div>
+          <button 
+            onClick={() => setSecurityError(null)}
+            style={{
+              background: 'transparent',
+              border: 'none',
+              color: '#fff',
+              cursor: 'pointer',
+              fontSize: '20px',
+              marginLeft: '10px'
+            }}
+          >
+            ×
+          </button>
+          <style>{`
+            @keyframes slideIn {
+              from { transform: translateX(100%); opacity: 0; }
+              to { transform: translateX(0); opacity: 1; }
+            }
+          `}</style>
+        </div>
+      )}
       {children}
     </QueryClientProvider>
   );

@@ -1,0 +1,35 @@
+.settingsGroup {
+  margin-bottom: 32px;
+  background-color: #25252591;
+  -webkit-backdrop-filter: blur(26px);
+  backdrop-filter: blur(26px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.groupHeader {
+  padding: 16px 24px;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.groupHeader h2 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--primary);
+  font-weight: 700;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .settingsGroup {
+    border-radius: 16px;
+    margin-bottom: 24px;
+  }
+  
+  .groupHeader {
+    padding: 12px 20px;
+  }
+}

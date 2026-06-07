@@ -131,7 +131,46 @@
 }
 
 @media (max-width: 640px) {
+  .modalOverlay {
+    padding: 0;
+    align-items: flex-end; /* Bottom sheet feel on mobile */
+  }
+
+  .modalContent {
+    max-width: 100%;
+    height: 100vh;
+    border-radius: 0;
+    border: none;
+  }
+
   .formGrid {
     grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .modalHeader {
+    padding: 16px 20px;
+    position: sticky;
+    top: 0;
+    background: #1d2022;
+    z-index: 10;
+  }
+
+  .modalHeader h2 {
+    font-size: 16px;
+  }
+
+  .modalForm {
+    padding: 20px;
+  }
+
+  .formActions {
+    flex-direction: column-reverse;
+    gap: 12px;
+  }
+
+  .cancelBtn, .confirmBtn {
+    width: 100%;
+    padding: 14px;
   }
 }

@@ -1,42 +1,31 @@
 'use client';
 
-import React from 'react';
-import Image from 'next/image';
-import styles from './InfraAlert.module.css';
-import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
+import InfraAlertDesktop from './InfraAlertDesktop';
+import InfraAlertMobile from './InfraAlertMobile';
 
 /**
- * InfraAlert Component - Displays critical infrastructure failures
- * @param {Array} downApps - List of unreachable applications
+ * InfraAlert - Responsive Master Switch
+ * Swaps between desktop horizontal alert and mobile vertical card alert
  */
-const InfraAlert = ({ downApps = [] }) => {
-  const router = useRouter();
+const InfraAlert = (props) => {
+  const [isMobile, setIsMobile] = useState(false);
 
-  if (downApps.length === 0) return null;
+  useEffect(() => {
+    const checkWidth = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
 
-  return (
-    <div className={styles.alertBox}>
-      <div className={styles.alertLeft}>
-        <div className={styles.alertIconBox}>
-          <Image src="/admin-images/warning.png" width={24} height={24} alt="Warning" />
-        </div>
-        <div className={styles.content}>
-          <h4>Infrastructure Alert</h4>
-          <p>{downApps.length} system(s) are currently unreachable in the cluster.</p>
-          <div className={styles.downList}>
-            {downApps.map(app => (
-              <span key={app._id} className={styles.downBadge}>
-                {app.title}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-      <button onClick={() => router.push('/apps')} className={styles.resolveBtn}>
-        Resolve Node Issue
-      </button>
-    </div>
-  );
+    checkWidth();
+    window.addEventListener('resize', checkWidth);
+    return () => window.removeEventListener('resize', checkWidth);
+  }, []);
+
+  if (isMobile) {
+    return <InfraAlertMobile {...props} />;
+  }
+
+  return <InfraAlertDesktop {...props} />;
 };
 
 export default InfraAlert;

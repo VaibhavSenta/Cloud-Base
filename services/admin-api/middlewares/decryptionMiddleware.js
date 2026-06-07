@@ -58,7 +58,15 @@ const decryptionMiddleware = async (req, res, next) => {
                 console.log("✅ Decryption Successful");
             } catch (decryptErr) {
                 console.error("❌ Decryption Failed:", decryptErr.message);
-                throw decryptErr; // Re-throw to be caught by the outer catch block
+                // 🎯 Spacial Case: Session Expired
+                if (decryptErr.message.includes("expired") || decryptErr.message.includes("not found")) {
+                    return res.status(403).json({
+                        success: false,
+                        code: 'DECRYPTION_SESSION_EXPIRED',
+                        msg: "Encryption session expired. Please retry."
+                    });
+                }
+                throw decryptErr; 
             }
         }
 

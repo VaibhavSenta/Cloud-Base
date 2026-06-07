@@ -26,6 +26,44 @@
   margin: 0;
 }
 
+.exportSection {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+  .usersWrapper {
+    padding: 16px;
+  }
+
+  .usersHeader {
+    margin-bottom: 24px;
+    gap: 16px;
+  }
+
+  .headerTitle h1 {
+    font-size: 22px;
+  }
+
+  .headerTitle p {
+    font-size: 12px;
+  }
+
+  .headerStats {
+    display: none;
+  }
+
+  .exportSection {
+    justify-content: center;
+  }
+
+  .exportBtn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 .headerStats {
   display: flex;
   gap: 24px;
@@ -113,7 +151,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(175, 120, 0, 0.719);
   border: 1px solid rgba(255, 255, 255, 0.05);
   color: #bcc9cd;
   padding: 10px 16px;
@@ -131,7 +169,9 @@
 
 /* Table Design */
 .tableContainer {
-  background: #15181a;
+  background: #282d307c;
+  -webkit-backdrop-filter: blur(26px);
+  backdrop-filter: blur(26px);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 20px;
   overflow: hidden;

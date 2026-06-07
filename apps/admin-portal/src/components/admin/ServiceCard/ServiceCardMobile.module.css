@@ -1,0 +1,82 @@
+.mobileCard {
+  background-color: #1d2022b7;
+  -webkit-backdrop-filter: blur(26px);
+  backdrop-filter: blur(26px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  transition: all 0.2s ease;
+}
+
+.maintMode {
+  background: rgba(245, 158, 11, 0.03);
+  border-color: rgba(245, 158, 11, 0.1);
+}
+
+.mainContent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.iconBox {
+  width: 36px;
+  height: 36px;
+  background: #0b0f10;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  flex-shrink: 0;
+}
+
+.infoArea {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.titleRow h4 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.optimal { background: #10b981; box-shadow: 0 0 6px rgba(16, 185, 129, 0.4); }
+.degraded { background: #f59e0b; }
+.down { background: #ef4444; }
+.maintDot { background: #f59e0b; box-shadow: 0 0 6px rgba(245, 158, 11, 0.4); }
+
+.activeText {
+  font-size: 11px;
+  color: #666;
+  font-weight: 500;
+}
+
+.actionArea {
+  flex-shrink: 0;
+}

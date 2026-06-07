@@ -1,0 +1,132 @@
+.cardContainer {
+  background: #1d20229d;
+  -webkit-backdrop-filter: blur(26px);
+  backdrop-filter: blur(26px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+}
+
+.maintMode {
+  border-left: 3px solid #f59e0b;
+}
+
+.mainRow {
+  padding: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.appIdentity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.iconBox {
+  width: 40px;
+  height: 40px;
+  background: #0b0f10;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.infoArea {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.titleLine {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.titleLine h4 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.optimal { background: #10b981; box-shadow: 0 0 6px rgba(16, 185, 129, 0.4); }
+.degraded { background: #f59e0b; }
+.down { background: #ef4444; }
+
+.miniMetrics {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #666;
+  margin-top: 2px;
+}
+
+.dotSeparator {
+  opacity: 0.3;
+  font-size: 14px;
+}
+
+.versionText {
+  color: #444;
+  font-family: monospace;
+}
+
+.toggleArea {
+  flex-shrink: 0;
+}
+
+.actionStrip {
+  display: flex;
+  background: rgba(0, 0, 0, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.textBtn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #888;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.textBtn:active {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.highlight {
+  color: var(--primary);
+}
+
+.btnDivider {
+  width: 1px;
+  background: rgba(255, 255, 255, 0.05);
+  margin: 8px 0;
+}

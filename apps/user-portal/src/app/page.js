@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import styles from './page.module.css';
-import Image from 'next/image';
+import NextImage from 'next/image';
 import axios from 'axios';
 
 export default function Home() {
@@ -114,7 +114,7 @@ export default function Home() {
         <div className="container">
           <div className={styles.footerTop}>
             <div className={styles.footerLogo}>
-              <Image src="/icons/logo.jpeg" width={48} height={48} alt="CB" style={{ borderRadius: '12px' }} />
+              <NextImage src="/icons/logo.jpeg" width={48} height={48} alt="CB" style={{ borderRadius: '12px' }} />
               <h3>CloudBase</h3>
             </div>
             <div className={styles.footerLinks}>

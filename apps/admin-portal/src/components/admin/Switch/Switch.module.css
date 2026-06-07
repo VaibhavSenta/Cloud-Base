@@ -75,3 +75,24 @@ input:disabled + .slider {
   opacity: 0.4;
   cursor: not-allowed;
 }
+
+/* Small Variant */
+.small .switch {
+  width: 32px;
+  height: 18px;
+}
+
+.small .slider:before {
+  height: 12px;
+  width: 12px;
+  left: 2px;
+  bottom: 2px;
+}
+
+.small input:checked + .slider:before {
+  transform: translateX(14px);
+}
+
+.small .processingText {
+  font-size: 9px;
+}

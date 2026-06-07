@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Switch from '@/components/admin/Switch/Switch';
 import Skeleton from '@/components/admin/Skeleton/Skeleton';
+import StatCard from '@/components/admin/StatCard/StatCard';
+import ServiceCard from '@/components/admin/ServiceCard/ServiceCard';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -22,6 +24,16 @@ export default function DashboardPage() {
     },
   });
 
+  // 📊 Fetch Deep Analytics (User Growth, etc.)
+  const { data: analytics } = useQuery({
+    queryKey: ['systemAnalytics'],
+    queryFn: async () => {
+      const res = await axios.get('/api/admin/dashboard/analytics/summary');
+      return res.data.data;
+    },
+    staleTime: 10 * 60 * 1000, // 10 minutes cache
+  });
+
   const toggleMaintMutation = useMutation({
     mutationFn: async (appId) => {
       const res = await axios.patch(`/api/admin/managedapps/toggle-maintenance/${appId}`);
@@ -31,6 +43,37 @@ export default function DashboardPage() {
       queryClient.invalidateQueries({ queryKey: ['appsList'] });
     },
   });
+
+  // 📈 Real-time Analytics Calculations
+  const calculateMetrics = () => {
+    if (!apps || apps.length === 0) return { totalUsers: 0, healthScore: 100, avgLatency: '0ms', growth: '0%' };
+
+    const totalUsers = apps.reduce((acc, app) => acc + (parseInt(app.actives) || 0), 0);
+    
+    const optimalApps = apps.filter(app => app.status === 'optimal').length;
+    const healthScore = ((optimalApps / apps.length) * 100).toFixed(1);
+
+    const latencies = apps.map(app => parseInt(app.latency) || 0).filter(l => l > 0);
+    const avgLatency = latencies.length > 0 
+      ? Math.round(latencies.reduce((a, b) => a + b, 0) / latencies.length) 
+      : 12;
+
+    // Calculate growth from analytics data if available
+    let growth = "0%";
+    if (analytics?.userGrowth && analytics.userGrowth.length > 0) {
+      const recentGrowth = analytics.userGrowth.reduce((a, b) => a + b.count, 0);
+      growth = `+${recentGrowth}`;
+    }
+
+    return { 
+      totalUsers: totalUsers > 1000 ? (totalUsers / 1000).toFixed(1) + 'k' : totalUsers, 
+      healthScore, 
+      avgLatency: `${avgLatency}ms`,
+      growth
+    };
+  };
+
+  const metrics = calculateMetrics();
 
   return (
     <AdminLayout>
@@ -44,53 +87,58 @@ export default function DashboardPage() {
           </div>
 
           <div className={styles.gridStats}>
-            <div className={styles.statCard}>
-              <div className={styles.statTop}>
-                <div className={styles.statIcon} style={{ backgroundColor: 'rgba(5, 102, 217, 0.1)' }}>
-                  <span className="material-symbols-outlined" style={{ color: 'var(--primary)' }}>storage</span>
-                </div>
-                <span className={styles.statBadge} style={{ background: 'rgba(16,185,129,0.1)', color: '#10b981' }}>Stable</span>
-              </div>
-              <div>
-                <p className={styles.statValue}>12</p>
-                <p className={styles.statLabel}>Active Cloud Nodes</p>
-              </div>
-            </div>
+            
+            <StatCard 
+              icon="/admin-images/group.png"
+              value={metrics.totalUsers}
+              label="Live Ecosystem Traffic"
+              badgeText={metrics.growth !== "0%" ? `${metrics.growth} new` : "Real-time"}
+              badgeStyle={{ background: 'rgba(16,185,129,0.1)', color: '#10b981' }}
+              iconStyle={{ backgroundColor: 'rgba(5, 102, 217, 0.1)', iconColor: 'var(--primary)' }}
+            />
 
-            <div className={styles.statCard}>
-              <div className={styles.statTop}>
-                <div className={styles.statIcon} style={{ backgroundColor: 'rgba(173, 198, 255, 0.1)' }}>
-                  <span className="material-symbols-outlined" style={{ color: '#adc6ff' }}>query_stats</span>
-                </div>
-                <span className={styles.statBadge} style={{ color: 'var(--primary)', background: 'rgba(5, 102, 217, 0.05)' }}>+12.4%</span>
-              </div>
-              <div>
-                <p className={styles.statValue}>4.8k</p>
-                <p className={styles.statLabel}>Requests Per Second</p>
-              </div>
-            </div>
+            <StatCard 
+              icon="/admin-images/health-and-safty.png"
+              value={`${metrics.healthScore}%`}
+              label="Infrastructure Stability"
+              badgeText={metrics.healthScore > 90 ? "Optimal" : "Check Nodes"}
+              badgeStyle={{ 
+                color: metrics.healthScore > 90 ? '#10b981' : '#f59e0b', 
+                background: metrics.healthScore > 90 ? 'rgba(16,185,129,0.1)' : 'rgba(245,158,11,0.1)' 
+              }}
+              iconStyle={{ backgroundColor: 'rgba(173, 198, 255, 0.1)', iconColor: '#adc6ff' }}
+            />
 
-            <div className={styles.statCard}>
-              <div className={styles.statTop}>
-                <div className={styles.statIcon} style={{ backgroundColor: 'rgba(255, 180, 171, 0.1)' }}>
-                  <span className="material-symbols-outlined" style={{ color: '#ffb4ab' }}>memory</span>
-                </div>
-                <span className={styles.statBadge} style={{ color: '#ffb4ab', background: 'rgba(255,180,171,0.05)' }}>High Load</span>
-              </div>
-              <div>
-                <p className={styles.statValue}>84%</p>
-                <p className={styles.statLabel}>Cluster Resource Utilization</p>
-              </div>
-            </div>
+            <StatCard 
+              icon="/admin-images/speed.png"
+              value={metrics.avgLatency}
+              label="Avg. Response Latency"
+              badgeText="Fast"
+              badgeStyle={{ color: '#ffb4ab', background: 'rgba(255,180,171,0.05)' }}
+              iconStyle={{ backgroundColor: 'rgba(255, 180, 171, 0.1)', iconColor: '#ffb4ab' }}
+            />
+
           </div>
         </section>
+
+        {/* SECTION 2: INSIGHTS ENGINE */}
+        {analytics?.userGrowth?.length > 0 && (
+          <section className={styles.sectionBlock} style={{ marginTop: '0' }}>
+             <div className={styles.insightBanner}>
+                <div className={styles.insightIcon}>🚀</div>
+                <div className={styles.insightText}>
+                   <strong>Growth Insight:</strong> You gained {analytics.userGrowth.reduce((a, b) => a + b.count, 0)} new users in the last 7 days. Ecosystem expansion is on track.
+                </div>
+             </div>
+          </section>
+        )}
 
         {/* SECTION 3: RECTIFIED SERVICE HUB CONTROLS */}
         <section className={styles.sectionBlock}>
           <div className={styles.sectionHeader}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <h2>Service Hub</h2>
-              <span style={{ fontSize: '11px', fontWeight: '600', padding: '4px 12px', background: '#323537', borderRadius: '999px', color: '#bcc9cd', textTransform: 'uppercase' }}>
+              <span className={styles.serviceHubBadge}>
                 {isAppsLoading ? <Skeleton width="80px" height="12px" /> : `${apps.length} Subdomains Managed`}
               </span>
             </div>
@@ -121,35 +169,13 @@ export default function DashboardPage() {
                 </div>
               ) :
               apps.map((details) => (
-                <div key={details._id} className={details.inMaintenance ? styles.serviceCardMaintMode : styles.serviceCard}>
-                  <div className={styles.serviceTop}>
-                    <div className={styles.serviceIcon}>
-                       {details.icon?.startsWith('/') || details.icon?.startsWith('http') ? (
-                          <Image src={details.icon} width={28} height={28} alt="" />
-                       ) : (
-                          <span className="material-symbols-outlined">{details.icon || 'apps'}</span>
-                       )}
-                    </div>
-                    <Switch 
-                      checked={details.inMaintenance || false} 
-                      onChange={() => toggleMaintMutation.mutate(details._id)}
-                      disabled={toggleMaintMutation.isPending}
-                    />
-                  </div>
-                  <div className={styles.serviceInfo}>
-                    <h3>{details.title}</h3>
-                    <p className={styles.serviceDomain}>{details.userUrl}</p>
-                  </div>
-                  <div className={styles.serviceStats}>
-                    {details.traffic === "High" ? (
-                      <span className={styles.trafficBadgeWarning}>{details.traffic}</span>
-                    ) : (
-                      <span className={styles.trafficBadge}>{details.traffic}</span>
-                    )}
-                    <span className={styles.activeCount}>{details.actives} active</span>
-                  </div>
-                  <button onClick={() => router.push(`/apps/${details.name}`)} className={styles.manageBtn}>Manage Hub</button>
-                </div>
+                <ServiceCard 
+                  key={details._id}
+                  details={details}
+                  onToggleMaintenance={(id) => toggleMaintMutation.mutate(id)}
+                  onManage={(name) => router.push(`/apps/${name}`)}
+                  isToggling={toggleMaintMutation.isPending}
+                />
               ))
             }
           </div>

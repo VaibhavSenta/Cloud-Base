@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import NextImage from 'next/image';
 import styles from './Navbar.module.css';
 import { usePathname } from 'next/navigation';
 
@@ -13,7 +13,7 @@ const Navbar = () => {
     <nav className={styles.nav}>
       <div className={`${styles.navInner} container`}>
         <Link href="/" className={styles.logo}>
-          <Image src="/icons/logo.jpeg" width={32} height={32} alt="L" style={{ borderRadius: '6px' }} />
+          <NextImage src="/icons/logo.jpeg" width={32} height={32} alt="L" style={{ borderRadius: '6px' }} />
           <div>Cloud<span>Base</span></div>
         </Link>
 

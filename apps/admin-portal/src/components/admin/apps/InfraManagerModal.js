@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import NextImage from 'next/image';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import styles from './InfraManagerModal.module.css';
@@ -72,9 +73,9 @@ export default function InfraManagerModal({ isOpen, onClose, appData }) {
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
         <div className={styles.modalHeader}>
-          <h2>Infrastructure & Ecosystem Manager</h2>
+          <h2>Cluster Node Architecture</h2>
           <button className={styles.closeBtn} onClick={onClose}>
-            <span className="material-symbols-outlined">close</span>
+            <NextImage src="/admin-images/close.png" width={18} height={18} alt="Close" />
           </button>
         </div>
 

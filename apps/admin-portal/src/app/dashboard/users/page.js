@@ -5,7 +5,9 @@ import AdminLayout from '@/components/admin/AdminLayout/AdminLayout';
 import styles from './users.module.css';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import Image from 'next/image';
+import NextImage from 'next/image';
+
+import UserFilters from '@/components/admin/UserFilters/UserFilters';
 
 export default function UsersManagementPage() {
   const queryClient = useQueryClient();
@@ -80,29 +82,13 @@ export default function UsersManagementPage() {
           </div>
         </header>
 
-        {/* Action Bar */}
-        <section className={styles.actionBar}>
-           <div className={styles.searchBox}>
-              <span className="material-symbols-outlined">search</span>
-              <input 
-                type="text" 
-                placeholder="Search by name, email or username..." 
-                value={searchTerm}
-                onChange={(e) => { setSearchTerm(e.target.value); setPage(1); }}
-              />
-           </div>
-           <div className={styles.filterGroup}>
-              <select value={roleFilter} onChange={(e) => { setRoleFilter(e.target.value); setPage(1); }}>
-                 <option value="all">All Roles</option>
-                 <option value="User">Standard Users</option>
-                 <option value="Admin">Administrators</option>
-              </select>
-              <button className={styles.exportBtn} onClick={handleExportCSV}>
-                 <span className="material-symbols-outlined">download</span>
-                 <span>Export CSV</span>
-              </button>
-           </div>
-        </section>
+        {/* Action Bar - Replaced with UserFilters */}
+        <UserFilters 
+          searchTerm={searchTerm} 
+          setSearchTerm={setSearchTerm} 
+          roleFilter={roleFilter} 
+          setRoleFilter={setRoleFilter} 
+        />
 
         {/* Users Table */}
         <div className={styles.tableContainer}>
@@ -123,11 +109,11 @@ export default function UsersManagementPage() {
                 <tbody>
                   {users.map((user) => (
                     <tr key={user._id}>
-                      <td>
+                      <td data-label="Identity">
                         <div className={styles.userCell}>
                            <div className={styles.avatarBox}>
                               {user.profilePic && !user.profilePic.includes('defaultLogos') ? (
-                                <Image src={user.profilePic} width={32} height={32} alt="" />
+                                <NextImage src={user.profilePic} width={32} height={32} alt="" />
                               ) : (
                                 <span>{user.firstName?.charAt(0) || user.userName?.charAt(0)}</span>
                               )}
@@ -138,22 +124,22 @@ export default function UsersManagementPage() {
                            </div>
                         </div>
                       </td>
-                      <td>
+                      <td data-label="Access Role">
                         <span className={`${styles.roleBadge} ${styles[(user.role || 'User').toLowerCase()]}`}>
                           {user.role || 'User'}
                         </span>
                       </td>
-                      <td>{new Date(user.createdAt).toLocaleDateString()}</td>
-                      <td>
+                      <td data-label="Registration">{new Date(user.createdAt).toLocaleDateString()}</td>
+                      <td data-label="Account Status">
                         <div className={styles.statusToggle}>
                            <div className={`${styles.statusDot} ${user.accountStatus === 'active' ? styles.active : styles.banned}`}></div>
                            <span>{user.accountStatus}</span>
                         </div>
                       </td>
-                      <td>
+                      <td data-label="Actions">
                         <div className={styles.actionGroup}>
                            <button className={styles.iconBtn} title="View Profile">
-                              <Image src="/admin-images/link.png" width={16} height={16} alt="View" />
+                              <NextImage src="/admin-images/link.png" width={16} height={16} alt="View" />
                            </button>
                            <button 
                               className={`${styles.iconBtn} ${user.accountStatus === 'active' ? styles.danger : ''}`} 
@@ -161,9 +147,12 @@ export default function UsersManagementPage() {
                               title={user.accountStatus === 'active' ? 'Ban User' : 'Activate User'}
                               disabled={statusMutation.isPending}
                            >
-                              <span className="material-symbols-outlined">
-                                {user.accountStatus === 'active' ? 'block' : 'check_circle'}
-                              </span>
+                              <NextImage 
+                                src={user.accountStatus === 'active' ? "/admin-images/block.png" : "/admin-images/check_circle.png"} 
+                                width={18} 
+                                height={18} 
+                                alt="Status Action" 
+                              />
                            </button>
                         </div>
                       </td>
@@ -174,7 +163,7 @@ export default function UsersManagementPage() {
 
               {users.length === 0 && (
                 <div className={styles.noResults}>
-                   <span className="material-symbols-outlined">person_search</span>
+                   <NextImage src="/admin-images/person-search.png" width={64} height={64} alt="No Results" style={{ opacity: 0.5 }} />
                    <p>No citizens found in this sector.</p>
                 </div>
               )}
@@ -212,6 +201,14 @@ export default function UsersManagementPage() {
               </div>
             </>
           )}
+        </div>
+
+        {/* Export CSV Section - Moved here */}
+        <div className={styles.exportSection}>
+          <button className={styles.exportBtn} onClick={handleExportCSV}>
+             <NextImage src="/admin-images/download.png" width={18} height={18} alt="Download" />
+             <span>Export User Directory (CSV)</span>
+          </button>
         </div>
 
       </div>

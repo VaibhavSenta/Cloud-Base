@@ -5,7 +5,8 @@
   "description": "Cloud Base Monorepo",
   "workspaces": [
     "apps/*",
-    "services/*"
+    "services/*",
+    "packages/*"
   ],
   "scripts": {
     "dev:api": "npm run dev --workspace=services/user-api",

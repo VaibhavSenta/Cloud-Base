@@ -4,7 +4,7 @@
   /* Hamesha ke liye premium dark theme color set */
   --background: #0f0f0f; 
   --foreground: #ededed;
-  --primary: #8ab4f8; /* Google-Style Soft Blue */
+  --primary: #ffffff; /* Google-Style Soft Blue */
 }
 
 @theme inline {

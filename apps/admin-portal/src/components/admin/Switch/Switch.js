@@ -10,10 +10,13 @@ import styles from './Switch.module.css';
  * @param {boolean} disabled - Disable the switch
  * @param {boolean} loading - Show loading/processing state
  * @param {string} className - Extra classes
+ * @param {string} size - 'small' or 'default'
  */
-const Switch = ({ checked, onChange, disabled, loading, className = '' }) => {
+const Switch = ({ checked, onChange, disabled, loading, className = '', size = 'default' }) => {
+  const sizeClass = size === 'small' ? styles.small : '';
+
   return (
-    <div className={`${styles.switchWrapper} ${loading ? styles.loading : ''}`}>
+    <div className={`${styles.switchWrapper} ${loading ? styles.loading : ''} ${sizeClass}`}>
       <label className={`${styles.switch} ${className}`}>
         <input 
           type="checkbox" 

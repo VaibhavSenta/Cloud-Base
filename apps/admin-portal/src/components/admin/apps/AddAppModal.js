@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import NextImage from 'next/image';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import styles from './AddAppModal.module.css';
@@ -65,7 +66,7 @@ export default function AddAppModal({ isOpen, onClose }) {
         <div className={styles.modalHeader}>
           <h2>Register New Ecosystem Member</h2>
           <button className={styles.closeBtn} onClick={onClose}>
-            <span className="material-symbols-outlined">close</span>
+            <NextImage src="/admin-images/close.png" width={18} height={18} alt="Close" />
           </button>
         </div>
 
