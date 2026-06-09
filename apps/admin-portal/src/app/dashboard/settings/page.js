@@ -42,17 +42,40 @@ export default function SettingsPage() {
   const [isPushEnabled, setIsPushEnabled] = React.useState(false);
   const [isPushLoading, setIsPushLoading] = React.useState(false);
 
-  // Check current notification permission on load
+  // Check current notification permission AND subscription on load
   React.useEffect(() => {
-    if ('Notification' in window && Notification.permission === 'granted') {
-      setIsPushEnabled(true);
-    }
+    const checkPushStatus = async () => {
+      if ('serviceWorker' in navigator && 'Notification' in window) {
+        if (Notification.permission === 'granted') {
+          const registration = await navigator.serviceWorker.getRegistration();
+          const subscription = await registration?.pushManager.getSubscription();
+          setIsPushEnabled(!!subscription);
+        }
+      }
+    };
+    checkPushStatus();
   }, []);
 
   const handlePushToggle = async () => {
+    // If already enabled, we can't easily "unsubscribe" yet without a specific backend route,
+    // so let's just show an alert or prevent toggle if it's already active.
     if (isPushEnabled) {
-      // Logic to disable (optional, for now just toggle state)
-      setIsPushEnabled(false);
+      if (confirm('Do you want to disable real-time alerts? (This will remove your subscription on this device)')) {
+          setIsPushLoading(true);
+          try {
+            const registration = await navigator.serviceWorker.getRegistration();
+            const subscription = await registration?.pushManager.getSubscription();
+            if (subscription) {
+              await subscription.unsubscribe();
+              // Optional: Inform backend to remove subscription
+              setIsPushEnabled(false);
+            }
+          } catch (error) {
+            console.error('Failed to unsubscribe:', error);
+          } finally {
+            setIsPushLoading(false);
+          }
+      }
       return;
     }
 
@@ -75,7 +98,7 @@ export default function SettingsPage() {
         console.log('Registration not found, waiting for ready...');
         registration = await Promise.race([
           navigator.serviceWorker.ready,
-          new Promise((_, reject) => setTimeout(() => reject(new Error('Service Worker registration timeout. Please ensure the app is installed or refresh.')), 6000))
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Service Worker registration timeout. Please ensure the app is installed or refresh.')), 15000))
         ]);
       }
 
@@ -113,6 +136,7 @@ export default function SettingsPage() {
       alert('Real-time alerts enabled successfully! 🔔');
     } catch (error) {
       console.error('Push subscription failed:', error);
+      setIsPushEnabled(false); // Ensure it stays disabled on failure
       alert('Failed to enable notifications: ' + error.message);
     } finally {
       setIsPushLoading(false);
