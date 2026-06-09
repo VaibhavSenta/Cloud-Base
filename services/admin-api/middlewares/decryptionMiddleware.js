@@ -8,15 +8,10 @@ const mongoose = require('mongoose');
  */
 const decryptionMiddleware = async (req, res, next) => {
     try {
-        // 0. Ensure DB Connection is ready (Resilient for Serverless Cold Starts)
+        // 0. Ensure DB Connection is ready
         if (mongoose.connection.readyState !== 1) {
-            console.log("⏳ DB Connection not ready, waiting...");
-            // Simple polling wait (max 3 seconds)
-            let retries = 0;
-            while (mongoose.connection.readyState !== 1 && retries < 30) {
-                await new Promise(resolve => setTimeout(resolve, 100));
-                retries++;
-            }
+            console.log("⏳ DB Connection not ready in middleware, skipping security check.");
+            return next(); // Fail-safe: Skip if DB not ready yet
         }
 
         // 1. Check if Encryption is toggled ON in Settings

@@ -20,32 +20,48 @@ const connectionString = process.env.CONNECTION
 
 // Mongoose Configuration
 mongoose.set('strictQuery', false);
+mongoose.set('bufferCommands', false); // 🔥 CRITICAL: Disable buffering to prevent 10s hangs
 
 // Database Connection Logic
+let isConnecting = false;
 const connectDB = async () => {
+    if (mongoose.connection.readyState === 1 || isConnecting) return;
+    isConnecting = true;
     try {
+        console.log('🔄 Initiating MongoDB Connection...');
         await mongoose.connect(connectionString, {
-            serverSelectionTimeoutMS: 10000, // Wait up to 10s for server selection
-            socketTimeoutMS: 45000, // Close sockets after 45s
+            serverSelectionTimeoutMS: 10000, 
+            socketTimeoutMS: 45000,
         });
-        console.log('Connected to MongoDB . . . . ');
+        console.log('✅ Connected to MongoDB . . . . ');
         
-        // Start Automated Infrastructure Monitoring ONLY after DB is ready
         HealthMonitorService.start();
     } catch (err) {
-        console.error('Could not connect to MongoDB . . . . ', err);
+        console.error('❌ Could not connect to MongoDB . . . . ', err.message);
+    } finally {
+        isConnecting = false;
     }
 };
 
 connectDB();
 
-
-
-
-
-
-
-
+// Global DB Connection Middleware
+app.use(async (req, res, next) => {
+    try {
+        if (mongoose.connection.readyState !== 1) {
+            console.log(`⏳ [${req.method} ${req.url}] Waiting for DB connection...`);
+            await connectDB();
+            let retries = 0;
+            while (mongoose.connection.readyState !== 1 && retries < 80) { // Wait up to 8s
+                await new Promise(r => setTimeout(r, 100));
+                retries++;
+            }
+        }
+    } catch (e) {
+        console.error("❌ Global DB Middleware Error:", e.message);
+    }
+    next();
+});
 
 // Middlewares
 app.use(cookieParser())

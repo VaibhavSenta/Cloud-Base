@@ -10,13 +10,10 @@ const auditService = require("../services/audit.service");
  */
 const handshake = async (req, res) => {
   try {
-    // 0. Ensure DB Connection
+    // 0. Fail-safe: Check if DB is ready
     if (mongoose.connection.readyState !== 1) {
-        let retries = 0;
-        while (mongoose.connection.readyState !== 1 && retries < 30) {
-            await new Promise(resolve => setTimeout(resolve, 100));
-            retries++;
-        }
+      console.warn("🤝 Handshake: DB connection not ready, defaulting to encryption OFF.");
+      return res.json({ isEncryptionEnabled: false });
     }
 
     // 1. Check if encryption is enabled
