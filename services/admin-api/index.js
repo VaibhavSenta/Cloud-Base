@@ -18,19 +18,26 @@ const HealthMonitorService = require('./services/HealthMonitorService');
 const port = process.env.PORT || 5001;
 const connectionString = process.env.CONNECTION
 
-// Start Automated Infrastructure Monitoring
-HealthMonitorService.start();
+// Mongoose Configuration
+mongoose.set('strictQuery', false);
 
-// Mongoose Configuration for Production Stability
-mongoose.set('bufferCommands', false); 
+// Database Connection Logic
+const connectDB = async () => {
+    try {
+        await mongoose.connect(connectionString, {
+            serverSelectionTimeoutMS: 10000, // Wait up to 10s for server selection
+            socketTimeoutMS: 45000, // Close sockets after 45s
+        });
+        console.log('Connected to MongoDB . . . . ');
+        
+        // Start Automated Infrastructure Monitoring ONLY after DB is ready
+        HealthMonitorService.start();
+    } catch (err) {
+        console.error('Could not connect to MongoDB . . . . ', err);
+    }
+};
 
-mongoose.connect(connectionString, {
-    serverSelectionTimeoutMS: 5000, 
-})
-.then(async() => {
-    console.log('Connected to MongoDB . . . . ');
-})
-.catch(err => console.error('Could not connect to MongoDB . . . . ', err))
+connectDB();
 
 
 

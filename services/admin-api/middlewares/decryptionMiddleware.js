@@ -1,12 +1,24 @@
 const EncryptionService = require('../services/EncryptionService');
 const { GLOBALCONFIG } = require('../models/centralstation');
 const crypto = require('crypto');
+const mongoose = require('mongoose');
 
 /**
  * decryptionMiddleware - Decrypts req.body if encryption is enabled globally
  */
 const decryptionMiddleware = async (req, res, next) => {
     try {
+        // 0. Ensure DB Connection is ready (Resilient for Serverless Cold Starts)
+        if (mongoose.connection.readyState !== 1) {
+            console.log("⏳ DB Connection not ready, waiting...");
+            // Simple polling wait (max 3 seconds)
+            let retries = 0;
+            while (mongoose.connection.readyState !== 1 && retries < 30) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+                retries++;
+            }
+        }
+
         // 1. Check if Encryption is toggled ON in Settings
         const config = await GLOBALCONFIG.findOne({ key: 'is_encryption_enabled' });
         const isEnabled = config ? config.value === true : false;

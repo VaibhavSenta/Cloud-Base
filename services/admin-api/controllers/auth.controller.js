@@ -10,6 +10,15 @@ const auditService = require("../services/audit.service");
  */
 const handshake = async (req, res) => {
   try {
+    // 0. Ensure DB Connection
+    if (mongoose.connection.readyState !== 1) {
+        let retries = 0;
+        while (mongoose.connection.readyState !== 1 && retries < 30) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+            retries++;
+        }
+    }
+
     // 1. Check if encryption is enabled
     const config = await GLOBALCONFIG.findOne({ key: 'is_encryption_enabled' });
     const isEnabled = config ? config.value === true : false;

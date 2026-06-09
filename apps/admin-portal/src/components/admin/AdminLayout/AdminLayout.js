@@ -116,13 +116,28 @@ export default function AdminLayout({ children }) {
     toggleMaintMutation.mutate(val);
   };
 
+  // 5. 📱 Sub-Page Logic (Mobile Specific)
+  const isSubPage = pathname === '/dashboard/settings' || pathname.startsWith('/apps/');
+  const pageTitle = pathname === '/dashboard/settings' ? 'Settings' : 'App Details';
+
   return (
     <div className={styles.layoutRoot}>
       {/* 0. WCO DRAGGABLE AREA */}
       <div className={styles.titleBar}></div>
       
-      {/* 1. PREMIUM HEADER */}
-      <header className={styles.header}>
+      {/* 1. MOBILE SUB-PAGE HEADER */}
+      {isSubPage && (
+        <header className={styles.subPageHeader}>
+          <button className={styles.backBtn} onClick={() => router.back()}>
+            <NextImage src="/admin-images/left-arrow.png" width={24} height={24} alt="Back" style={{ filter: 'brightness(0) invert(1)' }} />
+          </button>
+          <h2 className={styles.subPageTitle}>{pageTitle}</h2>
+          <div style={{ width: '40px' }}></div> {/* Spacer to center title */}
+        </header>
+      )}
+
+      {/* 2. PREMIUM HEADER (Hidden on mobile sub-pages) */}
+      <header className={`${styles.header} ${isSubPage ? styles.hideOnMobile : ''}`}>
         <div className={styles.headerWraper}>
           
           <div className={styles.headerLeft}>
@@ -160,7 +175,7 @@ export default function AdminLayout({ children }) {
         </div>
       </header>
 
-      {/* 2. MODULAR SIDEBAR */}
+      {/* 3. MODULAR SIDEBAR */}
       <Sidebar 
         isOpen={isSidebarOpen}
         onClose={closeSidebar}
@@ -171,13 +186,13 @@ export default function AdminLayout({ children }) {
         handleLogout={handleLogout}
       />
 
-      <main className={styles.mainContent}>
+      <main className={`${styles.mainContent} ${isSubPage ? styles.subPageContent : ''}`}>
         <InfraAlert downApps={downApps} />
         {children}
       </main>
 
-      {/* 3. MOBILE BOTTOM NAV */}
-      <BottomBar />
+      {/* 4. MOBILE BOTTOM NAV (Hidden on sub-pages) */}
+      {!isSubPage && <BottomBar />}
 
     </div>
   );
