@@ -21,7 +21,12 @@ const connectionString = process.env.CONNECTION
 // Start Automated Infrastructure Monitoring
 HealthMonitorService.start();
 
-mongoose.connect(connectionString)
+// Mongoose Configuration for Production Stability
+mongoose.set('bufferCommands', false); 
+
+mongoose.connect(connectionString, {
+    serverSelectionTimeoutMS: 5000, 
+})
 .then(async() => {
     console.log('Connected to MongoDB . . . . ');
 })
