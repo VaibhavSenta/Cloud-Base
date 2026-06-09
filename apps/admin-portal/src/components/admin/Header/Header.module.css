@@ -1,0 +1,186 @@
+/* apps/admin-portal/src/components/admin/Header/Header.module.css */
+
+.header {
+  height: 80px;
+  background: rgba(10, 10, 10, 0);
+  position: fixed;
+  top: env(titlebar-area-height, 0);
+  left: 0;
+  right: 0;
+  z-index: 900;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.headerWraper {
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  
+  height: 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1400px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 0 18px 0 0;
+  border-radius: 100px;
+}
+
+.headerLeft, .headerRight {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.mobileMenuBtn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.logoText {
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.5px;
+  padding-left: 24px;
+}
+
+.logoText span {
+  color: var(--primary);
+}
+
+/* Network latency badges */
+.networkStatus {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 16px;
+  background-color: rgba(255, 255, 255, 0.03);
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  background-color: #10b981;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #10b981;
+}
+
+.statusText { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #869397; }
+.statusDivider { width: 1px; height: 16px; background: rgba(255, 255, 255, 0.1); }
+.latencyText { font-size: 10px; color: #555; }
+
+/* User profile details */
+.userSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.notifBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.notifDot {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  background: var(--primary);
+  border: 2px solid #000;
+  border-radius: 50%;
+}
+
+.userName { font-size: 14px; font-weight: 500; color: #fff; }
+
+.userAvatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  cursor: pointer;
+}
+.userAvatar img { width: 100%; height: 100%; object-fit: cover; }
+
+/* --- MOBILE SUB-PAGE HEADER --- */
+.subPageHeader {
+  display: none; /* Hidden on desktop */
+}
+
+@media (min-width: 1024px) {
+  .header { left: 280px; }
+  .mobileMenuBtn { display: none; }
+}
+
+@media (max-width: 768px) {
+  .subPageHeader {
+    display: flex;
+    position: fixed;
+    top: env(titlebar-area-height, 0);
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: #000000;
+    background: linear-gradient(180deg,rgba(0, 0, 0, 1) 21%, rgba(255, 255, 255, 0) 94%);
+    z-index: 1001;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+  }
+  
+  .backBtn {
+    background: rgba(255, 255, 255, 0.034);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 40px;
+    height: 40px;
+    border-radius: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .subPageTitle {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+  }
+
+  .hideOnMobile {
+    display: none !important;
+  }
+
+  .header { padding: 0 16px; height: 70px; }
+  .headerWraper { border-radius: 200px; height: 54px; padding: 0 12px; }
+  .networkStatus, .userName { display: none; }
+  
+  /* Hide the hamburger menu button on mobile since we have a bottom bar now */
+  .mobileMenuBtn { display: none; }
+  .logoText { display: block; padding-left: 0; }
+  
+  .headerLeft { gap: 12px; }
+}

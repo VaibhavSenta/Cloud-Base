@@ -3,218 +3,72 @@
 import React from 'react';
 import AdminLayout from '@/components/admin/AdminLayout/AdminLayout';
 import styles from './settings.module.css';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import NextImage from 'next/image';
 
-import SettingsGroup from '@/components/admin/Settings/SettingsGroup';
-import SettingsItem from '@/components/admin/Settings/SettingsItem';
+const SettingsCategory = ({ icon, title, description, onClick }) => (
+  <div className={styles.categoryCard} onClick={onClick}>
+    <div className={styles.categoryLeft}>
+      <div className={styles.categoryIconBox}>
+        <NextImage src={icon} width={24} height={24} alt={title} />
+      </div>
+      <div className={styles.categoryInfo}>
+        <h3>{title}</h3>
+        <p>{description}</p>
+      </div>
+    </div>
+    <div className={styles.categoryRight}>
+      <span className={styles.chevron}>→</span>
+    </div>
+  </div>
+);
 
 export default function SettingsPage() {
-  const queryClient = useQueryClient();
+  const router = useRouter();
 
-  // 1. Fetch Global Settings
-  const { data: settings = {}, isLoading } = useQuery({
-    queryKey: ['globalSettings'],
-    queryFn: async () => {
-      const res = await axios.get('/api/admin/settings');
-      return res.data;
+  const categories = [
+    {
+      id: 'security',
+      title: 'Security & Privacy',
+      description: 'Manage encryption, audit logs, and access protocols.',
+      icon: '/admin-images/verified_user.png',
+      path: '/dashboard/settings/security-privacy'
     },
-  });
-
-  // 2. Toggle Mutation
-  const toggleSettingMutation = useMutation({
-    mutationFn: async ({ key, value }) => {
-      const res = await axios.post('/api/admin/settings/update', { key, value });
-      return res.data;
+    {
+      id: 'system',
+      title: 'System Preferences',
+      description: 'Configure real-time alerts, display themes, and UI behavior.',
+      icon: '/admin-images/smartphone.png',
+      path: '/dashboard/settings/system-preferences'
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['globalSettings'] });
-      // Forced sync of encryption state without page reload
-      if (typeof window !== 'undefined' && window.__FORCE_RE_HANDSHAKE__) {
-        window.__FORCE_RE_HANDSHAKE__();
-      }
-    },
-    onError: (err) => {
-      console.error("Toggle failed:", err);
+    {
+      id: 'data',
+      title: 'Data Management',
+      description: 'Control session purging, storage limits, and database maintenance.',
+      icon: '/admin-images/auto-delete.png',
+      path: '/dashboard/settings/data-management'
     }
-  });
-
-  const [isPushEnabled, setIsPushEnabled] = React.useState(false);
-  const [isPushLoading, setIsPushLoading] = React.useState(false);
-
-  // Check current notification permission AND subscription on load
-  React.useEffect(() => {
-    const checkPushStatus = async () => {
-      if ('serviceWorker' in navigator && 'Notification' in window) {
-        if (Notification.permission === 'granted') {
-          const registration = await navigator.serviceWorker.getRegistration();
-          const subscription = await registration?.pushManager.getSubscription();
-          setIsPushEnabled(!!subscription);
-        }
-      }
-    };
-    checkPushStatus();
-  }, []);
-
-  const handlePushToggle = async () => {
-    // If already enabled, we can't easily "unsubscribe" yet without a specific backend route,
-    // so let's just show an alert or prevent toggle if it's already active.
-    if (isPushEnabled) {
-      if (confirm('Do you want to disable real-time alerts? (This will remove your subscription on this device)')) {
-          setIsPushLoading(true);
-          try {
-            const registration = await navigator.serviceWorker.getRegistration();
-            const subscription = await registration?.pushManager.getSubscription();
-            if (subscription) {
-              await subscription.unsubscribe();
-              // Optional: Inform backend to remove subscription
-              setIsPushEnabled(false);
-            }
-          } catch (error) {
-            console.error('Failed to unsubscribe:', error);
-          } finally {
-            setIsPushLoading(false);
-          }
-      }
-      return;
-    }
-
-    setIsPushLoading(true);
-    try {
-      console.log('--- Push Activation Debug ---');
-      if (!('serviceWorker' in navigator)) {
-        throw new Error('Service Worker is not supported by your browser.');
-      }
-
-      const permission = await Notification.requestPermission();
-      console.log('Notification Permission:', permission);
-      if (permission !== 'granted') throw new Error('Permission not granted by user.');
-
-      // Wait for service worker to be ready
-      console.log('Waiting for Service Worker registration...');
-      let registration = await navigator.serviceWorker.getRegistration();
-      
-      if (!registration) {
-        console.log('Registration not found, waiting for ready...');
-        registration = await Promise.race([
-          navigator.serviceWorker.ready,
-          new Promise((_, reject) => setTimeout(() => reject(new Error('Service Worker registration timeout. Please ensure the app is installed or refresh.')), 15000))
-        ]);
-      }
-
-      console.log('Service Worker Registration Found:', registration);
-
-      if (!registration || !registration.pushManager) {
-        throw new Error('Push Manager not available on this device/browser.');
-      }
-      
-      // Get VAPID public key
-      const { data: { publicKey } } = await axios.get('/api/admin/push/key');
-      console.log('VAPID Key Fetched:', publicKey ? 'Success' : 'Failed');
-      
-      // Convert VAPID key to Uint8Array
-      const urlBase64ToUint8Array = (base64String) => {
-        const padding = '='.repeat((4 - base64String.length % 4) % 4);
-        const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
-        const rawData = window.atob(base64);
-        const outputArray = new Uint8Array(rawData.length);
-        for (let i = 0; i < rawData.length; ++i) {
-          outputArray[i] = rawData.charCodeAt(i);
-        }
-        return outputArray;
-      };
-
-      const subscription = await registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(publicKey)
-      });
-
-      // Save to server
-      await axios.post('/api/admin/push/subscribe', subscription);
-      
-      setIsPushEnabled(true);
-      alert('Real-time alerts enabled successfully! 🔔');
-    } catch (error) {
-      console.error('Push subscription failed:', error);
-      setIsPushEnabled(false); // Ensure it stays disabled on failure
-      alert('Failed to enable notifications: ' + error.message);
-    } finally {
-      setIsPushLoading(false);
-    }
-  };
-
-  const isEncryptionEnabled = settings.is_encryption_enabled === true;
-  const isAutoPurgeEnabled = settings.is_auto_purge_enabled !== false; // Default to true if not set
-  const isEnhancedAuditEnabled = settings.is_enhanced_audit_enabled === true;
+  ];
 
   return (
     <AdminLayout>
-      <div className={styles.settingsContainer}>
+      <div className={styles.settingsMenuContainer}>
         <section className={styles.headerSection}>
           <h1>Global Settings</h1>
-          <p>Manage infrastructure protocols and system preferences.</p>
+          <p>Configure and manage the CloudBase ecosystem protocols.</p>
         </section>
 
-        <SettingsGroup title="Security Protocols">
-          <SettingsItem 
-            icon="/admin-images/lock.png"
-            title="Hybrid Encryption (RSA-AES)"
-            description="Secure all browser-server traffic. Prevents data theft on compromised networks."
-            statusText={isEncryptionEnabled ? 'Encrypted' : 'Insecure'}
-            statusColor={isEncryptionEnabled ? 'var(--primary)' : '#ef4444'}
-            checked={isEncryptionEnabled}
-            onChange={() => toggleSettingMutation.mutate({ key: 'is_encryption_enabled', value: !isEncryptionEnabled })}
-            disabled={isLoading}
-            loading={toggleSettingMutation.isPending}
-          />
-          <SettingsItem 
-            icon="/admin-images/history.png"
-            title="Enhanced Audit Logging"
-            description="Track every single admin action with detailed metadata and IP tracking."
-            statusText={isEnhancedAuditEnabled ? 'Active' : 'Disabled'}
-            statusColor={isEnhancedAuditEnabled ? 'var(--primary)' : '#888'}
-            checked={isEnhancedAuditEnabled}
-            onChange={() => toggleSettingMutation.mutate({ key: 'is_enhanced_audit_enabled', value: !isEnhancedAuditEnabled })}
-            disabled={isLoading}
-            loading={toggleSettingMutation.isPending}
-            beta={true}
-          />
-        </SettingsGroup>
-
-        <SettingsGroup title="System Preferences">
-          <SettingsItem 
-            icon="/admin-images/notification-bell.png"
-            title="Real-time Alerts"
-            description="Receive push notifications for infrastructure failures and maintenance events."
-            statusText={isPushEnabled ? 'Active' : 'Disabled'}
-            checked={isPushEnabled}
-            onChange={handlePushToggle}
-            loading={isPushLoading}
-          />
-          <SettingsItem 
-            icon="/admin-images/dark-mode.png"
-            title="Night Console (Dark Mode)"
-            description="CloudBase default high-contrast dark interface."
-            statusText="Forced"
-            checked={true}
-            disabled={true}
-          />
-        </SettingsGroup>
-
-        <SettingsGroup title="Data Management">
-          <SettingsItem 
-            icon="/admin-images/auto-delete.png"
-            title="Auto-Purge Expired Sessions"
-            description="Automatically remove session data from database after 30 days of inactivity."
-            statusText={isAutoPurgeEnabled ? "Active" : "Disabled"}
-            statusColor={isAutoPurgeEnabled ? "var(--primary)" : "#ef4444"}
-            checked={isAutoPurgeEnabled}
-            onChange={() => toggleSettingMutation.mutate({ key: 'is_auto_purge_enabled', value: !isAutoPurgeEnabled })}
-            disabled={isLoading}
-            loading={toggleSettingMutation.isPending}
-          />
-        </SettingsGroup>
-
+        <div className={styles.categoryList}>
+          {categories.map(cat => (
+            <SettingsCategory 
+              key={cat.id}
+              icon={cat.icon}
+              title={cat.title}
+              description={cat.description}
+              onClick={() => router.push(cat.path)}
+            />
+          ))}
+        </div>
       </div>
     </AdminLayout>
   );

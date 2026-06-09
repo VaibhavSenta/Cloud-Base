@@ -1,6 +1,12 @@
 .settingsContainer {
-  padding: 40px 20px;
-  max-width: 900px;
+  padding: 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.settingsMenuContainer {
+  padding: 40px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
@@ -11,17 +17,81 @@
 .headerSection h1 {
   font-size: 32px;
   font-weight: 700;
-  color: #e0e3e5;
+  color: #fff;
   margin: 0 0 8px 0;
 }
 
 .headerSection p {
+  font-size: 16px;
   color: #869397;
-  font-size: 14px;
+  margin: 0;
+}
+
+.categoryList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.categoryCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.categoryCard:hover {
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.categoryCard:active {
+  transform: scale(0.98);
+}
+
+.categoryLeft {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.categoryIconBox {
+  width: 52px;
+  height: 52px;
+  background: rgba(138, 180, 248, 0.1);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.categoryInfo h3 {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  color: #fff;
+  font-weight: 600;
+}
+
+.categoryInfo p {
+  margin: 0;
+  font-size: 13px;
+  color: #869397;
+}
+
+.chevron {
+  color: #8ab4f8;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 @media (max-width: 768px) {
-  .settingsContainer {
+  .settingsMenuContainer, .settingsContainer {
     padding: 24px 16px;
   }
 
@@ -29,11 +99,20 @@
     margin-bottom: 32px;
   }
 
-  .headerSection h1 {
-    font-size: 24px;
+  .headerSection h1 { font-size: 24px; }
+  .headerSection p { font-size: 14px; }
+
+  .categoryCard {
+    padding: 20px;
+    border-radius: 16px;
   }
 
-  .headerSection p {
-    font-size: 13px;
+  .categoryIconBox {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
   }
+
+  .categoryInfo h3 { font-size: 16px; }
+  .categoryInfo p { font-size: 11px; }
 }
