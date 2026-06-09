@@ -14,7 +14,7 @@
 .sidebarWrapper {
   -webkit-backdrop-filter: blur(26px);
   backdrop-filter: blur(26px);
-  background-color: #31313159;
+  background-color: #1d1d1d42;
   border: 1px solid rgba(245, 245, 245, 0.048);
   border-radius: 20px;
   width: 100%;
@@ -24,7 +24,7 @@
   overflow-y: auto;
   overflow-x: hidden;
   padding-bottom: 20px;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5), 0 0 10px rgba(151, 240, 255, 0.05);
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.445);
 }
 
 /* Custom Minimalist Scrollbar */

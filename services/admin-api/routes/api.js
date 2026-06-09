@@ -10,7 +10,9 @@ router.use(decryptionMiddleware);
 
 // Auth routes =============================================================================
 const {AUTH} = require('./auth.route');
+const WEBAUTHN = require('./webauthn.route');
 router.use('/auth', AUTH);
+router.use('/auth/webauthn', WEBAUTHN);
 
 // Admin Profile ==========================================================================
 const { PROFILE } = require('./profile.route');
@@ -26,7 +28,9 @@ router.use('/users', verifyToken, USER_ROUTES);
 
 // Global Settings =======================================================================
 const { SETTINGS } = require('./settings.route');
+const PUSH = require('./push.route');
 router.use('/settings', verifyToken, SETTINGS);
+router.use('/push', PUSH);
 
 
 // Main Dashboard routes = =============================================================================

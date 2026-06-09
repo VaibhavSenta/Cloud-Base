@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation'; // Dashboard par redirect karne ke liye
 import axios from 'axios';
+import { startAuthentication } from '@simplewebauthn/browser';
 import styles from './page.module.css';
 
 import LoginBox from '@/components/admin/LoginBox/LoginBox';
@@ -26,12 +27,44 @@ export default function AdminLogin() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleBiometricLogin = async () => {
+    if (!formData.loginid) {
+      setErrorMsg('Enter Login ID first to use biometrics');
+      return;
+    }
+
+    setIsLoading(true);
+    setErrorMsg('');
+
+    try {
+      // 1. Get auth options
+      const { data: options } = await axios.post('/api/v1/auth/webauthn/login-options', {
+        loginid: formData.loginid
+      });
+
+      // 2. Start biometric scan
+      const asseResp = await startAuthentication(options);
+
+      // 3. Verify with server
+      const result = await axios.post('/api/v1/auth/webauthn/verify-login', asseResp);
+
+      if (result.data.success) {
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      console.error(error);
+      setErrorMsg(error.response?.data?.error || 'Biometric Login Failed');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isLoading) return; 
     setIsLoading(true);
     setErrorMsg('');
-    
+
     try {
       const result = await axios.post(`/api/admin/auth/login`, formData)
       if (result.data.success && result.data.redirectUrl) {
@@ -52,6 +85,7 @@ export default function AdminLogin() {
         formData={formData}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
+        handleBiometricLogin={handleBiometricLogin}
         isLoading={isLoading}
         errorMsg={errorMsg}
       />

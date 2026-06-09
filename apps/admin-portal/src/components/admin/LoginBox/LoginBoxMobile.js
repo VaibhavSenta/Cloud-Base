@@ -1,4 +1,5 @@
 import React from 'react';
+import NextImage from 'next/image';
 import styles from './LoginBoxMobile.module.css';
 
 /**
@@ -8,6 +9,7 @@ const LoginBoxMobile = ({
   formData, 
   handleChange, 
   handleSubmit, 
+  handleBiometricLogin,
   isLoading, 
   errorMsg 
 }) => {
@@ -17,6 +19,8 @@ const LoginBoxMobile = ({
         <h2 className={styles.logo}>Cloud<span>Base</span></h2>
         <p className={styles.tagline}>Secure Console Login</p>
       </div>
+
+      <br />
 
       <form className={styles.form} onSubmit={handleSubmit}>
         {errorMsg && (
@@ -50,9 +54,27 @@ const LoginBoxMobile = ({
           />
         </div>
 
-        <button type="submit" className={styles.btn} disabled={isLoading}>
-          {isLoading ? 'Verifying...' : 'Sign In'}
-        </button>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <button type="submit" className={styles.btn} disabled={isLoading} style={{ flex: 1 }}>
+            {isLoading ? 'Wait...' : 'Sign In'}
+          </button>
+          <button 
+            type="button" 
+            onClick={handleBiometricLogin} 
+            className={styles.btn} 
+            disabled={isLoading}
+            style={{ 
+              width: '56px', 
+              background: '#1d2022', 
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            {isLoading ? '...' : <NextImage src="/admin-images/fingerprint.png" priority width={22} height={22} alt="Biometric" style={{ filter: 'brightness(0) invert(1)' }} />}
+          </button>
+        </div>
       </form>
       
       <p className={styles.footer}>Protected by CloudBase Perimeter</p>

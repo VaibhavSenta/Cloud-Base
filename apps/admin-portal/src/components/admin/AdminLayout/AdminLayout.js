@@ -57,6 +57,24 @@ export default function AdminLayout({ children }) {
   const [isAlertDismissed, setIsAlertDismissed] = useState(false);
   const downApps = appsStatus.filter(app => app.status === 'down' && !app.inMaintenance);
 
+  // 4. 🎴 App Badging API (PWA Feature)
+  useEffect(() => {
+    const updateBadge = async () => {
+      if ('setAppBadge' in navigator) {
+        try {
+          if (downApps.length > 0) {
+            await navigator.setAppBadge(downApps.length);
+          } else {
+            await navigator.clearAppBadge();
+          }
+        } catch (error) {
+          console.error('Failed to update app badge:', error);
+        }
+      }
+    };
+    updateBadge();
+  }, [downApps.length]);
+
   // Auto-show alert if new down apps appear
   useEffect(() => {
     if (downApps.length > 0) setIsAlertDismissed(false);
@@ -99,6 +117,8 @@ export default function AdminLayout({ children }) {
 
   return (
     <div className={styles.layoutRoot}>
+      {/* 0. WCO DRAGGABLE AREA */}
+      <div className={styles.titleBar}></div>
       
       {/* 1. PREMIUM HEADER */}
       <header className={styles.header}>

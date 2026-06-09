@@ -39,6 +39,51 @@ export default function SettingsPage() {
     }
   });
 
+  const [isPushEnabled, setIsPushEnabled] = React.useState(false);
+  const [isPushLoading, setIsPushLoading] = React.useState(false);
+
+  // Check current notification permission on load
+  React.useEffect(() => {
+    if ('Notification' in window && Notification.permission === 'granted') {
+      setIsPushEnabled(true);
+    }
+  }, []);
+
+  const handlePushToggle = async () => {
+    if (isPushEnabled) {
+      // Logic to disable (optional, for now just toggle state)
+      setIsPushEnabled(false);
+      return;
+    }
+
+    setIsPushLoading(true);
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') throw new Error('Permission not granted');
+
+      // Register for Push
+      const registration = await navigator.serviceWorker.ready;
+      
+      // Get VAPID public key
+      const { data: { publicKey } } = await axios.get('/api/v1/push/key');
+      
+      const subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: publicKey
+      });
+
+      // Save to server
+      await axios.post('/api/v1/push/subscribe', subscription);
+      
+      setIsPushEnabled(true);
+    } catch (error) {
+      console.error('Push subscription failed:', error);
+      alert('Failed to enable notifications: ' + error.message);
+    } finally {
+      setIsPushLoading(false);
+    }
+  };
+
   const isEncryptionEnabled = settings.is_encryption_enabled === true;
 
   return (
@@ -73,12 +118,13 @@ export default function SettingsPage() {
 
         <SettingsGroup title="System Preferences">
           <SettingsItem 
-            icon="/admin-images/notifications.png"
+            icon="/admin-images/notification-bell.png"
             title="Real-time Alerts"
             description="Receive push notifications for infrastructure failures and maintenance events."
-            statusText="Active"
-            checked={true}
-            disabled={true}
+            statusText={isPushEnabled ? 'Active' : 'Disabled'}
+            checked={isPushEnabled}
+            onChange={handlePushToggle}
+            loading={isPushLoading}
           />
           <SettingsItem 
             icon="/admin-images/dark-mode.png"

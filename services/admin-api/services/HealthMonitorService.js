@@ -2,6 +2,7 @@ const cron = require('node-cron');
 const axios = require('axios');
 const { MANAGEDAPP } = require('../models/centralstation');
 const auditService = require('./audit.service');
+const pushService = require('./push.service');
 
 /**
  * HealthMonitorService - Periodically checks the status of all registered apps
@@ -39,6 +40,13 @@ class HealthMonitorService {
                     details: { event: 'Status Degraded', code: response.status, latency: `${latency}ms` },
                     ipAddress: 'Internal Monitor'
                 });
+
+                // Web Push Notification
+                await pushService.broadcastNotification({
+                    title: `⚠️ Status Alert: ${app.title}`,
+                    body: `Service is ${status} with ${response.status} status code.`,
+                    url: `/apps/${app.title}`
+                });
             }
 
             await MANAGEDAPP.findByIdAndUpdate(app._id, {
@@ -59,6 +67,13 @@ class HealthMonitorService {
                     appTitle: app.title,
                     details: { event: 'Infrastructure Failure', error: err.message },
                     ipAddress: 'Internal Monitor'
+                });
+
+                // Web Push Notification (Critical)
+                await pushService.broadcastNotification({
+                    title: `🚨 CRITICAL: ${app.title} is DOWN`,
+                    body: `Infrastructure failure detected: ${err.message}`,
+                    url: `/apps/${app.title}`
                 });
             }
 

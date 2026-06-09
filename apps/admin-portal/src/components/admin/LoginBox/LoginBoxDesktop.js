@@ -1,4 +1,5 @@
 import React from 'react';
+import NextImage from 'next/image';
 import styles from './LoginBoxDesktop.module.css';
 
 /**
@@ -8,6 +9,7 @@ const LoginBoxDesktop = ({
   formData, 
   handleChange, 
   handleSubmit, 
+  handleBiometricLogin,
   isLoading, 
   errorMsg 
 }) => {
@@ -57,9 +59,29 @@ const LoginBoxDesktop = ({
           />
         </div>
 
-        <button type="submit" className={styles.submitBtn} disabled={isLoading}>
-          {isLoading ? 'Verifying Credentials...' : 'Sign In to Console'}
-        </button>
+        <div style={{ display: 'flex', gap: '12px' }}>
+          <button type="submit" className={styles.submitBtn} disabled={isLoading} style={{ flex: 2 }}>
+            {isLoading ? 'Verifying...' : 'Sign In to Console'}
+          </button>
+          
+          <button 
+            type="button" 
+            onClick={handleBiometricLogin} 
+            className={styles.submitBtn} 
+            disabled={isLoading}
+            style={{ 
+              flex: 1, 
+              background: '#1d2022', 
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+            title="Login with Biometrics"
+          >
+            {isLoading ? '...' : <NextImage src="/admin-images/fingerprint.png" priority width={24} height={24} alt="Biometric" style={{ filter: 'brightness(0) invert(1)' }} />}
+          </button>
+        </div>
       </form>
     </div>
   );

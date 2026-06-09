@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
 const app = express();  
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -36,6 +37,12 @@ mongoose.connect(connectionString)
 
 // Middlewares
 app.use(cookieParser())
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'cloudbase_secret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false, maxAge: 60000 * 5 } // 5 minutes
+}));
 
 // Vercel Speed Insights - Make the package available to views for client-side initialization
 app.use((req, res, next) => {

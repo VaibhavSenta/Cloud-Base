@@ -11,6 +11,22 @@ const adminSchema = new mongoose.Schema(
       default: ['VIEWER'],
       enum: ['ROOT', 'MANAGER', 'VIEWER'] 
     },
+    webauthnCredentials: [{
+      credentialID: { type: Buffer, required: true },
+      publicKey: { type: Buffer, required: true },
+      counter: { type: Number, default: 0 },
+      transports: [String],
+      createdAt: { type: Date, default: Date.now }
+    }],
+    pushSubscriptions: [{
+      endpoint: { type: String, required: true },
+      expirationTime: { type: Number, default: null },
+      keys: {
+        p256dh: { type: String, required: true },
+        auth: { type: String, required: true }
+      },
+      createdAt: { type: Date, default: Date.now }
+    }]
   },
   { timestamps: true },
 );

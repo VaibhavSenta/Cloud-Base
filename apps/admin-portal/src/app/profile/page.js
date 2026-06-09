@@ -9,6 +9,7 @@ import axios from 'axios';
 
 import ProfileIdentity from '@/components/admin/Profile/ProfileIdentity';
 import SessionCard from '@/components/admin/Profile/SessionCard';
+import BiometricSetup from '@/components/admin/Profile/BiometricSetup';
 
 export default function ProfilePage() {
     const queryClient = useQueryClient();
@@ -124,16 +125,19 @@ export default function ProfilePage() {
                     ) : error ? (
                         <div className={styles.errorBanner}>❌ Access Denied: {error.message}</div>
                     ) : (
-                        <ProfileIdentity 
-                            admin={admin}
-                            formData={formData}
-                            handleChange={handleChange}
-                            handleSubmit={handleSubmit}
-                            isEditing={isEditing}
-                            setIsEditing={setIsEditing}
-                            updateMutation={updateMutation}
-                            statusMsg={statusMsg}
-                        />
+                        <>
+                            <ProfileIdentity 
+                                admin={admin}
+                                formData={formData}
+                                handleChange={handleChange}
+                                handleSubmit={handleSubmit}
+                                isEditing={isEditing}
+                                setIsEditing={setIsEditing}
+                                updateMutation={updateMutation}
+                                statusMsg={statusMsg}
+                            />
+                            <BiometricSetup />
+                        </>
                     )}
                 </div>
 

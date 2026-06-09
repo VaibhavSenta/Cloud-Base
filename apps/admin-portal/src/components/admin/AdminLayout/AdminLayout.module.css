@@ -8,12 +8,25 @@
   background-attachment: fixed;
 }
 
+/* --- WCO DRAGGABLE AREA --- */
+.titleBar {
+  position: fixed;
+  top: 0;
+  left: env(titlebar-area-x, 0);
+  width: env(titlebar-area-width, 100%);
+  height: env(titlebar-area-height, 0);
+  app-region: drag;
+  -webkit-app-region: drag;
+  z-index: 2000;
+  background: transparent;
+}
+
 /* --- HEADER DESIGN PANEL --- */
 .header {
   height: 80px;
   background: rgba(10, 10, 10, 0);
   position: fixed;
-  top: 0;
+  top: env(titlebar-area-height, 0);
   left: 0;
   right: 0;
   z-index: 900;
@@ -35,7 +48,7 @@
   max-width: 1400px;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 0 24px;
+  padding: 0 0px;
   border-radius: 100px;
 }
 
@@ -49,8 +62,8 @@
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: #fff;
-  width: 44px;
-  height: 44px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -63,6 +76,7 @@
   font-weight: 800;
   color: #fff;
   letter-spacing: -0.5px;
+  padding-left: 24px;
 }
 
 .logoText span {
