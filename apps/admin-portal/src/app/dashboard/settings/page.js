@@ -58,25 +58,36 @@ export default function SettingsPage() {
 
     setIsPushLoading(true);
     try {
+      console.log('--- Push Activation Debug ---');
       if (!('serviceWorker' in navigator)) {
         throw new Error('Service Worker is not supported by your browser.');
       }
 
       const permission = await Notification.requestPermission();
+      console.log('Notification Permission:', permission);
       if (permission !== 'granted') throw new Error('Permission not granted by user.');
 
-      // Wait for service worker to be ready with a timeout
-      const registration = await Promise.race([
-        navigator.serviceWorker.ready,
-        new Promise((_, reject) => setTimeout(() => reject(new Error('Service Worker activation timeout. Please refresh the page and try again.')), 5000))
-      ]);
-
+      // Wait for service worker to be ready
+      console.log('Waiting for Service Worker registration...');
+      let registration = await navigator.serviceWorker.getRegistration();
+      
       if (!registration) {
-        throw new Error('Service worker registration not found.');
+        console.log('Registration not found, waiting for ready...');
+        registration = await Promise.race([
+          navigator.serviceWorker.ready,
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Service Worker registration timeout. Please ensure the app is installed or refresh.')), 6000))
+        ]);
+      }
+
+      console.log('Service Worker Registration Found:', registration);
+
+      if (!registration || !registration.pushManager) {
+        throw new Error('Push Manager not available on this device/browser.');
       }
       
       // Get VAPID public key
       const { data: { publicKey } } = await axios.get('/api/admin/push/key');
+      console.log('VAPID Key Fetched:', publicKey ? 'Success' : 'Failed');
       
       // Convert VAPID key to Uint8Array
       const urlBase64ToUint8Array = (base64String) => {
