@@ -1,4 +1,4 @@
-const { AUDITLOG, ADMIN } = require('../models/centralstation');
+const { AUDITLOG, ADMIN, GLOBALCONFIG } = require('../models/centralstation');
 const mongoose = require('mongoose');
 
 async function createLog({ adminId, action, targetId, appTitle, details, ipAddress }) {
@@ -25,6 +25,17 @@ async function createLog({ adminId, action, targetId, appTitle, details, ipAddre
     }
 }
 
+async function createEnhancedLog(logData) {
+    try {
+        const config = await GLOBALCONFIG.findOne({ key: 'is_enhanced_audit_enabled' });
+        if (config && config.value === true) {
+            return await createLog(logData);
+        }
+    } catch (err) {
+        console.error("Failed to check enhanced log setting:", err);
+    }
+}
+
 async function getLogsByApp(appId, limit = 10) {
     try {
         if (!mongoose.isValidObjectId(appId)) return [];
@@ -48,4 +59,4 @@ async function getGlobalLogs(limit = 50) {
     }
 }
 
-module.exports = { createLog, getLogsByApp, getGlobalLogs };
+module.exports = { createLog, createEnhancedLog, getLogsByApp, getGlobalLogs };

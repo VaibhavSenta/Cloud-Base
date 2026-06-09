@@ -86,17 +86,21 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  background: #ff4d4d;
+  background: #ff4d4d00;
   color: #fff;
-  border: none;
+  border: 1px solid rgba(143, 24, 24, 0.473);
   padding: 14px 28px;
   border-radius: 14px;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: all 0.24s ease-in-out;
 }
 
-.logoutBtn:hover { transform: translateY(-2px); }
+.logoutBtn:hover { 
+  transform: translateY(-2px) scale(1.015) ;
+  box-shadow: 0px 20px 30px -25px  rgba(247, 247, 247, 0.863); 
+  background-color: #8804041c;
+}
 
 .loader, .errorBanner, .emptySessions {
   padding: 60px;
@@ -105,9 +109,59 @@
   font-weight: 600;
 }
 
+.mobileQuickLinks {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .profileWrapper {
     padding: 24px 16px;
+  }
+
+  .mobileQuickLinks {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  .quickLinkCard {
+    background: #1d2022;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .quickLinkCard:active {
+    background: #272a2c;
+    transform: scale(0.98);
+  }
+
+  .quickLinkIcon {
+    font-size: 20px;
+  }
+
+  .quickLinkCard h4 {
+    margin: 0;
+    color: #fff;
+    font-size: 15px;
+  }
+
+  .quickLinkCard p {
+    margin: 4px 0 0 0;
+    color: #869397;
+    font-size: 11px;
+  }
+
+  .arrow {
+    color: #8ab4f8;
+    font-size: 18px;
+    font-weight: bold;
   }
 
   .pageHeader h1 { font-size: 24px; }

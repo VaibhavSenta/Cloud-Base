@@ -38,15 +38,15 @@ export default function AdminLogin() {
 
     try {
       // 1. Get auth options
-      const { data: options } = await axios.post('/api/v1/auth/webauthn/login-options', {
+      const { data: options } = await axios.post('/api/admin/auth/webauthn/login-options', {
         loginid: formData.loginid
       });
 
       // 2. Start biometric scan
-      const asseResp = await startAuthentication(options);
+      const asseResp = await startAuthentication({ optionsJSON: options });
 
       // 3. Verify with server
-      const result = await axios.post('/api/v1/auth/webauthn/verify-login', asseResp);
+      const result = await axios.post('/api/admin/auth/webauthn/verify-login', asseResp);
 
       if (result.data.success) {
         router.push("/dashboard");

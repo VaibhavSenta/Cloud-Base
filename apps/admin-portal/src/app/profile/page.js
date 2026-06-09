@@ -136,6 +136,21 @@ export default function ProfilePage() {
                                 updateMutation={updateMutation}
                                 statusMsg={statusMsg}
                             />
+                            
+                            {/* MOBILE QUICK LINKS */}
+                            <div className={styles.mobileQuickLinks}>
+                                <div className={styles.quickLinkCard} onClick={() => window.location.href = '/dashboard/settings'}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                        <div className={styles.quickLinkIcon}>⚙️</div>
+                                        <div>
+                                            <h4>Global Settings</h4>
+                                            <p>Manage system protocols and preferences.</p>
+                                        </div>
+                                    </div>
+                                    <span className={styles.arrow}>→</span>
+                                </div>
+                            </div>
+
                             <BiometricSetup />
                         </>
                     )}

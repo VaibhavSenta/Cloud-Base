@@ -1,14 +1,21 @@
 const webauthnService = require('../services/webauthn.service');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const { SESSION } = require('../models/centralstation');
+const { SESSION, ADMIN } = require('../models/centralstation');
 
 /**
  * Start Registration
  */
 const startRegistration = async (req, res, next) => {
     try {
-        const adminId = req.user._id;
+        // req.user comes from verifyToken middleware (decoded JWT)
+        // Usually, the ID is stored as req.user.id or req.user._id depending on how it was signed
+        const adminId = req.user.id || req.user._id; 
+        
+        if (!adminId) {
+            return res.status(401).json({ error: 'User ID not found in token' });
+        }
+
         const options = await webauthnService.getRegistrationOptions(adminId);
         
         // Store challenge in session to verify later
@@ -25,7 +32,7 @@ const startRegistration = async (req, res, next) => {
  */
 const finishRegistration = async (req, res, next) => {
     try {
-        const adminId = req.user._id;
+        const adminId = req.user.id || req.user._id;
         const expectedChallenge = req.session.currentChallenge;
 
         if (!expectedChallenge) {
@@ -103,24 +110,65 @@ const finishAuthentication = async (req, res, next) => {
             const newSession = new SESSION({
                 adminId: user._id,
                 tokenHash: tokenHash,
-                ipAddress: req.ip,
+                ipAddress: req.ip || req.headers['x-forwarded-for'] || req.socket.remoteAddress,
                 userAgent: req.get('User-Agent'),
                 deviceType: req.get('User-Agent').includes('Mobile') ? 'Mobile' : 'Desktop'
             });
             await newSession.save();
 
+            const userInfo = {
+                firstname: user.firstname,
+                lastname: user.lastname,
+                isloggedin: true
+            };
+
+            // Set identical cookies as auth.controller.js
+            res.cookie("login_token", loginToken, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                maxAge: 24 * 60 * 60 * 1000,
+            });
+            res.cookie("user_info", userInfo, {
+                httpOnly: false,
+                secure: process.env.NODE_ENV === "production",
+                maxAge: 24 * 60 * 60 * 1000,
+            });
+
+            // Enhanced Audit Logging
+            await require('../services/audit.service').createEnhancedLog({
+                adminId: user._id,
+                action: 'ADMIN_LOGIN',
+                targetId: null,
+                appTitle: 'Admin Console Access',
+                details: { event: 'Successful Login (Biometric/Passkey)' },
+                ipAddress: req.ip || req.headers['x-forwarded-for'] || req.socket.remoteAddress
+            });
+
             res.json({
                 success: true,
                 token: loginToken,
-                user: {
-                    firstname: user.firstname,
-                    lastname: user.lastname,
-                    isloggedin: true
-                }
+                user: userInfo
             });
         } else {
             res.status(400).json({ error: 'Biometric verification failed' });
         }
+    } catch (error) {
+        next(error);
+    }
+};
+
+/**
+ * Remove all Biometric Credentials for a user
+ */
+const removeCredentials = async (req, res, next) => {
+    try {
+        const adminId = req.user.id || req.user._id;
+        
+        await ADMIN.findByIdAndUpdate(adminId, {
+            $set: { webauthnCredentials: [] }
+        });
+
+        res.json({ success: true, message: 'All biometric access revoked successfully.' });
     } catch (error) {
         next(error);
     }
@@ -131,4 +179,5 @@ module.exports = {
     finishRegistration,
     startAuthentication,
     finishAuthentication,
+    removeCredentials,
 };

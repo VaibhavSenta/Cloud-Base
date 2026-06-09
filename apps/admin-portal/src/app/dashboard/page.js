@@ -79,6 +79,37 @@ export default function DashboardPage() {
     <AdminLayout>
       <div className={styles.dashboardWrapper}>
         
+        {/* QUICK ACTIONS FOR MOBILE - Hidden on Desktop */}
+        <div className={styles.mobileQuickActions}>
+          <div className={styles.quickActionCard}>
+            <div className={styles.quickActionHeader}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Image src="/admin-images/lock.png" width={16} height={16} alt="Security" style={{ filter: 'brightness(0) invert(1)' }} />
+                <h3>Global Maintenance</h3>
+              </div>
+              {/* This toggle state should be managed. For now, it links to settings or triggers global logic */}
+              <button 
+                className={styles.quickActionBtn}
+                onClick={() => router.push('/dashboard/settings')}
+              >
+                Manage
+              </button>
+            </div>
+            <p>Restrict access to all ecosystem apps immediately.</p>
+          </div>
+
+          <div className={styles.quickActionCard} onClick={() => router.push('/logs')} style={{ cursor: 'pointer' }}>
+            <div className={styles.quickActionHeader}>
+               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Image src="/admin-images/history.png" width={16} height={16} alt="Logs" style={{ filter: 'brightness(0) invert(1)' }} />
+                <h3>System Audit Logs</h3>
+              </div>
+              <span className={styles.arrowIcon}>→</span>
+            </div>
+            <p>Review real-time security events and admin actions.</p>
+          </div>
+        </div>
+
         {/* SECTION 1: INFRASTRUCTURE METRICS ENGINE */}
         <section className={styles.sectionBlock}>
           <div className={styles.sectionHeader}>

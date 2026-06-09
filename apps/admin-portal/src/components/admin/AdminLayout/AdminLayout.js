@@ -9,6 +9,7 @@ import axios from 'axios';
 import styles from './AdminLayout.module.css';
 import InfraAlert from '../InfraAlert/InfraAlert';
 import Sidebar from '../Sidebar/Sidebar';
+import BottomBar from '../BottomBar/BottomBar';
 
 export default function AdminLayout({ children }) {
 
@@ -174,6 +175,9 @@ export default function AdminLayout({ children }) {
         <InfraAlert downApps={downApps} />
         {children}
       </main>
+
+      {/* 3. MOBILE BOTTOM NAV */}
+      <BottomBar />
 
     </div>
   );

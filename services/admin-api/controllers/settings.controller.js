@@ -1,4 +1,5 @@
 const { GLOBALCONFIG } = require('../models/centralstation');
+const auditService = require('../services/audit.service');
 
 /**
  * Get all global settings
@@ -34,6 +35,19 @@ const updateSetting = async (req, res, next) => {
             updateData,
             { upsert: true, new: true }
         );
+
+        // Enhanced Audit Logging
+        if (req.user && req.user.id) {
+            await auditService.createEnhancedLog({
+                adminId: req.user.id,
+                action: 'SETTINGS_UPDATE',
+                targetId: null,
+                appTitle: 'Global Console Settings',
+                details: { setting: key, newValue: value },
+                ipAddress: req.ip || req.headers['x-forwarded-for'] || req.socket.remoteAddress
+            });
+        }
+
         res.json({ success: true, msg: `Setting ${key} updated`, setting: updatedSetting });
     } catch (err) {
         console.error("❌ Update Setting Error:", err.message);

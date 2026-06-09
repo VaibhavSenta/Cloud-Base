@@ -58,24 +58,44 @@ export default function SettingsPage() {
 
     setIsPushLoading(true);
     try {
-      const permission = await Notification.requestPermission();
-      if (permission !== 'granted') throw new Error('Permission not granted');
+      if (!('serviceWorker' in navigator)) {
+        throw new Error('Service Worker is not supported by your browser.');
+      }
 
-      // Register for Push
-      const registration = await navigator.serviceWorker.ready;
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') throw new Error('Permission not granted by user.');
+
+      // Wait for service worker but with a fallback to getRegistration
+      const registration = await navigator.serviceWorker.getRegistration();
+      if (!registration) {
+        throw new Error('Service worker not active. (PWA might be disabled in Dev mode)');
+      }
       
       // Get VAPID public key
-      const { data: { publicKey } } = await axios.get('/api/v1/push/key');
+      const { data: { publicKey } } = await axios.get('/api/admin/push/key');
       
+      // Convert VAPID key to Uint8Array
+      const urlBase64ToUint8Array = (base64String) => {
+        const padding = '='.repeat((4 - base64String.length % 4) % 4);
+        const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
+        const rawData = window.atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+        for (let i = 0; i < rawData.length; ++i) {
+          outputArray[i] = rawData.charCodeAt(i);
+        }
+        return outputArray;
+      };
+
       const subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: publicKey
+        applicationServerKey: urlBase64ToUint8Array(publicKey)
       });
 
       // Save to server
-      await axios.post('/api/v1/push/subscribe', subscription);
+      await axios.post('/api/admin/push/subscribe', subscription);
       
       setIsPushEnabled(true);
+      alert('Real-time alerts enabled successfully! 🔔');
     } catch (error) {
       console.error('Push subscription failed:', error);
       alert('Failed to enable notifications: ' + error.message);
@@ -85,6 +105,8 @@ export default function SettingsPage() {
   };
 
   const isEncryptionEnabled = settings.is_encryption_enabled === true;
+  const isAutoPurgeEnabled = settings.is_auto_purge_enabled !== false; // Default to true if not set
+  const isEnhancedAuditEnabled = settings.is_enhanced_audit_enabled === true;
 
   return (
     <AdminLayout>
@@ -110,8 +132,12 @@ export default function SettingsPage() {
             icon="/admin-images/history.png"
             title="Enhanced Audit Logging"
             description="Track every single admin action with detailed metadata and IP tracking."
-            statusText="Beta"
-            disabled={true}
+            statusText={isEnhancedAuditEnabled ? 'Active' : 'Disabled'}
+            statusColor={isEnhancedAuditEnabled ? 'var(--primary)' : '#888'}
+            checked={isEnhancedAuditEnabled}
+            onChange={() => toggleSettingMutation.mutate({ key: 'is_enhanced_audit_enabled', value: !isEnhancedAuditEnabled })}
+            disabled={isLoading}
+            loading={toggleSettingMutation.isPending}
             beta={true}
           />
         </SettingsGroup>
@@ -141,9 +167,12 @@ export default function SettingsPage() {
             icon="/admin-images/auto-delete.png"
             title="Auto-Purge Expired Sessions"
             description="Automatically remove session data from database after 30 days of inactivity."
-            statusText="On"
-            checked={true}
-            disabled={true}
+            statusText={isAutoPurgeEnabled ? "Active" : "Disabled"}
+            statusColor={isAutoPurgeEnabled ? "var(--primary)" : "#ef4444"}
+            checked={isAutoPurgeEnabled}
+            onChange={() => toggleSettingMutation.mutate({ key: 'is_auto_purge_enabled', value: !isAutoPurgeEnabled })}
+            disabled={isLoading}
+            loading={toggleSettingMutation.isPending}
           />
         </SettingsGroup>
 

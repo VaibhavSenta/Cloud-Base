@@ -56,15 +56,15 @@
   width: 14px;
   left: 4px;
   bottom: 3px;
-  background-color: white;
+  background-color: rgb(165, 165, 165);
   transition: .4s;
   border-radius: 50%;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 input:checked + .slider {
-  background-color: var(--primary);
-  border-color: var(--primary);
+  background-color: rgb(18, 120, 189);
+  border-color: transparent;
 }
 
 input:checked + .slider:before {

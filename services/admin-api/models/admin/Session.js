@@ -28,6 +28,9 @@ const sessionSchema = new mongoose.Schema({
 sessionSchema.index({ tokenHash: 1 });
 sessionSchema.index({ adminId: 1, isValid: 1 });
 
+// ⏳ TTL Index: Automatically purge sessions after 30 days of inactivity
+sessionSchema.index({ lastActive: 1 }, { expireAfterSeconds: 30 * 24 * 60 * 60 });
+
 const SESSION = mongoose.model('SESSION', sessionSchema);
 
 module.exports = { SESSION };

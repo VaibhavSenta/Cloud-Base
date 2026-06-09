@@ -1,4 +1,5 @@
 const profileServices = require('../services/profile.services');
+const auditService = require('../services/audit.service');
 
 const getProfile = async (req, res, next) => {
     try {
@@ -19,6 +20,19 @@ const terminateSession = async (req, res, next) => {
     try {
         const { sessionId } = req.params;
         await profileServices.terminateSession(req.user._id, sessionId);
+        
+        // Enhanced Audit Logging
+        if (req.user && req.user._id) {
+            await auditService.createEnhancedLog({
+                adminId: req.user._id,
+                action: 'SESSION_TERMINATED',
+                targetId: sessionId,
+                appTitle: 'Admin Security',
+                details: { info: 'User remotely terminated an active session.' },
+                ipAddress: req.ip || req.headers['x-forwarded-for'] || req.socket.remoteAddress
+            });
+        }
+
         return res.json({ success: true, msg: "Session terminated successfully" });
     } catch (err) { next(err); }
 };
@@ -27,6 +41,19 @@ const updateProfile = async (req, res, next) => {
     try {
         
         const updatedAdmin = await profileServices.updateAdminProfile(req.user._id, req.body);
+        
+        // Enhanced Audit Logging
+        if (req.user && req.user._id) {
+            await auditService.createEnhancedLog({
+                adminId: req.user._id,
+                action: 'PROFILE_UPDATED',
+                targetId: req.user._id,
+                appTitle: 'Admin Profile',
+                details: { updatedFields: Object.keys(req.body) },
+                ipAddress: req.ip || req.headers['x-forwarded-for'] || req.socket.remoteAddress
+            });
+        }
+
         return res.json({
             success: true,
             msg: "Profile updated successfully",

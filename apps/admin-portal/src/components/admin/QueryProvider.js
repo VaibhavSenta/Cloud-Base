@@ -129,11 +129,17 @@ export default function QueryProvider({ children }) {
         }
 
         if (encryptionConfig.isEnabled && encryptionConfig.publicKey && config.data && ['post', 'put', 'patch'].includes(config.method)) {
+          // Backup original unencrypted data for potential retries (only if not already backed up)
+          if (!config._unencryptedData) {
+            config._unencryptedData = JSON.stringify(config.data);
+          }
+
           console.log("🛡️ Encrypting outbound request...");
           try {
+            const dataToEncrypt = JSON.parse(config._unencryptedData);
             const encryptedPayload = await EncryptionUtils.hybridEncrypt(
               encryptionConfig.publicKey,
-              config.data
+              dataToEncrypt
             );
             
             config.data = {
@@ -153,7 +159,9 @@ export default function QueryProvider({ children }) {
     // 3. Response Interceptor
     const responseInterceptor = axios.interceptors.response.use(
       (response) => response,
-      (error) => {
+      async (error) => {
+        const originalRequest = error.config;
+
         if (error.response && error.response.status === 401) {
           console.warn("Unauthorized access detected. Redirecting to login...");
           window.location.href = '/'; 
@@ -161,8 +169,15 @@ export default function QueryProvider({ children }) {
 
         if (error.response && (error.response.data?.code === 'DECRYPTION_FAILED' || error.response.data?.code === 'DECRYPTION_SESSION_EXPIRED' || error.response.status === 403)) {
           console.warn("🛡️ Security mismatch/expiry detected. Resetting handshake...");
-          setSecurityError("Security session expired. Synchronizing...");
           
+          // Avoid infinite loops
+          if (originalRequest._retryCount && originalRequest._retryCount >= 1) {
+            setSecurityError("Security synced. Please try your action again.");
+            return Promise.reject(error);
+          }
+          
+          originalRequest._retryCount = 1;
+
           // Reset handshake on decryption failure/expiry
           encryptionConfig.publicKey = null;
           encryptionConfig.lastFetched = 0;
@@ -171,10 +186,21 @@ export default function QueryProvider({ children }) {
             localStorage.removeItem('__cb_encryption_cache__');
           }
 
-          // Try to re-handshake immediately
-          ensureHandshake().then(() => {
+          try {
+            // Try to re-handshake immediately
+            await ensureHandshake();
+            
+            // Restore the original unencrypted data before retrying so the request interceptor can re-encrypt it with the new key
+            if (originalRequest._unencryptedData) {
+              originalRequest.data = JSON.parse(originalRequest._unencryptedData);
+            }
+            
+            console.log("🔄 Auto-retrying the request with new security keys...");
+            return axios(originalRequest);
+          } catch (retryErr) {
             setSecurityError("Security synced. Please try your action again.");
-          });
+            return Promise.reject(retryErr);
+          }
         }
 
         if (error.code === 'ERR_NETWORK') {

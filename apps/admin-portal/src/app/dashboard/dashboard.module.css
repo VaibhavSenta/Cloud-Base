@@ -7,6 +7,69 @@
   box-sizing: border-box;
 }
 
+.mobileQuickActions {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobileQuickActions {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .quickActionCard {
+    background: #1d2022;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 20px;
+    transition: all 0.2s ease;
+  }
+
+  .quickActionCard:active {
+    background: #272a2c;
+    transform: scale(0.98);
+  }
+
+  .quickActionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .quickActionHeader h3 {
+    font-size: 16px;
+    color: #e0e3e5;
+    margin: 0;
+    font-weight: 600;
+  }
+
+  .quickActionCard p {
+    font-size: 12px;
+    color: #869397;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .quickActionBtn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .arrowIcon {
+    color: #8ab4f8;
+    font-size: 18px;
+    font-weight: bold;
+  }
+}
+
 /* Analytical Widgets */
 .analyticsSection {
   display: grid;

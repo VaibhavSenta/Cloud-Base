@@ -5,7 +5,6 @@ const {
     verifyAuthenticationResponse,
 } = require('@simplewebauthn/server');
 const { ADMIN } = require('../models/admin/admin');
-const crypto = require('crypto');
 
 const RP_ID = process.env.RP_ID || 'localhost';
 const RP_NAME = 'CloudBase Admin Console';
@@ -21,12 +20,12 @@ async function getRegistrationOptions(adminId) {
     const options = await generateRegistrationOptions({
         rpName: RP_NAME,
         rpID: RP_ID,
-        userID: user._id.toString(),
+        userID: new Uint8Array(Buffer.from(user._id.toString())), // v13 requires Uint8Array
         userName: user.loginid,
         userDisplayName: `${user.firstname} ${user.lastname}`,
         attestationType: 'none',
-        excludeCredentials: user.webauthnCredentials.map(cred => ({
-            id: cred.credentialID,
+        excludeCredentials: (user.webauthnCredentials || []).map(cred => ({
+            id: cred.credentialID.toString('base64url'), // Convert Buffer to Base64URL string
             type: 'public-key',
             transports: cred.transports,
         })),
@@ -55,13 +54,17 @@ async function verifyRegistration(adminId, body, expectedChallenge) {
     });
 
     if (verification.verified && verification.registrationInfo) {
-        const { credentialID, publicKey, counter } = verification.registrationInfo;
+        const { credential } = verification.registrationInfo; // v13 uses .credential
+
+        if (!user.webauthnCredentials) {
+            user.webauthnCredentials = [];
+        }
 
         user.webauthnCredentials.push({
-            credentialID: Buffer.from(credentialID),
-            publicKey: Buffer.from(publicKey),
-            counter,
-            transports: body.response.transports,
+            credentialID: Buffer.from(credential.id, 'base64url'),
+            publicKey: Buffer.from(credential.publicKey),
+            counter: credential.counter,
+            transports: credential.transports,
         });
 
         await user.save();
@@ -79,8 +82,8 @@ async function getAuthenticationOptions(loginid) {
 
     const options = await generateAuthenticationOptions({
         rpID: RP_ID,
-        allowCredentials: user.webauthnCredentials.map(cred => ({
-            id: cred.credentialID,
+        allowCredentials: (user.webauthnCredentials || []).map(cred => ({
+            id: cred.credentialID.toString('base64url'),
             type: 'public-key',
             transports: cred.transports,
         })),
@@ -108,9 +111,9 @@ async function verifyAuthentication(loginid, body, expectedChallenge) {
         expectedChallenge,
         expectedOrigin: ORIGIN,
         expectedRPID: RP_ID,
-        authenticator: {
-            credentialID: dbCred.credentialID,
-            credentialPublicKey: dbCred.publicKey,
+        credential: { // v13 uses credential instead of authenticator
+            id: dbCred.credentialID.toString('base64url'),
+            publicKey: new Uint8Array(dbCred.publicKey),
             counter: dbCred.counter,
         },
     });

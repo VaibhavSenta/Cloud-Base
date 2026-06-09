@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const EncryptionService = require("../services/EncryptionService");
 const { GLOBALCONFIG } = require("../models/centralstation");
 const crypto = require("crypto");
+const auditService = require("../services/audit.service");
 
 /**
  * handshake - Provides Public Key for Encryption
@@ -145,6 +146,16 @@ const login = async (req, res, next) => {
       httpOnly: false,
       secure: process.env.NODE_ENV === "production",
       maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    // Enhanced Audit Logging
+    await auditService.createEnhancedLog({
+        adminId: result.user._id, // Assume auth service returns raw user or decoded info with id. Actually wait, let's use result.user._id
+        action: 'ADMIN_LOGIN',
+        targetId: null,
+        appTitle: 'Admin Console Access',
+        details: { event: 'Successful Login (Password)' },
+        ipAddress: ip
     });
 
     return res.json({

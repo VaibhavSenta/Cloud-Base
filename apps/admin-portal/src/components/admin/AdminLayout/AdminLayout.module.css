@@ -48,7 +48,7 @@
   max-width: 1400px;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 0 0px;
+  padding: 0 18px 0 0;
   border-radius: 100px;
 }
 
@@ -164,6 +164,12 @@
   .header { padding: 0 16px; height: 70px; }
   .headerWraper { border-radius: 200px; height: 54px; padding: 0 12px; }
   .networkStatus, .userName { display: none; }
+  
+  /* Hide the hamburger menu button on mobile since we have a bottom bar now */
+  .mobileMenuBtn { display: none; }
+  .logoText { display: block; padding-left: 0; }
+  
   .headerLeft { gap: 12px; }
-  .mainContent { padding: 90px 16px 40px; }
+  /* Increased bottom padding to avoid content overlapping with the 64px bottom bar */
+  .mainContent { padding: 90px 16px 84px; }
 }
