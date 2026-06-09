@@ -20,7 +20,7 @@
 
 .bottomBarWrapper {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
   background-color: rgba(39, 39, 39, 0.479);
 
@@ -28,14 +28,12 @@
   backdrop-filter: blur(16px);
 
   width: 100%;
-  height: 100%;
+  height: 60px; /* Fixed height for the container */
 
-  padding: 5px 0px;
+  padding: 0 8px;
 
-  overflow: hidden;
   border: 1px solid rgba(245, 245, 245, 0.178);
   border-radius: 200px;
-
 }
 
 
@@ -44,12 +42,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /* width: 70px; */
-  height: 60px;
-  aspect-ratio: 5/3;
+  flex: 1; /* Distribute space evenly */
+  height: 48px;
+  max-width: 80px; /* Prevent items from getting too wide on larger mobile screens */
 
   border-radius: 200px;
-  padding: 3px;
+  padding: 4px;
+  transition: all 0.2s ease;
 }
 
 .iconWrapper {
