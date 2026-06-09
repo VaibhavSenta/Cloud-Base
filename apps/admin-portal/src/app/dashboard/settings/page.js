@@ -65,10 +65,14 @@ export default function SettingsPage() {
       const permission = await Notification.requestPermission();
       if (permission !== 'granted') throw new Error('Permission not granted by user.');
 
-      // Wait for service worker but with a fallback to getRegistration
-      const registration = await navigator.serviceWorker.getRegistration();
+      // Wait for service worker to be ready with a timeout
+      const registration = await Promise.race([
+        navigator.serviceWorker.ready,
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Service Worker activation timeout. Please refresh the page and try again.')), 5000))
+      ]);
+
       if (!registration) {
-        throw new Error('Service worker not active. (PWA might be disabled in Dev mode)');
+        throw new Error('Service worker registration not found.');
       }
       
       // Get VAPID public key
