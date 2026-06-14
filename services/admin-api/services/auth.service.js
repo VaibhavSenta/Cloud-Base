@@ -2,7 +2,7 @@
 
 const express = require('express');
 const { ADMIN, SESSION } = require('../models/centralstation');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 

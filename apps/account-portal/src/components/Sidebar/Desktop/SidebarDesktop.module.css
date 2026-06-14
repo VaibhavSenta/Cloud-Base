@@ -1,0 +1,37 @@
+.sidebarContent {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  border-radius: 1.4rem;
+
+  background: #111111;
+}
+
+.nav {
+  flex: 1;
+}
+
+.logoutBtn {
+  margin-top: auto;
+  background: none;
+  border: 1px solid #1a1a1a;
+  color: #ef4444;
+  padding: 0.8rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.logoutIcon {
+  width: 16px;
+  height: 16px;
+  filter: invert(36%) sepia(84%) saturate(4645%) hue-rotate(345deg) brightness(98%) contrast(93%);
+}

@@ -1,0 +1,96 @@
+.mobileContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100dvh;
+  background: #000000;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.topBar {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0.5;
+}
+
+.topText {
+  font-size: 0.75rem;
+}
+
+.mainContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+}
+
+.logoArea {
+  margin-bottom: 2.5rem;
+  transform: scale(1.1);
+}
+
+.formArea {
+  width: 100%;
+  max-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.generalError {
+  color: var(--error);
+  font-size: 0.85rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.forgotLink {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.8rem;
+  text-align: center;
+  margin-top: 1rem;
+  font-weight: 500;
+}
+
+.footerArea {
+  padding-bottom: 2rem;
+}
+
+.signupBox {
+  border-top: 1px solid #262626;
+  padding: 1.5rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.signupBox a {
+  color: var(--accent-primary);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.fromCloud {
+  text-align: center;
+  margin-top: 1.5rem;
+  opacity: 0.4;
+}
+
+.fromCloud span {
+  font-size: 0.7rem;
+  text-transform: lowercase;
+}
+
+.cloudText {
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  margin-top: 2px;
+}

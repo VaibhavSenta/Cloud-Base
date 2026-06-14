@@ -1,0 +1,30 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  background: transparent;
+  color: #ffffff;
+}
+
+.layoutBody {
+  display: flex;
+  flex: 1;
+}
+
+.mainContent {
+  flex: 1;
+  padding: 95px 2rem 2rem 20px; /* Base padding */
+  background: #000000;
+  min-height: 100vh;
+  box-sizing: border-box;
+  transition: padding-left 0.4s ease;
+}
+
+.contentWithSidebar {
+  padding-left: 260px; /* sidebar width + offset */
+}
+
+.contentFull {
+  padding-left: 20px;
+}

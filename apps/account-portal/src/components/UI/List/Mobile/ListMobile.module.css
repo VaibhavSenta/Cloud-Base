@@ -1,0 +1,55 @@
+.listGroup {
+  background: #0a0a0a92;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  /* border: 1px solid #1a1a1aa4; */
+  width: 100%;
+  padding: 0px 10px;
+}
+
+.listItem {
+  display: flex;
+  align-items: center;
+  padding: 0.7rem;
+  gap: 1rem;
+  border-bottom: 1px solid #1a1a1a;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.listItem:last-child {
+  border-bottom: none;
+}
+
+.listItem:active {
+  background: #111;
+}
+
+.iconArea {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 0.87rem;
+  /* font-weight: 500; */
+  color: #d5d5d5;
+}
+
+.status {
+  font-size: 0.7rem;
+  color: #c6c6c6c6;
+  /* font-weight: 700; */
+}
+
+.arrow {
+  color: #333;
+  font-size: 1.25rem;
+}

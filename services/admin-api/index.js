@@ -16,7 +16,7 @@ const globalErrorHandler = require('./middlewares/errorMiddleware');
 const HealthMonitorService = require('./services/HealthMonitorService');
 
 const port = process.env.PORT || 5001;
-const connectionString = process.env.CONNECTION
+const connectionString = process.env.CONNECTION || "mongodb://localhost:27017/cloudbase"
 
 // Mongoose Configuration
 mongoose.set('strictQuery', false);

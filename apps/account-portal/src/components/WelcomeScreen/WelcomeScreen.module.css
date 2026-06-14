@@ -1,0 +1,86 @@
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100dvh;
+  background: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease;
+}
+
+.entering {
+  opacity: 0;
+}
+
+.stable {
+  opacity: 1;
+}
+
+.exiting {
+  opacity: 0;
+  transform: scale(1.05);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.brandContainer {
+  margin-bottom: 1.5rem;
+}
+
+.subText {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: lowercase;
+  letter-spacing: 3px;
+  color: var(--accent-primary);
+  margin-bottom: 0.5rem;
+  opacity: 0.8;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.brandTitle {
+  font-size: 2.5rem;
+  font-weight: 900;
+  letter-spacing: 6px;
+  color: #ffffff;
+  margin: 0;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.welcomeMsg {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  opacity: 0;
+  font-weight: 400;
+  animation: fadeInMsg 1s forwards 0.5s;
+}
+
+@keyframes fadeInMsg {
+  to { opacity: 0.6; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 600px) {
+  .brandTitle {
+    font-size: 1.75rem;
+    letter-spacing: 4px;
+  }
+  
+  .subText {
+    font-size: 0.6rem;
+  }
+}

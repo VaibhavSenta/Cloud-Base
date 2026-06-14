@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema({
     profilePic: {
         type: String,
         required: false,
-        default: '../public//defaultLogos/DefaultProfilePic-90.png'
+        default: '/icons/person.svg'
     },
     dob: {
         type: Date,
@@ -60,8 +60,25 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
+        enum: ['User', 'PartialUser', 'Admin'],
         default: 'User'
-    }
+    },
+    isEmailVerified: {
+        type: Boolean,
+        default: false
+    },
+    lastLogin: {
+        type: Date
+    },
+    sessions: [{
+        sessionId: String,
+        deviceName: String,
+        deviceType: String, // Mobile, Tablet, Desktop
+        browser: String,
+        ipAddress: String,
+        lastActive: { type: Date, default: Date.now },
+        isCurrent: Boolean // Temporary flag for UI convenience
+    }]
 }, { timestamps: true });
 
 const USER = mongoose.model('USER', userSchema);

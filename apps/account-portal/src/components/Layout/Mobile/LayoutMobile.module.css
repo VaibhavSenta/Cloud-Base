@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100dvh;
+  background: transparent;
+  color: #ffffff;
+}
+
+.mainContent {
+  width: 100%;
+  padding-top: 60px; /* Offset for fixed header */
+  box-sizing: border-box;
+}

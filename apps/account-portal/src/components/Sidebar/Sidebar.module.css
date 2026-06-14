@@ -1,0 +1,31 @@
+.sidebarWrapper {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 1000;
+  background-color: transparent;
+  /* border-right: 1px solid #1a1a1a; */
+  display: flex;
+  flex-direction: column;
+  transition: width 0.4s ease, transform 0.4s ease;
+  overflow: hidden;
+
+  padding: 10px 0px 10px 10px;
+
+}
+
+/* Tablet Settings */
+.tabletSidebar {
+  top: 65px; /* HeaderTablet height */
+  width: 240px;
+}
+
+.tabletSidebar.closed {
+  transform: translateX(-100%);
+}
+
+/* Desktop Settings */
+.desktopSidebar {
+  top: 70px; /* HeaderDesktop height */
+  width: 260px;
+}

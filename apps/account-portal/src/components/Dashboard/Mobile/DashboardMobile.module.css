@@ -1,0 +1,152 @@
+.homeView {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: transparent;
+}
+
+.profileHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 0;
+  width: 100%;
+}
+
+.contentBlock {
+  width: 100%;
+  padding: 0 1.5rem 2rem 1.5rem;
+  box-sizing: border-box;
+}
+
+.avatarCircle {
+  width: 120px;
+  height: 120px;
+  background: #0a0a0a;
+  border-radius: 50%;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  border: 3px solid #1a1a1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.userName {
+  font-size: 1.45rem;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.userEmail {
+  font-size: 0.95rem;
+  color: #666;
+  margin-top: 0.35rem;
+}
+
+/* List System */
+.section {
+  margin-bottom: 1.5rem;
+}
+
+.sectionTitle {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #444;
+  margin-bottom: 0.75rem;
+  padding-left: 0.5rem;
+  font-weight: 700;
+}
+
+.list {
+  background: #0a0a0a;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  border: 1px solid #1a1a1a;
+}
+
+.listItem {
+  display: flex;
+  align-items: center;
+  padding: 1.25rem;
+  gap: 1rem;
+  border-bottom: 1px solid #1a1a1a;
+  cursor: pointer;
+}
+
+.listItem:last-child {
+  border-bottom: none;
+}
+
+.listItem:active {
+  background: #111;
+}
+
+.listContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.listTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.listSubActive {
+  font-size: 0.8rem;
+  color: #3b82f6; 
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.arrow {
+  color: #333;
+  font-size: 1.25rem;
+}
+
+.iconSvg {
+  width: 24px;
+  height: 24px;
+  opacity: 0.8;
+}
+
+/* Footer & Logout */
+.footer {
+  padding: 1rem 0;
+  text-align: center;
+}
+
+.logoutBtn {
+  width: 100%;
+  padding: 0.8rem;
+  background: #0a0a0a;
+  color: #ef4444; 
+  border: 1px solid transparent;
+  border-radius: 2rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.logoutBtn:active {
+  background: #1a0a0a;
+  transform: scale(0.98);
+}
