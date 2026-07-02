@@ -15,7 +15,7 @@
 .mainContent {
   flex: 1;
   padding: 95px 2rem 2rem 20px; /* Base padding */
-  background: #000000;
+  background: #161616;
   min-height: 100vh;
   box-sizing: border-box;
   transition: padding-left 0.4s ease;

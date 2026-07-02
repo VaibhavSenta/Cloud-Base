@@ -5,7 +5,7 @@ import Logo from '../../Logo/Logo';
 import Input from '../../UI/Input/Input';
 import Button from '../../UI/Button/Button';
 
-const SignupBoxMobile = ({ formData, step, nextStep, prevStep, onChange, isLoading, error, isPartial }) => {
+const SignupBoxMobile = ({ formData, step, nextStep, prevStep, onChange, onSocialLogin, showSocialAuth, isLoading, error, isPartial }) => {
   return (
     <div className={styles.mobileContainer}>
       <main className={styles.mainContent}>
@@ -106,6 +106,27 @@ const SignupBoxMobile = ({ formData, step, nextStep, prevStep, onChange, isLoadi
           <p className={styles.terms}>
             By signing up, you agree to our <strong>Terms</strong>, <strong>Privacy Policy</strong> and <strong>Cookies Policy</strong>.
           </p>
+        )}
+
+        {showSocialAuth && (
+          <div className={styles.socialAuthContainer} style={{ padding: '0 20px', width: 'auto' }}>
+            <div className={styles.divider}>
+              <span className={styles.dividerLine}></span>
+              <span className={styles.dividerText}>or</span>
+              <span className={styles.dividerLine}></span>
+            </div>
+            <div className={styles.socialButtons}>
+              <button type="button" className={styles.socialBtn} onClick={() => onSocialLogin('google', null, { email: 'mockgoogle@gmail.com', name: 'Google User' })}>
+                Continue with Google
+              </button>
+              <button type="button" className={styles.socialBtn} onClick={() => onSocialLogin('apple', null, { email: 'mockapple@icloud.com', name: 'Apple User' })}>
+                Continue with Apple
+              </button>
+              <button type="button" className={styles.socialBtn} onClick={() => onSocialLogin('facebook', null, { email: 'mockfacebook@fb.com', name: 'Facebook User' })}>
+                Continue with Facebook
+              </button>
+            </div>
+          </div>
         )}
       </main>
 

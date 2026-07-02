@@ -15,7 +15,7 @@
 .mainContent {
   flex: 1;
   padding: 100px 3rem 3rem 290px; /* Top offset + Left offset */
-  background: #000000;
+  background: #161616;
   min-height: 100vh;
   box-sizing: border-box;
 }

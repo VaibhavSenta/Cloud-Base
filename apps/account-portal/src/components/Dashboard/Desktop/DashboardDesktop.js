@@ -1,8 +1,20 @@
 'use client';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import styles from './DashboardDesktop.module.css';
 
 const DashboardDesktop = ({ user }) => {
+  const router = useRouter();
+  const [greeting, setGreeting] = useState('Welcome');
+
+  useEffect(() => {
+    const hour = new Date().getHours();
+    if (hour < 12) setGreeting('Good Morning');
+    else if (hour < 17) setGreeting('Good Afternoon');
+    else setGreeting('Good Evening');
+  }, []);
+
   const getSafeAvatar = (path) => {
     if (!path || path.includes('..') || path.includes('defaultLogos')) {
       return '/icons/person.svg';
@@ -10,13 +22,63 @@ const DashboardDesktop = ({ user }) => {
     return path;
   };
 
+  const activeSessionsCount = user.sessions?.length || 1;
+
   return (
-    <div className={styles.homeView}>
-      <div className={styles.avatarCircleLarge}>
-        <Image src={getSafeAvatar(user?.profilePic)} alt="Profile" width={150} height={150} className={styles.avatar} priority />
+    <div className={styles.container}>
+      {/* 🚀 Welcoming Header */}
+      <header className={styles.header}>
+        <div className={styles.welcomeInfo}>
+          <h1 className={styles.greeting}>{greeting}, {user?.firstName || 'Guest'}</h1>
+          <p className={styles.subGreeting}>Your personal account is secure and fully encrypted.</p>
+        </div>
+      </header>
+
+      {/* 👤 Centered Profile Section */}
+      <div className={styles.profileCentered}>
+        <div className={styles.avatarCircleLarge}>
+          <Image 
+            src={getSafeAvatar(user?.profilePic)} 
+            alt="Profile" width={160} height={160} 
+            className={styles.avatar} priority 
+          />
+        </div>
+        <h2 className={styles.displayFullName}>{user?.firstName} {user?.lastName}</h2>
+        <p className={styles.displayEmail}>{user?.email}</p>
       </div>
-      <h1 className={styles.displayFullName}>{user?.firstName} {user?.lastName}</h1>
-      <p className={styles.displayEmail}>{user?.email}</p>
+
+      {/* 🛡️ Status Metrics Section */}
+      <section className={styles.statusSection}>
+        <div className={styles.statusCard}>
+          <div className={styles.pulseIndicator}>
+            <span className={styles.pulseDot}></span>
+          </div>
+          <div className={styles.statusText}>
+            <h4>Security Active</h4>
+            <p>RSA-2048 & AES-256 Locks</p>
+          </div>
+        </div>
+        
+        <div className={styles.statusCard} onClick={() => router.push('/dashboard/security')}>
+          <div className={styles.statusIconArea}>
+            <Image src="/icons/device-mobile.svg" alt="Devices" width={18} height={18} className={styles.statusSvg} />
+          </div>
+          <div className={styles.statusText}>
+            <h4>{activeSessionsCount} Active Sessions</h4>
+            <p>Manage connected devices</p>
+          </div>
+        </div>
+
+        <div className={styles.statusCard} onClick={() => router.push('/dashboard/connected-services')}>
+          <div className={styles.statusIconArea}>
+            <Image src="/icons/Connected_Services.svg" alt="Storage" width={18} height={18} className={styles.statusSvg} />
+          </div>
+          <div className={styles.statusText}>
+            <h4>Cloud Vault</h4>
+            <p>Secure Cloud Storage</p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

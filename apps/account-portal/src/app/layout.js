@@ -16,10 +16,27 @@ export const metadata = {
   title: "Cloud-Base Account",
   description: "Manage your security, privacy, and preferences to make Cloud-Base work better for you.",
   manifest: "/manifest.json",
+  icons: {
+    apple: "/icons/apple-touch-icon.png",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
     title: "CB Account",
+    startupImage: [
+      {
+        url: "/splash/iphone_splash.png",
+        media: "(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3)", // iPhone 15 Pro, 15, 14 Pro
+      },
+      {
+        url: "/splash/iphone_splash.png",
+        media: "(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3)", // iPhone 15 Pro Max, 15 Plus, 14 Pro Max
+      },
+      {
+        url: "/splash/iphone_splash.png",
+        media: "(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)", // iPhone SE, 8, 7
+      }
+    ]
   },
   other: {
     'apple-mobile-web-app-capable': 'yes',

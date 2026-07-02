@@ -1,0 +1,72 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+.modalCard {
+  background: rgba(35, 35, 35, 0.407);
+  -webkit-backdrop-filter: blur(25px);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.011);
+  border-radius: 30px;
+  padding: 24px;
+  width: 90%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8);
+  animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.title {
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.message {
+  color: #a8a8a8;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  text-align: center;
+  margin: 0 0 20px 0;
+}
+
+.btn {
+  background: #0095f6;
+  color: #ffffff;
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 11px 0;
+  width: 100%;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn:active {
+  opacity: 0.8;
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0.92);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

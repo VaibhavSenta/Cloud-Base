@@ -1,0 +1,414 @@
+.container {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0.5rem 1rem 2rem 1rem;
+  box-sizing: border-box;
+}
+
+.header {
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: -0.6px;
+  color: #ffffff;
+  margin: 0 0 0.4rem 0;
+}
+
+.subtitle {
+  font-size: 0.85rem;
+  color: #666666;
+  margin: 0;
+}
+
+/* Stacked Layout for Tablet */
+.stackedLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Top Horizontal Profile Hero Card */
+.profileHero {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.2s;
+  gap: 1.5rem;
+}
+
+.profileHero:hover {
+  border-color: rgba(0, 149, 246, 0.3);
+  transform: translateY(-1px);
+}
+
+.heroAvatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  padding: 4px;
+  background: #000;
+}
+
+.avatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.heroText {
+  flex: 1;
+  text-align: left;
+}
+
+.heroText h2 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 2px 0;
+}
+
+.heroText span {
+  color: #0095f6;
+  font-weight: 800;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.avatarActionHint {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #666666;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+  padding-bottom: 2px;
+}
+
+.profileHero:hover .avatarActionHint {
+  color: #0095f6;
+  border-color: rgba(0, 149, 246, 0.3);
+}
+
+/* Stacking detail sections */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.cardTitle {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #666666;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 1.2rem 1.4rem 0.4rem 1.4rem;
+  margin: 0;
+}
+
+.infoList {
+  display: flex;
+  flex-direction: column;
+}
+
+.infoItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.1rem 1.4rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.infoItem:last-child {
+  border-bottom: none;
+}
+
+.infoItem:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.infoItem.nonEditable {
+  cursor: default;
+}
+
+.infoItem.nonEditable:hover {
+  background: transparent;
+}
+
+.infoLabel {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #888888;
+  width: 150px;
+}
+
+.infoValue {
+  flex: 1;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.editArrow {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #0095f6;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.restrictedLabel {
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #444444;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+/* 🖥️ Centered Modal Styling */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(15px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out both;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.modalContent {
+  width: 90%;
+  max-width: 440px;
+  background: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 1.6rem;
+  box-sizing: border-box;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+  animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes scaleUp {
+  0% { transform: scale(0.97); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.2rem;
+}
+
+.modalTitle {
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: #ffffff;
+  margin: 0 0 4px 0;
+}
+
+.modalSubtitle {
+  font-size: 0.78rem;
+  color: #666666;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.modalCloseBtn {
+  background: transparent;
+  border: none;
+  color: #666666;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+}
+
+.modalCloseBtn:hover {
+  color: #ffffff;
+}
+
+.modalForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.fieldBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.inputLabel {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #666666;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.inputField {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  color: #ffffff;
+  padding: 0.78rem 1rem;
+  font-size: 0.88rem;
+  outline: none;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.inputField:focus {
+  border-color: #0095f6;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.inputField[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+.selectField {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  color: #ffffff;
+  padding: 0.78rem 1rem;
+  font-size: 0.88rem;
+  outline: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.selectField:focus {
+  border-color: #0095f6;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 0.6rem;
+}
+
+.btnPrimary {
+  background: #0095f6;
+  border: none;
+  border-radius: 100px;
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 0.7rem 1.4rem;
+  cursor: pointer;
+}
+
+.btnPrimary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btnSecondary {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 100px;
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 0.7rem 1.4rem;
+  cursor: pointer;
+}
+
+/* Avatar Upload styling */
+.avatarUploadGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  width: 100%;
+}
+
+.uploadPreview {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+
+.largePreviewImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.uploadTriggerBtn {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 0.75rem 1.3rem;
+  color: #a8a8a8;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+}

@@ -1,17 +1,19 @@
 'use client';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import styles from './SidebarDesktop.module.css';
 import List from '../../UI/List/List';
 import api from '../../../utils/api';
-import { useQueryClient } from '@tanstack/react-query';
+import { useSecureQueryClient } from '../../../hooks/useSecureQuery';
 
 const SidebarDesktop = ({ user }) => {
-  const queryClient = useQueryClient();
+  const queryClient = useSecureQueryClient();
+  const router = useRouter();
 
   const handleLogout = async () => {
     try {
       await api.post('/auth/logout');
-      queryClient.setQueryData(['user'], null);
+      queryClient.setSecureQueryData(['user'], null);
       window.location.href = '/';
     } catch (err) {
       console.error("Logout failed:", err);
@@ -19,9 +21,9 @@ const SidebarDesktop = ({ user }) => {
   };
 
   const navLinks = [
-    { title: 'Home', icon: '/icons/nav-home.svg', onClick: () => window.location.href = '/dashboard' },
-    { title: 'Personal Information', icon: '/icons/nav-info.svg', onClick: () => console.log('Info') },
-    { title: 'Signin & Security', icon: '/icons/nav-security.svg', onClick: () => console.log('Security') },
+    { title: 'Home', icon: '/icons/nav-home.svg', onClick: () => router.push('/dashboard') },
+    { title: 'Personal Information', icon: '/icons/nav-info.svg', onClick: () => router.push('/dashboard/personal-info') },
+    { title: 'Signin & Security', icon: '/icons/nav-security.svg', onClick: () => router.push('/dashboard/security') },
     { title: 'Logged Devices', icon: '/icons/device-mobile.svg', onClick: () => console.log('Devices') },
   ];
 

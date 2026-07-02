@@ -29,6 +29,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 18px;
+  height: 18px;
+}
+
+.iconArea img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain;
 }
 
 .content {
@@ -50,6 +58,11 @@
 }
 
 .arrow {
-  color: #333;
+  color: #555555;
   font-size: 1.25rem;
+  transition: color 0.2s ease;
+}
+
+.listItem:hover .arrow {
+  color: #ffffff;
 }

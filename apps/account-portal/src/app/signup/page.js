@@ -1,18 +1,18 @@
 'use client';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
-import { useQueryClient } from '@tanstack/react-query';
+import { useSecureQueryClient } from '../../hooks/useSecureQuery';
 import SignupBox from '../../components/SignupBox/SignupBox';
 import WelcomeScreen from '../../components/WelcomeScreen/WelcomeScreen';
 
 export default function SignupPage() {
   const [showWelcome, setShowWelcome] = useState(false);
   const router = useRouter();
-  const queryClient = useQueryClient();
+  const queryClient = useSecureQueryClient();
 
   const handleSignupSuccess = (userData) => {
-    // Force set user in cache for dashboard
-    queryClient.setQueryData(['user'], userData);
+    // Force set user in cache securely for dashboard
+    queryClient.setSecureQueryData(['user'], userData);
     setShowWelcome(true);
   };
 
@@ -25,5 +25,9 @@ export default function SignupPage() {
     return <WelcomeScreen onComplete={handleWelcomeComplete} />;
   }
 
-  return <SignupBox onAuthSuccess={handleSignupSuccess} />;
+  return (
+    <Suspense fallback={<div style={{ color: '#666', textAlign: 'center', marginTop: '2rem', fontSize: '0.9rem' }}>Loading signup setup...</div>}>
+      <SignupBox onAuthSuccess={handleSignupSuccess} />
+    </Suspense>
+  );
 }

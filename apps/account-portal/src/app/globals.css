@@ -79,3 +79,8 @@ html, body {
   backdrop-filter: blur(15px);
   border: 1px solid var(--glass-border);
 }
+
+/* Hide floating Google reCAPTCHA badge for clean UI */
+.grecaptcha-badge {
+  visibility: hidden !important;
+}

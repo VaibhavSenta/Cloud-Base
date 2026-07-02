@@ -13,12 +13,24 @@ const nextConfig = {
   transpilePackages: ['lucide-react', 'next-pwa'],
   allowedDevOrigins: process.env.NODE_ENV === 'development' ? ['172.20.10.2'] : [],
 
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'www.gravatar.com',
+      },
+    ],
+  },
+
   async rewrites() {
     return [
       {
         source: '/api/v1/:path*',
-        // Use the IP directly for mobile testing to ensure proxy works on network
         destination: `http://172.20.10.2:5010/api/v1/:path*`,
+      },
+      {
+        source: '/uploads/:path*',
+        destination: `http://172.20.10.2:5010/uploads/:path*`,
       },
     ];
   },

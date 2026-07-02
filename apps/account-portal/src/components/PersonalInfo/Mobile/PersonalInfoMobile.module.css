@@ -1,0 +1,271 @@
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 3.5rem 1rem 2rem 1rem;
+  box-sizing: border-box;
+}
+
+.header {
+  margin-bottom: 2.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -0.5px;
+  color: #ffffff;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  margin: 0;
+  text-align: left;
+}
+
+.mobileLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* Profile Hero Avatar card */
+.profileHero {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0rem;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+}
+
+.heroAvatar {
+  width: auto;
+  height: auto;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #222;
+  padding: 4px;
+}
+
+.avatarImg {
+  width: 80px; 
+  height: auto;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.heroText h2 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin: 0 0 2px 0;
+  color: #ffffff;
+}
+
+.heroText span {
+  color: #0095f6;
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Sections and Cards */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 1.25rem;
+  overflow: hidden;
+}
+
+.cardTitle {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 1.2rem 1.2rem 0.4rem 1.2rem;
+  margin: 0;
+}
+
+.infoList {
+  display: flex;
+  flex-direction: column;
+}
+
+.infoItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.2rem;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #111;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.infoItem:last-child {
+  border-bottom: none;
+}
+
+.infoItem:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.infoItem.nonEditable {
+  cursor: default;
+}
+
+.infoItem.nonEditable:hover {
+  background: transparent;
+}
+
+.rowMeta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.22rem;
+}
+
+.infoLabel {
+  color: #666;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.infoValue {
+  color: #ddd;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.editArrow {
+  color: #222;
+  font-size: 1.1rem;
+  line-height: 1;
+  position: absolute;
+  right: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.infoItem:hover .editArrow {
+  color: #0095f6;
+}
+
+/* Bottom Sheet inputs override styling */
+.avatarUploadGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.uploadPreview {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #262626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  box-shadow: 0 0 15px rgba(0, 149, 246, 0.15);
+}
+
+.largePreviewImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.uploadTriggerBtn {
+  background: transparent;
+  border: 1px dashed #262626;
+  border-radius: 0.75rem;
+  padding: 0.8rem 1.5rem;
+  color: #a8a8a8;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.inputLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #888;
+  letter-spacing: 1px;
+  margin-bottom: 0.2rem;
+  display: block;
+}
+
+.inputField {
+  background: #000000;
+  border: 1px solid #262626;
+  border-radius: 0.75rem;
+  padding: 0.9rem 1rem;
+  color: #fff;
+  font-size: 0.95rem;
+  width: 100%;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.inputField:focus {
+  border-color: #0095f6;
+}
+
+.inputField[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+.selectField {
+  background: #000000;
+  border: 1px solid #262626;
+  border-radius: 0.75rem;
+  padding: 0.9rem 1rem;
+  color: #fff;
+  font-size: 0.95rem;
+  width: 100%;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.selectField:focus {
+  border-color: #0095f6;
+}

@@ -32,9 +32,12 @@ app.use(cors({
   credentials: true
 }));
 
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 app.use(cookieParser());
 app.use(morgan('dev'));
+
+// Static serving of uploads folder
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 // Master API Routing
 const apiRoutes = require('./src/routes/api');

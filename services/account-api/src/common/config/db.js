@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const connectDB = async () => {
   const connString = process.env.CONNECTION || "mongodb://localhost:27017/cloudbase";
   try {
+    mongoose.set('autoIndex', false);
     const conn = await mongoose.connect(connString);
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
@@ -12,3 +13,4 @@ const connectDB = async () => {
 };
 
 module.exports = connectDB;
+// Trigger restart

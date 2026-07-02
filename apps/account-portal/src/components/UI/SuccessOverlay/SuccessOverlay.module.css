@@ -1,0 +1,91 @@
+.successOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.successBox {
+  background: rgba(0, 133, 222, 0.574);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(0, 149, 246, 0.3);
+  padding: 24px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 130px;
+  height: 130px;
+  box-shadow: 0 8px 32px 0 rgba(0, 149, 246, 0.2);
+  animation: scaleIn 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.successTextOverlay {
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 14px;
+  text-align: center;
+  letter-spacing: -0.2px;
+}
+
+.checkmark {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: block;
+  stroke-width: 3;
+  stroke: #0095f6;
+  stroke-miterlimit: 10;
+  box-shadow: inset 0px 0px 0px #0095f6;
+  animation: fill .3s ease-in-out .25s forwards, scale .3s ease-in-out .7s both;
+}
+
+.checkmarkCircle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 3;
+  stroke-miterlimit: 10;
+  stroke: #0095f6;
+  fill: none;
+  animation: stroke 0.5s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmarkCheck {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  stroke: #ffffff;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.45s forwards;
+}
+
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fill {
+  100% {
+    box-shadow: inset 0px 0px 0px 30px rgba(0, 149, 246, 0.25);
+  }
+}

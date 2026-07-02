@@ -1,0 +1,572 @@
+.container {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0.5rem 1rem 2rem 1rem;
+  box-sizing: border-box;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.headerTitleArea {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: -0.6px;
+  color: #ffffff;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 0.85rem;
+  color: #666666;
+  margin: 0;
+}
+
+.securityStatus {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(74, 222, 128, 0.04);
+  border: 1px solid rgba(74, 222, 128, 0.1);
+  padding: 3px 10px;
+  border-radius: 100px;
+}
+
+.statusDotActive {
+  width: 5px;
+  height: 5px;
+  background-color: #4ade80;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #4ade80;
+}
+
+.statusTitle {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #4ade80;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* 🍱 Bento Grid Layout for Tablets (2-columns) */
+.bentoGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem;
+}
+
+.span2 {
+  grid-column: span 2;
+}
+
+.bentoCard {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 1.4rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 180px;
+  transition: border-color 0.2s, transform 0.2s;
+  cursor: pointer;
+}
+
+.bentoCard:hover {
+  border-color: rgba(0, 149, 246, 0.3);
+  transform: translateY(-1px);
+}
+
+.cardDanger {
+  border-color: rgba(255, 59, 48, 0.08);
+}
+
+.cardDanger:hover {
+  border-color: rgba(255, 59, 48, 0.25);
+}
+
+.cardHeaderArea {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 1rem;
+}
+
+.cardCategory {
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #666666;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.cardCategoryDanger {
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #ff3b30;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.cardTitle {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+}
+
+.cardTitleDanger {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #ff3b30;
+  margin: 0;
+}
+
+.interactiveRows {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: auto;
+}
+
+.rowItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #000000;
+  padding: 0.9rem 1.1rem;
+  transition: background-color 0.2s;
+}
+
+.rowItem:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.rowMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.rowLabel {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #888888;
+}
+
+.rowValue {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.rowControls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.actionLink {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #0095f6;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.statusBadgeGreen {
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.2);
+  padding: 1px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.statusBadgeRed {
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #ff3b30;
+  border: 1px solid rgba(255, 59, 48, 0.2);
+  padding: 1px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.statusBadgeOrange {
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #ff9500;
+  border: 1px solid rgba(255, 149, 0, 0.2);
+  padding: 1px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.passwordPreviewArea {
+  margin-top: auto;
+  margin-bottom: 1rem;
+}
+
+.maskedPassword {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #333333;
+  letter-spacing: 3px;
+  margin-bottom: 0.4rem;
+  transition: color 0.2s;
+}
+
+.bentoCard:hover .maskedPassword {
+  color: #ffffff;
+}
+
+.cardInlineDesc {
+  font-size: 0.75rem;
+  color: #666666;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.cardFooterArea {
+  margin-top: auto;
+  padding-top: 0.4rem;
+}
+
+.cardFooterLink {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #888888;
+}
+
+.bentoCard:hover .cardFooterLink {
+  color: #0095f6;
+}
+
+.mfaStatusArea {
+  margin-top: auto;
+  margin-bottom: 1rem;
+}
+
+.mfaIndicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 0.4rem;
+}
+
+.mfaStatusText {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.activityStatsArea {
+  margin-top: auto;
+  margin-bottom: 1rem;
+}
+
+.activeStandard {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 0.4rem;
+}
+
+.dangerZoneRows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: auto;
+}
+
+.dangerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 59, 48, 0.02);
+  border: 1px solid rgba(255, 59, 48, 0.08);
+  border-radius: 10px;
+  padding: 0.75rem 0.9rem;
+  transition: border-color 0.2s;
+}
+
+.dangerRow:hover {
+  background: rgba(255, 59, 48, 0.04);
+  border-color: rgba(255, 59, 48, 0.18);
+}
+
+.dangerRowLabel {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #ff3b30;
+}
+
+.dangerActionText {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #ff3b30;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* 🖥️ Centered Modal Styling */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(15px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out both;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.modalContent {
+  width: 90%;
+  max-width: 440px;
+  background: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 1.6rem;
+  box-sizing: border-box;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+  animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes scaleUp {
+  0% { transform: scale(0.97); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.2rem;
+}
+
+.modalTitle {
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: #ffffff;
+  margin: 0 0 4px 0;
+}
+
+.modalSubtitle {
+  font-size: 0.78rem;
+  color: #666666;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.modalCloseBtn {
+  background: transparent;
+  border: none;
+  color: #666666;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+}
+
+.modalCloseBtn:hover {
+  color: #ffffff;
+}
+
+.modalForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.fieldBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.inputSubGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.inputLabel {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #666666;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.inputField {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  color: #ffffff;
+  padding: 0.78rem 1rem;
+  font-size: 0.88rem;
+  outline: none;
+}
+
+.inputField:focus {
+  border-color: #0095f6;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.selectField {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  color: #ffffff;
+  padding: 0.78rem 1rem;
+  font-size: 0.88rem;
+  outline: none;
+  cursor: pointer;
+}
+
+.selectField:focus {
+  border-color: #0095f6;
+}
+
+.helpText {
+  font-size: 0.75rem;
+  color: #666666;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.dangerText {
+  font-size: 0.75rem;
+  color: #ff3b30;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.errorText {
+  font-size: 0.75rem;
+  color: #ff3b30;
+  background-color: rgba(255, 59, 48, 0.06);
+  border: 1px solid rgba(255, 59, 48, 0.12);
+  padding: 6px 10px;
+  border-radius: 8px;
+  margin: 0;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 0.6rem;
+}
+
+.btnPrimary {
+  background: #0095f6;
+  border: none;
+  border-radius: 100px;
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 0.7rem 1.4rem;
+  cursor: pointer;
+}
+
+.btnPrimary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btnSecondary {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 100px;
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 0.7rem 1.4rem;
+  cursor: pointer;
+}
+
+.loading {
+  color: #666666;
+  font-size: 0.85rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+/* Verification Success State */
+.successWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.2rem;
+  padding: 1.5rem 0 0.5rem 0;
+}
+
+.successIcon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(0, 149, 246, 0.06);
+  border: 1.5px solid #0095f6;
+  color: #0095f6;
+  font-size: 1.8rem;
+  line-height: 56px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.successTitle {
+  font-size: 1.2rem;
+  font-weight: 850;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -0.4px;
+}
+
+.successDescription {
+  font-size: 0.88rem;
+  color: #666666;
+  line-height: 1.5;
+  margin: 0;
+}
+

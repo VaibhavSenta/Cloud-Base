@@ -1,5 +1,5 @@
 import axios from 'axios';
-import encryptionService from './encryption';
+import { encryptPayload } from './security/networkCrypto';
 
 const api = axios.create({
   baseURL: '/api/v1',
@@ -14,7 +14,7 @@ const api = axios.create({
  */
 export const securePost = async (url, data) => {
   try {
-    const encryptedBody = await encryptionService.encrypt(data);
+    const encryptedBody = await encryptPayload(data);
     return await api.post(url, encryptedBody);
   } catch (error) {
     console.error(`Secure POST failed for ${url}:`, error);

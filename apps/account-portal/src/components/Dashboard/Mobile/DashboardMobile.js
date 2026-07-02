@@ -1,13 +1,16 @@
 'use client';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import styles from './DashboardMobile.module.css';
 import api from '../../../utils/api';
-import { useQueryClient } from '@tanstack/react-query';
+import { useSecureQueryClient } from '../../../hooks/useSecureQuery';
 import ProfileProgress from '../Progress/ProfileProgress';
 import List from '../../UI/List/List';
 
 const DashboardMobile = ({ user }) => {
-  const queryClient = useQueryClient();
+  const queryClient = useSecureQueryClient();
+  const router = useRouter();
+  
   
   if (!user) {
     return <div className={styles.container}>Loading profile...</div>;
@@ -23,7 +26,7 @@ const DashboardMobile = ({ user }) => {
   const handleLogout = async () => {
     try {
       await api.post('/auth/logout');
-      queryClient.setQueryData(['user'], null);
+      queryClient.setSecureQueryData(['user'], null);
       window.location.href = '/';
     } catch (err) {
       console.error("Logout failed:", err);
@@ -31,20 +34,44 @@ const DashboardMobile = ({ user }) => {
   };
 
   const managementLinks = [
-    { title: 'Home', icon: '/icons/nav-home.svg', onClick: () => console.log('Home') },
-    { title: 'Personal Information', icon: '/icons/nav-info.svg', onClick: () => console.log('Info') },
-    { title: 'Signin & Security', icon: '/icons/nav-security.svg', onClick: () => console.log('Security') },
+    // 🏠 Home removed from mobile as requested (Dashboard is the home)
+    { 
+      title: 'Personal Information', 
+      icon: '/icons/nav-info.svg', 
+      onClick: () => router.push('/dashboard/personal-info') 
+    },
+    { 
+      title: 'Signin & Security', 
+      icon: '/icons/nav-security.svg', 
+      onClick: () => router.push('/dashboard/security') 
+    },
+    { 
+      title: 'Connected Services', 
+      icon: '/icons/Connected_Services.svg', 
+      onClick: () => console.log('Connected Services') 
+    },
+    { 
+      title: 'Preferences', 
+      icon: '/icons/Preferences.svg', 
+      onClick: () => console.log('Preferences') 
+    },
   ];
 
-  const activeSessions = user.sessions?.map(session => ({
-    title: session.deviceName || 'Unknown Device',
-    status: session.isCurrent ? 'Active now' : `Last active: ${new Date(session.lastActive).toLocaleDateString()}`,
-    icon: session.deviceType === 'Mobile' ? '/icons/device-mobile.svg' : '/icons/nav-home.svg',
-    sessionId: session.sessionId
-  })) || [];
+  const currentSession = user.sessions?.find(session => session.isCurrent) || user.sessions?.[0];
+  const otherSessionsCount = (user.sessions?.length || 0) - (currentSession ? 1 : 0);
+
+  const activeSessions = currentSession ? [{
+    title: currentSession.deviceName || 'Unknown Device',
+    status: otherSessionsCount > 0 ? `and +${otherSessionsCount} other` : '',
+    icon: currentSession.deviceType === 'Mobile' ? '/icons/device-mobile.svg' : '/icons/nav-home.svg',
+    sessionId: currentSession.sessionId
+  }] : [];
+
+
 
   return (
     <div className={styles.homeView}>
+
       <header className={styles.profileHeader}>
         <div className={styles.avatarCircle}>
           <Image 
@@ -64,7 +91,7 @@ const DashboardMobile = ({ user }) => {
         </section>
 
         <section className={styles.section}>
-          <h3 className={styles.sectionTitle}>Where you're logged in</h3>
+          <h3 className={styles.sectionTitle}>Where you&apos;re logged in</h3>
           <List items={activeSessions} variant="status" />
         </section>
 

@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect, useMemo } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
+import { useSecureQueryClient } from '../../hooks/useSecureQuery';
 import useWindowSize from '../../hooks/useWindowSize';
 import BloomFilter from '../../utils/bloomFilter';
 import api, { securePost } from '../../utils/api'; 
@@ -9,13 +9,20 @@ import LoginBoxTablet from './Tablet/LoginBoxTablet';
 import LoginBoxMobile from './Mobile/LoginBoxMobile';
 
 const LoginBox = ({ onAuthSuccess }) => {
-  const queryClient = useQueryClient();
+  const queryClient = useSecureQueryClient();
   const { width } = useWindowSize();
   const [mounted, setMounted] = useState(false);
   const [formData, setFormData] = useState({ identifier: '', password: '', otp: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [isPartial, setIsPartial] = useState(false);
   const [error, setError] = useState(null);
+
+  // Two-Factor Authentication state
+  const [twoFactorRequired, setTwoFactorRequired] = useState(false);
+  const [twoFactorData, setTwoFactorData] = useState(null);
+  const [selected2faMethod, setSelected2faMethod] = useState('email');
+  const [twoFactorCode, setTwoFactorCode] = useState('');
+  const [twoFactorError, setTwoFactorError] = useState(null);
 
   const partialFilter = useMemo(() => {
     const bf = new BloomFilter(500, 3);
@@ -56,8 +63,8 @@ const LoginBox = ({ onAuthSuccess }) => {
         });
 
         if (response.data.success) {
-            // Update React Query Cache immediately
-            queryClient.setQueryData(['user'], response.data.data.user);
+            // Update React Query Cache securely immediately
+            queryClient.setSecureQueryData(['user'], response.data.data.user);
             if (onAuthSuccess) onAuthSuccess(response.data.data.user);
         }
     } catch (err) {
@@ -79,11 +86,17 @@ const LoginBox = ({ onAuthSuccess }) => {
         });
 
         if (response.data.success) {
-            if (isPartial) {
+            if (response.data.twoFactorRequired) {
+                setTwoFactorData(response.data.data);
+                setSelected2faMethod(response.data.data.primaryMethod || 'email');
+                setTwoFactorRequired(true);
+                setTwoFactorCode('');
+                setTwoFactorError(null);
+            } else if (isPartial) {
                 alert("Verification Code Sent!");
             } else {
-                // Update React Query Cache immediately
-                queryClient.setQueryData(['user'], response.data.data.user);
+                // Update React Query Cache securely immediately
+                queryClient.setSecureQueryData(['user'], response.data.data.user);
                 if (onAuthSuccess) onAuthSuccess(response.data.data.user);
             }
         }
@@ -97,13 +110,79 @@ const LoginBox = ({ onAuthSuccess }) => {
     }
   };
 
+  const handleVerify2FA = async (e) => {
+    if (e) e.preventDefault();
+    setIsLoading(true);
+    setTwoFactorError(null);
+
+    try {
+      const response = await api.post('/auth/login/verify-2fa', {
+        ticket: twoFactorData?.ticket,
+        code: twoFactorCode,
+        method: selected2faMethod
+      });
+
+      if (response.data.success) {
+        queryClient.setSecureQueryData(['user'], response.data.data.user);
+        if (onAuthSuccess) onAuthSuccess(response.data.data.user);
+      }
+    } catch (err) {
+      setTwoFactorError(err.response?.data?.message || 'Verification failed');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCancel2FA = () => {
+    setTwoFactorRequired(false);
+    setTwoFactorData(null);
+    setTwoFactorCode('');
+    setTwoFactorError(null);
+  };
+
+  const handleSocialLogin = async (provider, token, clientData) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await securePost('/auth/social-login', {
+        provider,
+        token,
+        clientData
+      });
+      if (response.data.success) {
+        queryClient.setSecureQueryData(['user'], response.data.data.user);
+        if (onAuthSuccess) onAuthSuccess(response.data.data.user);
+      }
+    } catch (err) {
+      setError({
+        field: 'general',
+        message: err.response?.data?.message || 'Social authentication failed.'
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const SHOW_SOCIAL_AUTH = false;
+
   const commonProps = {
     formData,
     isPartial,
     onChange: handleChange,
     onSubmit: handleSubmit,
+    onSocialLogin: handleSocialLogin,
+    showSocialAuth: SHOW_SOCIAL_AUTH,
     isLoading,
-    error
+    error,
+    twoFactorRequired,
+    twoFactorData,
+    selected2faMethod,
+    setSelected2faMethod,
+    twoFactorCode,
+    setTwoFactorCode,
+    twoFactorError,
+    onVerify2FA: handleVerify2FA,
+    onCancel2FA: handleCancel2FA
   };
 
   if (!mounted) {

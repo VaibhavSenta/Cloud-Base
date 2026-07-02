@@ -1,0 +1,444 @@
+.container {
+  width: 100%;
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 0.5rem 1.5rem 2.5rem 1.5rem;
+  box-sizing: border-box;
+}
+
+.header {
+  margin-bottom: 2.5rem;
+  text-align: left;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 900;
+  letter-spacing: -0.8px;
+  color: #ffffff;
+  margin: 0 0 0.4rem 0;
+}
+
+.subtitle {
+  font-size: 0.92rem;
+  color: #666666;
+  margin: 0;
+}
+
+/* Side-by-Side Grid Layout */
+.splitLayout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+/* Left Hero Avatar Card */
+.profileHero {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  cursor: pointer;
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+  gap: 1.2rem;
+}
+
+.profileHero:hover {
+  border-color: rgba(0, 149, 246, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 149, 246, 0.04);
+}
+
+.heroAvatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.08);
+  padding: 6px;
+  background: #000;
+}
+
+.avatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.heroText h2 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 4px 0;
+  letter-spacing: -0.3px;
+}
+
+.heroText span {
+  color: #0095f6;
+  font-weight: 800;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.avatarActionHint {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #666666;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+  padding-bottom: 2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.profileHero:hover .avatarActionHint {
+  color: #0095f6;
+  border-color: rgba(0, 149, 246, 0.3);
+}
+
+/* Right Section details */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.cardTitle {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #666666;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  padding: 1.5rem 1.8rem 0.5rem 1.8rem;
+  margin: 0;
+}
+
+.infoList {
+  display: flex;
+  flex-direction: column;
+}
+
+.infoItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 1.8rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.infoItem:last-child {
+  border-bottom: none;
+}
+
+.infoItem:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.infoItem.nonEditable {
+  cursor: default;
+}
+
+.infoItem.nonEditable:hover {
+  background: transparent;
+}
+
+.infoLabel {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #888888;
+  width: 180px;
+}
+
+.infoValue {
+  flex: 1;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.editArrow {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #0095f6;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 1px;
+  transition: border-color 0.2s;
+}
+
+.infoItem:hover .editArrow {
+  border-color: #0095f6;
+}
+
+.restrictedLabel {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #444444;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* 🖥️ Centered Modal Styling */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.modalContent {
+  width: 100%;
+  max-width: 480px;
+  background: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 2rem;
+  box-sizing: border-box;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 149, 246, 0.05);
+  animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes scaleUp {
+  0% { transform: scale(0.96); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.modalTitle {
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: -0.4px;
+  color: #ffffff;
+  margin: 0 0 6px 0;
+}
+
+.modalSubtitle {
+  font-size: 0.82rem;
+  color: #666666;
+  margin: 0;
+  line-height: 1.45;
+}
+
+.modalCloseBtn {
+  background: transparent;
+  border: none;
+  color: #666666;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.modalCloseBtn:hover {
+  color: #ffffff;
+}
+
+.modalForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.fieldBody {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.inputLabel {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #666666;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.inputField {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  color: #ffffff;
+  padding: 0.85rem 1.1rem;
+  font-size: 0.92rem;
+  outline: none;
+  transition: border-color 0.2s, background-color 0.2s;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.inputField:focus {
+  border-color: #0095f6;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Fix date input styling */
+.inputField[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+.selectField {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  color: #ffffff;
+  padding: 0.85rem 1.1rem;
+  font-size: 0.92rem;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.selectField:focus {
+  border-color: #0095f6;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 0.8rem;
+}
+
+.btnPrimary {
+  background: #0095f6;
+  border: none;
+  border-radius: 100px;
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 800;
+  padding: 0.75rem 1.6rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btnPrimary:hover {
+  opacity: 0.9;
+}
+
+.btnPrimary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btnSecondary {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 100px;
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 800;
+  padding: 0.75rem 1.6rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btnSecondary:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Avatar Upload styling */
+.avatarUploadGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.uploadPreview {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  box-shadow: 0 0 20px rgba(0, 149, 246, 0.15);
+}
+
+.largePreviewImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.uploadTriggerBtn {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 0.8rem 1.5rem;
+  color: #a8a8a8;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+}
+
+.uploadTriggerBtn:hover {
+  border-color: #0095f6;
+  color: #ffffff;
+  background: rgba(0, 149, 246, 0.02);
+}

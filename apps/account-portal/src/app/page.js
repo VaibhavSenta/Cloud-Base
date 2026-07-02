@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import LoginBox from '../components/LoginBox/LoginBox';
 import WelcomeScreen from '../components/WelcomeScreen/WelcomeScreen';
 import api from '../utils/api';
+import LoadingScreen from '../components/UI/LoadingScreen/LoadingScreen';
 
 export default function Home() {
   const router = useRouter();
@@ -41,7 +42,7 @@ export default function Home() {
   };
 
   if (isLoading) {
-    return <div style={{ background: '#000', minHeight: '100dvh', width: '100%' }}></div>;
+    return <LoadingScreen />;
   }
 
   if (showWelcome) {

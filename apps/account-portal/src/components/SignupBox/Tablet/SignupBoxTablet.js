@@ -5,7 +5,18 @@ import Logo from '../../Logo/Logo';
 import Input from '../../UI/Input/Input';
 import Button from '../../UI/Button/Button';
 
-const SignupBoxTablet = ({ formData, step, nextStep, prevStep, onChange, isLoading, error, isPartial }) => {
+const SignupBoxTablet = ({ 
+  formData, 
+  step, 
+  nextStep, 
+  prevStep, 
+  onChange, 
+  onSocialLogin, 
+  showSocialAuth, 
+  isLoading, 
+  error, 
+  isPartial 
+}) => {
   return (
     <div className={styles.container}>
       <div className={`${styles.glassCard} glass`}>
@@ -80,6 +91,27 @@ const SignupBoxTablet = ({ formData, step, nextStep, prevStep, onChange, isLoadi
                 </Button>
             </div>
         </div>
+
+        {showSocialAuth && (
+          <div className={styles.socialAuthContainer}>
+            <div className={styles.divider}>
+              <span className={styles.dividerLine}></span>
+              <span className={styles.dividerText}>or</span>
+              <span className={styles.dividerLine}></span>
+            </div>
+            <div className={styles.socialButtons}>
+              <button type="button" className={styles.socialBtn} onClick={() => onSocialLogin('google', null, { email: 'mockgoogle@gmail.com', name: 'Google User' })}>
+                Continue with Google
+              </button>
+              <button type="button" className={styles.socialBtn} onClick={() => onSocialLogin('apple', null, { email: 'mockapple@icloud.com', name: 'Apple User' })}>
+                Continue with Apple
+              </button>
+              <button type="button" className={styles.socialBtn} onClick={() => onSocialLogin('facebook', null, { email: 'mockfacebook@fb.com', name: 'Facebook User' })}>
+                Continue with Facebook
+              </button>
+            </div>
+          </div>
+        )}
 
         <div className={styles.footer}>
           <p>Already have an account? <Link href="/">Log in</Link></p>

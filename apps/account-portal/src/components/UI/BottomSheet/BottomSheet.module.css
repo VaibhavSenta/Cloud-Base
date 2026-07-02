@@ -1,0 +1,121 @@
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.419);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(18px);
+  z-index: 3000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.bottomSheet {
+  position: fixed;
+  bottom: 5px;
+  left: 0;
+  right: 0;
+  margin: 0 auto; /* Clean horizontal centering for fixed panels */
+  width: 97%;
+  max-width: 500px; /* Centered modal feel on larger mobile/tablets */
+  background: #0a0a0a;
+  border-top: 1px solid #262626;
+  border-radius: 2.5rem ;
+  padding: 2rem 1.5rem;
+  z-index: 3001;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-sizing: border-box;
+  animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  max-height: 85vh;
+  overflow-y: auto;
+  overflow-x: hidden; /* Prevent horizontal container overflow */
+}
+
+.sheetHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.sheetTitle {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.3px;
+  text-align: left;
+}
+
+.sheetSubtitle {
+  font-size: 0.82rem;
+  color: #666;
+  text-align: left;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.submitBtn {
+  flex: 1.8;
+  padding: 0.72rem 0.5rem;
+  background: #0095f6;
+  color: #fff;
+  border: none;
+  border-radius: 2rem;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.submitBtn:active {
+  opacity: 0.8;
+}
+
+.submitBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cancelBtn {
+  flex: 1;
+  padding: 0.72rem 0.5rem;
+  background: #0a0a0a;
+  color: #a8a8a8;
+  border: 1px solid #262626;
+  border-radius: 2rem;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cancelBtn:active {
+  background: #111;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}

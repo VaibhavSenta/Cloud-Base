@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { useQueryClient } from '@tanstack/react-query';
+import { useSecureQueryClient } from '../../hooks/useSecureQuery';
 import useWindowSize from '../../hooks/useWindowSize';
 import api, { securePost } from '../../utils/api';
 import SignupBoxDesktop from './Desktop/SignupBoxDesktop';
@@ -9,7 +9,7 @@ import SignupBoxTablet from './Tablet/SignupBoxTablet';
 import SignupBoxMobile from './Mobile/SignupBoxMobile';
 
 const SignupBox = ({ onAuthSuccess }) => {
-  const queryClient = useQueryClient();
+  const queryClient = useSecureQueryClient();
   const { width } = useWindowSize();
   const [mounted, setMounted] = useState(false);
   const searchParams = useSearchParams();
@@ -102,8 +102,8 @@ const SignupBox = ({ onAuthSuccess }) => {
         });
 
         if (response.data.success) {
-            // Update React Query Cache immediately
-            queryClient.setQueryData(['user'], response.data.data.user);
+            // Update React Query Cache securely immediately
+            queryClient.setSecureQueryData(['user'], response.data.data.user);
             if (onAuthSuccess) onAuthSuccess(response.data.data.user);
         }
     } catch (err) {
@@ -117,6 +117,31 @@ const SignupBox = ({ onAuthSuccess }) => {
     }
   };
 
+  const handleSocialLogin = async (provider, token, clientData) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await securePost('/auth/social-login', {
+        provider,
+        token,
+        clientData
+      });
+      if (response.data.success) {
+        queryClient.setSecureQueryData(['user'], response.data.data.user);
+        if (onAuthSuccess) onAuthSuccess(response.data.data.user);
+      }
+    } catch (err) {
+      setError({
+        field: 'general',
+        message: err.response?.data?.message || 'Social authentication failed.'
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const SHOW_SOCIAL_AUTH = false;
+
   const commonProps = {
     formData,
     step,
@@ -124,6 +149,8 @@ const SignupBox = ({ onAuthSuccess }) => {
     prevStep,
     onChange: handleChange,
     onSubmit: handleSubmit,
+    onSocialLogin: handleSocialLogin,
+    showSocialAuth: SHOW_SOCIAL_AUTH,
     isLoading,
     error,
     isPartial: mode === 'partial'
