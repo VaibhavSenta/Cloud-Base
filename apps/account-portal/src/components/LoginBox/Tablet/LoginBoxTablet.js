@@ -20,7 +20,10 @@ const LoginBoxTablet = ({
   setTwoFactorCode,
   twoFactorError,
   onVerify2FA,
-  onCancel2FA
+  onCancel2FA,
+  onResend2FA,
+  resendCooldown,
+  resendStatus
 }) => {
   return (
     <div className={styles.container}>
@@ -28,7 +31,7 @@ const LoginBoxTablet = ({
         {twoFactorRequired ? (
           <>
             <div className={styles.header}>
-              <Logo forceVersion="full" />
+              <Logo forceVersion="full" theme="monochrome" className={styles.logo} />
               <h2 className={styles.title}>Two-Factor Verification</h2>
               <p className={styles.subtitle}>
                 {selected2faMethod === 'email' 
@@ -73,6 +76,28 @@ const LoginBoxTablet = ({
                 </div>
               )}
 
+              {selected2faMethod === 'email' && (
+                <div style={{ textAlign: 'center', margin: '12px 0' }}>
+                  <button
+                    type="button"
+                    onClick={onResend2FA}
+                    disabled={resendCooldown > 0 || resendStatus === 'sending'}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: resendCooldown > 0 ? '#555555' : '#0095f6',
+                      fontSize: '0.78rem',
+                      fontWeight: 'bold',
+                      cursor: resendCooldown > 0 ? 'not-allowed' : 'pointer'
+                    }}
+                  >
+                    {resendStatus === 'sending' ? 'Sending...' : 
+                     resendStatus === 'success' ? 'Code Sent! ✓' : 
+                     resendCooldown > 0 ? `Resend Code in ${resendCooldown}s` : 'Resend Code'}
+                  </button>
+                </div>
+              )}
+
               <Button type="submit" fullWidth isLoading={isLoading}>
                 Verify Code
               </Button>
@@ -97,7 +122,7 @@ const LoginBoxTablet = ({
         ) : (
           <>
             <div className={styles.header}>
-              <Logo forceVersion="full" />
+              <Logo forceVersion="full" theme="monochrome" className={styles.logo} />
               <h2 className={styles.title}>Welcome Back</h2>
               <p className={styles.subtitle}>
                 {isPartial ? "Please verify your account" : "Secure access to your Cloud-Base"}

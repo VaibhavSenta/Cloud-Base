@@ -95,7 +95,8 @@ export default function PersonalInfoTablet({
             <div className={styles.modalHeader}>
               <div>
                 <h3 className={styles.modalTitle}>
-                  {editField === 'name' ? 'Edit Name' :
+                  {editField === 'username' ? 'Edit Username' :
+                   editField === 'name' ? 'Edit Name' :
                    editField === 'dob' ? 'Edit Birthday' :
                    editField === 'gender' ? 'Edit Gender' :
                    editField === 'recoveryEmail' ? 'Edit Recovery Email' :
@@ -141,6 +142,23 @@ export default function PersonalInfoTablet({
                   >
                     Choose Photo
                   </button>
+                </div>
+              )}
+
+              {/* Username Field */}
+              {editField === 'username' && (
+                <div className={styles.fieldBody}>
+                  <div className={styles.inputGroup}>
+                    <label className={styles.inputLabel}>Username</label>
+                    <input 
+                      type="text" 
+                      name="userName" 
+                      value={formVal.userName || ''} 
+                      onChange={handleInputChange} 
+                      className={styles.inputField}
+                      required
+                    />
+                  </div>
                 </div>
               )}
 

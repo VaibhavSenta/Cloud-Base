@@ -140,6 +140,10 @@
   transition: all 0.2s;
 }
 
+.logo {
+  height: 46px;
+}
+
 .socialBtn:hover {
   background: rgba(255, 255, 255, 0.04);
   border-color: rgba(255, 255, 255, 0.15);

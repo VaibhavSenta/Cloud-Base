@@ -7,8 +7,9 @@ import styles from './Sidebar.module.css';
 /**
  * Universal Sidebar Wrapper (The Container Controller)
  */
-const Sidebar = ({ user, isOpen }) => {
-  const { width } = useWindowSize();
+const Sidebar = ({ user, isOpen, forceWidth }) => {
+  const { width: windowWidth } = useWindowSize();
+  const width = forceWidth || windowWidth;
 
   const renderVariant = () => {
     if (width < 768) return null;

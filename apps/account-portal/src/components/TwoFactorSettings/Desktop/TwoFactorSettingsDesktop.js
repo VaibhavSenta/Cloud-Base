@@ -93,7 +93,7 @@ export default function TwoFactorSettingsDesktop({
               </div>
             ) : (
               <>
-                {!user?.isEmailVerified ? (
+                {user && !user.isEmailVerified ? (
                   <div className={styles.warningCard}>
                     <span className={styles.warningTitle}>Email Verification Required</span>
                     <p className={styles.warningText}>

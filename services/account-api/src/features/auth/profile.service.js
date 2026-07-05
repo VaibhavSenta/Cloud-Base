@@ -6,7 +6,7 @@ const { firebaseAdminActive, admin } = require('../../common/config/firebaseAdmi
  * Handles updating user information.
  */
 const updateProfile = async (userId, updateData) => {
-  const allowedFields = ['firstName', 'lastName', 'dob', 'gender', 'countryCode', 'phonenumber', 'profilePic', 'recoveryEmail'];
+  const allowedFields = ['userName', 'firstName', 'lastName', 'dob', 'gender', 'countryCode', 'phonenumber', 'profilePic', 'recoveryEmail'];
   const filteredUpdate = {};
   
   Object.keys(updateData).forEach(key => {
@@ -85,17 +85,24 @@ const updateProfile = async (userId, updateData) => {
     throw new Error('No valid fields provided for update');
   }
 
-  const updatedUser = await USER.findByIdAndUpdate(
-    userId,
-    { $set: filteredUpdate },
-    { new: true, runValidators: true }
-  ).select('-password');
+  try {
+    const updatedUser = await USER.findByIdAndUpdate(
+      userId,
+      { $set: filteredUpdate },
+      { new: true, runValidators: true }
+    ).select('-password');
 
-  if (!updatedUser) {
-    throw new Error('User not found');
+    if (!updatedUser) {
+      throw new Error('User not found');
+    }
+
+    return updatedUser;
+  } catch (err) {
+    if (err.code === 11000 || err.message.includes('E11000')) {
+      throw new Error('Username is already taken');
+    }
+    throw err;
   }
-
-  return updatedUser;
 };
 
 const deactivateAccount = async (userId, password) => {

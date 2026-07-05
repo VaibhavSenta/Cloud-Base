@@ -1,0 +1,35 @@
+.spinnerContainer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.bgPath {
+  stroke: rgba(255, 255, 255, 0.04);
+  stroke-width: 4.5px;
+  stroke-linecap: round;
+}
+
+.glowPath {
+  stroke-width: 5px;
+  stroke-linecap: round;
+  /* Total path length is roughly 185-190. Set dasharray and offset loop for smooth draw */
+  stroke-dasharray: 55 130;
+  animation: traceCloud 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes traceCloud {
+  0% {
+    stroke-dashoffset: 185;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}

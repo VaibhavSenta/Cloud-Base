@@ -7,7 +7,7 @@ import styles from './Logo.module.css';
 /**
  * Universal Logo Wrapper
  */
-const Logo = ({ forceVersion, theme = 'default' }) => {
+const Logo = ({ forceVersion, theme = 'default', className }) => {
   const { width } = useWindowSize();
 
   const renderVariant = () => {
@@ -20,7 +20,7 @@ const Logo = ({ forceVersion, theme = 'default' }) => {
   };
 
   return (
-    <div className={styles.logoWrapper}>
+    <div className={`${styles.logoWrapper} ${className || ''}`}>
       {renderVariant()}
     </div>
   );

@@ -27,11 +27,22 @@ const SidebarTablet = ({ user }) => {
     { title: 'Devices', icon: '/icons/device-mobile.svg', onClick: () => console.log('Devices') },
   ];
 
+  const devLinks = [
+    { title: 'Sandbox 🛠️', icon: '', onClick: () => router.push('/sandbox') }
+  ];
+
   return (
     <div className={styles.sidebarContent}>
       {/* 🧹 Contents only. Container is managed by the Sidebar wrapper. */}
       <nav className={styles.nav}>
         <List items={navLinks} variant="link" />
+
+        <div style={{ marginTop: '1.5rem', paddingTop: '1.25rem', borderTop: '1px solid rgba(255, 255, 255, 0.05)' }}>
+          <span style={{ fontSize: '0.65rem', color: '#888888', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold', display: 'block', marginBottom: '0.4rem', paddingLeft: '0.4rem' }}>
+            Developer
+          </span>
+          <List items={devLinks} variant="link" />
+        </div>
       </nav>
 
       <button className={styles.logoutBtn} onClick={handleLogout}>

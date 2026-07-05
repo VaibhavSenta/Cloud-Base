@@ -96,6 +96,7 @@ export default function PersonalInfoMobile({
         isOpen={!!editField}
         onClose={handleCloseModal}
         title={
+          editField === 'username' ? 'Edit Username' :
           editField === 'name' ? 'Edit Name' :
           editField === 'dob' ? 'Edit Birthday' :
           editField === 'gender' ? 'Edit Gender' :
@@ -141,6 +142,20 @@ export default function PersonalInfoMobile({
           </div>
         ) : (
           <div className={styles.inputGroup}>
+            {editField === 'username' && (
+              <div>
+                <label className={styles.inputLabel}>Username</label>
+                <input 
+                  type="text" 
+                  name="userName" 
+                  value={formVal.userName || ''} 
+                  onChange={handleInputChange} 
+                  className={styles.inputField}
+                  required
+                />
+              </div>
+            )}
+
             {editField === 'name' && (
               <>
                 <div>

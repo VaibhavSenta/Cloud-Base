@@ -341,6 +341,16 @@ const reactivateAccount = async (req, res) => {
   }
 };
 
+const resend2faLogin = async (req, res) => {
+  try {
+    const { ticket, method } = req.body;
+    const result = await authService.resend2faOtp(ticket, method);
+    res.status(200).json({ success: true, message: result.message });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
 module.exports = { 
     handshake, 
     signup, 
@@ -357,6 +367,7 @@ module.exports = {
     verify2faAuthenticator,
     update2faSettings,
     verify2faLogin,
+    resend2faLogin,
     deactivateAccount,
     deleteAccount,
     reactivateAccount

@@ -47,11 +47,19 @@
 
 html, body {
   width: 100%;
+  min-height: 100vh;
   margin: 0;
   padding: 0;
   background: #000000;
   color: var(--text-primary);
   font-family: 'Inter', -apple-system, system-ui, sans-serif;
+}
+
+@media (min-width: 768px) {
+  html, body {
+    background: radial-gradient(circle at 10% 10%, #121212 0%, #000000 80%);
+    background-attachment: fixed;
+  }
 }
 
 /* Custom Scrollbar for Pitch Black Feel */

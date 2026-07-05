@@ -57,7 +57,7 @@
 }
 
 .monochrome .innerCloud,
-.monochrome .monochrome .innerCloud::before {
+.monochrome .innerCloud::before {
   background: #666666; /* Gray */
 }
 

@@ -53,6 +53,7 @@ router.patch('/2fa/settings', protect, authController.update2faSettings);
 
 // 2FA LOGIN: Verify login code
 router.post('/login/verify-2fa', login2faLimiter, authController.verify2faLogin);
+router.post('/login/resend-2fa', authController.resend2faLogin);
 
 // Apply decryption middleware to sensitive routes
 router.post('/signup', decryptRequest, authController.signup);

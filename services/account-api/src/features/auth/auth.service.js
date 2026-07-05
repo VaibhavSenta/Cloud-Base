@@ -307,6 +307,7 @@ const verifyAuthenticator = async (userId, code) => {
 
   user.twoFactorMethods.authenticator = true;
   user.twoFactorEnabled = true;
+  user.twoFactorPrimary = 'authenticator';
   await user.save();
 
   return true;
@@ -425,6 +426,43 @@ const verify2faLogin = async (ticket, code, method, deviceInfo) => {
 };
 
 /**
+ * Resend 2FA Login OTP Code
+ */
+const resend2faOtp = async (ticket, method) => {
+  const emailService = require('../../common/services/emailService');
+
+  if (!ticket) {
+    throw new Error('Verification session ticket is required');
+  }
+
+  const user = await USER.findOne({
+    twoFactorTempToken: ticket,
+    twoFactorTempTokenExpires: { $gt: Date.now() }
+  });
+
+  if (!user) {
+    throw new Error('Verification session expired or invalid');
+  }
+
+  if (method === 'email') {
+    const emailOtp = Math.floor(100000 + Math.random() * 900000).toString();
+    user.twoFactorLoginOtp = emailOtp;
+    user.twoFactorLoginOtpExpires = Date.now() + 5 * 60 * 1000; // 5 mins
+    await user.save();
+
+    await emailService.sendVerificationEmail({ 
+      email: user.email, 
+      token: `otp:${emailOtp}` 
+    });
+
+    console.log(`🔄 2FA Login OTP resent successfully to: ${user.email}`);
+    return { success: true, message: 'Verification code resent successfully' };
+  } else {
+    throw new Error('Resend is only supported for Email OTP verification');
+  }
+};
+
+/**
  * SOCIAL SIGNIN / SIGNUP SERVICE
  */
 const socialLoginAccount = async (provider, token, clientData, deviceInfo) => {
@@ -511,5 +549,6 @@ module.exports = {
   verifyAuthenticator,
   update2faSettings,
   verify2faLogin,
+  resend2faOtp,
   ...profileService
 };

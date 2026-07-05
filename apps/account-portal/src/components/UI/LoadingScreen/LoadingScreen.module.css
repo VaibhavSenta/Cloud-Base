@@ -1,14 +1,17 @@
 .container {
   background: #000000;
-  min-height: 100dvh;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 2.2rem;
   overflow: hidden;
-  position: relative;
+  z-index: 9999;
 }
 
 .loaderWrapper {
@@ -88,6 +91,11 @@
 .logoWrapper {
   position: absolute;
   z-index: 10;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transform: scale(0.75);
   animation: float 4s ease-in-out infinite;
 }

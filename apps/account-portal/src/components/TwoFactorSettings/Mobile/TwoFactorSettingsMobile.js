@@ -88,7 +88,7 @@ export default function TwoFactorSettingsMobile({
           </div>
         ) : (
           <div className={styles.settingsWrapper}>
-            {!user?.isEmailVerified ? (
+            {user && !user.isEmailVerified ? (
               <div className={styles.warningCard}>
                 <span className={styles.warningTitle}>Email Verification Required</span>
                 <p className={styles.warningText}>

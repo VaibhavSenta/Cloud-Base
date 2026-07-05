@@ -9,13 +9,15 @@ import PersonalInfoDesktop from './Desktop/PersonalInfoDesktop';
 import PersonalInfoTablet from './Tablet/PersonalInfoTablet';
 import PersonalInfoMobile from './Mobile/PersonalInfoMobile';
 import styles from './PersonalInfo.module.css';
+import CloudSpinner from '../UI/CloudSpinner/CloudSpinner';
 
 /**
  * Personal Information Component Wrapper
  */
-export default function PersonalInfo() {
+export default function PersonalInfo({ forceWidth }) {
   const queryClient = useSecureQueryClient();
-  const { width } = useWindowSize();
+  const { width: windowWidth } = useWindowSize();
+  const width = forceWidth || windowWidth;
   
   const [editField, setEditField] = useState(null); // 'name', 'dob', 'gender', 'recoveryEmail', 'profilePic'
   const [formVal, setFormVal] = useState({});
@@ -49,7 +51,7 @@ export default function PersonalInfo() {
     }
   });
 
-  const editableKeys = ['name', 'dob', 'gender', 'recoveryEmail', 'profilePic'];
+  const editableKeys = ['username', 'name', 'dob', 'gender', 'recoveryEmail', 'profilePic'];
 
   const handleEditClick = (key) => {
     if (!editableKeys.includes(key)) {
@@ -58,7 +60,11 @@ export default function PersonalInfo() {
     }
     setEditField(key);
     
-    if (key === 'name') {
+    if (key === 'username') {
+      setFormVal({
+        userName: user?.userName || ''
+      });
+    } else if (key === 'name') {
       setFormVal({
         firstName: user?.firstName || '',
         lastName: user?.lastName || ''
@@ -125,7 +131,21 @@ export default function PersonalInfo() {
   };
 
   if (isLoading) {
-    return <div className={styles.loading}>Loading credentials...</div>;
+    return (
+      <div style={{ 
+        display: 'flex', 
+        flexDirection: 'column',
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '300px', 
+        gap: '1.5rem',
+        color: '#a8a8a8', 
+        fontSize: '0.85rem' 
+      }}>
+        <CloudSpinner size={72} />
+        <span>Loading credentials...</span>
+      </div>
+    );
   }
 
   const getSafeAvatar = (path) => {
@@ -136,6 +156,7 @@ export default function PersonalInfo() {
   };
 
   const infoFields = [
+    { label: 'Username', value: user?.userName || 'Not set', key: 'username', isEditable: true },
     { label: 'Name', value: user ? `${user.firstName} ${user.lastName}` : 'Not set', key: 'name', isEditable: true },
     { label: 'Birthday', value: user?.dob ? new Date(user.dob).toLocaleDateString() : 'Not set', key: 'dob', isEditable: true },
     { label: 'Gender', value: user?.gender || 'Not set', key: 'gender', isEditable: true },

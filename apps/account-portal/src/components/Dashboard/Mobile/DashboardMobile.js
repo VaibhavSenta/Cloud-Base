@@ -57,6 +57,14 @@ const DashboardMobile = ({ user }) => {
     },
   ];
 
+  const devLinks = [
+    {
+      title: 'Component Sandbox 🛠️',
+      icon: '/icons/Preferences.svg',
+      onClick: () => router.push('/sandbox')
+    }
+  ];
+
   const currentSession = user.sessions?.find(session => session.isCurrent) || user.sessions?.[0];
   const otherSessionsCount = (user.sessions?.length || 0) - (currentSession ? 1 : 0);
 
@@ -88,6 +96,11 @@ const DashboardMobile = ({ user }) => {
 
         <section className={styles.section}>
           <List items={managementLinks} variant="link" />
+        </section>
+
+        <section className={styles.section}>
+          <h3 className={styles.sectionTitle}>Developer Tools</h3>
+          <List items={devLinks} variant="link" />
         </section>
 
         <section className={styles.section}>

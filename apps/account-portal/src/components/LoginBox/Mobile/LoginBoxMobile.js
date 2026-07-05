@@ -22,7 +22,10 @@ const LoginBoxMobile = ({
   setTwoFactorCode,
   twoFactorError,
   onVerify2FA,
-  onCancel2FA
+  onCancel2FA,
+  onResend2FA,
+  resendCooldown,
+  resendStatus
 }) => {
   return (
     <div className={styles.mobileContainer}>
@@ -32,7 +35,7 @@ const LoginBoxMobile = ({
 
       <main className={styles.mainContent}>
         <div className={styles.logoArea}>
-          <Logo forceVersion="icon" />
+          <Logo forceVersion="icon" theme="monochrome" />
         </div>
 
         {twoFactorRequired ? (
@@ -76,6 +79,28 @@ const LoginBoxMobile = ({
                   }}
                 >
                   Verify using {selected2faMethod === 'email' ? 'Authenticator App' : 'Email OTP'} instead
+                </button>
+              </div>
+            )}
+
+            {selected2faMethod === 'email' && (
+              <div style={{ textAlign: 'center', margin: '12px 0' }}>
+                <button
+                  type="button"
+                  onClick={onResend2FA}
+                  disabled={resendCooldown > 0 || resendStatus === 'sending'}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: resendCooldown > 0 ? '#555555' : '#0095f6',
+                    fontSize: '0.78rem',
+                    fontWeight: 'bold',
+                    cursor: resendCooldown > 0 ? 'not-allowed' : 'pointer'
+                  }}
+                >
+                  {resendStatus === 'sending' ? 'Sending...' : 
+                   resendStatus === 'success' ? 'Code Sent! ✓' : 
+                   resendCooldown > 0 ? `Resend Code in ${resendCooldown}s` : 'Resend Code'}
                 </button>
               </div>
             )}

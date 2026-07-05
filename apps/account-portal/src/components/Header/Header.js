@@ -11,8 +11,9 @@ import styles from './Header.module.css';
  * Universal Unified Header Wrapper
  * Admin Portal Style: Floating Pill Container
  */
-const Header = ({ onToggleSidebar, isSidebarOpen }) => {
-  const { width } = useWindowSize();
+const Header = ({ onToggleSidebar, isSidebarOpen, forceWidth }) => {
+  const { width: windowWidth } = useWindowSize();
+  const width = forceWidth || windowWidth;
   const router = useRouter();
   const pathname = usePathname();
   const [isOnline, setIsOnline] = useState(true);

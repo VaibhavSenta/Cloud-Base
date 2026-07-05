@@ -8,13 +8,15 @@ import useWindowSize from '../../hooks/useWindowSize';
 import TwoFactorSettingsMobile from './Mobile/TwoFactorSettingsMobile';
 import TwoFactorSettingsTablet from './Tablet/TwoFactorSettingsTablet';
 import TwoFactorSettingsDesktop from './Desktop/TwoFactorSettingsDesktop';
+import CloudSpinner from '../UI/CloudSpinner/CloudSpinner';
 
 /**
  * Two-Factor Settings Container Component
  * Handles all state, mutations, and business logic for platform layouts.
  */
-const TwoFactorSettings = () => {
-  const { width } = useWindowSize();
+const TwoFactorSettings = ({ forceWidth }) => {
+  const { width: windowWidth } = useWindowSize();
+  const width = forceWidth || windowWidth;
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -61,7 +63,15 @@ const TwoFactorSettings = () => {
       return res.data;
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(['user'], (old) => ({ ...old, ...data.data }));
+      queryClient.setQueryData(['user'], (old) => {
+        if (!old) return data.data;
+        const updated = { ...old, ...data.data };
+        if (!data.data.twoFactorMethods?.authenticator) {
+          delete updated.authenticatorSecret;
+        }
+        return updated;
+      });
+      queryClient.invalidateQueries({ queryKey: ['user'] });
       triggerSuccessHUD('Saved');
       setErrorMessage('');
     },
@@ -154,13 +164,16 @@ const TwoFactorSettings = () => {
     return (
       <div style={{ 
         display: 'flex', 
+        flexDirection: 'column',
         justifyContent: 'center', 
         alignItems: 'center', 
-        minHeight: '200px', 
-        color: '#888888', 
+        minHeight: '300px', 
+        gap: '1.5rem',
+        color: '#a8a8a8', 
         fontSize: '0.85rem' 
       }}>
-        Loading security configurations...
+        <CloudSpinner size={72} />
+        <span>Loading security configurations...</span>
       </div>
     );
   }

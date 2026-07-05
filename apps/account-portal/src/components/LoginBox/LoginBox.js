@@ -8,9 +8,10 @@ import LoginBoxDesktop from './Desktop/LoginBoxDesktop';
 import LoginBoxTablet from './Tablet/LoginBoxTablet';
 import LoginBoxMobile from './Mobile/LoginBoxMobile';
 
-const LoginBox = ({ onAuthSuccess }) => {
+const LoginBox = ({ onAuthSuccess, forceWidth }) => {
   const queryClient = useSecureQueryClient();
-  const { width } = useWindowSize();
+  const { width: windowWidth } = useWindowSize();
+  const width = forceWidth || windowWidth;
   const [mounted, setMounted] = useState(false);
   const [formData, setFormData] = useState({ identifier: '', password: '', otp: '' });
   const [isLoading, setIsLoading] = useState(false);
@@ -33,6 +34,17 @@ const LoginBox = ({ onAuthSuccess }) => {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const [resendStatus, setResendStatus] = useState(null); // 'sending', 'success', 'error'
+
+  useEffect(() => {
+    let timer;
+    if (resendCooldown > 0) {
+      timer = setTimeout(() => setResendCooldown(prev => prev - 1), 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [resendCooldown]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -138,7 +150,38 @@ const LoginBox = ({ onAuthSuccess }) => {
     setTwoFactorData(null);
     setTwoFactorCode('');
     setTwoFactorError(null);
+    setResendCooldown(0);
+    setResendStatus(null);
   };
+
+  const handleResend2FA = async () => {
+    if (resendCooldown > 0) return;
+    setResendStatus('sending');
+    try {
+      await api.post('/auth/login/resend-2fa', {
+        ticket: twoFactorData?.ticket,
+        method: selected2faMethod
+      });
+      setResendStatus('success');
+      setResendCooldown(30); // 30s cooldown
+      setTimeout(() => setResendStatus(null), 3000);
+    } catch (err) {
+      setResendStatus('error');
+      setTwoFactorError(err.response?.data?.message || 'Failed to resend verification code');
+      setTimeout(() => setResendStatus(null), 3000);
+    }
+  };
+
+  useEffect(() => {
+    if (
+      twoFactorRequired && 
+      selected2faMethod === 'email' && 
+      twoFactorData?.primaryMethod === 'authenticator' &&
+      twoFactorData?.ticket
+    ) {
+      handleResend2FA();
+    }
+  }, [selected2faMethod, twoFactorRequired, twoFactorData]);
 
   const handleSocialLogin = async (provider, token, clientData) => {
     setIsLoading(true);
@@ -182,7 +225,10 @@ const LoginBox = ({ onAuthSuccess }) => {
     setTwoFactorCode,
     twoFactorError,
     onVerify2FA: handleVerify2FA,
-    onCancel2FA: handleCancel2FA
+    onCancel2FA: handleCancel2FA,
+    onResend2FA: handleResend2FA,
+    resendCooldown,
+    resendStatus
   };
 
   if (!mounted) {
