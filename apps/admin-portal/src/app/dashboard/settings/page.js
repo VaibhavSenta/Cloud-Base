@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import AdminLayout from '@/components/admin/AdminLayout/AdminLayout';
 import styles from './settings.module.css';
 import { useRouter } from 'next/navigation';
 import NextImage from 'next/image';
@@ -51,8 +50,7 @@ export default function SettingsPage() {
   ];
 
   return (
-    <AdminLayout>
-      <div className={styles.settingsMenuContainer}>
+    <div className={styles.settingsMenuContainer}>
         <section className={styles.headerSection}>
           <h1>Global Settings</h1>
           <p>Configure and manage the CloudBase ecosystem protocols.</p>
@@ -70,6 +68,5 @@ export default function SettingsPage() {
           ))}
         </div>
       </div>
-    </AdminLayout>
   );
 }

@@ -1,18 +1,20 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import AdminLayout from '@/components/admin/AdminLayout/AdminLayout';
 import styles from './profile.module.css';
 import NextImage from 'next/image';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
+import { useSecureQuery, useSecureQueryClient } from 'secure-query-cache';
 import axios from 'axios';
 
-import ProfileIdentity from '@/components/admin/Profile/ProfileIdentity';
-import SessionCard from '@/components/admin/Profile/SessionCard';
-import BiometricSetup from '@/components/admin/Profile/BiometricSetup';
+import ProfileIdentity from '@/features/profile/ProfileIdentity/Component';
+import SessionCard from '@/features/profile/SessionCard';
+import dynamic from 'next/dynamic';
+
+const BiometricSetup = dynamic(() => import('@/features/profile/BiometricSetup'), { ssr: false });
 
 export default function ProfilePage() {
-    const queryClient = useQueryClient();
+    const queryClient = useSecureQueryClient();
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({
         firstname: '',
@@ -22,7 +24,7 @@ export default function ProfilePage() {
     const [statusMsg, setStatusMsg] = useState({ type: '', text: '' });
 
     // 1. Fetch Admin Profile
-    const { data: admin, isLoading, error } = useQuery({
+    const { data: admin, isLoading, error } = useSecureQuery({
         queryKey: ['adminProfile'],
         queryFn: async () => {
             const res = await axios.get('/api/admin/profile');
@@ -31,7 +33,7 @@ export default function ProfilePage() {
     });
 
     // 1.1 Fetch Active Sessions
-    const { data: sessions = [], isLoading: sessionsLoading } = useQuery({
+    const { data: sessions = [], isLoading: sessionsLoading } = useSecureQuery({
         queryKey: ['activeSessions'],
         queryFn: async () => {
             const res = await axios.get('/api/admin/profile/sessions');
@@ -58,7 +60,7 @@ export default function ProfilePage() {
         },
         onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ['adminProfile'] });
-            setStatusMsg({ type: 'success', text: 'Profile updated successfully! ✨' });
+            setStatusMsg({ type: 'success', text: 'Profile updated successfully!' });
             setIsEditing(false); // Switch back to view mode
             setTimeout(() => setStatusMsg({ type: '', text: '' }), 3000);
         },
@@ -111,7 +113,6 @@ export default function ProfilePage() {
     };
 
     return (
-        <AdminLayout>
             <div className={styles.profileWrapper}>
                 <header className={styles.pageHeader}>
                    <h1>Admin Control Profile</h1>
@@ -198,9 +199,8 @@ export default function ProfilePage() {
                             <NextImage src="/admin-images/logout.png" width={20} height={20} alt="" style={{ filter: 'brightness(0) invert(1)' }} />
                             <span>Sign Out of Console</span>
                         </button>
-                    </div>
-                </div>
             </div>
-        </AdminLayout>
+            </div>
+            </div>
     );
 }

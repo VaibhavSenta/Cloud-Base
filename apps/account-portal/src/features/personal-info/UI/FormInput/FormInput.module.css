@@ -1,0 +1,37 @@
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.inputLabel {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #666666;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.inputField {
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  color: #ffffff;
+  padding: 0.75rem 1rem;
+  font-size: 0.92rem;
+  outline: none;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.inputField:focus {
+  border-color: #0095f6;
+  background: rgba(0, 149, 246, 0.01);
+  box-shadow: 0 0 12px rgba(0, 149, 246, 0.15);
+}
+
+.inputField[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}

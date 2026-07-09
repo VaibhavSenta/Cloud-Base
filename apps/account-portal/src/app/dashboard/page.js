@@ -1,10 +1,11 @@
 'use client';
 import { useSecureQuery } from '@/hooks/useSecureQuery';
 import Dashboard from '@/components/Dashboard/Dashboard';
+import DashboardSkeleton from '@/components/Dashboard/Skeleton/DashboardSkeleton';
 import api from '@/utils/api';
 
 export default function DashboardPage() {
-  const { data: user } = useSecureQuery({
+  const { data: user, isLoading } = useSecureQuery({
     queryKey: ['user'],
     queryFn: async () => {
       const response = await api.get('/auth/me');
@@ -17,6 +18,10 @@ export default function DashboardPage() {
     retry: false,
     staleTime: 1000 * 60 * 10,
   });
+
+  if (isLoading) {
+    return <DashboardSkeleton />;
+  }
 
   if (!user) return null;
 

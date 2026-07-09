@@ -26,7 +26,7 @@ const DashboardMobile = ({ user }) => {
   const handleLogout = async () => {
     try {
       await api.post('/auth/logout');
-      queryClient.setSecureQueryData(['user'], null);
+      queryClient.clear();
       window.location.href = '/';
     } catch (err) {
       console.error("Logout failed:", err);
@@ -48,12 +48,12 @@ const DashboardMobile = ({ user }) => {
     { 
       title: 'Connected Services', 
       icon: '/icons/Connected_Services.svg', 
-      onClick: () => console.log('Connected Services') 
+      onClick: () => router.push('/dashboard/connected-services') 
     },
     { 
       title: 'Preferences', 
       icon: '/icons/Preferences.svg', 
-      onClick: () => console.log('Preferences') 
+      onClick: () => router.push('/dashboard/preferences') 
     },
   ];
 

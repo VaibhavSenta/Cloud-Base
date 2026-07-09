@@ -1,4 +1,4 @@
-import PasswordOptions from '@/components/PasswordOptions/PasswordOptions';
+import PasswordOptions from '@/features/password-options/PasswordOptions';
 
 export const metadata = {
   title: 'Password Options | Cloud-Base',

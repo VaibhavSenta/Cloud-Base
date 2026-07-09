@@ -2,24 +2,26 @@
 
 import React from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
+import { useSecureQuery, useSecureQueryClient } from 'secure-query-cache';
 import axios from 'axios';
-import AdminLayout from '@/components/admin/AdminLayout/AdminLayout';
 import styles from './overview.module.css';
 import NextImage from 'next/image';
-import EditAppModal from '@/components/admin/apps/EditAppModal';
-import InfraManagerModal from '@/components/admin/apps/InfraManagerModal';
+import dynamic from 'next/dynamic';
+
+const EditAppModal = dynamic(() => import('@/features/apps-management/Modals/EditAppModal'), { ssr: false });
+const InfraManagerModal = dynamic(() => import('@/features/apps-management/Modals/InfraManagerModal'), { ssr: false });
 
 export default function AppOverview() {
   const { appname } = useParams();
   const router = useRouter();
-  const queryClient = useQueryClient();
+  const queryClient = useSecureQueryClient();
   const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
   const [isInfraModalOpen, setIsInfraModalOpen] = React.useState(false);
   const [deleteConfirm, setDeleteConfirm] = React.useState(false);
 
   // 1. Fetch Core App Details
-  const { data: app, isLoading, error } = useQuery({
+  const { data: app, isLoading, error } = useSecureQuery({
     queryKey: ['appDetails', appname],
     queryFn: async () => {
       const res = await axios.get(`/api/admin/managedapps/${appname}`);
@@ -29,7 +31,7 @@ export default function AppOverview() {
   });
 
   // 2. Real-time Pulse Engine (Live Health Ping)
-  const { data: livePulse, isFetching: isPulsing } = useQuery({
+  const { data: livePulse, isFetching: isPulsing } = useSecureQuery({
     queryKey: ['appPulse', app?.userUrl],
     queryFn: async () => {
       const url = app.userUrl.startsWith('http') ? app.userUrl : `https://${app.userUrl}`;
@@ -41,7 +43,7 @@ export default function AppOverview() {
   });
 
   // 3. Fetch Audit Logs for this app
-  const { data: auditLogs = [] } = useQuery({
+  const { data: auditLogs = [] } = useSecureQuery({
     queryKey: ['appLogs', app?._id],
     queryFn: async () => {
       const res = await axios.get(`/api/admin/managedapps/logs/${app._id}`);
@@ -81,15 +83,14 @@ export default function AppOverview() {
     deleteAppMutation.mutate();
   };
 
-  if (isLoading) return <AdminLayout><div className={styles.loading}>Accessing Secure Node...</div></AdminLayout>;
-  if (error || !app) return <AdminLayout><div className={styles.error}>Infrastructure Link Failed</div></AdminLayout>;
+  if (isLoading) return <div className={styles.loading}>Accessing Secure Node...</div>;
+  if (error || !app) return <div className={styles.error}>Infrastructure Link Failed</div>;
 
   const isLocal = app.userUrl.includes('localhost') || app.userUrl.includes('127.0.0.1');
   const isSecure = app.userUrl.startsWith('https');
 
   return (
-    <AdminLayout>
-      <div className={styles.overviewWrapper}>
+    <div className={styles.overviewWrapper}>
         
         {/* Breadcrumbs & Navigation */}
         <nav className={styles.topNav}>
@@ -363,6 +364,5 @@ export default function AppOverview() {
         />
 
       </div>
-    </AdminLayout>
   );
 }

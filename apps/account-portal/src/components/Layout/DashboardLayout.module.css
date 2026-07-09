@@ -1,6 +1,12 @@
 .container {
-  background: #000000;
+  background: #000000; /* AMOLED Black for mobile viewports */
   min-height: 100dvh;
   color: #ffffff;
   width: 100%;
+}
+
+@media (min-width: 768px) {
+  .container {
+    background: #161616; /* Premium Dark Grey matching mainContent for tablet/desktop */
+  }
 }

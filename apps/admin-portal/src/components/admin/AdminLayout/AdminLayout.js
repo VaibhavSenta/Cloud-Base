@@ -7,7 +7,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import styles from './AdminLayout.module.css';
-import InfraAlert from '../InfraAlert/InfraAlert';
+import InfraAlert from '@/features/dashboard/InfraAlert/InfraAlert';
 import Sidebar from '../Sidebar/Sidebar';
 import BottomBar from '../BottomBar/BottomBar';
 import Header from '../Header/Header';

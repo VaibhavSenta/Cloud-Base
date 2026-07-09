@@ -1,0 +1,76 @@
+.bannerCard {
+  background: rgba(255, 255, 255, 0.015); /* Solid translucent background to prevent slanting color-banding artifacts */
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 9999px;
+  padding: 0.7rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: border-color 0.25s, background-color 0.25s;
+}
+
+.avatarWrapper {
+  width: auto;
+  height: auto;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer; /* Visual indicator for clicking profile picture */
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.avatarWrapper:hover {
+  transform: scale(1.04); /* Subtle interactive zoom on image hover */
+}
+
+.avatarImg {
+  width: 100px;
+  height: auto;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  border: 1px solid rgba(246, 172, 0, 0.31); /* Inactive subtle orange/yellow glow */
+  padding: 0.45rem;
+  background-color: transparent;
+  object-fit: cover;
+  box-sizing: border-box;
+}
+
+.bannerText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.bannerText h2 {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #ffffff;
+  margin: 0 0 2px 0;
+  letter-spacing: -0.6px;
+}
+
+.userEmail {
+  font-size: 0.88rem;
+  color: #666666;
+  margin: 0 0 12px 0;
+}
+
+.uploadHint {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #0095f6;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  border-bottom: 1px dashed rgba(0, 149, 246, 0.3);
+  padding-bottom: 2px;
+}
+
+.bannerCard:hover .uploadHint {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.4);
+}

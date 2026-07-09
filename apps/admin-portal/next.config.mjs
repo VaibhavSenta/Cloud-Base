@@ -1,6 +1,6 @@
-import withPWAInit from 'next-pwa';
+import withPWA from 'next-pwa';
 
-const withPWA = withPWAInit({
+const withPWAConfig = withPWA({
   dest: 'public',
   disable: process.env.NODE_ENV === 'development',
   register: true,
@@ -11,24 +11,15 @@ const withPWA = withPWAInit({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Turbopack compatibility
-  transpilePackages: ['next-pwa'],
+  transpilePackages: ['next-pwa', 'secure-query-cache'],
   async headers() {
     return [
       {
         source: '/(.*)',
         headers: [
-          {
-            key: 'Cache-Control',
-            value: 'no-store, no-cache, must-revalidate, proxy-revalidate',
-          },
-          {
-            key: 'Pragma',
-            value: 'no-cache',
-          },
-          {
-            key: 'Expires',
-            value: '0',
-          },
+          { key: 'Cache-Control', value: 'no-store, no-cache, must-revalidate, proxy-revalidate' },
+          { key: 'Pragma', value: 'no-cache' },
+          { key: 'Expires', value: '0' },
         ],
       },
     ];
@@ -36,14 +27,14 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        // 1. Admin API ke liye short proxy
+        // Admin API proxy
         source: '/api/admin/:path*',
-        destination: `${process.env.BACKEND_URL || 'http://localhost:5001'}/api/v1/:path*`, // Seedha api/v1 par bhejega
+        destination: `${process.env.BACKEND_URL || 'http://localhost:5001'}/api/v1/:path*`,
       },
       {
-        // 2. Upload API ke liye short proxy
+        // Upload API proxy
         source: '/api/upload/:path*',
-        destination: 'http://localhost:5002/api/v1/:path*', // Seedha upload ke api/v1 par bhejega
+        destination: 'http://localhost:5002/api/v1/:path*',
       },
     ];
   },
@@ -52,11 +43,12 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'lh3.googleusercontent.com',
-        port: '',
         pathname: '/**',
       },
     ],
   },
+  // Allow local dev IP as per project rules
+  allowedDevOrigins: ['172.20.10.2'],
 };
 
-export default withPWA(nextConfig);
+export default withPWAConfig(nextConfig);

@@ -1,0 +1,19 @@
+.layoutRoot {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--background);
+}
+
+.mainContent {
+  width: 100%;
+  padding: 90px 16px 84px; 
+  box-sizing: border-box;
+  min-height: 100vh;
+  background-color: var(--background);
+}
+
+.subPageContent {
+  padding-top: 84px !important;
+  padding-bottom: 40px !important;
+}

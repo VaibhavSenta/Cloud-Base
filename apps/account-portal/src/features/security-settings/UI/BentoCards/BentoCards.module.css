@@ -1,0 +1,285 @@
+.statusDotActive {
+  width: 5px;
+  height: 5px;
+  background-color: #4ade80;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #4ade80;
+}
+
+.span2 {
+  grid-column: span 2;
+}
+
+.bentoCard {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  padding: 1.8rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 200px;
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+  cursor: pointer;
+  position: relative;
+}
+
+.bentoCard:hover {
+  border-color: rgba(0, 149, 246, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 149, 246, 0.04);
+}
+
+.cardDanger {
+  border-color: rgba(255, 59, 48, 0.08);
+}
+
+.cardDanger:hover {
+  border-color: rgba(255, 59, 48, 0.3);
+  box-shadow: 0 8px 30px rgba(255, 59, 48, 0.03);
+}
+
+.cardHeaderArea {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 1.2rem;
+}
+
+.cardCategory {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #666666;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+
+.cardCategoryDanger {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #ff3b30;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+
+.cardTitle {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+.cardTitleDanger {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ff3b30;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+.interactiveRows {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-top: auto;
+}
+
+.rowItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #000000;
+  padding: 1.1rem 1.3rem;
+  transition: background-color 0.2s;
+}
+
+.rowItem:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.rowMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rowLabel {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #888888;
+}
+
+.rowValue {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.rowControls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.actionLink {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #0095f6;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 1px;
+  transition: border-color 0.2s;
+}
+
+.rowItem:hover .actionLink {
+  border-color: #0095f6;
+}
+
+.statusBadgeGreen {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.25);
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.statusBadgeRed {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #ff3b30;
+  border: 1px solid rgba(255, 59, 48, 0.25);
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.statusBadgeOrange {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #ff9500;
+  border: 1px solid rgba(255, 149, 0, 0.25);
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.passwordPreviewArea {
+  margin-top: auto;
+  margin-bottom: 1.2rem;
+}
+
+.maskedPassword {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #333333;
+  letter-spacing: 4px;
+  margin-bottom: 0.6rem;
+  transition: color 0.25s;
+}
+
+.bentoCard:hover .maskedPassword {
+  color: #ffffff;
+}
+
+.cardInlineDesc {
+  font-size: 0.78rem;
+  color: #666666;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.cardFooterArea {
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.cardFooterLink {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #888888;
+  transition: color 0.2s;
+}
+
+.bentoCard:hover .cardFooterLink {
+  color: #0095f6;
+}
+
+.mfaStatusArea {
+  margin-top: auto;
+  margin-bottom: 1.2rem;
+}
+
+.mfaIndicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0.6rem;
+}
+
+.mfaStatusText {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.activityStatsArea {
+  margin-top: auto;
+  margin-bottom: 1.2rem;
+}
+
+.activeStandard {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 0.6rem;
+}
+
+.dangerZoneRows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.dangerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 59, 48, 0.02);
+  border: 1px solid rgba(255, 59, 48, 0.08);
+  border-radius: 12px;
+  padding: 0.9rem 1.1rem;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.dangerRow:hover {
+  background: rgba(255, 59, 48, 0.05);
+  border-color: rgba(255, 59, 48, 0.2);
+}
+
+.dangerRowLabel {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #ff3b30;
+}
+
+.dangerActionText {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #ff3b30;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}

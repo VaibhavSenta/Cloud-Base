@@ -1,22 +1,23 @@
 'use client';
 
-import React from 'react';
-import AdminLayout from '@/components/admin/AdminLayout/AdminLayout';
+import React, { useCallback, useMemo } from 'react';
 import styles from './dashboard.module.css';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Switch from '@/components/admin/Switch/Switch';
 import Skeleton from '@/components/admin/Skeleton/Skeleton';
-import StatCard from '@/components/admin/StatCard/StatCard';
-import ServiceCard from '@/components/admin/ServiceCard/ServiceCard';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import ErrorBoundary from '@/components/admin/ErrorBoundary/ErrorBoundary';
+import StatCard from '@/features/dashboard/StatCard/StatCard';
+import ServiceCard from '@/features/dashboard/ServiceCard/ServiceCard';
+import { useMutation } from '@tanstack/react-query';
+import { useSecureQuery, useSecureQueryClient } from 'secure-query-cache';
 import axios from 'axios';
 
 export default function DashboardPage() {
   const router = useRouter();
-  const queryClient = useQueryClient();
+  const queryClient = useSecureQueryClient();
 
-  const { data: apps = [], isLoading: isAppsLoading, error: appsError } = useQuery({
+  const { data: apps = [], isLoading: isAppsLoading, error: appsError } = useSecureQuery({
     queryKey: ['appsList'],
     queryFn: async () => {
       const res = await axios.get(`/api/admin/managedapps?v=${Date.now()}`);
@@ -25,7 +26,7 @@ export default function DashboardPage() {
   });
 
   // 📊 Fetch Deep Analytics (User Growth, etc.)
-  const { data: analytics } = useQuery({
+  const { data: analytics } = useSecureQuery({
     queryKey: ['systemAnalytics'],
     queryFn: async () => {
       const res = await axios.get('/api/admin/dashboard/analytics/summary');
@@ -39,13 +40,33 @@ export default function DashboardPage() {
       const res = await axios.patch(`/api/admin/managedapps/toggle-maintenance/${appId}`);
       return res.data;
     },
-    onSuccess: () => {
+    // Optimistic Update: instant UI feedback
+    onMutate: async (appId) => {
+      // Cancel outgoing refetches so they don't overwrite our optimistic update
+      await queryClient.cancelQueries({ queryKey: ['appsList'] });
+      // Snapshot previous value for rollback
+      const previousApps = queryClient.getQueryData(['appsList']);
+      // Optimistically update the cache
+      queryClient.setQueryData(['appsList'], (old) =>
+        old?.map(app =>
+          app._id === appId ? { ...app, inMaintenance: !app.inMaintenance } : app
+        )
+      );
+      return { previousApps };
+    },
+    onError: (_err, _appId, context) => {
+      // Rollback to snapshot on failure
+      if (context?.previousApps) {
+        queryClient.setQueryData(['appsList'], context.previousApps);
+      }
+    },
+    onSettled: () => {
+      // Always refetch to sync with server truth
       queryClient.invalidateQueries({ queryKey: ['appsList'] });
     },
   });
 
-  // 📈 Real-time Analytics Calculations
-  const calculateMetrics = () => {
+  const metrics = useMemo(() => {
     if (!apps || apps.length === 0) return { totalUsers: 0, healthScore: 100, avgLatency: '0ms', growth: '0%' };
 
     const totalUsers = apps.reduce((acc, app) => acc + (parseInt(app.actives) || 0), 0);
@@ -58,7 +79,6 @@ export default function DashboardPage() {
       ? Math.round(latencies.reduce((a, b) => a + b, 0) / latencies.length) 
       : 12;
 
-    // Calculate growth from analytics data if available
     let growth = "0%";
     if (analytics?.userGrowth && analytics.userGrowth.length > 0) {
       const recentGrowth = analytics.userGrowth.reduce((a, b) => a + b.count, 0);
@@ -71,13 +91,18 @@ export default function DashboardPage() {
       avgLatency: `${avgLatency}ms`,
       growth
     };
-  };
+  }, [apps, analytics]);
 
-  const metrics = calculateMetrics();
+  const handleToggleMaintenance = useCallback((id) => {
+    toggleMaintMutation.mutate(id);
+  }, [toggleMaintMutation]);
+
+  const handleManage = useCallback((name) => {
+    router.push(`/apps/${name}`);
+  }, [router]);
 
   return (
-    <AdminLayout>
-      <div className={styles.dashboardWrapper}>
+    <div className={styles.dashboardWrapper}>
         
         {/* QUICK ACTIONS FOR MOBILE - Hidden on Desktop */}
         <div className={styles.mobileQuickActions}>
@@ -111,6 +136,7 @@ export default function DashboardPage() {
         </div>
 
         {/* SECTION 1: INFRASTRUCTURE METRICS ENGINE */}
+        <ErrorBoundary section="Infrastructure Health">
         <section className={styles.sectionBlock}>
           <div className={styles.sectionHeader}>
             <h2>Infrastructure Health</h2>
@@ -151,6 +177,7 @@ export default function DashboardPage() {
 
           </div>
         </section>
+        </ErrorBoundary>
 
         {/* SECTION 2: INSIGHTS ENGINE */}
         {analytics?.userGrowth?.length > 0 && (
@@ -165,6 +192,7 @@ export default function DashboardPage() {
         )}
 
         {/* SECTION 3: RECTIFIED SERVICE HUB CONTROLS */}
+        <ErrorBoundary section="Service Hub">
         <section className={styles.sectionBlock}>
           <div className={styles.sectionHeader}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -203,16 +231,16 @@ export default function DashboardPage() {
                 <ServiceCard 
                   key={details._id}
                   details={details}
-                  onToggleMaintenance={(id) => toggleMaintMutation.mutate(id)}
-                  onManage={(name) => router.push(`/apps/${name}`)}
+                  onToggleMaintenance={handleToggleMaintenance}
+                  onManage={handleManage}
                   isToggling={toggleMaintMutation.isPending}
                 />
               ))
             }
           </div>
         </section>
+        </ErrorBoundary>
 
       </div>
-    </AdminLayout>
   );
 }

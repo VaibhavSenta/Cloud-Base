@@ -1,34 +1,30 @@
 'use client';
 
-import React, { useState } from 'react';
-import AdminLayout from '@/components/admin/AdminLayout/AdminLayout';
+import React, { useState, useEffect } from 'react';
 import styles from './users.module.css';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
+import { useSecureQuery, useSecureQueryClient } from 'secure-query-cache';
 import axios from 'axios';
 import NextImage from 'next/image';
+import useDebounce from '@/hooks/useDebounce';
 
-import UserFilters from '@/components/admin/UserFilters/UserFilters';
+import UserFilters from '@/features/users-management/UserFilters/UserFilters';
 
 export default function UsersManagementPage() {
-  const queryClient = useQueryClient();
+  const queryClient = useSecureQueryClient();
   const [searchTerm, setSearchTerm] = useState('');
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const [roleFilter, setRoleFilter] = useState('all');
   const [page, setPage] = useState(1);
   const limit = 10;
 
-  // 1. Debounce Search Logic
-  React.useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
-      setPage(1); // Reset to page 1 on new search
-    }, 500); // 500ms delay
-
-    return () => clearTimeout(handler);
-  }, [searchTerm]);
+  // Reset to page 1 on new search
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearchTerm]);
 
   // 2. Fetch Users with Debounced Search
-  const { data: userData, isLoading, error } = useQuery({
+  const { data: userData, isLoading, error } = useSecureQuery({
     queryKey: ['ecosystemUsers', page, debouncedSearchTerm, roleFilter],
     queryFn: async () => {
       const res = await axios.get(`/api/admin/users/all`, {
@@ -66,8 +62,7 @@ export default function UsersManagementPage() {
   };
 
   return (
-    <AdminLayout>
-      <div className={styles.usersWrapper}>
+    <div className={styles.usersWrapper}>
         
         <header className={styles.usersHeader}>
           <div className={styles.headerTitle}>
@@ -210,8 +205,6 @@ export default function UsersManagementPage() {
              <span>Export User Directory (CSV)</span>
           </button>
         </div>
-
       </div>
-    </AdminLayout>
   );
 }

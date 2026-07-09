@@ -2,8 +2,8 @@
 import { useState, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSecureQueryClient } from '../../hooks/useSecureQuery';
-import SignupBox from '../../components/SignupBox/SignupBox';
-import WelcomeScreen from '../../components/WelcomeScreen/WelcomeScreen';
+import SignupBox from '@/features/auth/SignupBox/SignupBox';
+import WelcomeScreen from '@/features/welcome-screen/WelcomeScreen';
 
 export default function SignupPage() {
   const [showWelcome, setShowWelcome] = useState(false);

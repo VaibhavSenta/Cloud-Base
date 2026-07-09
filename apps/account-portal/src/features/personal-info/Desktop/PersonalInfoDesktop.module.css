@@ -1,0 +1,683 @@
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.5rem 1.5rem 2.5rem 1.5rem;
+  box-sizing: border-box;
+}
+
+.header {
+  margin-bottom: 2.5rem;
+  text-align: left;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 900;
+  letter-spacing: -0.8px;
+  color: #ffffff;
+  margin: 0 0 0.4rem 0;
+}
+
+.subtitle {
+  font-size: 0.92rem;
+  color: #666666;
+  margin: 0;
+}
+
+/* Bento Grid Structure */
+.bentoGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+/* Row 1: Profile Cover Banner */
+.bannerCard {
+  background: rgba(255, 255, 255, 0.015); /* Solid translucent background to prevent slanting color-banding artifacts */
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 9999px;
+  padding: 0.7rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: border-color 0.25s, background-color 0.25s;
+}
+
+
+
+.avatarWrapper {
+  width: auto;
+  height: auto;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer; /* Visual indicator for clicking profile picture */
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.avatarWrapper:hover {
+  transform: scale(1.04); /* Subtle interactive zoom on image hover */
+}
+
+.avatarImg {
+  width: 100px;
+  height: auto;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  border: 1px solid #f6ac0050;
+  padding: 0.45rem;
+  background-color: #00000000;
+  object-fit: cover;
+  box-sizing: border-box;
+}
+
+.bannerText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.bannerText h2 {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #ffffff;
+  margin: 0 0 2px 0;
+  letter-spacing: -0.6px;
+}
+
+.userEmail {
+  font-size: 0.88rem;
+  color: #666666;
+  margin: 0 0 12px 0;
+}
+
+.uploadHint {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #0095f6;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  border-bottom: 1px dashed rgba(0, 149, 246, 0.3);
+  padding-bottom: 2px;
+}
+
+.bannerCard:hover .uploadHint {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Row 2: 3-column lower section using 3D Flip Bento Cards */
+.lowerSection {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.card3DWrapper {
+  perspective: 1500px;
+  width: 100%;
+  height: 380px;
+  box-sizing: border-box;
+}
+
+.card3DInner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
+  box-sizing: border-box;
+  border-radius: 36px; /* Matched to card faces to ensure box-shadow doesn't render sharp corners */
+}
+
+/* Hover lift and scale with clean, tight dark shadow */
+.card3DInner:hover:not(.flipped) {
+  transform: translateY(-5px) scale(1.015);
+  box-shadow: 0 18px 10px -10px rgba(0, 0, 0, 0.2);
+}
+
+/* Trigger flip and upward offset shift */
+.card3DInner.flipped {
+  transform: rotateY(180deg) translateY(-8px);
+}
+
+.cardFront, .cardBack {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 36px;
+  padding: 1.8rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardFront {
+  background: rgba(255, 255, 255, 0.01); /* Solid dark translucent overlay to prevent slanting artifacts behind lists */
+  border: 1px solid rgba(163, 163, 163, 0.094);
+  z-index: 2;
+  transform: rotateY(0deg) translateZ(1px); /* Stabilized Z-depth to prevent hover layer displacement */
+  transition: border-color 0.3s, opacity 0.4s ease, visibility 0.4s ease;
+  opacity: 1;
+  visibility: visible;
+}
+
+.card3DInner:hover:not(.flipped) .cardFront {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.cardBack {
+  background: linear-gradient(135deg, #222222 0%, #111111 100%); /* Warm dark-charcoal gradient */
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid rgba(0, 149, 246, 0.35); /* Instagram Blue glowing top border */
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+  z-index: 1;
+  transform: rotateY(180deg) translateZ(1px); /* Stabilized Z-depth to prevent hover layer displacement */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease, box-shadow 0.4s ease;
+  pointer-events: none;
+}
+
+/* Visibility toggles during flipped state to block shadows/content bleeding */
+.card3DInner.flipped .cardBack {
+  opacity: 1;
+  visibility: visible;
+  z-index: 3;
+  pointer-events: auto;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.9);
+}
+
+.card3DInner.flipped .cardFront {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.cardTitle {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #666666;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin: 0 0 1.2rem 0;
+}
+
+/* Column 1: Status List */
+.statusList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.statusItem {
+  display: flex;
+  flex-direction: column;
+  padding: 6px 1rem;
+  box-sizing: border-box;
+}
+
+.statusLabel {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #888888;
+  margin-bottom: 6px;
+}
+
+.statusValue {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.statusValueActive {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #0095f6;
+}
+
+.statusValueSecure {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #888888;
+}
+
+/* Columns 2 & 3: Metadata List */
+.metadataList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.metaItem {
+  display: flex;
+  flex-direction: column;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.metaItem:hover {
+  background-color: #264873; /* Matched to sidebar list hover */
+}
+
+.metaItem:active {
+  transform: scale(0.98); /* Click shrink effect */
+}
+
+.metaItem.nonEditable {
+  cursor: default;
+}
+
+.metaItem.nonEditable:hover {
+  background-color: transparent;
+}
+
+.metaItem.nonEditable:active {
+  transform: none;
+}
+
+.metaLabel {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #888888;
+}
+
+.metaValue {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #ffffff;
+  margin-top: 6px;
+}
+
+/* Back Face Form Edit Styles */
+.backContent {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.backTitle {
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: #ffffff;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.4px;
+}
+
+.backForm {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.fieldBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.inputLabel {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #666666;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.inputField {
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  color: #ffffff;
+  padding: 0.75rem 1rem;
+  font-size: 0.92rem;
+  outline: none;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.inputField:focus {
+  border-color: #0095f6;
+  background: rgba(0, 149, 246, 0.01);
+  box-shadow: 0 0 12px rgba(0, 149, 246, 0.15);
+}
+
+.inputField[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+.selectField {
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  color: #ffffff;
+  padding: 0.75rem 1rem;
+  font-size: 0.92rem;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.selectField:focus {
+  border-color: #0095f6;
+  background: rgba(0, 149, 246, 0.01);
+  box-shadow: 0 0 12px rgba(0, 149, 246, 0.15);
+}
+
+.backActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.btnPrimary {
+  background: #0095f6;
+  border: none;
+  border-radius: 100px;
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 800;
+  padding: 0.65rem 1.4rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(0, 149, 246, 0.35);
+}
+
+.btnPrimary:hover {
+  background: #1da1f2;
+  box-shadow: 0 6px 20px rgba(0, 149, 246, 0.5);
+  transform: translateY(-1px);
+}
+
+.btnPrimary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.btnSecondary {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.25); /* Enhanced contrast border */
+  border-radius: 100px;
+  color: #cccccc; /* Brighter text color for better readability */
+  font-size: 0.82rem;
+  font-weight: 800;
+  padding: 0.65rem 1.4rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btnSecondary:hover {
+  background-color: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.45); /* High-contrast hover border */
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* 🖥️ Centered Modal Styling (Used only for profile avatar modal) */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.1); /* Translucent background to show blurred content */
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px); /* Premium frosted glass blur */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: overlayFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes overlayFadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.modalContent {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3/4; /* Vertical rectangle layout proportion */
+  background: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.16); /* Slightly brighter thin white outline */
+  border-radius: 24px;
+  padding: 0; /* Full bleed image container */
+  box-sizing: border-box;
+  overflow: hidden; /* Crop elements inside card rounded corners */
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 149, 246, 0.05);
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.modalTitle {
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: -0.4px;
+  color: #ffffff;
+  margin: 0 0 6px 0;
+}
+
+.modalSubtitle {
+  font-size: 0.82rem;
+  color: #666666;
+  margin: 0;
+  line-height: 1.45;
+}
+
+.modalCloseBtn {
+  background: transparent;
+  border: none;
+  color: #666666;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.modalCloseBtn:hover {
+  color: #ffffff;
+}
+
+.avatarUploadGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.uploadPreview {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  box-shadow: 0 0 20px rgba(0, 149, 246, 0.15);
+}
+
+.largePreviewImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.uploadTriggerBtn {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 0.8rem 1.5rem;
+  color: #a8a8a8;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+}
+
+.uploadTriggerBtn:hover {
+  border-color: #0095f6;
+  color: #ffffff;
+  background: rgba(0, 149, 246, 0.02);
+}
+
+/* Responsive Overrides (tablet/mobile stacking) */
+@media (max-width: 1024px) {
+  .lowerSection {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .card3DWrapper {
+    height: auto;
+    min-height: 380px;
+  }
+  
+  .bannerCard {
+    padding: 1.2rem 1.8rem;
+    gap: 1.5rem;
+    border-radius: 36px;
+  }
+  
+  .bannerText h2 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .bannerCard {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    padding: 2rem 1.5rem;
+    border-radius: 24px;
+  }
+  
+  .bannerText {
+    align-items: center;
+  }
+}
+
+/* Premium Lightbox Profile Picture Display */
+.lightboxImg {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Fit the picture cleanly without any cropping */
+  object-position: top center; /* Align image to the top, shifting empty space to the bottom */
+  z-index: 3;
+  display: block;
+}
+
+.lightboxBgImg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(24px) brightness(0.35); /* Blurred and darkened ambient background */
+  transform: scale(1.15); /* Remove outer blur artifacts */
+  z-index: 1;
+  pointer-events: none;
+}
+
+.modalContent::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 35%; /* Smooth dark gradient shading up to 35% height */
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%);
+  z-index: 4; /* Higher than lightboxImg (z-index: 3) to overlay and blend the bottom edge */
+  pointer-events: none;
+}
+
+.lightboxContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem; /* Gap between the image card box and the actions row below it */
+  max-width: 400px;
+  width: 90%;
+  animation: springUp 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both; /* Bouncy organic spring entry */
+}
+
+@keyframes springUp {
+  0% {
+    transform: scale(0.9) translateY(24px); /* Entry start size and height offset */
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.lightboxActions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+}
+
+.lightboxActions button {
+  padding: 0.8rem 1.4rem; /* Slightly taller for a more premium click target */
+}
+
+/* Asymmetric button widths: Secondary (Cancel/Change) is wide, Primary (Save/Close) is compact */
+.lightboxActions button:first-child {
+  flex: 2.2;
+}
+
+.lightboxActions button:last-child {
+  flex: 1;
+}

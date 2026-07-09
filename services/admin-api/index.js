@@ -91,12 +91,19 @@ app.use(globalErrorHandler);
 
 
 
-app.listen(port, ()=>{
+const startServer = (listenPort) => {
+  const server = app.listen(listenPort, () => {
+    console.log(`Your server is started at port ${listenPort} . . . . . \n        http://localhost:${listenPort}`);
+  });
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      const altPort = process.env.PORT_ALT || 5002;
+      console.warn(`Port ${listenPort} in use, switching to alternate port ${altPort}`);
+      server.close(() => startServer(altPort));
+    } else {
+      console.error('Server error:', err);
+    }
+  });
+};
 
-    console.log(`Your server is started at port ${port} . . . . . 
-        \n \n 
-        
-        http://localhost:${port}
-
-        `);
-})
+startServer(port);

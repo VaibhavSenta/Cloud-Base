@@ -1,25 +1,28 @@
 'use client';
 
 import React from 'react';
-import AdminLayout from '@/components/admin/AdminLayout/AdminLayout';
 import styles from './apps.module.css';
 import { useRouter } from 'next/navigation';
 import NextImage from 'next/image';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
+import { useSecureQuery, useSecureQueryClient } from 'secure-query-cache';
 import axios from 'axios';
-import AddAppModal from '@/components/admin/apps/AddAppModal';
-import StatCard from '@/components/admin/StatCard/StatCard';
-import AppCard from '@/components/admin/AppCard/AppCard';
-import AppFilters from '@/components/admin/AppFilters/AppFilters';
+import dynamic from 'next/dynamic';
+import useDebounce from '@/hooks/useDebounce';
+import StatCard from '@/features/dashboard/StatCard/StatCard';
+import AppCard from '@/features/apps-management/AppCard/AppCard';
+import AppFilters from '@/features/apps-management/AppFilters/AppFilters';
+
+const AddAppModal = dynamic(() => import('@/features/apps-management/Modals/AddAppModal'), { ssr: false });
 
 export default function AppsPage() {
   const router = useRouter();
-  const queryClient = useQueryClient();
+  const queryClient = useSecureQueryClient();
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState('');
   const [envFilter, setEnvFilter] = React.useState('all');
 
-  const { data: apps = [], isLoading, error, refetch } = useQuery({
+  const { data: apps = [], isLoading, error, refetch } = useSecureQuery({
     queryKey: ['appsList'],
     queryFn: async () => {
       const res = await axios.get(`/api/admin/managedapps?v=${Date.now()}`);
@@ -47,9 +50,11 @@ export default function AppsPage() {
   const globalHealth = calculateGlobalHealth();
   const healthColor = globalHealth > 90 ? '#10b981' : globalHealth > 70 ? '#f59e0b' : '#ef4444';
 
+  const debouncedSearch = useDebounce(searchTerm, 300);
+
   const filteredApps = apps.filter(app => {
-    const matchesSearch = app.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                         app.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = app.title.toLowerCase().includes(debouncedSearch.toLowerCase()) || 
+                         app.name.toLowerCase().includes(debouncedSearch.toLowerCase());
     const matchesEnv = envFilter === 'all' || app.environment === envFilter;
     return matchesSearch && matchesEnv;
   });
@@ -59,14 +64,28 @@ export default function AppsPage() {
       const res = await axios.patch(`/api/admin/managedapps/toggle-maintenance/${appId}`);
       return res.data;
     },
-    onSuccess: () => {
+    onMutate: async (appId) => {
+      await queryClient.cancelQueries({ queryKey: ['appsList'] });
+      const previousApps = queryClient.getQueryData(['appsList']);
+      queryClient.setQueryData(['appsList'], (old) =>
+        old?.map(app =>
+          app._id === appId ? { ...app, inMaintenance: !app.inMaintenance } : app
+        )
+      );
+      return { previousApps };
+    },
+    onError: (_err, _appId, context) => {
+      if (context?.previousApps) {
+        queryClient.setQueryData(['appsList'], context.previousApps);
+      }
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['appsList'] });
     },
   });
 
   return (
-    <AdminLayout>
-      <div className={styles.appsWrapper}>
+    <div className={styles.appsWrapper}>
         
         <header className={styles.appsHeader}>
           <div className={styles.headerTitle}>
@@ -152,6 +171,5 @@ export default function AppsPage() {
           onClose={() => setIsModalOpen(false)} 
         />
       </div>
-    </AdminLayout>
   );
 }

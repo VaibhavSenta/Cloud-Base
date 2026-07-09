@@ -49,16 +49,6 @@ const DashboardDesktop = ({ user }) => {
 
       {/* 🛡️ Status Metrics Section */}
       <section className={styles.statusSection}>
-        <div className={styles.statusCard}>
-          <div className={styles.pulseIndicator}>
-            <span className={styles.pulseDot}></span>
-          </div>
-          <div className={styles.statusText}>
-            <h4>Security Active</h4>
-            <p>RSA-2048 & AES-256 Locks</p>
-          </div>
-        </div>
-        
         <div className={styles.statusCard} onClick={() => router.push('/dashboard/security')}>
           <div className={styles.statusIconArea}>
             <Image src="/icons/device-mobile.svg" alt="Devices" width={18} height={18} className={styles.statusSvg} />
@@ -76,6 +66,16 @@ const DashboardDesktop = ({ user }) => {
           <div className={styles.statusText}>
             <h4>Cloud Vault</h4>
             <p>Secure Cloud Storage</p>
+          </div>
+        </div>
+
+        <div className={styles.statusCard} onClick={() => router.push('/dashboard/preferences')}>
+          <div className={styles.statusIconArea}>
+            <Image src="/icons/Preferences.svg" alt="Preferences" width={18} height={18} className={styles.statusSvg} />
+          </div>
+          <div className={styles.statusText}>
+            <h4>Preferences</h4>
+            <p>UI themes & local backups</p>
           </div>
         </div>
       </section>

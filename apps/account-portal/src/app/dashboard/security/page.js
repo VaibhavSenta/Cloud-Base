@@ -1,4 +1,4 @@
-import SecuritySettings from '@/components/SecuritySettings/SecuritySettings';
+import SecuritySettings from '@/features/security-settings/SecuritySettings';
 
 export const metadata = {
   title: 'Signin & Security | Cloud-Base',

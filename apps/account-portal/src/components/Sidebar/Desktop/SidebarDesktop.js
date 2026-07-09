@@ -13,7 +13,7 @@ const SidebarDesktop = ({ user }) => {
   const handleLogout = async () => {
     try {
       await api.post('/auth/logout');
-      queryClient.setSecureQueryData(['user'], null);
+      queryClient.clear();
       window.location.href = '/';
     } catch (err) {
       console.error("Logout failed:", err);
@@ -24,7 +24,9 @@ const SidebarDesktop = ({ user }) => {
     { title: 'Home', icon: '/icons/nav-home.svg', onClick: () => router.push('/dashboard') },
     { title: 'Personal Information', icon: '/icons/nav-info.svg', onClick: () => router.push('/dashboard/personal-info') },
     { title: 'Signin & Security', icon: '/icons/nav-security.svg', onClick: () => router.push('/dashboard/security') },
-    { title: 'Logged Devices', icon: '/icons/device-mobile.svg', onClick: () => console.log('Devices') },
+    { title: 'Logged Devices', icon: '/icons/device-mobile.svg', onClick: () => router.push('/dashboard/security') },
+    { title: 'Connected Services', icon: '/icons/Connected_Services.svg', onClick: () => router.push('/dashboard/connected-services') },
+    { title: 'Preferences', icon: '/icons/Preferences.svg', onClick: () => router.push('/dashboard/preferences') },
   ];
 
   const devLinks = [

@@ -6,7 +6,7 @@ import axios from 'axios';
 import { startAuthentication } from '@simplewebauthn/browser';
 import styles from './page.module.css';
 
-import LoginBox from '@/components/admin/LoginBox/LoginBox';
+import LoginBox from '@/features/auth/LoginBox/Component';
 
 export default function AdminLogin() {
   const router = useRouter()

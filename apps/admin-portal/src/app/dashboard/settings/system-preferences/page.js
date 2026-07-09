@@ -1,16 +1,15 @@
 'use client';
 
 import React from 'react';
-import AdminLayout from '@/components/admin/AdminLayout/AdminLayout';
 import styles from '../settings.module.css';
-import { useQuery } from '@tanstack/react-query';
+import { useSecureQuery } from 'secure-query-cache';
 import axios from 'axios';
 
-import SettingsGroup from '@/components/admin/Settings/SettingsGroup';
-import SettingsItem from '@/components/admin/Settings/SettingsItem';
+import SettingsGroup from '@/features/settings/SettingsGroup';
+import SettingsItem from '@/features/settings/SettingsItem';
 
 export default function SystemPreferencesPage() {
-  const { isLoading } = useQuery({
+  const { isLoading } = useSecureQuery({
     queryKey: ['globalSettings'],
     queryFn: async () => {
       const res = await axios.get('/api/admin/settings');
@@ -92,7 +91,7 @@ export default function SystemPreferencesPage() {
       await axios.post('/api/admin/push/subscribe', subscription);
       
       setIsPushEnabled(true);
-      alert('Real-time alerts enabled successfully! 🔔');
+      alert('Real-time alerts enabled successfully!');
     } catch (error) {
       console.error('Push subscription failed:', error);
       alert('Failed to enable notifications: ' + error.message);
@@ -102,8 +101,7 @@ export default function SystemPreferencesPage() {
   };
 
   return (
-    <AdminLayout>
-      <div className={styles.settingsContainer}>
+    <div className={styles.settingsContainer}>
         <SettingsGroup title="System Preferences">
           <SettingsItem 
             icon="/admin-images/notification-bell.png"
@@ -124,6 +122,5 @@ export default function SystemPreferencesPage() {
           />
         </SettingsGroup>
       </div>
-    </AdminLayout>
   );
 }

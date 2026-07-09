@@ -1,18 +1,18 @@
 'use client';
 
 import React from 'react';
-import AdminLayout from '@/components/admin/AdminLayout/AdminLayout';
 import styles from '../settings.module.css';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
+import { useSecureQuery, useSecureQueryClient } from 'secure-query-cache';
 import axios from 'axios';
 
-import SettingsGroup from '@/components/admin/Settings/SettingsGroup';
-import SettingsItem from '@/components/admin/Settings/SettingsItem';
+import SettingsGroup from '@/features/settings/SettingsGroup';
+import SettingsItem from '@/features/settings/SettingsItem';
 
 export default function SecurityPrivacyPage() {
-  const queryClient = useQueryClient();
+  const queryClient = useSecureQueryClient();
 
-  const { data: settings = {}, isLoading } = useQuery({
+  const { data: settings = {}, isLoading } = useSecureQuery({
     queryKey: ['globalSettings'],
     queryFn: async () => {
       const res = await axios.get('/api/admin/settings');
@@ -37,8 +37,7 @@ export default function SecurityPrivacyPage() {
   const isEnhancedAuditEnabled = settings.is_enhanced_audit_enabled === true;
 
   return (
-    <AdminLayout>
-      <div className={styles.settingsContainer}>
+    <div className={styles.settingsContainer}>
         <SettingsGroup title="Security & Privacy">
           <SettingsItem 
             icon="/admin-images/lock.png"
@@ -65,6 +64,5 @@ export default function SecurityPrivacyPage() {
           />
         </SettingsGroup>
       </div>
-    </AdminLayout>
   );
 }

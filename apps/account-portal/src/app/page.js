@@ -2,8 +2,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import LoginBox from '../components/LoginBox/LoginBox';
-import WelcomeScreen from '../components/WelcomeScreen/WelcomeScreen';
+import LoginBox from '@/features/auth/LoginBox/LoginBox';
+import WelcomeScreen from '@/features/welcome-screen/WelcomeScreen';
 import api from '../utils/api';
 import LoadingScreen from '../components/UI/LoadingScreen/LoadingScreen';
 

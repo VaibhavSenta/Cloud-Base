@@ -1,0 +1,115 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85); /* Dark background overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modalCard {
+  background: #121212; /* Dark card background */
+  border: 1px solid #262626; /* Instagram Style border */
+  border-radius: 20px;
+  padding: 28px 24px;
+  width: 90%;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
+  animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.title {
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  text-align: center;
+  letter-spacing: -0.2px;
+}
+
+.message {
+  color: #a8a8a8;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  text-align: center;
+  margin: 0 0 24px 0;
+}
+
+.buttonGroup {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.reactivateBtn {
+  background: #0095f6; /* Instagram Blue */
+  color: #ffffff;
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 12px 0;
+  width: 100%;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.reactivateBtn:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.reactivateBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cancelBtn {
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid #262626;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 12px 0;
+  width: 100%;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cancelBtn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.cancelBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@keyframes fadeIn {
+  from {
+    background: rgba(0, 0, 0, 0);
+  }
+  to {
+    background: rgba(0, 0, 0, 0.85);
+  }
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

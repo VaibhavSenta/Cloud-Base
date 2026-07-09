@@ -13,9 +13,9 @@ import InfoModal from '@/components/UI/InfoModal/InfoModal';
 import BottomSheet from '@/components/UI/BottomSheet/BottomSheet';
 
 // Feature Components
-import LoginBox from '@/components/LoginBox/LoginBox';
-import PersonalInfo from '@/components/PersonalInfo/PersonalInfo';
-import TwoFactorSettings from '@/components/TwoFactorSettings/TwoFactorSettings';
+import LoginBox from '@/features/auth/LoginBox/LoginBox';
+import PersonalInfo from '@/features/personal-info/PersonalInfo';
+import TwoFactorSettings from '@/features/two-factor-settings/TwoFactorSettings';
 
 // Layout & Global Components
 import Header from '@/components/Header/Header';

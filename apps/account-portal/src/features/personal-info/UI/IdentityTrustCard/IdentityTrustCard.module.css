@@ -1,0 +1,62 @@
+.cardFront {
+  background: rgba(255, 255, 255, 0.01); /* Solid dark translucent overlay to prevent slanting artifacts */
+  border: 1px solid rgba(163, 163, 163, 0.094);
+  border-radius: 36px;
+  padding: 1.8rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 380px; /* Aligned with Card3D height */
+  transition: border-color 0.3s;
+}
+
+.cardFront:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.cardTitle {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #666666;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin: 0 0 1.2rem 0;
+}
+
+.statusList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.statusItem {
+  display: flex;
+  flex-direction: column;
+  padding: 6px 1rem;
+  box-sizing: border-box;
+}
+
+.statusLabel {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #888888;
+  margin-bottom: 6px;
+}
+
+.statusValue {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.statusValueActive {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #0095f6;
+}
+
+.statusValueSecure {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #888888;
+}

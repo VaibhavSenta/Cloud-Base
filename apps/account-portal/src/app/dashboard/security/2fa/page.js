@@ -1,4 +1,4 @@
-import TwoFactorSettings from '@/components/TwoFactorSettings/TwoFactorSettings';
+import TwoFactorSettings from '@/features/two-factor-settings/TwoFactorSettings';
 
 export const metadata = {
   title: 'Two-Factor Authentication | Cloud-Base',

@@ -164,7 +164,9 @@ export default function QueryProvider({ children }) {
 
         if (error.response && error.response.status === 401) {
           console.warn("Unauthorized access detected. Redirecting to login...");
-          window.location.href = '/'; 
+          if (typeof window !== 'undefined' && window.location.pathname !== '/') {
+            window.location.href = '/'; 
+          }
         }
 
         if (error.response && (error.response.data?.code === 'DECRYPTION_FAILED' || error.response.data?.code === 'DECRYPTION_SESSION_EXPIRED' || error.response.status === 403)) {

@@ -2,11 +2,11 @@
 import Logo from '../../Logo/Logo';
 import styles from './LoadingScreen.module.css';
 
-const LoadingScreen = () => {
+const LoadingScreen = ({ fullScreen = true }) => {
   const brandName = "CLOUD-BASE";
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${fullScreen ? styles.fullScreen : styles.inline}`}>
       <div className={styles.loaderWrapper}>
         {/* Outer dashed spinning ring */}
         <div className={styles.orbitRing}></div>

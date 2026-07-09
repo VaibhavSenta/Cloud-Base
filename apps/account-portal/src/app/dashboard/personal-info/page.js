@@ -1,5 +1,5 @@
 'use client';
-import PersonalInfo from '../../../components/PersonalInfo/PersonalInfo';
+import PersonalInfo from '@/features/personal-info/PersonalInfo';
 
 /**
  * Personal Information Page

@@ -1,0 +1,31 @@
+.layoutRoot {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--background);
+}
+
+.titleBar {
+  position: fixed;
+  top: 0;
+  left: env(titlebar-area-x, 0);
+  width: env(titlebar-area-width, 100%);
+  height: env(titlebar-area-height, 0);
+  app-region: drag;
+  -webkit-app-region: drag;
+  z-index: 2000;
+  background: transparent;
+}
+
+.mainContent {
+  width: 100%;
+  padding: 110px 24px 40px; 
+  box-sizing: border-box;
+  min-height: 100vh;
+  padding-left: 304px; /* Space for Desktop Sidebar */
+  background-color: var(--background);
+}
+
+.subPageContent {
+  /* Keep default styling */
+}

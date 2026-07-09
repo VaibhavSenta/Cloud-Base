@@ -1,18 +1,18 @@
 'use client';
 
 import React from 'react';
-import AdminLayout from '@/components/admin/AdminLayout/AdminLayout';
 import styles from '../settings.module.css';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
+import { useSecureQuery, useSecureQueryClient } from 'secure-query-cache';
 import axios from 'axios';
 
-import SettingsGroup from '@/components/admin/Settings/SettingsGroup';
-import SettingsItem from '@/components/admin/Settings/SettingsItem';
+import SettingsGroup from '@/features/settings/SettingsGroup';
+import SettingsItem from '@/features/settings/SettingsItem';
 
 export default function DataManagementPage() {
-  const queryClient = useQueryClient();
+  const queryClient = useSecureQueryClient();
 
-  const { data: settings = {}, isLoading } = useQuery({
+  const { data: settings = {}, isLoading } = useSecureQuery({
     queryKey: ['globalSettings'],
     queryFn: async () => {
       const res = await axios.get('/api/admin/settings');
@@ -33,8 +33,7 @@ export default function DataManagementPage() {
   const isAutoPurgeEnabled = settings.is_auto_purge_enabled !== false;
 
   return (
-    <AdminLayout>
-      <div className={styles.settingsContainer}>
+    <div className={styles.settingsContainer}>
         <SettingsGroup title="Data Management">
           <SettingsItem 
             icon="/admin-images/auto-delete.png"
@@ -49,6 +48,5 @@ export default function DataManagementPage() {
           />
         </SettingsGroup>
       </div>
-    </AdminLayout>
   );
 }

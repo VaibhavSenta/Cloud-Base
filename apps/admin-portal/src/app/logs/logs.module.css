@@ -85,6 +85,12 @@
   background: rgba(255, 255, 255, 0.01);
 }
 
+/* Performance: skip rendering off-screen rows */
+.logsTable tbody tr {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 56px;
+}
+
 .timeCell {
   color: #869397;
   white-space: nowrap;

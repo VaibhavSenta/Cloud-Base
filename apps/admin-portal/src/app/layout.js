@@ -1,4 +1,5 @@
 import "./globals.css";
+import AdminLayout from "@/components/AdminLayout/Component";
 import QueryProvider from "@/components/admin/QueryProvider";
 export const metadata = {
   title: "CloudBase Admin Console",
@@ -32,7 +33,9 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <QueryProvider>
-          {children}
+          <AdminLayout>
+            {children}
+          </AdminLayout>
         </QueryProvider>
       </body>
     </html>

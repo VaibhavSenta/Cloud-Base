@@ -5,7 +5,7 @@
   justify-content: center; /* Center the floating pill */
   position: fixed;
   z-index: 2000;
-  top: 16px;
+  top: 24px;
   left: 0;
   width: 100%;
   height: auto;
@@ -226,12 +226,12 @@
 
 @media (max-width: 768px) {
   .headerWrapper { 
-    top: 12px;
+    top: 20px;
     height: auto; 
     min-height: 60px; 
   }
   .header { 
-    width: calc(100% - 24px); 
+    width: calc(100% - 36px); 
     height: 55px; 
     animation: header-animation-mobile 3s cubic-bezier(0.16, 1, 0.3, 1);
   }
