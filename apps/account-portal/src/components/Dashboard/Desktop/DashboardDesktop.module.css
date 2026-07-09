@@ -23,7 +23,6 @@
   color: #666666;
 }
 
-/* Status Cards Grid */
 .statusSection {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

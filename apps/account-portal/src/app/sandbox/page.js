@@ -202,7 +202,7 @@ export default function SandboxPage() {
           </div>
         );
       case 'LoadingScreen':
-        return <LoadingScreen />;
+        return <LoadingScreen fullScreen={false} />;
       case 'LoginBox':
         return renderCenteringWrapper(
           <div className={styles.loginFrameWrapper}>
