@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  # --- ACCOUNT MODULE ---
+  account-api:
+    build:
+      context: .
+      dockerfile: ./services/account-api/Dockerfile
+    ports:
+      - "5010:5010"
+    volumes:
+      - .:/app
+      - /app/services/account-api/node_modules
+
+  account-portal:
+    build:
+      context: .
+      dockerfile: ./apps/account-portal/Dockerfile
+    ports:
+      - "3001:3001"
+    volumes:
+      - .:/app
+      - /app/apps/account-portal/node_modules
+      - /app/apps/account-portal/.next
+
+  # --- USER MODULE ---
+  user-api:
+    build:
+      context: .
+      dockerfile: ./services/user-api/Dockerfile
+    ports:
+      - "5005:5005"
+    volumes:
+      - .:/app
+      - /app/services/user-api/node_modules
+
+  user-portal:
+    build:
+      context: .
+      dockerfile: ./apps/user-portal/Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/apps/user-portal/node_modules
+      - /app/apps/user-portal/.next
+
+  # --- ADMIN MODULE ---
+  admin-api:
+    build:
+      context: .
+      dockerfile: ./services/admin-api/Dockerfile
+    ports:
+      - "5001:5001"
+    volumes:
+      - .:/app
+      - /app/services/admin-api/node_modules
+
+  admin-portal:
+    build:
+      context: .
+      dockerfile: ./apps/admin-portal/Dockerfile
+    ports:
+      - "3002:3002"
+    volumes:
+      - .:/app
+      - /app/apps/admin-portal/node_modules
+      - /app/apps/admin-portal/.next
