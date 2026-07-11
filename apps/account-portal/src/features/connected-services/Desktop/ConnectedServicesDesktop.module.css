@@ -4,7 +4,7 @@
   align-items: center;
   width: 100%;
   min-height: 100vh;
-  background: #000000;
+  background: transparent;
   padding: 40px;
   box-sizing: border-box;
 }
@@ -39,7 +39,7 @@
 }
 
 .card {
-  background: #000000;
+  background: transparent;
   border: 1px solid #262626;
   border-radius: 9999px;
   padding: 16px 28px;
@@ -61,8 +61,112 @@
 }
 
 .serviceName {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: #ffffff;
-  letter-spacing: -0.1px;
+}
+
+.exploreSection {
+  margin-top: 48px;
+  width: 100%;
+  max-width: 900px;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.exploreTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -0.3px;
+  text-align: left;
+}
+
+.seeAllLink {
+  color: #0095f6;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.seeAllLink:hover {
+  opacity: 0.8;
+}
+
+.exploreGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+
+.appStoreCard {
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid #262626;
+  border-radius: 16px;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.appInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+}
+
+.appName {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.appTagline {
+  font-size: 0.78rem;
+  color: #888888;
+}
+
+.getBtn {
+  background: #262626;
+  color: #0095f6;
+  border: none;
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 6px 18px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.getBtn:hover {
+  background: #363636;
+}
+
+.emptyState {
+  width: 100%;
+  max-width: 900px;
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px dashed #262626;
+  border-radius: 16px;
+  padding: 40px 20px;
+  text-align: center;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.emptyText {
+  font-size: 0.88rem;
+  color: #888888;
+  margin: 0;
 }

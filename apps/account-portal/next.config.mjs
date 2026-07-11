@@ -10,7 +10,7 @@ const withPWA = withPWAInit({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Turbopack compatibility if needed
-  transpilePackages: ['lucide-react', 'next-pwa'],
+  transpilePackages: ['lucide-react', 'next-pwa', 'secure-query-cache'],
   allowedDevOrigins: process.env.NODE_ENV === 'development' ? ['172.20.10.2'] : [],
 
   images: {

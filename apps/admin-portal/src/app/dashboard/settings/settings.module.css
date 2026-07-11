@@ -1,54 +1,58 @@
+/* apps/admin-portal/src/app/dashboard/settings/settings.module.css */
+
 .settingsContainer {
-  padding: 40px;
+  padding: var(--space-6);
   max-width: 1000px;
   margin: 0 auto;
 }
 
 .settingsMenuContainer {
-  padding: 40px;
+  padding: var(--space-6);
   max-width: 800px;
   margin: 0 auto;
 }
 
 .headerSection {
-  margin-bottom: 48px;
+  margin-bottom: var(--space-8);
 }
 
 .headerSection h1 {
-  font-size: 32px;
+  font-size: var(--text-2xl);
   font-weight: 700;
-  color: #fff;
-  margin: 0 0 8px 0;
+  color: var(--text-1);
+  margin: 0 0 var(--space-2) 0;
 }
 
 .headerSection p {
   font-size: 16px;
-  color: #869397;
+  color: var(--text-2);
   margin: 0;
 }
 
 .categoryList {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-4);
 }
 
 .categoryCard {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
-  padding: 24px;
+  background: var(--bg-surface-1);
+  -webkit-backdrop-filter: var(--blur-md);
+  backdrop-filter: var(--blur-md);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
   display: flex;
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--duration) var(--ease);
 }
 
 .categoryCard:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-surface-2);
   transform: translateY(-2px);
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--border-hover);
 }
 
 .categoryCard:active {
@@ -58,59 +62,60 @@
 .categoryLeft {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: var(--space-5);
 }
 
 .categoryIconBox {
   width: 52px;
   height: 52px;
-  background: rgba(138, 180, 248, 0.1);
-  border-radius: 14px;
+  background: var(--accent-dim);
+  border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--accent);
 }
 
 .categoryInfo h3 {
-  margin: 0 0 4px 0;
-  font-size: 18px;
-  color: #fff;
+  margin: 0 0 var(--space-1) 0;
+  font-size: var(--text-lg);
+  color: var(--text-1);
   font-weight: 600;
 }
 
 .categoryInfo p {
   margin: 0;
   font-size: 13px;
-  color: #869397;
+  color: var(--text-2);
 }
 
 .chevron {
-  color: #8ab4f8;
+  color: var(--accent);
   font-size: 20px;
   font-weight: bold;
 }
 
 @media (max-width: 768px) {
   .settingsMenuContainer, .settingsContainer {
-    padding: 24px 16px;
+    padding: var(--space-5) var(--space-4);
   }
 
   .headerSection {
-    margin-bottom: 32px;
+    margin-bottom: var(--space-7);
   }
 
-  .headerSection h1 { font-size: 24px; }
-  .headerSection p { font-size: 14px; }
+  .headerSection h1 { font-size: var(--text-xl); }
+  .headerSection p { font-size: var(--text-sm); }
 
   .categoryCard {
-    padding: 20px;
-    border-radius: 16px;
+    padding: var(--space-5);
+    border-radius: var(--radius-lg);
   }
 
   .categoryIconBox {
     width: 44px;
     height: 44px;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
   }
 
   .categoryInfo h3 { font-size: 16px; }

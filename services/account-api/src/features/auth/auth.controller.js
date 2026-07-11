@@ -351,6 +351,44 @@ const resend2faLogin = async (req, res) => {
   }
 };
 
+const connectService = async (req, res) => {
+    try {
+        const userId = req.user.userId;
+        const { serviceId } = req.body;
+        
+        if (!['vault', 'chat', 'social'].includes(serviceId)) {
+            throw new Error('Invalid service ID');
+        }
+
+        const user = await USER.findById(userId);
+        
+        const isConnected = user.connectedServices.some(s => s.serviceId === serviceId);
+        if (!isConnected) {
+            user.connectedServices.push({ serviceId });
+            await user.save();
+        }
+
+        res.status(200).json({ success: true, message: `${serviceId} connected successfully`, data: user.connectedServices });
+    } catch (error) {
+        res.status(400).json({ success: false, message: error.message });
+    }
+};
+
+const disconnectService = async (req, res) => {
+    try {
+        const userId = req.user.userId;
+        const { serviceId } = req.body;
+
+        const user = await USER.findById(userId);
+        user.connectedServices = user.connectedServices.filter(s => s.serviceId !== serviceId);
+        await user.save();
+
+        res.status(200).json({ success: true, message: `${serviceId} disconnected successfully`, data: user.connectedServices });
+    } catch (error) {
+        res.status(400).json({ success: false, message: error.message });
+    }
+};
+
 module.exports = { 
     handshake, 
     signup, 
@@ -370,5 +408,7 @@ module.exports = {
     resend2faLogin,
     deactivateAccount,
     deleteAccount,
-    reactivateAccount
+    reactivateAccount,
+    connectService,
+    disconnectService
 };

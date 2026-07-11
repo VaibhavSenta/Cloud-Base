@@ -1,30 +1,39 @@
+/* apps/admin-portal/src/features/users-management/UserFilters/UserFiltersMobile.module.css */
+
 .mobileFilters {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 24px;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
   width: 100%;
 }
 
 .searchBox {
   flex: 1;
-  background: #1d2022;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
-  padding: 0 12px;
-  gap: 8px;
+  padding: 0 var(--space-3);
+  gap: var(--space-2);
+  transition: all var(--duration) var(--ease);
+}
+
+.searchBox:focus-within {
+  border-color: var(--accent);
+  background: var(--bg-surface-2);
 }
 
 .searchBox input {
   background: transparent;
   border: none;
-  color: #e0e3e5;
-  padding: 10px 0;
+  color: var(--text-1);
+  padding: var(--space-2) 0;
   width: 100%;
   outline: none;
   font-size: 13px;
+  font-family: var(--font);
 }
 
 .menuContainer {
@@ -34,33 +43,42 @@
 .menuBtn {
   width: 38px;
   height: 38px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  color: #869397;
-  border-radius: 10px;
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: all var(--duration) var(--ease);
+}
+
+.menuBtn:hover {
+  background: var(--bg-surface-2);
+  color: var(--text-1);
 }
 
 .menuBtn.active {
-  color: var(--primary);
-  border-color: var(--primary);
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-dim);
 }
 
 .dropdown {
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  background: #1d2022;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  padding: 16px;
+  background: var(--bg-surface-3);
+  -webkit-backdrop-filter: var(--blur-lg);
+  backdrop-filter: var(--blur-lg);
+  border: 1px solid var(--border-hover);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
   width: 200px;
   z-index: 100;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-  animation: slideDown 0.2s ease-out;
+  box-shadow: var(--shadow-lg);
+  animation: slideDown var(--duration) var(--ease);
 }
 
 @keyframes slideDown {
@@ -69,10 +87,10 @@
 }
 
 .dropdownTitle {
-  font-size: 10px;
+  font-size: var(--text-xs);
   text-transform: uppercase;
-  color: #555;
-  margin: 0 0 12px 0;
+  color: var(--text-3);
+  margin: 0 0 var(--space-3) 0;
   font-weight: 700;
   letter-spacing: 0.5px;
 }
@@ -80,24 +98,36 @@
 .chipGrid {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .filterChip {
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  color: #869397;
-  border-radius: 8px;
-  font-size: 12px;
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
   font-weight: 600;
   text-align: left;
   text-transform: capitalize;
   cursor: pointer;
+  font-family: var(--font);
+  transition: all var(--duration) var(--ease);
+}
+
+.filterChip:hover {
+  background: var(--bg-surface-2);
+  color: var(--text-1);
 }
 
 .activeChip {
-  background: var(--primary);
-  color: #003640;
-  border-color: var(--primary);
+  background: var(--accent);
+  color: var(--text-1);
+  border-color: var(--accent);
+}
+
+.activeChip:hover {
+  background: rgba(0, 149, 246, 0.85);
+  color: var(--text-1);
 }

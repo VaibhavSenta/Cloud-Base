@@ -1,83 +1,98 @@
+/* apps/admin-portal/src/app/profile/profile.module.css */
+
 .profileWrapper {
-  padding: 40px;
+  padding: var(--space-6);
   max-width: 1100px;
   margin: 0 auto;
 }
 
 .pageHeader {
-  margin-bottom: 48px;
+  margin-bottom: var(--space-8);
 }
 
 .pageHeader h1 {
-  font-size: 32px;
+  font-size: var(--text-2xl);
   font-weight: 700;
-  color: #fff;
-  margin: 0 0 8px 0;
+  color: var(--text-1);
+  margin: 0 0 var(--space-2) 0;
 }
 
 .pageHeader p {
-  color: #869397;
+  color: var(--text-2);
   font-size: 14px;
 }
 
 .sectionBlock {
-  margin-bottom: 48px;
+  margin-bottom: var(--space-8);
 }
 
 .sectionHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: var(--space-5);
 }
 
 .sectionHeader h2 {
-  font-size: 18px;
+  font-size: var(--text-lg);
   font-weight: 600;
-  color: #e0e3e5;
+  color: var(--text-1);
   margin: 0;
 }
 
 .badge {
-  font-size: 10px;
-  padding: 4px 10px;
-  background: rgba(255, 255, 255, 0.05);
-  color: #888;
-  border-radius: 6px;
+  font-size: var(--text-xs);
+  padding: 4px var(--space-2);
+  background: var(--bg-surface-2);
+  color: var(--text-2);
+  border-radius: var(--radius-sm);
   text-transform: uppercase;
   font-weight: 800;
+  border: 1px solid var(--border);
 }
 
 .sessionsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  gap: 20px;
+  gap: var(--space-5);
 }
 
 .dangerTitle {
-  color: #ff4d4d !important;
+  color: var(--error) !important;
 }
 
 .logoutCard {
-  background: rgba(239, 68, 68, 0.02);
-  border: 1px solid rgba(239, 68, 68, 0.1);
-  border-radius: 20px;
-  padding: 32px;
+  background: var(--error-dim);
+  border: 1px solid rgba(255, 69, 58, 0.15);
+  border-radius: var(--radius-lg);
+  padding: var(--space-7);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 24px;
+  gap: var(--space-6);
+  position: relative;
+  overflow: hidden;
+}
+
+.logoutCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--error);
 }
 
 .logoutInfo h3 {
-  font-size: 18px;
-  color: #fff;
-  margin: 0 0 8px 0;
+  font-size: var(--text-lg);
+  color: var(--text-1);
+  margin: 0 0 var(--space-2) 0;
 }
 
 .logoutInfo p {
   font-size: 13px;
-  color: #666;
+  color: var(--text-2);
   margin: 0;
   max-width: 500px;
 }
@@ -85,27 +100,30 @@
 .logoutBtn {
   display: flex;
   align-items: center;
-  gap: 12px;
-  background: #ff4d4d00;
-  color: #fff;
-  border: 1px solid rgba(143, 24, 24, 0.473);
-  padding: 14px 28px;
-  border-radius: 14px;
+  gap: var(--space-2);
+  background: transparent;
+  color: var(--error);
+  border: 1px solid rgba(255, 69, 58, 0.3);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-md);
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.24s ease-in-out;
+  font-family: var(--font);
+  transition: all var(--duration) var(--ease);
 }
 
 .logoutBtn:hover { 
-  transform: translateY(-2px) scale(1.015) ;
-  box-shadow: 0px 20px 30px -25px  rgba(247, 247, 247, 0.863); 
-  background-color: #8804041c;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 69, 58, 0.2); 
+  background-color: var(--error);
+  color: var(--text-1);
+  border-color: var(--error);
 }
 
 .loader, .errorBanner, .emptySessions {
-  padding: 60px;
+  padding: var(--space-8);
   text-align: center;
-  color: #555;
+  color: var(--text-3);
   font-weight: 600;
 }
 
@@ -115,67 +133,70 @@
 
 @media (max-width: 768px) {
   .profileWrapper {
-    padding: 24px 16px;
+    padding: var(--space-5) var(--space-4);
   }
 
   .mobileQuickLinks {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    margin: 24px 0;
+    gap: var(--space-4);
+    margin: var(--space-6) 0;
   }
 
   .quickLinkCard {
-    background: #1d2022;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 16px;
-    padding: 16px 20px;
+    background: var(--bg-surface-1);
+    -webkit-backdrop-filter: var(--blur-md);
+    backdrop-filter: var(--blur-md);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4) var(--space-5);
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all var(--duration) var(--ease);
   }
 
   .quickLinkCard:active {
-    background: #272a2c;
+    background: var(--bg-surface-2);
     transform: scale(0.98);
   }
 
   .quickLinkIcon {
     font-size: 20px;
+    color: var(--accent);
   }
 
   .quickLinkCard h4 {
     margin: 0;
-    color: #fff;
+    color: var(--text-1);
     font-size: 15px;
   }
 
   .quickLinkCard p {
-    margin: 4px 0 0 0;
-    color: #869397;
+    margin: var(--space-1) 0 0 0;
+    color: var(--text-2);
     font-size: 11px;
   }
 
   .arrow {
-    color: #8ab4f8;
+    color: var(--accent);
     font-size: 18px;
     font-weight: bold;
   }
 
-  .pageHeader h1 { font-size: 24px; }
-  .pageHeader p { font-size: 12px; }
+  .pageHeader h1 { font-size: var(--text-xl); }
+  .pageHeader p { font-size: var(--text-xs); }
 
   .sessionsGrid {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: var(--space-3);
   }
 
   .logoutCard {
     flex-direction: column;
     text-align: center;
-    padding: 24px;
+    padding: var(--space-5);
   }
 
   .logoutBtn {

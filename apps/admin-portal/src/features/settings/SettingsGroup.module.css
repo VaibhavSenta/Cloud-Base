@@ -1,35 +1,37 @@
+/* apps/admin-portal/src/features/settings/SettingsGroup.module.css */
+
 .settingsGroup {
-  margin-bottom: 32px;
-  background-color: #25232336;
-  -webkit-backdrop-filter: blur(26px);
-  backdrop-filter: blur(26px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
+  margin-bottom: var(--space-7);
+  background-color: var(--bg-surface-1);
+  -webkit-backdrop-filter: var(--blur-md);
+  backdrop-filter: var(--blur-md);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
   overflow: hidden;
 }
 
 .groupHeader {
-  padding: 16px 24px;
-  background: rgba(255, 255, 255, 0);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: var(--space-4) var(--space-6);
+  background: var(--bg-surface-2);
+  border-bottom: 1px solid var(--border);
 }
 
 .groupHeader h2 {
-  font-size: 11px;
+  font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--primary);
+  color: var(--accent);
   font-weight: 700;
   margin: 0;
 }
 
 @media (max-width: 768px) {
   .settingsGroup {
-    border-radius: 16px;
-    margin-bottom: 24px;
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-6);
   }
   
   .groupHeader {
-    padding: 12px 20px;
+    padding: var(--space-3) var(--space-5);
   }
 }

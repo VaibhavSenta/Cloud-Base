@@ -2,44 +2,48 @@
 
 .header {
   height: 80px;
-  background: rgba(10, 10, 10, 0);
+  background: transparent;
   position: fixed;
   top: env(titlebar-area-height, 0);
   left: 0;
   right: 0;
   z-index: 900;
-  padding: 0 40px;
+  padding: 0 var(--space-7);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .headerWraper {
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
-  
-  height: 64px;
+  -webkit-backdrop-filter: var(--blur-md);
+  backdrop-filter: var(--blur-md);
+  height: 56px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   max-width: 1400px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 0 18px 0 0;
-  border-radius: 100px;
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border);
+  padding: 0 var(--space-5) 0 0;
+  border-radius: var(--radius-full);
+  transition: all var(--duration) var(--ease);
+}
+
+.headerWraper:hover {
+  border-color: var(--border-hover);
 }
 
 .headerLeft, .headerRight {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: var(--space-6);
 }
 
 .mobileMenuBtn {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #fff;
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-1);
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -47,48 +51,68 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: all var(--duration) var(--ease);
+}
+
+.mobileMenuBtn:hover {
+  background: var(--bg-surface-3);
 }
 
 .logoText {
-  font-size: 20px;
-  font-weight: 800;
-  color: #fff;
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--text-1);
   letter-spacing: -0.5px;
-  padding-left: 24px;
+  padding-left: var(--space-6);
 }
 
 .logoText span {
-  color: var(--primary);
+  color: var(--accent);
 }
 
-/* Network latency badges */
+/* ── Network Status ── */
 .networkStatus {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 6px 16px;
-  background-color: rgba(255, 255, 255, 0.03);
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  gap: var(--space-3);
+  padding: var(--space-1) var(--space-4);
+  background-color: var(--bg-surface-1);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
 }
 
 .statusDot {
-  width: 8px;
-  height: 8px;
-  background-color: #10b981;
+  width: 7px;
+  height: 7px;
+  background-color: var(--success);
   border-radius: 50%;
-  box-shadow: 0 0 8px #10b981;
+  box-shadow: 0 0 8px var(--success);
 }
 
-.statusText { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #869397; }
-.statusDivider { width: 1px; height: 16px; background: rgba(255, 255, 255, 0.1); }
-.latencyText { font-size: 10px; color: #555; }
+.statusText {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-2);
+}
 
-/* User profile details */
+.statusDivider {
+  width: 1px;
+  height: 14px;
+  background: var(--border-hover);
+}
+
+.latencyText {
+  font-size: var(--text-xs);
+  color: var(--text-3);
+}
+
+/* ── User Section ── */
 .userSection {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .notifBtn {
@@ -104,35 +128,51 @@
   position: absolute;
   top: -2px;
   right: -2px;
-  width: 8px;
-  height: 8px;
-  background: var(--primary);
-  border: 2px solid #000;
+  width: 7px;
+  height: 7px;
+  background: var(--accent);
+  border: 2px solid var(--bg-base);
   border-radius: 50%;
 }
 
-.userName { font-size: 14px; font-weight: 500; color: #fff; }
+.userName {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-1);
+}
 
 .userAvatar {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-hover);
   overflow: hidden;
   cursor: pointer;
+  transition: border-color var(--duration) var(--ease);
 }
-.userAvatar img { width: 100%; height: 100%; object-fit: cover; }
 
-/* --- MOBILE SUB-PAGE HEADER --- */
+.userAvatar:hover {
+  border-color: var(--accent);
+}
+
+.userAvatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── Sub-Page Header (Mobile) ── */
 .subPageHeader {
-  display: none; /* Hidden on desktop */
+  display: none;
 }
 
+/* ── Desktop ── */
 @media (min-width: 1024px) {
   .header { left: 280px; }
   .mobileMenuBtn { display: none; }
 }
 
+/* ── Mobile ── */
 @media (max-width: 768px) {
   .subPageHeader {
     display: flex;
@@ -140,33 +180,37 @@
     top: env(titlebar-area-height, 0);
     left: 0;
     right: 0;
-    height: 64px;
-    background: #000000;
-    background: linear-gradient(180deg,rgba(0, 0, 0, 1) 21%, rgba(255, 255, 255, 0) 94%);
+    height: 60px;
+    background: linear-gradient(180deg, var(--bg-base) 40%, transparent 100%);
     z-index: 1001;
     align-items: center;
     justify-content: space-between;
-    padding: 0 16px;
+    padding: 0 var(--space-4);
   }
   
   .backBtn {
-    background: rgba(255, 255, 255, 0.034);
-    -webkit-backdrop-filter: blur(20px);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--bg-surface-1);
+    -webkit-backdrop-filter: var(--blur-md);
+    backdrop-filter: var(--blur-md);
+    border: 1px solid var(--border);
     width: 40px;
     height: 40px;
-    border-radius: 200px;
+    border-radius: var(--radius-full);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    transition: all var(--duration) var(--ease);
+  }
+
+  .backBtn:hover {
+    background: var(--bg-surface-2);
   }
 
   .subPageTitle {
-    font-size: 18px;
+    font-size: var(--text-lg);
     font-weight: 700;
-    color: #fff;
+    color: var(--text-1);
     margin: 0;
   }
 
@@ -174,13 +218,12 @@
     display: none !important;
   }
 
-  .header { padding: 0 16px; height: 70px; }
-  .headerWraper { border-radius: 200px; height: 54px; padding: 0 12px; }
+  .header { padding: 0 var(--space-4); height: 70px; }
+  .headerWraper { border-radius: var(--radius-full); height: 50px; padding: 0 var(--space-3); }
   .networkStatus, .userName { display: none; }
   
-  /* Hide the hamburger menu button on mobile since we have a bottom bar now */
   .mobileMenuBtn { display: none; }
   .logoText { display: block; padding-left: 0; }
   
-  .headerLeft { gap: 12px; }
+  .headerLeft { gap: var(--space-3); }
 }

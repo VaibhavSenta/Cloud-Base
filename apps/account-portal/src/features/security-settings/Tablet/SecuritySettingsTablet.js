@@ -86,7 +86,7 @@ export default function SecuritySettingsTablet() {
       return res.data;
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(['user'], (old) => ({ ...old, ...data.data }));
+      queryClient.setSecureQueryData(['user'], (old) => ({ ...old, ...data.data }));
       handleCloseModal();
     },
     onError: (err) => {

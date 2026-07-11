@@ -1,12 +1,12 @@
+/* apps/admin-portal/src/features/settings/SettingsItemMobile.module.css */
+
 .mobileRow {
-  background-color: #2e353600;
-  -webkit-backdrop-filter: blur(26px);
-  backdrop-filter: blur(26px);
-  padding: 16px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  background-color: transparent;
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--space-2);
 }
 
 .mobileRow:last-child {
@@ -21,13 +21,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .leftInfo {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
   flex: 1;
   min-width: 0;
 }
@@ -35,13 +35,14 @@
 .iconBox {
   width: 32px;
   height: 32px;
-  background: #0b0f10;
-  border-radius: 8px;
+  background: var(--bg-surface-2);
+  border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  color: var(--accent);
 }
 
 .titleArea {
@@ -53,14 +54,14 @@
 .titleLine {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-2);
 }
 
 .titleLine h4 {
   margin: 0;
   font-size: 14px;
   font-weight: 600;
-  color: #fff;
+  color: var(--text-1);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -69,11 +70,12 @@
 .beta {
   font-size: 8px;
   padding: 1px 4px;
-  background: rgba(5, 100, 217, 0.603);
-  color: var(--primary);
-  border-radius: 3px;
+  background: var(--accent-dim);
+  color: var(--accent);
+  border-radius: var(--radius-sm);
   text-transform: uppercase;
   font-weight: 800;
+  border: 1px solid rgba(0, 149, 246, 0.15);
 }
 
 .status {
@@ -85,7 +87,7 @@
 
 .desc {
   font-size: 12px;
-  color: #666;
+  color: var(--text-2);
   margin: 0;
   line-height: 1.4;
 }

@@ -1,9 +1,24 @@
 'use client';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import styles from './ConnectedServicesMobile.module.css';
 
-export default function ConnectedServicesMobile() {
+export default function ConnectedServicesMobile({ connectedServices }) {
   const router = useRouter();
+
+  const services = [
+    { id: 'vault', name: 'Cloud Vault', tagline: 'Secure storage & sync parameters', path: '/dashboard/connected-services/vault' },
+    { id: 'chat', name: 'Cloud Chat', tagline: 'Encrypted communication terminal', path: '/dashboard/connected-services/chat' },
+    { id: 'social', name: 'Cloud Social', tagline: 'Privacy-focused fediverse sharing', path: '/dashboard/connected-services/social' }
+  ];
+
+  const connectedList = services.filter(service => 
+    connectedServices.some(cs => cs.serviceId === service.id)
+  );
+
+  const availableList = services.filter(service => 
+    !connectedServices.some(cs => cs.serviceId === service.id)
+  );
 
   return (
     <div className={styles.container}>
@@ -14,31 +29,64 @@ export default function ConnectedServicesMobile() {
         </p>
       </header>
 
-      <div className={styles.content}>
-        {/* Card 1: Cloud Vault */}
-        <div 
-          className={styles.card} 
-          onClick={() => router.push('/dashboard/connected-services/vault')}
-        >
-          <span className={styles.serviceName}>Cloud Vault</span>
+      {connectedList.length > 0 ? (
+        <div className={styles.content}>
+          {connectedList.map(service => (
+            <div 
+              key={service.id}
+              className={styles.card} 
+              onClick={() => router.push(service.path)}
+            >
+              <span className={styles.serviceName}>{service.name}</span>
+            </div>
+          ))}
         </div>
+      ) : (
+        <div 
+          className={styles.emptyState} 
+          onClick={() => router.push('/dashboard/connected-services/explore')}
+          style={{ cursor: 'pointer' }}
+        >
+          <p className={styles.emptyText}>No services are connected to your account yet.</p>
+        </div>
+      )}
 
-        {/* Card 2: Cloud Chat */}
-        <div 
-          className={styles.card} 
-          onClick={() => router.push('/dashboard/connected-services/chat')}
-        >
-          <span className={styles.serviceName}>Cloud Chat</span>
-        </div>
+      {availableList.length > 0 && (
+        <section className={styles.exploreSection}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.exploreTitle}>Explore Available Services</h2>
+          </div>
+          <div className={styles.exploreGrid}>
+            {availableList.map(app => (
+              <div key={app.id} className={styles.appStoreCard}>
+                <div className={styles.appInfo}>
+                  <span className={styles.appName}>{app.name}</span>
+                  <span className={styles.appTagline}>{app.tagline}</span>
+                </div>
+                <button 
+                  className={styles.getBtn}
+                  onClick={() => router.push(`/dashboard/connected-services/explore/${app.id}`)}
+                >
+                  GET
+                </button>
+              </div>
+            ))}
 
-        {/* Card 3: Cloud Social */}
-        <div 
-          className={styles.card} 
-          onClick={() => router.push('/dashboard/connected-services/social')}
-        >
-          <span className={styles.serviceName}>Cloud Social</span>
-        </div>
-      </div>
+            {/* App Store style Explore All Card at the end of the scroll list */}
+            <div 
+              className={styles.appStoreCard}
+              onClick={() => router.push('/dashboard/connected-services/explore')}
+              style={{ cursor: 'pointer' }}
+            >
+              <div className={styles.appInfo}>
+                <span className={styles.appName}>Explore All</span>
+                <span className={styles.appTagline}>Discover more apps</span>
+              </div>
+              <span className={styles.arrowIcon}>→</span>
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   );
 }

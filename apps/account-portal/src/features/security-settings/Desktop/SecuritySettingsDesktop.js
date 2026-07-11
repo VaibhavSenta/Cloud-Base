@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { useSecureQuery, useSecureQueryClient } from '../../../hooks/useSecureQuery';
@@ -94,7 +94,7 @@ export default function SecuritySettingsDesktop() {
       return res.data;
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(['user'], (old) => ({ ...old, ...data.data }));
+      queryClient.setSecureQueryData(['user'], (old) => ({ ...old, ...data.data }));
       handleCloseModal();
     },
     onError: (err) => {
@@ -164,7 +164,7 @@ export default function SecuritySettingsDesktop() {
     }
   });
 
-  const handleEditClick = (field) => {
+  const handleEditClick = useCallback((field) => {
     setEditField(field);
     setErrorMessage('');
     setIsOtpSent(false);
@@ -185,14 +185,14 @@ export default function SecuritySettingsDesktop() {
     } else if (field === 'deactivate' || field === 'delete') {
       setFormVal({ password: '', otpCode: '', confirmText: '' });
     }
-  };
+  }, [user]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = useCallback((e) => {
     const { name, value } = e.target;
     setFormVal(prev => ({ ...prev, [name]: value }));
-  };
+  }, []);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setEditField(null);
     setFormVal({});
     setIsOtpSent(false);
@@ -201,7 +201,7 @@ export default function SecuritySettingsDesktop() {
     setIsSupportSubmitted(false);
     setAuthenticatorSetupData(null);
     setAuthenticatorCode('');
-  };
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();

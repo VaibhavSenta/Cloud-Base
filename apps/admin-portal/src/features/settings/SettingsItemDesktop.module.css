@@ -1,10 +1,12 @@
+/* apps/admin-portal/src/features/settings/SettingsItemDesktop.module.css */
+
 .settingRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 24px;
-  transition: background 0.2s ease;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  padding: var(--space-5) var(--space-6);
+  transition: background var(--duration) var(--ease);
+  border-bottom: 1px solid var(--border);
 }
 
 .settingRow:last-child {
@@ -12,7 +14,7 @@
 }
 
 .settingRow:hover {
-  background: rgba(255, 255, 255, 0.01);
+  background: var(--bg-surface-2);
 }
 
 .disabled {
@@ -21,7 +23,7 @@
 
 .rowLeft {
   display: flex;
-  gap: 20px;
+  gap: var(--space-5);
   align-items: center;
   flex: 1;
 }
@@ -29,13 +31,14 @@
 .iconBox {
   width: 40px;
   height: 40px;
-  background: #0b0f10;
-  border-radius: 10px;
+  background: var(--bg-surface-2);
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  color: var(--accent);
 }
 
 .info {
@@ -46,30 +49,31 @@
 .titleLine {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-2);
   margin-bottom: 4px;
 }
 
 .info h3 {
   font-size: 15px;
   font-weight: 600;
-  color: #e0e3e5;
+  color: var(--text-1);
   margin: 0;
 }
 
 .betaBadge {
   font-size: 9px;
   padding: 2px 6px;
-  background: rgba(5, 102, 217, 0.1);
-  color: var(--primary);
-  border-radius: 4px;
+  background: var(--accent-dim);
+  color: var(--accent);
+  border-radius: var(--radius-sm);
   text-transform: uppercase;
   font-weight: 800;
+  border: 1px solid rgba(0, 149, 246, 0.15);
 }
 
 .info p {
   font-size: 13px;
-  color: #869397;
+  color: var(--text-2);
   margin: 0;
   line-height: 1.4;
   max-width: 500px;
@@ -78,12 +82,12 @@
 .rowRight {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-left: 20px;
+  gap: var(--space-4);
+  margin-left: var(--space-5);
 }
 
 .statusText {
-  font-size: 10px;
+  font-size: var(--text-xs);
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;

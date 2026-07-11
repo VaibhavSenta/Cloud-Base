@@ -29,8 +29,16 @@ export function useSecureQuery(options) {
   // Decrypt data in-memory for the rendering component
   const decryptedData = useMemo(() => {
     if (!queryResult.data) return undefined;
-    return localDecrypt(queryResult.data);
-  }, [queryResult.data]);
+    const decrypted = localDecrypt(queryResult.data);
+    if (decrypted === null) {
+      // Decryption failure (likely due to HMR reload / key regeneration). Force refetch.
+      setTimeout(() => {
+        queryResult.refetch();
+      }, 0);
+      return undefined;
+    }
+    return decrypted;
+  }, [queryResult.data, queryResult.refetch]);
 
   return {
     ...queryResult,

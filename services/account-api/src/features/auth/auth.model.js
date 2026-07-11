@@ -127,6 +127,10 @@ const userSchema = new mongoose.Schema({
         ipAddress: String,
         lastActive: { type: Date, default: Date.now },
         isCurrent: Boolean
+    }],
+    connectedServices: [{
+        serviceId: { type: String, enum: ['vault', 'chat', 'social'] },
+        connectedAt: { type: Date, default: Date.now }
     }]
 }, { timestamps: true, autoIndex: false });
 

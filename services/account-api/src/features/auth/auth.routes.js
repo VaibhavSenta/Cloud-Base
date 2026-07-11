@@ -63,6 +63,10 @@ router.post('/deactivate', protect, decryptRequest, authController.deactivateAcc
 router.post('/delete', protect, decryptRequest, authController.deleteAccount);
 router.post('/reactivate', decryptRequest, authController.reactivateAccount);
 
+// CONNECTED SERVICES: Onboard and offboard connected applications
+router.post('/connected-services/connect', protect, authController.connectService);
+router.post('/connected-services/disconnect', protect, authController.disconnectService);
+
 // LOGOUT: Simple logout to clear session/cookies
 router.post('/logout', authController.logout);
 

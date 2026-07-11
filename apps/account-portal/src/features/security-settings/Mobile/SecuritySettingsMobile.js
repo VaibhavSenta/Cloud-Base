@@ -88,7 +88,7 @@ export default function SecuritySettingsMobile() {
       return res.data;
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(['user'], (old) => ({ ...old, ...data.data }));
+      queryClient.setSecureQueryData(['user'], (old) => ({ ...old, ...data.data }));
       handleCloseBottomSheet();
     },
     onError: (err) => {

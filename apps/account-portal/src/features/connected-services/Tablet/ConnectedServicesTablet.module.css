@@ -4,7 +4,7 @@
   align-items: center;
   width: 100%;
   min-height: 100vh;
-  background: #000000;
+  background: transparent;
   padding: 40px;
   box-sizing: border-box;
 }
@@ -19,8 +19,8 @@
   font-size: 1.75rem;
   font-weight: 700;
   color: #ffffff;
-  margin: 0 0 8px 0;
-  letter-spacing: -0.5px;
+  margin: 0 0 6px 0;
+  letter-spacing: -0.4px;
 }
 
 .subtitle {
@@ -39,7 +39,7 @@
 }
 
 .card {
-  background: #000000;
+  background: transparent;
   border: 1px solid #262626;
   border-radius: 9999px;
   padding: 14px 24px;
@@ -62,7 +62,7 @@
 
 .cardFull {
   grid-column: span 2;
-  background: #000000;
+  background: transparent;
   border: 1px solid #262626;
   border-radius: 9999px;
   padding: 14px 24px;
@@ -84,8 +84,112 @@
 }
 
 .serviceName {
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   font-weight: 600;
   color: #ffffff;
-  letter-spacing: -0.1px;
+}
+
+.exploreSection {
+  margin-top: 40px;
+  width: 100%;
+  max-width: 800px;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.exploreTitle {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -0.2px;
+  text-align: left;
+}
+
+.seeAllLink {
+  color: #0095f6;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.seeAllLink:hover {
+  opacity: 0.8;
+}
+
+.exploreGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  width: 100%;
+}
+
+.appStoreCard {
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid #262626;
+  border-radius: 16px;
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.appInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+}
+
+.appName {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.appTagline {
+  font-size: 0.75rem;
+  color: #888888;
+}
+
+.getBtn {
+  background: #262626;
+  color: #0095f6;
+  border: none;
+  font-weight: 700;
+  font-size: 0.72rem;
+  padding: 5px 16px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.getBtn:hover {
+  background: #363636;
+}
+
+.emptyState {
+  width: 100%;
+  max-width: 800px;
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px dashed #262626;
+  border-radius: 16px;
+  padding: 36px 20px;
+  text-align: center;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.emptyText {
+  font-size: 0.85rem;
+  color: #888888;
+  margin: 0;
 }

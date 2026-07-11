@@ -1,10 +1,11 @@
 'use client';
+import { memo } from 'react';
 import styles from './BentoCards.module.css';
 
 /**
  * Bento Block 1: Identity Settings (spans 2 columns)
  */
-export function IdentityVerificationCard({ user, onEditClick }) {
+export const IdentityVerificationCard = memo(function IdentityVerificationCard({ user, onEditClick }) {
   return (
     <div className={`${styles.bentoCard} ${styles.span2}`}>
       <div className={styles.cardHeaderArea}>
@@ -47,12 +48,12 @@ export function IdentityVerificationCard({ user, onEditClick }) {
       </div>
     </div>
   );
-}
+});
 
 /**
  * Bento Block 2: Password Hub
  */
-export function PasswordHubCard({ onManageClick }) {
+export const PasswordHubCard = memo(function PasswordHubCard({ onManageClick }) {
   return (
     <div className={styles.bentoCard} onClick={onManageClick}>
       <div className={styles.cardHeaderArea}>
@@ -68,12 +69,12 @@ export function PasswordHubCard({ onManageClick }) {
       </div>
     </div>
   );
-}
+});
 
 /**
  * Bento Block 3: Two-Factor Settings
  */
-export function MultifactorAuthCard({ user, onConfigureClick }) {
+export const MultifactorAuthCard = memo(function MultifactorAuthCard({ user, onConfigureClick }) {
   const getPrimaryMethodLabel = () => {
     if (!user?.twoFactorEnabled) return 'Disabled';
     if (user.twoFactorPrimary === 'authenticator') return 'Google Authenticator (Default)';
@@ -98,12 +99,12 @@ export function MultifactorAuthCard({ user, onConfigureClick }) {
       </div>
     </div>
   );
-}
+});
 
 /**
  * Bento Block 4: Recent Security Activity
  */
-export function RecentActivityCard({ onViewClick }) {
+export const RecentActivityCard = memo(function RecentActivityCard({ onViewClick }) {
   return (
     <div className={styles.bentoCard} onClick={onViewClick}>
       <div className={styles.cardHeaderArea}>
@@ -119,12 +120,12 @@ export function RecentActivityCard({ onViewClick }) {
       </div>
     </div>
   );
-}
+});
 
 /**
  * Bento Block 5: Danger Zone
  */
-export function DangerZoneCard({ onDeactivateClick, onDeleteClick }) {
+export const DangerZoneCard = memo(function DangerZoneCard({ onDeactivateClick, onDeleteClick }) {
   return (
     <div className={`${styles.bentoCard} ${styles.cardDanger}`}>
       <div className={styles.cardHeaderArea}>
@@ -143,4 +144,4 @@ export function DangerZoneCard({ onDeactivateClick, onDeleteClick }) {
       </div>
     </div>
   );
-}
+});
