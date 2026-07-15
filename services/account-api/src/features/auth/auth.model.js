@@ -131,6 +131,17 @@ const userSchema = new mongoose.Schema({
     connectedServices: [{
         serviceId: { type: String, enum: ['vault', 'chat', 'social'] },
         connectedAt: { type: Date, default: Date.now }
+    }],
+    activityLogs: [{
+        action: String,
+        domain: { type: String, enum: ['SECURITY', 'IDENTITY', 'INTEGRATION', 'BILLING'], default: 'SECURITY' },
+        actor: { type: String, enum: ['USER', 'ADMIN', 'SYSTEM'], default: 'USER' },
+        status: { type: String, enum: ['SUCCESS', 'FAILURE', 'ATTEMPT'], default: 'SUCCESS' },
+        metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
+        routePath: String,
+        ipAddress: String,
+        browser: String,
+        timestamp: { type: Date, default: Date.now }
     }]
 }, { timestamps: true, autoIndex: false });
 

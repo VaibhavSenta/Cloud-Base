@@ -7,6 +7,9 @@ import HeaderTablet from './Tablet/HeaderTablet';
 import HeaderMobile from './Mobile/HeaderMobile';
 import styles from './Header.module.css';
 
+import { useSecureQuery } from '../../hooks/useSecureQuery';
+import api from '../../utils/api';
+
 /**
  * Universal Unified Header Wrapper
  * Admin Portal Style: Floating Pill Container
@@ -18,6 +21,16 @@ const Header = ({ onToggleSidebar, isSidebarOpen, forceWidth }) => {
   const pathname = usePathname();
   const [isOnline, setIsOnline] = useState(true);
 
+  // Retrieve user data from cache
+  const { data: user } = useSecureQuery({
+    queryKey: ['user'],
+    queryFn: async () => {
+      const res = await api.get('/auth/me');
+      return res.data.data;
+    },
+    enabled: typeof window !== 'undefined'
+  });
+
   const isSubpage = pathname !== '/dashboard' && pathname !== '/';
 
   const segments = pathname.split('/').filter(Boolean);
@@ -28,7 +41,8 @@ const Header = ({ onToggleSidebar, isSidebarOpen, forceWidth }) => {
     'security': 'Signin & Security',
     'password': 'Password Options',
     'change': 'Change Password',
-    'devices': 'Logged Devices',
+    'devices': 'Recent Activity',
+    'sessions': 'Logged Devices',
     'connected-services': 'Connected Services',
     'preferences': 'Preferences',
     '2fa': 'Two-Factor Authentication',
@@ -47,7 +61,25 @@ const Header = ({ onToggleSidebar, isSidebarOpen, forceWidth }) => {
     if (segments.length <= 1) return null;
 
     const subSegments = segments.slice(1);
-    const mapped = subSegments.map(seg => segmentMap[seg] || seg.replace(/-/g, ' '));
+    const mapped = subSegments.map((seg, idx) => {
+      // Check if it's the dynamic session ID parameter (if preceding segment is 'sessions')
+      if (idx > 0 && subSegments[idx - 1] === 'sessions' && user?.sessions) {
+        const foundSession = user.sessions.find(s => s.sessionId === seg);
+        if (foundSession) return foundSession.deviceName || 'Device';
+      }
+
+      // Check if it's the dynamic log ID parameter (if preceding segment is 'devices')
+      if (idx > 0 && subSegments[idx - 1] === 'devices' && user?.activityLogs) {
+        const foundLog = user.activityLogs.find(l => l._id === seg || String(l.timestamp) === seg);
+        if (foundLog) return foundLog.action;
+      }
+
+      // If it looks like a long hex / MongoDB ID / dynamic ID (more than 10 chars)
+      if (seg.length > 10 && /^[a-fA-F0-9-]+$/.test(seg)) {
+        return `...${seg.slice(-6)}`;
+      }
+      return segmentMap[seg] || seg.replace(/-/g, ' ');
+    });
     
     if (mapped.length > 2) {
       return `... > ${mapped[mapped.length - 1]}`;

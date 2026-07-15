@@ -330,98 +330,92 @@ export default function SecuritySettingsMobile() {
 
   return (
     <div className={styles.container}>
+      <header className={styles.header}>
+        <p className={styles.subtitle}>Protect your account credentials and active login sessions.</p>
+      </header>
+
       <div className={styles.mobileLayout}>
         {/* Section 1: Verifications */}
         <div className={styles.card}>
-          <h3 className={styles.cardTitle}>Verifications</h3>
           <div className={styles.infoList}>
             
             {/* Email Verification Row */}
             <div className={styles.infoItem} onClick={() => handleEditClick('email')}>
               <div className={styles.rowMeta}>
-                <span className={styles.infoLabel}>Email Address</span>
                 <span className={styles.infoValue}>{user?.email}</span>
               </div>
               <div className={styles.rowControls}>
-                {user?.isEmailVerified ? (
-                  <span className={styles.badgeGreen}>Verified</span>
-                ) : (
-                  <span className={styles.badgeRed}>Unverified</span>
-                )}
-                <span className={styles.editArrow}>›</span>
+                {!user?.isEmailVerified && <span className={styles.blueDot}></span>}
               </div>
             </div>
 
             {/* Mobile Number Verification Row */}
             <div className={styles.infoItem} onClick={() => handleEditClick('phone')}>
               <div className={styles.rowMeta}>
-                <span className={styles.infoLabel}>Mobile Number</span>
-                <span className={styles.infoValue}>{user?.phonenumber || 'Not added to profile'}</span>
+                <span className={styles.infoValue}>{user?.phonenumber || 'Add mobile number'}</span>
               </div>
               <div className={styles.rowControls}>
-                {user?.phonenumber ? (
-                  <span className={styles.badgeGreen}>Verified</span>
-                ) : (
-                  <span className={styles.badgeOrange}>Required</span>
-                )}
-                <span className={styles.editArrow}>›</span>
+                {!user?.phonenumber && <span className={styles.blueDot}></span>}
               </div>
             </div>
 
           </div>
         </div>
 
-        {/* Section 2: Account Actions */}
+        {/* Section 2: Password Manager & 2FA */}
         <div className={styles.card}>
-          <h3 className={styles.cardTitle}>Account Hub</h3>
           <div className={styles.infoList}>
-            
             {/* Password Link */}
             <div className={styles.infoItem} onClick={() => router.push('/dashboard/security/password')}>
               <div className={styles.rowMeta}>
-                <span className={styles.infoLabel}>Password Manager</span>
-                <span className={styles.infoValue}>Configure reveal secondary rules</span>
+                <span className={styles.infoValue}>Password Manager</span>
               </div>
-              <span className={styles.editArrow}>›</span>
             </div>
 
             {/* 2FA Link */}
             <div className={styles.infoItem} onClick={() => router.push('/dashboard/security/2fa')}>
               <div className={styles.rowMeta}>
-                <span className={styles.infoLabel}>Two-Factor Authentication</span>
-                <span className={styles.infoValue}>
-                  {user?.twoFactorEnabled ? 'Active (Email OTP)' : 'Disabled'}
-                </span>
+                <span className={styles.infoValue}>Two-Factor Authentication</span>
               </div>
-              <span className={styles.editArrow}>›</span>
             </div>
-
           </div>
         </div>
 
-        {/* Section 3: Danger Zone */}
-        <div className={`${styles.card} ${styles.cardDanger}`}>
-          <h3 className={styles.cardTitleDanger}>Danger Zone Hub</h3>
+        {/* Section 3: Logins & Activity */}
+        <div className={styles.card}>
           <div className={styles.infoList}>
-            
-            {/* Deactivation */}
+            <div className={styles.infoItem} onClick={() => router.push('/dashboard/security/sessions')} style={{ borderBottom: '1px solid #111' }}>
+              <div className={styles.rowMeta}>
+                <span className={styles.infoValue}>Logged Devices</span>
+              </div>
+            </div>
+            <div className={styles.infoItem} onClick={() => router.push('/dashboard/security/devices')}>
+              <div className={styles.rowMeta}>
+                <span className={styles.infoValue}>Recent Activity</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Section 4: Deactivate Account */}
+        <div className={styles.card}>
+          <div className={styles.infoList}>
             <div className={styles.infoItem} onClick={() => handleEditClick('deactivate')}>
               <div className={styles.rowMeta}>
-                <span className={styles.dangerLabel}>Deactivate Account</span>
-                <span className={styles.infoValue}>Temporarily lock account access</span>
+                <span className={styles.infoValue} style={{ color: '#ff4d4d' }}>Deactivate Account</span>
               </div>
-              <span className={styles.editArrow}>›</span>
             </div>
+          </div>
+        </div>
 
-            {/* Permanent Deletion */}
+        {/* Section 5: Delete Account */}
+        <div className={styles.card}>
+          <div className={styles.infoList}>
             <div className={styles.infoItem} onClick={() => handleEditClick('delete')}>
               <div className={styles.rowMeta}>
-                <span className={styles.dangerLabel}>Delete Account</span>
-                <span className={styles.infoValue}>Wipe vaults and wipe databases</span>
+                <span className={styles.infoValue} style={{ color: '#ff4d4d' }}>Delete Account</span>
               </div>
-              <span className={styles.editArrow}>›</span>
             </div>
-
           </div>
         </div>
       </div>

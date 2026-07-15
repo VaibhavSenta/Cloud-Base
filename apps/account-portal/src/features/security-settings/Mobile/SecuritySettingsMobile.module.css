@@ -134,9 +134,9 @@
 }
 
 .infoValue {
-  color: #ddd; /* Soft off-white for details value, sized down to fit long emails */
-  font-size: 0.85rem;
-  font-weight: 500;
+  color: #cccccc;
+  font-size: var(--row-title-size-mobile);
+  font-weight: var(--row-title-weight-mobile);
 }
 
 .rightGroup {
@@ -319,4 +319,109 @@
 .successBtn:active {
   opacity: 0.8;
 }
+
+/* Added Mobile layouts */
+.mobileLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.cardTitle {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #666;
+  letter-spacing: 1px;
+  padding: 1.1rem 1.2rem 0.2rem 1.2rem;
+  margin: 0;
+}
+
+.cardTitleDanger {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #ff4d4d;
+  letter-spacing: 1px;
+  padding: 1.1rem 1.2rem 0.2rem 1.2rem;
+  margin: 0;
+}
+
+.rowMeta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.22rem;
+}
+
+.rowControls {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.editArrow {
+  color: #555555;
+  font-size: 1.1rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+  line-height: 1;
+}
+
+.infoItem:hover .editArrow {
+  transform: translateX(2px);
+  color: #ffffff;
+}
+
+.badgeGreen {
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.2);
+  padding: 1px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badgeRed {
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #ff4d4d;
+  border: 1px solid rgba(255, 77, 77, 0.2);
+  padding: 1px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badgeOrange {
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #ff9500;
+  border: 1px solid rgba(255, 149, 0, 0.2);
+  padding: 1px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cardDanger {
+  border-color: rgba(255, 77, 77, 0.15) !important;
+}
+
+.dangerLabel {
+  color: #ff4d4d;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.blueDot {
+  width: 6px;
+  height: 6px;
+  background-color: #0095f6;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #0095f6;
+  flex-shrink: 0;
+}
+
 

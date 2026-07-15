@@ -407,7 +407,7 @@ export default function SecuritySettingsTablet() {
         </div>
 
         {/* Bento Block 4: Recent Security Activity (spans 1 column) */}
-        <div className={styles.bentoCard} onClick={() => alert('Navigating to recent activity logs...')}>
+        <div className={styles.bentoCard} onClick={() => router.push('/dashboard/security/devices')}>
           <div className={styles.cardHeaderArea}>
             <span className={styles.cardCategory}>Audit Logs</span>
             <h2 className={styles.cardTitle}>Recent Activity</h2>

@@ -16,11 +16,11 @@
 }
 
 .title {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: var(--title-size-mobile);
+  font-weight: var(--title-weight-mobile);
+  letter-spacing: var(--title-spacing-mobile);
   color: #ffffff;
   margin: 0 0 8px 0;
-  letter-spacing: -0.5px;
 }
 
 .subtitle {

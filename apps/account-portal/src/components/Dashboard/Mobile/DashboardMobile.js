@@ -72,7 +72,8 @@ const DashboardMobile = ({ user }) => {
     title: currentSession.deviceName || 'Unknown Device',
     status: otherSessionsCount > 0 ? `and +${otherSessionsCount} other` : '',
     icon: currentSession.deviceType === 'Mobile' ? '/icons/device-mobile.svg' : '/icons/nav-home.svg',
-    sessionId: currentSession.sessionId
+    sessionId: currentSession.sessionId,
+    onClick: () => router.push('/dashboard/security/sessions')
   }] : [];
 
 

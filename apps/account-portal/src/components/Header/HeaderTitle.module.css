@@ -54,6 +54,10 @@
   margin-top: 0.05rem;
   text-transform: lowercase;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  text-align: center;
 }
 
 @media (max-width: 768px) {

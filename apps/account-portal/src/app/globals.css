@@ -11,6 +11,13 @@
   --glass-border: rgba(255, 255, 255, 0.3);
   --error: #ef4444;
   --success: #10b981;
+
+  /* Mobile Title & Heading Typography Reusable Tokens */
+  --title-size-mobile: 1.2rem;
+  --title-weight-mobile: 700;
+  --title-spacing-mobile: -0.3px;
+  --row-title-size-mobile: 0.88rem;
+  --row-title-weight-mobile: 500;
 }
 
 [data-theme='dark'] {
@@ -61,22 +68,38 @@ html, body {
   }
 }
 
-/* Custom Scrollbar for Pitch Black Feel */
-::-webkit-scrollbar {
-  width: 6px;
+/* Custom Scrollbar for Pitch Black Feel (Desktop/Tablet only) */
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #161616;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #262626;
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #363636;
+  }
 }
 
-::-webkit-scrollbar-track {
-  background: #161616;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #262626;
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #363636;
+/* Hide scrollbars completely on Mobile views but preserve scroll function */
+@media (max-width: 767px) {
+  ::-webkit-scrollbar {
+    display: none !important;
+  }
+  * {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+  }
+  *::-webkit-scrollbar {
+    display: none !important;
+  }
 }
 
 /* Global Backdrop Filter Helper */

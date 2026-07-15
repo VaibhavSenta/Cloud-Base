@@ -141,6 +141,24 @@ const updateProfile = async (req, res) => {
     try {
         const userId = req.user.userId;
         const updatedUser = await authService.updateProfile(userId, req.body);
+        
+        const user = await USER.findById(userId);
+        if (user) {
+            const { logSecurityEvent } = require('./audit.service');
+            if (req.body.userName) {
+                await logSecurityEvent(user, 'Username updated', req, { domain: 'IDENTITY' });
+            }
+            if (req.body.phonenumber) {
+                await logSecurityEvent(user, 'Phone number verified', req, { domain: 'IDENTITY' });
+            }
+            if (req.body.recoveryEmail) {
+                await logSecurityEvent(user, 'Recovery email updated', req, { domain: 'IDENTITY' });
+            }
+            if (req.body.profilePic) {
+                await logSecurityEvent(user, 'Profile picture updated', req, { domain: 'IDENTITY' });
+            }
+        }
+
         res.status(200).json({ success: true, data: updatedUser });
     } catch (error) {
         res.status(400).json({ success: false, message: error.message });
@@ -154,7 +172,8 @@ const terminateSession = async (req, res) => {
 
         const user = await USER.findById(userId);
         user.sessions = user.sessions.filter(s => s.sessionId !== sessionId);
-        await user.save();
+        const { logSecurityEvent } = require('./audit.service');
+        await logSecurityEvent(user, 'Authorized device session terminated', req);
 
         res.status(200).json({ success: true, message: 'Session terminated' });
     } catch (error) {
@@ -177,6 +196,8 @@ const confirmEmailVerification = async (req, res) => {
         const { token } = req.body;
         if (!token) throw new Error('Verification token is required');
         const user = await authService.confirmEmailVerification(token);
+        const { logSecurityEvent } = require('./audit.service');
+        await logSecurityEvent(user, 'Primary email verified', req, { domain: 'IDENTITY' });
         res.status(200).json({ success: true, message: 'Email verified successfully', data: { isEmailVerified: user.isEmailVerified } });
     } catch (error) {
         res.status(400).json({ success: false, message: error.message });
@@ -210,6 +231,11 @@ const verify2faAuthenticator = async (req, res) => {
         const { code } = req.body;
         if (!code) throw new Error('Verification code is required');
         await authService.verifyAuthenticator(userId, code);
+        const { logSecurityEvent } = require('./audit.service');
+        const user = await USER.findById(userId);
+        if (user) {
+            await logSecurityEvent(user, 'Authenticator App connected', req);
+        }
         res.status(200).json({ success: true, message: 'Authenticator App verified and enabled successfully' });
     } catch (error) {
         res.status(400).json({ success: false, message: error.message });
@@ -221,6 +247,12 @@ const update2faSettings = async (req, res) => {
         const userId = req.user.userId;
         const { twoFactorEnabled, twoFactorMethods, twoFactorPrimary } = req.body;
         const user = await authService.update2faSettings(userId, { twoFactorEnabled, twoFactorMethods, twoFactorPrimary });
+        const { logSecurityEvent } = require('./audit.service');
+        const dbUser = await USER.findById(userId);
+        if (dbUser) {
+            const actionText = twoFactorEnabled ? 'Two-Factor Authentication enabled' : 'Two-Factor Authentication disabled';
+            await logSecurityEvent(dbUser, actionText, req);
+        }
         res.status(200).json({ success: true, message: '2FA settings updated successfully', data: user });
     } catch (error) {
         res.status(400).json({ success: false, message: error.message });

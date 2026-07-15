@@ -43,6 +43,20 @@ const createAccount = async (userData, deviceInfo) => {
   newUser.profilePic = `https://www.gravatar.com/avatar/${md5}?d=mp`;
 
   newUser.sessions.push({ ...deviceInfo, lastActive: new Date() });
+  newUser.activityLogs = [
+    {
+      action: 'Account created securely',
+      timestamp: new Date(),
+      ipAddress: deviceInfo.ipAddress,
+      browser: deviceInfo.browser
+    },
+    {
+      action: 'Primary email registered',
+      timestamp: new Date(),
+      ipAddress: deviceInfo.ipAddress,
+      browser: deviceInfo.browser
+    }
+  ];
   await newUser.save();
   console.log(`✨ USER CREATED: ${newUser.userName} with sessionId: ${sessionId}`);
 
@@ -109,6 +123,21 @@ const loginAccount = async (loginData, deviceInfo) => {
       const isMatch = await bcrypt.compare(password, user.password);
       console.log("🔍 [DEBUG] loginAccount: Bcrypt comparison finished, matches:", isMatch);
       if (!isMatch) {
+        if (!user.activityLogs) user.activityLogs = [];
+        user.activityLogs.push({
+          action: 'Failed login attempt',
+          domain: 'SECURITY',
+          actor: 'USER',
+          status: 'FAILURE',
+          routePath: '/auth/login',
+          ipAddress: deviceInfo.ipAddress,
+          browser: deviceInfo.browser,
+          timestamp: new Date()
+        });
+        if (user.activityLogs.length > 30) {
+          user.activityLogs.shift();
+        }
+        await user.save();
         throw new Error('Invalid password');
       }
     }
@@ -128,8 +157,8 @@ const loginAccount = async (loginData, deviceInfo) => {
       };
     }
 
-    // Intercept login if 2FA is enabled or email is verified
-    if (user.twoFactorEnabled || user.isEmailVerified) {
+    // Intercept login if 2FA is enabled
+    if (user.twoFactorEnabled) {
       const ticket = crypto.randomBytes(32).toString('hex');
       user.twoFactorTempToken = ticket;
       user.twoFactorTempTokenExpires = Date.now() + 5 * 60 * 1000; // 5 mins
@@ -145,10 +174,11 @@ const loginAccount = async (loginData, deviceInfo) => {
             email: user.email, 
             token: `otp:${emailOtp}` 
           });
-        } catch (e) {
-          console.error('Failed to send 2FA Login Email:', e.message);
+        } catch (emailErr) {
+          console.error("Failed to send 2FA Login OTP Email:", emailErr.message);
         }
       } else {
+        // Authenticator app doesn't send email, just save ticket
         await user.save();
       }
 
@@ -158,9 +188,7 @@ const loginAccount = async (loginData, deviceInfo) => {
         methods: user.twoFactorMethods,
         primaryMethod: user.twoFactorPrimary
       };
-    }
-
-    // Register Session
+    } // Register Session
     const sessionId = deviceInfo.sessionId;
     
     // Initialize sessions if it doesn't exist
@@ -176,6 +204,20 @@ const loginAccount = async (loginData, deviceInfo) => {
     }
 
     user.sessions.push({ ...deviceInfo, lastActive: new Date() });
+    if (!user.activityLogs) user.activityLogs = [];
+    user.activityLogs.push({
+      action: 'Authorized device login',
+      domain: 'SECURITY',
+      actor: 'USER',
+      status: 'SUCCESS',
+      routePath: '/auth/login',
+      ipAddress: deviceInfo.ipAddress,
+      browser: deviceInfo.browser,
+      timestamp: new Date()
+    });
+    if (user.activityLogs.length > 30) {
+      user.activityLogs.shift();
+    }
     await user.save();
     
     console.log(`🔑 LOGIN: ${user.userName} registered session: ${sessionId}`);

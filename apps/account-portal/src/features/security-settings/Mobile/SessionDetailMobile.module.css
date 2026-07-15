@@ -1,0 +1,105 @@
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 4.5rem 1.2rem 2rem 1.2rem;
+  box-sizing: border-box;
+  background: #000000;
+  min-height: 100dvh;
+}
+
+.header {
+  margin-bottom: 2.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+}
+
+.title {
+  font-size: var(--title-size-mobile);
+  font-weight: var(--title-weight-mobile);
+  letter-spacing: var(--title-spacing-mobile);
+  color: #ffffff;
+  margin: 0;
+}
+
+.timestamp {
+  color: #666;
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+.detailsCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-sizing: border-box;
+  margin-bottom: 1.5rem;
+}
+
+.detailRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  align-items: flex-start;
+}
+
+.label {
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: #888888;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.value {
+  font-size: 0.82rem;
+  color: #ffffff;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Red revoke session block button */
+.revokeActionCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 1.25rem;
+  overflow: hidden;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.revokeBtn {
+  width: 100%;
+  padding: 1.2rem;
+  background: transparent;
+  border: none;
+  color: #ff3b30;
+  font-size: var(--row-title-size-mobile);
+  font-weight: var(--row-title-weight-mobile);
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.2s;
+  box-sizing: border-box;
+}
+
+.revokeBtn:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.revokeBtn:active {
+  background: rgba(255, 255, 255, 0.04);
+}

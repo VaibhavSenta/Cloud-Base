@@ -350,7 +350,7 @@ export default function SecuritySettingsDesktop() {
         <IdentityVerificationCard user={user} onEditClick={handleEditClick} />
         <PasswordHubCard onManageClick={() => router.push('/dashboard/security/password')} />
         <MultifactorAuthCard user={user} onConfigureClick={handleEditClick} />
-        <RecentActivityCard onViewClick={() => alert('Navigating to recent activity logs...')} />
+        <RecentActivityCard onViewClick={() => router.push('/dashboard/security/devices')} />
         <DangerZoneCard
           onDeactivateClick={() => handleEditClick('deactivate')}
           onDeleteClick={() => handleEditClick('delete')}
