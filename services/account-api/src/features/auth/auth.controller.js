@@ -108,12 +108,7 @@ const getMe = async (req, res) => {
             throw new Error(user ? `Account is ${user.accountStatus}` : 'User not found in DB');
         }
 
-        // Automatic Gravatar Sync if profilePic is default or missing
-        if (!user.profilePic || user.profilePic === '/icons/person.svg') {
-            const md5 = crypto.createHash('md5').update(user.email.toLowerCase().trim()).digest('hex');
-            user.profilePic = `https://www.gravatar.com/avatar/${md5}?d=mp`;
-            await user.save();
-        }
+
 
         console.log("🔍 [DEBUG] getMe: Mapping sessions... Total sessions:", user.sessions.length);
         // Mark current session and sort (current first)
@@ -176,6 +171,24 @@ const terminateSession = async (req, res) => {
         await logSecurityEvent(user, 'Authorized device session terminated', req);
 
         res.status(200).json({ success: true, message: 'Session terminated' });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+const terminateAllOtherSessions = async (req, res) => {
+    try {
+        const userId = req.user.userId;
+        const currentSessionId = req.user.sessionId;
+
+        const user = await USER.findById(userId);
+        if (user) {
+            user.sessions = user.sessions.filter(s => s.sessionId === currentSessionId);
+            const { logSecurityEvent } = require('./audit.service');
+            await logSecurityEvent(user, 'All other sessions terminated', req);
+        }
+
+        res.status(200).json({ success: true, message: 'All other sessions terminated' });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
@@ -421,6 +434,76 @@ const disconnectService = async (req, res) => {
     }
 };
 
+const getAvatar = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const user = await USER.findById(userId);
+        if (!user || !user.profilePic) {
+            return res.status(404).json({ message: 'Avatar not found' });
+        }
+
+        // 1. If it's a local/fallback avatar path
+        if (user.profilePic.startsWith('/uploads/') || user.profilePic.startsWith('/icons/')) {
+            const path = require('path');
+            const fs = require('fs');
+            const localPath = path.join(__dirname, '../../../public', user.profilePic);
+            if (fs.existsSync(localPath)) {
+                return res.sendFile(localPath);
+            }
+            return res.status(404).json({ message: 'Avatar not found' });
+        }
+
+        // 2. If it's a Google Drive URL, proxy and decrypt it
+        if (user.profilePic.startsWith('https://drive.google.com/')) {
+            // Extract fileId from URL (which is passed in search query ?id=...)
+            const url = new URL(user.profilePic);
+            const fileId = url.searchParams.get('id');
+            if (!fileId) {
+                return res.status(400).json({ message: 'Invalid avatar file ID' });
+            }
+
+            const { drive } = require('../../common/config/googleDrive');
+            const { deriveKeyAndIv } = require('./drive.service');
+
+            if (!drive) {
+                return res.status(500).json({ message: 'Google Drive configuration missing' });
+            }
+
+            // Fetch private file binary stream from Google Drive API
+            const driveRes = await drive.files.get({
+                fileId: fileId,
+                alt: 'media'
+            }, { responseType: 'arraybuffer' });
+
+            const encryptedBuffer = Buffer.from(driveRes.data);
+
+            // Decrypt the binary buffer
+            const crypto = require('crypto');
+            const { key, iv } = deriveKeyAndIv(userId);
+            const decipher = crypto.createDecipheriv('aes-256-cbc', key, iv);
+            const decryptedBuffer = Buffer.concat([decipher.update(encryptedBuffer), decipher.final()]);
+
+            // Set dynamic caching and content type headers
+            res.setHeader('Content-Type', 'image/png');
+            res.setHeader('Cache-Control', 'public, max-age=86400'); // Cache for 1 day
+            return res.send(decryptedBuffer);
+        }
+
+        // 3. Fallback: standard external URL redirect (e.g. Gravatar link)
+        return res.redirect(user.profilePic);
+    } catch (error) {
+        console.error('❌ Decryption proxy server error:', error.message);
+        // Fallback to local default person icon if things go wrong
+        const path = require('path');
+        const fs = require('fs');
+        const defaultPath = path.join(__dirname, '../../../public/icons/default-avatar.jpg');
+        if (fs.existsSync(defaultPath)) {
+            return res.sendFile(defaultPath);
+        }
+        return res.status(500).json({ message: 'Failed to retrieve profile picture' });
+    }
+};
+
 module.exports = { 
     handshake, 
     signup, 
@@ -429,7 +512,9 @@ module.exports = {
     logout, 
     getMe, 
     updateProfile, 
+    getAvatar, 
     terminateSession, 
+    terminateAllOtherSessions,
     requestEmailVerification, 
     confirmEmailVerification, 
     requestEmailChange,

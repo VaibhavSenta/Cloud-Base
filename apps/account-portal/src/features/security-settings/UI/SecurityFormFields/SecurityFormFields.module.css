@@ -184,3 +184,29 @@
   text-transform: uppercase;
   letter-spacing: 0.8px;
 }
+
+.warningInfoBox {
+  background: rgba(255, 59, 48, 0.03);
+  border: 1px solid rgba(255, 59, 48, 0.08);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.warningHeader {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #ff3b30;
+  display: block;
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.warningText {
+  font-size: 0.76rem;
+  color: #888888;
+  line-height: 1.45;
+  margin: 0;
+}
+

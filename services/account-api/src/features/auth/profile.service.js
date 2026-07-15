@@ -44,40 +44,79 @@ const updateProfile = async (userId, updateData) => {
     }
   }
 
-  // Intercept base64 profile picture and save it to filesystem
+  // Intercept base64 profile picture and save it
   if (filteredUpdate.profilePic && filteredUpdate.profilePic.startsWith('data:image/')) {
-    const fs = require('fs');
-    const path = require('path');
-    
     const base64Data = filteredUpdate.profilePic;
     const matches = base64Data.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
     if (matches && matches.length === 3) {
-      const extension = matches[1].split('/')[1] || 'png';
+      const mimeType = matches[1];
+      const extension = mimeType.split('/')[1] || 'png';
       const fileBuffer = Buffer.from(matches[2], 'base64');
-      
-      const uploadDir = path.join(__dirname, '../../../public/uploads');
-      if (!fs.existsSync(uploadDir)) {
-        fs.mkdirSync(uploadDir, { recursive: true });
-      }
-      
       const filename = `profile_${userId}_${Date.now()}.${extension}`;
-      const filePath = path.join(uploadDir, filename);
-      fs.writeFileSync(filePath, fileBuffer);
       
-      // Clean up previous custom profile picture if it exists
-      const user = await USER.findById(userId);
-      if (user && user.profilePic && user.profilePic.startsWith('/uploads/profile_')) {
-        const oldFile = path.join(__dirname, '../../../public', user.profilePic);
-        if (fs.existsSync(oldFile)) {
-          try {
-            fs.unlinkSync(oldFile);
-          } catch (err) {
-            console.error("Failed to delete old avatar file:", err.message);
+      const { drive } = require('../../common/config/googleDrive');
+      
+      if (drive) {
+        try {
+          const publicUrl = await uploadToDrive(fileBuffer, filename, mimeType, userId);
+          
+          // Clean up previous local custom profile picture if it existed
+          const user = await USER.findById(userId);
+          if (user && user.profilePic && user.profilePic.startsWith('/uploads/profile_')) {
+            const fs = require('fs');
+            const path = require('path');
+            const oldFile = path.join(__dirname, '../../../public', user.profilePic);
+            if (fs.existsSync(oldFile)) {
+              try {
+                fs.unlinkSync(oldFile);
+              } catch (err) {
+                console.error("Failed to delete old avatar file:", err.message);
+              }
+            }
+          }
+          
+          filteredUpdate.profilePic = publicUrl;
+        } catch (driveErr) {
+          console.error("⚠️ Google Drive upload failed, falling back to local storage:", driveErr.message);
+          // Fallback to local storage on Drive failure
+          const fs = require('fs');
+          const path = require('path');
+          const uploadDir = path.join(__dirname, '../../../public/uploads');
+          if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true });
+          }
+          const filePath = path.join(uploadDir, filename);
+          fs.writeFileSync(filePath, fileBuffer);
+          filteredUpdate.profilePic = `/uploads/${filename}`;
+        }
+      } else {
+        // Local storage standard fallback
+        const fs = require('fs');
+        const path = require('path');
+        
+        const uploadDir = path.join(__dirname, '../../../public/uploads');
+        if (!fs.existsSync(uploadDir)) {
+          fs.mkdirSync(uploadDir, { recursive: true });
+        }
+        
+        const filePath = path.join(uploadDir, filename);
+        fs.writeFileSync(filePath, fileBuffer);
+        
+        // Clean up previous custom profile picture if it exists
+        const user = await USER.findById(userId);
+        if (user && user.profilePic && user.profilePic.startsWith('/uploads/profile_')) {
+          const oldFile = path.join(__dirname, '../../../public', user.profilePic);
+          if (fs.existsSync(oldFile)) {
+            try {
+              fs.unlinkSync(oldFile);
+            } catch (err) {
+              console.error("Failed to delete old avatar file:", err.message);
+            }
           }
         }
+        
+        filteredUpdate.profilePic = `/uploads/${filename}`;
       }
-      
-      filteredUpdate.profilePic = `/uploads/${filename}`;
     }
   }
 

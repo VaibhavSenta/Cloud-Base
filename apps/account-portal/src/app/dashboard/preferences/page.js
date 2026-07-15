@@ -1,45 +1,10 @@
-'use client';
-import Link from 'next/link';
+import Preferences from '@/features/preferences/Preferences';
+
+export const metadata = {
+  title: 'Preferences | Cloud-Base',
+  description: 'Personalize and customize your Cloud-Base account settings.',
+};
 
 export default function PreferencesPage() {
-  return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minHeight: '70vh',
-      textAlign: 'center',
-      padding: '24px',
-      color: '#ffffff',
-      background: '#000000'
-    }}>
-      <div style={{
-        background: 'rgba(255, 255, 255, 0.02)',
-        border: '1px solid #262626',
-        borderRadius: '16px',
-        padding: '40px 24px',
-        maxWidth: '400px',
-        width: '100%',
-        boxSizing: 'border-box'
-      }} className="glass">
-        <h2 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '8px' }}>Preferences</h2>
-        <p style={{ fontSize: '0.82rem', color: '#888888', lineHeight: 1.4, marginBottom: '24px' }}>
-          Personalization settings, local backup schedules, and UI theme adjustments will be available in the next release.
-        </p>
-        <Link href="/dashboard" style={{
-          display: 'inline-block',
-          background: '#0095f6',
-          color: '#ffffff',
-          fontWeight: 'bold',
-          fontSize: '0.8rem',
-          padding: '8px 24px',
-          borderRadius: '100px',
-          textDecoration: 'none'
-        }}>
-          Back to Home
-        </Link>
-      </div>
-    </div>
-  );
+  return <Preferences />;
 }

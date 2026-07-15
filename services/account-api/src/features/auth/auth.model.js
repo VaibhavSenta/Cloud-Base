@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema({
     profilePic: {
         type: String,
         required: false,
-        default: '/icons/person.svg'
+        default: '/icons/default-avatar.jpg'
     },
     dob: {
         type: Date,
@@ -144,6 +144,24 @@ const userSchema = new mongoose.Schema({
         timestamp: { type: Date, default: Date.now }
     }]
 }, { timestamps: true, autoIndex: false });
+
+userSchema.set('toObject', {
+  transform: function (doc, ret, options) {
+    if (ret.profilePic && (ret.profilePic.startsWith('https://drive.google.com/') || ret.profilePic.startsWith('/uploads/'))) {
+      ret.profilePic = `/api/v1/auth/profile/avatar/${ret._id}`;
+    }
+    return ret;
+  }
+});
+
+userSchema.set('toJSON', {
+  transform: function (doc, ret, options) {
+    if (ret.profilePic && (ret.profilePic.startsWith('https://drive.google.com/') || ret.profilePic.startsWith('/uploads/'))) {
+      ret.profilePic = `/api/v1/auth/profile/avatar/${ret._id}`;
+    }
+    return ret;
+  }
+});
 
 const LocalUser = mongoose.models.USER || mongoose.model('USER', userSchema);
 

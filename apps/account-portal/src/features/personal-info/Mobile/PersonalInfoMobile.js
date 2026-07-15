@@ -22,15 +22,28 @@ export default function PersonalInfoMobile({
   handleFileChange,
   handleCloseModal,
   handleSubmit,
-  isPending
+  isPending,
+  rawImage,
+  setRawImage,
+  zoom,
+  setZoom,
+  position,
+  setPosition,
+  isDragging,
+  setIsDragging,
+  dragStart,
+  setDragStart,
+  imgRef,
+  cropImage,
+  isLandscape
 }) {
   return (
     <div className={styles.container}>
       <div className={styles.mobileLayout}>
         {/* Profile Avatar Hero */}
         {user && (
-          <div className={styles.profileHero} onClick={() => handleEditClick('profilePic')}>
-            <div className={styles.heroAvatar}>
+          <div className={styles.profileHero}>
+            <div className={styles.heroAvatar} onClick={() => handleEditClick('profilePic')}>
               <Image 
                 src={getSafeAvatar(user.profilePic)} 
                 alt="Profile" 
@@ -107,41 +120,128 @@ export default function PersonalInfoMobile({
         }
         subtitle={
           editField === 'profilePic'
-            ? "Upload a custom avatar picture. Real-time preview is shown below."
+            ? (rawImage ? "Drag to center and use slider to zoom." : "Upload a custom avatar picture. Real-time preview is shown below.")
             : "Changes will sync instantly across all Cloud-Base services."
         }
         onSubmit={handleSubmit}
         isPending={isPending}
+        showActions={editField === 'profilePic' ? !rawImage : true}
       >
         {editField === 'profilePic' ? (
-          <div className={styles.avatarUploadGroup}>
-            <div className={styles.uploadPreview}>
-              <Image 
-                src={selectedPreview || getSafeAvatar(user?.profilePic)} 
-                alt="Avatar Preview" 
-                width={120} 
-                height={120} 
-                className={styles.largePreviewImg}
-                priority
-              />
+          rawImage ? (
+            <div className={styles.cropperContainer}>
+              <div 
+                className={styles.cropperFrame}
+                onTouchStart={(e) => {
+                  const touch = e.touches[0];
+                  setDragStart({ x: touch.clientX - position.x, y: touch.clientY - position.y });
+                  setIsDragging(true);
+                }}
+                onTouchMove={(e) => {
+                  if (!isDragging) return;
+                  const touch = e.touches[0];
+                  setPosition({
+                    x: touch.clientX - dragStart.x,
+                    y: touch.clientY - dragStart.y
+                  });
+                }}
+                onTouchEnd={() => setIsDragging(false)}
+                onMouseDown={(e) => {
+                  setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
+                  setIsDragging(true);
+                }}
+                onMouseMove={(e) => {
+                  if (!isDragging) return;
+                  setPosition({
+                    x: e.clientX - dragStart.x,
+                    y: e.clientY - dragStart.y
+                  });
+                }}
+                onMouseUp={() => setIsDragging(false)}
+                onMouseLeave={() => setIsDragging(false)}
+              >
+                {/* Viewport circular outline */}
+                <div className={styles.cropperViewportRing} />
+                
+                {/* Draggable image */}
+                <img 
+                  ref={imgRef}
+                  src={rawImage}
+                  alt="Crop Target"
+                  className={styles.cropperImage}
+                  style={{
+                    width: isLandscape ? 'auto' : '100%',
+                    height: isLandscape ? '100%' : 'auto',
+                    top: '50%',
+                    left: '50%',
+                    transform: `translate(-50%, -50%) translate(${position.x}px, ${position.y}px) scale(${zoom})`,
+                  }}
+                  draggable={false}
+                />
+              </div>
+              
+              {/* Zoom control slider */}
+              <div className={styles.zoomControl}>
+                <span className={styles.zoomLabel}>Zoom</span>
+                <input 
+                  type="range"
+                  min="1"
+                  max="3"
+                  step="0.05"
+                  value={zoom}
+                  onChange={(e) => setZoom(parseFloat(e.target.value))}
+                  className={styles.zoomSlider}
+                />
+              </div>
+
+              {/* Action buttons inside the modal for crop operations */}
+              <div className={styles.cropperActions}>
+                <button 
+                  type="button" 
+                  onClick={() => setRawImage(null)} 
+                  className={styles.cancelCropBtn}
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="button" 
+                  onClick={cropImage} 
+                  className={styles.applyCropBtn}
+                >
+                  Apply Crop
+                </button>
+              </div>
             </div>
-            
-            <input 
-              type="file" 
-              id="avatarInputMobile" 
-              accept="image/*" 
-              onChange={handleFileChange} 
-              className={styles.hiddenInput}
-            />
-            
-            <button 
-              type="button" 
-              onClick={() => document.getElementById('avatarInputMobile').click()} 
-              className={styles.uploadTriggerBtn}
-            >
-              Choose Photo
-            </button>
-          </div>
+          ) : (
+            <div className={styles.avatarUploadGroup}>
+              <div className={styles.uploadPreview}>
+                <Image 
+                  src={selectedPreview || getSafeAvatar(user?.profilePic)} 
+                  alt="Avatar Preview" 
+                  width={120} 
+                  height={120} 
+                  className={styles.largePreviewImg}
+                  priority
+                />
+              </div>
+              
+              <input 
+                type="file" 
+                id="avatarInputMobile" 
+                accept="image/*" 
+                onChange={handleFileChange} 
+                className={styles.hiddenInput}
+              />
+              
+              <button 
+                type="button" 
+                onClick={() => document.getElementById('avatarInputMobile').click()} 
+                className={styles.uploadTriggerBtn}
+              >
+                Choose Photo
+              </button>
+            </div>
+          )
         ) : (
           <div className={styles.inputGroupContainer}>
             {editField === 'username' && (

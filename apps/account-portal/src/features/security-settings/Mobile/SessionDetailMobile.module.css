@@ -76,7 +76,7 @@
 .revokeActionCard {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 1.25rem;
+  border-radius: 100px;
   overflow: hidden;
   width: 100%;
   margin-top: 1rem;

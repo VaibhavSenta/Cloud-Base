@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useSecureQuery, useSecureQueryClient } from '../../hooks/useSecureQuery';
 import useWindowSize from '../../hooks/useWindowSize';
@@ -22,6 +22,13 @@ export default function PersonalInfo({ forceWidth }) {
   const [editField, setEditField] = useState(null); // 'name', 'dob', 'gender', 'recoveryEmail', 'profilePic'
   const [formVal, setFormVal] = useState({});
   const [selectedPreview, setSelectedPreview] = useState(null);
+  const [rawImage, setRawImage] = useState(null);
+  const [zoom, setZoom] = useState(1);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const imgRef = useRef(null);
+  const [isLandscape, setIsLandscape] = useState(false);
 
   // Fetch current user from React Query cache
   const { data: user, isLoading } = useSecureQuery({
@@ -106,8 +113,14 @@ export default function PersonalInfo({ forceWidth }) {
     const reader = new FileReader();
     reader.onloadend = () => {
       const base64String = reader.result;
-      setSelectedPreview(base64String);
-      setFormVal({ profilePic: base64String });
+      const img = new window.Image();
+      img.src = base64String;
+      img.onload = () => {
+        setIsLandscape(img.naturalWidth > img.naturalHeight);
+        setRawImage(base64String);
+        setZoom(1);
+        setPosition({ x: 0, y: 0 });
+      };
     };
     reader.readAsDataURL(file);
   };
@@ -116,6 +129,55 @@ export default function PersonalInfo({ forceWidth }) {
     setEditField(null);
     setSelectedPreview(null);
     setFormVal({});
+    setRawImage(null);
+    setZoom(1);
+    setPosition({ x: 0, y: 0 });
+    setIsLandscape(false);
+  };
+
+  const cropImage = () => {
+    if (!rawImage) return;
+    const img = new window.Image();
+    img.src = rawImage;
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = 300;
+      canvas.height = 300;
+      const ctx = canvas.getContext('2d');
+
+      // Calculate display dimensions based on aspect ratio cover/fit
+      let displayWidth, displayHeight;
+      if (img.naturalWidth > img.naturalHeight) {
+        displayHeight = 240;
+        displayWidth = 240 * (img.naturalWidth / img.naturalHeight);
+      } else {
+        displayWidth = 240;
+        displayHeight = 240 * (img.naturalHeight / img.naturalWidth);
+      }
+
+      // Calculate display coordinate bounds with 50%-based centering offset
+      const imageLeft = 120 + position.x - (displayWidth * zoom) / 2;
+      const imageTop = 120 + position.y - (displayHeight * zoom) / 2;
+
+      // Distance from image top-left to viewport (40, 40)
+      const cropXDisplay = 40 - imageLeft;
+      const cropYDisplay = 40 - imageTop;
+
+      // Map display coordinate sizes to natural image dimensions
+      const scaleFactor = img.naturalWidth / (displayWidth * zoom);
+
+      const sx = cropXDisplay * scaleFactor;
+      const sy = cropYDisplay * scaleFactor;
+      const sWidth = 160 * scaleFactor;
+      const sHeight = 160 * scaleFactor;
+
+      ctx.drawImage(img, sx, sy, sWidth, sHeight, 0, 0, 300, 300);
+
+      const base64String = canvas.toDataURL('image/png');
+      setSelectedPreview(base64String);
+      setFormVal({ profilePic: base64String });
+      setRawImage(null); // Back to preview view
+    };
   };
 
   const handleSubmit = (e) => {
@@ -149,8 +211,8 @@ export default function PersonalInfo({ forceWidth }) {
   }
 
   const getSafeAvatar = (path) => {
-    if (!path || path.includes('..') || path.includes('defaultLogos')) {
-      return '/icons/person.svg';
+    if (!path || path.includes('..') || path.includes('defaultLogos') || path === '/icons/person.svg') {
+      return '/icons/default-avatar.jpg';
     }
     return path;
   };
@@ -181,7 +243,20 @@ export default function PersonalInfo({ forceWidth }) {
     handleFileChange,
     handleCloseModal,
     handleSubmit,
-    isPending: updateMutation.isPending
+    isPending: updateMutation.isPending,
+    rawImage,
+    setRawImage,
+    zoom,
+    setZoom,
+    position,
+    setPosition,
+    isDragging,
+    setIsDragging,
+    dragStart,
+    setDragStart,
+    imgRef,
+    cropImage,
+    isLandscape
   };
 
   // SSR / Hydration Fallback

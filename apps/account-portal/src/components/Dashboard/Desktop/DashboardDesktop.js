@@ -16,8 +16,8 @@ const DashboardDesktop = ({ user }) => {
   }, []);
 
   const getSafeAvatar = (path) => {
-    if (!path || path.includes('..') || path.includes('defaultLogos')) {
-      return '/icons/person.svg';
+    if (!path || path.includes('..') || path.includes('defaultLogos') || path === '/icons/person.svg') {
+      return '/icons/default-avatar.jpg';
     }
     return path;
   };

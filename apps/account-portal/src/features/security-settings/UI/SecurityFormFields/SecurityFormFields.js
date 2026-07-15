@@ -304,6 +304,27 @@ export default function SecurityFormFields({
       {/* ACCOUNT DEACTIVATION / DELETION DETAILS */}
       {(editField === 'deactivate' || editField === 'delete') && (
         <div className={styles.fieldBody}>
+          <div className={styles.warningInfoBox}>
+            <span className={styles.warningHeader}>
+              {editField === 'delete' ? 'Permanent Account Deletion Warning' : 'Account Deactivation Info'}
+            </span>
+            <div className={styles.warningText}>
+              {editField === 'delete' ? (
+                <p style={{ margin: 0 }}>
+                  This is a permanent action under <strong>GDPR Article 17 (Right to Erasure)</strong>. 
+                  Your account will be deactivated immediately and all active sessions will be terminated. 
+                  Your personal data will be completely deleted from our database after a <strong>3-day grace period</strong>. 
+                  You can cancel deletion and reactivate by logging in before the grace period ends.
+                </p>
+              ) : (
+                <p style={{ margin: 0 }}>
+                  Deactivating your account will temporarily disable it and revoke all active sessions. 
+                  Your profile information and data logs will be archived securely in compliance with privacy regulations. 
+                  You can reactivate your account at any time by simply logging in again.
+                </p>
+              )}
+            </div>
+          </div>
           <FormInput
             label="Enter Account Password"
             type="password"

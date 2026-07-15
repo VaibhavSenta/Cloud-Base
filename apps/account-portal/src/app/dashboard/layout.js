@@ -32,11 +32,9 @@ export default function DashboardRootLayout({ children }) {
     }
   }, [user, isLoading, status, router]);
 
-  if (isLoading) {
+  if (isLoading || status === 'error' || !user) {
     return <LoadingScreen />;
   }
-
-  if (!user) return null;
 
   return (
     <DashboardLayout user={user}>

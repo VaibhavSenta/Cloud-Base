@@ -28,10 +28,6 @@ const nextConfig = {
         source: '/api/v1/:path*',
         destination: `http://172.20.10.2:5010/api/v1/:path*`,
       },
-      {
-        source: '/uploads/:path*',
-        destination: `http://172.20.10.2:5010/uploads/:path*`,
-      },
     ];
   },
 };

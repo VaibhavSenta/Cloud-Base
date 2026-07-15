@@ -121,3 +121,133 @@
   color: #444;
   cursor: not-allowed;
 }
+
+/* Red logout all devices block button */
+.revokeActionCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 100px;
+  overflow: hidden;
+  width: 94%;
+  margin: 1.2rem auto 0 auto;
+}
+
+.logoutAllBtn {
+  width: 100%;
+  padding: 0.9rem;
+  background: transparent;
+  border: none;
+  color: #ff3b30;
+  font-size: var(--row-title-size-mobile);
+  font-weight: var(--row-title-weight-mobile);
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.2s;
+  box-sizing: border-box;
+}
+
+.logoutAllBtn:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.logoutAllBtn:active {
+  background: rgba(255, 255, 255, 0.04);
+}
+/* Modal Confirmation Dialog */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+  padding: 1.5rem;
+  box-sizing: border-box;
+}
+
+.modalCard {
+  background: rgba(17, 17, 17, 0.13);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
+  padding: 1.8rem 1.5rem;
+  width: 95%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+  animation: modalScaleUp 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modalScaleUp {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modalTitle {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 0.8rem 0;
+}
+
+.modalDescription {
+  font-size: 0.82rem;
+  color: #888888;
+  line-height: 1.5;
+  margin: 0 0 1.8rem 0;
+}
+
+.modalActions {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 0.75rem;
+}
+
+.modalConfirmBtn {
+  width: 100%;
+  padding: 0.6rem;
+  background: #ff3b30; /* Red alert for destructive action */
+  border: none;
+  border-radius: 100px;
+  color: #ffffff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.modalConfirmBtn:active {
+  opacity: 0.8;
+}
+
+.modalCancelBtn {
+  width: 100%;
+  padding: 0.6rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 100px;
+  color: #cccccc;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.modalCancelBtn:active {
+  background: rgba(255, 255, 255, 0.08);
+}

@@ -29,21 +29,12 @@ const SidebarDesktop = ({ user }) => {
     { title: 'Preferences', icon: '/icons/Preferences.svg', onClick: () => router.push('/dashboard/preferences') },
   ];
 
-  const devLinks = [
-    { title: 'Component Sandbox 🛠️', icon: '', onClick: () => router.push('/sandbox') }
-  ];
 
   return (
     <div className={styles.sidebarContent}>
       <nav className={styles.nav}>
         <List items={navLinks} variant="link" />
 
-        <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(255, 255, 255, 0.05)' }}>
-          <span style={{ fontSize: '0.7rem', color: '#888888', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold', display: 'block', marginBottom: '0.5rem', paddingLeft: '0.5rem' }}>
-            Developer Tools
-          </span>
-          <List items={devLinks} variant="link" />
-        </div>
       </nav>
 
       <button className={styles.logoutBtn} onClick={handleLogout}>

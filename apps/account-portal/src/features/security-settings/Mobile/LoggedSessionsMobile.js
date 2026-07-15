@@ -10,6 +10,8 @@ export default function LoggedSessionsMobile() {
   const router = useRouter();
   const queryClient = useSecureQueryClient();
   const [revokingId, setRevokingId] = useState(null);
+  const [isLoggingOutAllOther, setIsLoggingOutAllOther] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   // Fetch current user from React Query cache
   const { data: user, isLoading } = useSecureQuery({
@@ -17,6 +19,29 @@ export default function LoggedSessionsMobile() {
     queryFn: async () => {
       const res = await api.get('/auth/me');
       return res.data.data;
+    }
+  });
+
+  // Mutation to handle revoking all other sessions
+  const revokeAllOtherMutation = useMutation({
+    mutationFn: async () => {
+      await api.delete('/auth/sessions');
+    },
+    onSuccess: () => {
+      queryClient.setSecureQueryData(['user'], (old) => {
+        if (!old || !old.sessions) return old;
+        return {
+          ...old,
+          sessions: old.sessions.filter(s => s.isCurrent)
+        };
+      });
+      setIsLoggingOutAllOther(false);
+      setShowConfirmModal(false);
+    },
+    onError: (err) => {
+      alert(err.response?.data?.message || 'Failed to revoke other sessions');
+      setIsLoggingOutAllOther(false);
+      setShowConfirmModal(false);
     }
   });
 
@@ -49,6 +74,15 @@ export default function LoggedSessionsMobile() {
 
     setRevokingId(sessionId);
     revokeMutation.mutate(sessionId);
+  };
+
+  const handleRevokeAllOther = () => {
+    setShowConfirmModal(true);
+  };
+
+  const executeLogoutAllOther = () => {
+    setIsLoggingOutAllOther(true);
+    revokeAllOtherMutation.mutate();
   };
 
   const formatRelativeTime = (dateString) => {
@@ -116,6 +150,45 @@ export default function LoggedSessionsMobile() {
           )}
         </div>
       </div>
+
+      {sessions.length > 1 && (
+        <div className={styles.revokeActionCard}>
+          <button 
+            className={styles.logoutAllBtn}
+            onClick={handleRevokeAllOther}
+            disabled={isLoggingOutAllOther}
+          >
+            {isLoggingOutAllOther ? 'Logging out other devices...' : 'Logout from all other devices'}
+          </button>
+        </div>
+      )}
+
+      {showConfirmModal && (
+        <div className={styles.modalOverlay} onClick={() => setShowConfirmModal(false)}>
+          <div className={styles.modalCard} onClick={(e) => e.stopPropagation()}>
+            <h3 className={styles.modalTitle}>Logout other devices?</h3>
+            <p className={styles.modalDescription}>
+              This will end all other active sessions except for this device. You will need to log back in on those devices.
+            </p>
+            <div className={styles.modalActions}>
+              <button 
+                className={styles.modalConfirmBtn} 
+                onClick={executeLogoutAllOther}
+                disabled={isLoggingOutAllOther}
+              >
+                {isLoggingOutAllOther ? 'Logging out...' : 'Logout'}
+              </button>
+              <button 
+                className={styles.modalCancelBtn} 
+                onClick={() => setShowConfirmModal(false)}
+                disabled={isLoggingOutAllOther}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

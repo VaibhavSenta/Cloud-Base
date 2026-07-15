@@ -38,8 +38,12 @@ router.get('/me', protect, authController.getMe);
 // UPDATE: Update user profile details
 router.patch('/profile', protect, decryptRequest, authController.updateProfile);
 
-// SESSIONS: Terminate a specific device session
+// AVATAR: Decryption proxy for user profile picture
+router.get('/profile/avatar/:userId', protect, authController.getAvatar);
+
+// SESSIONS: Terminate device sessions
 router.delete('/sessions/:sessionId', protect, authController.terminateSession);
+router.delete('/sessions', protect, authController.terminateAllOtherSessions);
 
 // EMAIL VERIFICATION: Request and Confirm verification links
 router.post('/verify-email/request', protect, emailVerificationLimiter, authController.requestEmailVerification);

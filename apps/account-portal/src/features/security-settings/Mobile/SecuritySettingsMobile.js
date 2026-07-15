@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { useSecureQuery, useSecureQueryClient } from '../../../hooks/useSecureQuery';
@@ -27,6 +27,16 @@ export default function SecuritySettingsMobile() {
   const [isSupportSubmitted, setIsSupportSubmitted] = useState(false);
   const [authenticatorSetupData, setAuthenticatorSetupData] = useState(null);
   const [authenticatorCode, setAuthenticatorCode] = useState('');
+  const [countdown, setCountdown] = useState(0);
+
+  // Manage countdown timer for deactivation/deletion friction
+  useEffect(() => {
+    if (countdown <= 0) return;
+    const timer = setTimeout(() => {
+      setCountdown(prev => prev - 1);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [countdown]);
 
   // Fetch current user from React Query cache
   const { data: user, isLoading } = useSecureQuery({
@@ -180,6 +190,11 @@ export default function SecuritySettingsMobile() {
       setAuthenticatorCode('');
     } else if (field === 'deactivate' || field === 'delete') {
       setFormVal({ password: '', otpCode: '', confirmText: '' });
+      if (field === 'deactivate') {
+        setCountdown(3);
+      } else {
+        setCountdown(5);
+      }
     }
   };
 
@@ -437,7 +452,21 @@ export default function SecuritySettingsMobile() {
             : 'Verify identity to confirm changes.'
         }
         onSubmit={handleSubmit}
-        isPending={isPending}
+        isPending={isPending || countdown > 0}
+        submitText={
+          editField === 'delete'
+            ? (countdown > 0 ? `Delete Account (${countdown}s)` : 'Delete Account')
+            : editField === 'deactivate'
+            ? (countdown > 0 ? `Deactivate Account (${countdown}s)` : 'Deactivate Account')
+            : 'Save Changes'
+        }
+        pendingText={
+          editField === 'delete'
+            ? 'Deleting...'
+            : editField === 'deactivate'
+            ? 'Deactivating...'
+            : 'Saving...'
+        }
       >
         <SecurityFormFields
           editField={editField}

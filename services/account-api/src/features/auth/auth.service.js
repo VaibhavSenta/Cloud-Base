@@ -111,6 +111,11 @@ const loginAccount = async (loginData, deviceInfo) => {
       await USER.deleteOne({ _id: user._id });
       throw new Error('Account not found');
     }
+
+    if (!user.sessions) user.sessions = [];
+    if (user.sessions.length >= 6) {
+      throw new Error('You have logged in to too many devices');
+    }
   
     if (isPartial) {
       if (otp && otp.length === 6) {
@@ -194,8 +199,10 @@ const loginAccount = async (loginData, deviceInfo) => {
     // Initialize sessions if it doesn't exist
     if (!user.sessions) user.sessions = [];
     
-    // Limits sessions to 10
-    if (user.sessions.length >= 10) user.sessions.shift();
+    // Limits sessions to 6 max
+    if (user.sessions.length >= 6) {
+      throw new Error('You have logged in to too many devices');
+    }
     
     // Automatic Gravatar Sync if profilePic is default or missing
     if (!user.profilePic || user.profilePic === '/icons/person.svg') {
@@ -435,7 +442,9 @@ const verify2faLogin = async (ticket, code, method, deviceInfo) => {
   // Register Session
   const sessionId = deviceInfo.sessionId;
   if (!user.sessions) user.sessions = [];
-  if (user.sessions.length >= 10) user.sessions.shift();
+  if (user.sessions.length >= 6) {
+    throw new Error('You have logged in to too many devices');
+  }
 
   if (!user.profilePic || user.profilePic === '/icons/person.svg') {
     const md5 = crypto.createHash('md5').update(user.email.toLowerCase().trim()).digest('hex');
@@ -554,7 +563,9 @@ const socialLoginAccount = async (provider, token, clientData, deviceInfo) => {
   // 3. Register Session & JWT Token
   const sessionId = deviceInfo.sessionId;
   if (!user.sessions) user.sessions = [];
-  if (user.sessions.length >= 10) user.sessions.shift();
+  if (user.sessions.length >= 6) {
+    throw new Error('You have logged in to too many devices');
+  }
 
   user.sessions.push({ ...deviceInfo, lastActive: new Date() });
   await user.save();

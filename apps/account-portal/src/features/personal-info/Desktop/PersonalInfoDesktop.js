@@ -26,7 +26,19 @@ export default function PersonalInfoDesktop({
   handleFileChange,
   handleCloseModal,
   handleSubmit,
-  isPending
+  isPending,
+  rawImage,
+  setRawImage,
+  zoom,
+  setZoom,
+  position,
+  setPosition,
+  isDragging,
+  setIsDragging,
+  dragStart,
+  setDragStart,
+  imgRef,
+  cropImage
 }) {
   const [activeField, setActiveField] = useState(editField || 'username');
 
@@ -232,6 +244,18 @@ export default function PersonalInfoDesktop({
         handleCloseModal={handleCloseModal}
         handleFileChange={handleFileChange}
         handleSubmit={handleSubmit}
+        rawImage={rawImage}
+        setRawImage={setRawImage}
+        zoom={zoom}
+        setZoom={setZoom}
+        position={position}
+        setPosition={setPosition}
+        isDragging={isDragging}
+        setIsDragging={setIsDragging}
+        dragStart={dragStart}
+        setDragStart={setDragStart}
+        imgRef={imgRef}
+        cropImage={cropImage}
       />
     </div>
   );

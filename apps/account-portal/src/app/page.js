@@ -41,7 +41,7 @@ export default function Home() {
     router.replace('/dashboard');
   };
 
-  if (isLoading) {
+  if (isLoading || (user && !showWelcome)) {
     return <LoadingScreen />;
   }
 
