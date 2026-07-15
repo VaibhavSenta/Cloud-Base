@@ -7,6 +7,7 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 
+const allowedOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : [];
 // Load environment variables from .env.local if it exists
 require('dotenv').config({ path: path.join(__dirname, '.env.local') });
 require('dotenv').config(); // Fallback to .env
@@ -29,7 +30,6 @@ connectDB();
 
 
 
-const allowedOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : [];
 // Middleware - GOD MODE CORS for Dev
 app.use(cors({
   origin: function (origin, callback) {
