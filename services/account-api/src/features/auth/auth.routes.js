@@ -39,7 +39,7 @@ router.get('/me', protect, authController.getMe);
 router.patch('/profile', protect, decryptRequest, authController.updateProfile);
 
 // AVATAR: Decryption proxy for user profile picture
-router.get('/profile/avatar/:userId', protect, authController.getAvatar);
+router.get('/profile/avatar/:userId', authController.getAvatar);
 
 // SESSIONS: Terminate device sessions
 router.delete('/sessions/:sessionId', protect, authController.terminateSession);

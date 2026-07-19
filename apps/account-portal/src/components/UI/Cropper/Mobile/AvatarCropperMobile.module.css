@@ -1,0 +1,127 @@
+.cropperContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.cropperFrame {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #000000;
+  cursor: grab;
+  touch-action: none;
+  border: 1px solid #262626;
+}
+
+.cropperFrame:active {
+  cursor: grabbing;
+}
+
+.cropperViewportRing {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 240px;
+  height: 240px;
+  border: 2px dashed rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10;
+  box-sizing: border-box;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45);
+}
+
+.cropperImage {
+  display: block;
+  max-width: none;
+  max-height: none;
+  position: absolute;
+  user-select: none;
+  pointer-events: none;
+  transform-origin: 50% 50%;
+}
+
+.zoomControl {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 240px;
+  margin-top: 1.5rem;
+}
+
+.zoomLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #888888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.zoomSlider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  background: #262626;
+  outline: none;
+}
+
+.zoomSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #0095f6;
+  cursor: pointer;
+  border: none;
+}
+
+.cropperActions {
+  display: flex;
+  gap: 0.8rem;
+  width: 100%;
+  margin-top: 1.8rem;
+}
+
+.cancelCropBtn {
+  flex: 1;
+  background: transparent;
+  border: 1px solid #262626;
+  color: #a8a8a8;
+  padding: 0.85rem;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancelCropBtn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+
+.saveCropBtn {
+  flex: 1;
+  background: #0095f6;
+  border: none;
+  color: #ffffff;
+  padding: 0.85rem;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.saveCropBtn:hover {
+  opacity: 0.9;
+}

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import FormButton from '../FormButton/FormButton';
+import AvatarCropper from '@/components/UI/Cropper/AvatarCropper';
 import styles from './ProfileLightbox.module.css';
 
 /**
@@ -31,7 +32,8 @@ export default function ProfileLightbox({
   setDragStart,
   imgRef,
   cropImage,
-  isLandscape
+  isLandscape,
+  constrainPosition
 }) {
   const [mounted, setMounted] = useState(false);
 
@@ -46,91 +48,22 @@ export default function ProfileLightbox({
     <div className={styles.modalOverlay} onClick={handleCloseModal}>
       <div className={styles.lightboxContainer} onClick={(e) => e.stopPropagation()}>
         {rawImage ? (
-          <div className={styles.cropperWrapper}>
-            <div className={styles.cropperHeader}>
-              <h3>Crop Profile Picture</h3>
-              <p>Drag to center and use slider to zoom</p>
-            </div>
-            
-            <div 
-              className={styles.cropperFrame}
-              onTouchStart={(e) => {
-                const touch = e.touches[0];
-                setDragStart({ x: touch.clientX - position.x, y: touch.clientY - position.y });
-                setIsDragging(true);
-              }}
-              onTouchMove={(e) => {
-                if (!isDragging) return;
-                const touch = e.touches[0];
-                setPosition({
-                  x: touch.clientX - dragStart.x,
-                  y: touch.clientY - dragStart.y
-                });
-              }}
-              onTouchEnd={() => setIsDragging(false)}
-              onMouseDown={(e) => {
-                setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
-                setIsDragging(true);
-              }}
-              onMouseMove={(e) => {
-                if (!isDragging) return;
-                setPosition({
-                  x: e.clientX - dragStart.x,
-                  y: e.clientY - dragStart.y
-                });
-              }}
-              onMouseUp={() => setIsDragging(false)}
-              onMouseLeave={() => setIsDragging(false)}
-            >
-              {/* Viewport circular outline */}
-              <div className={styles.cropperViewportRing} />
-              
-              {/* Draggable image */}
-              <img 
-                ref={imgRef}
-                src={rawImage}
-                alt="Crop Target"
-                className={styles.cropperImage}
-                style={{
-                  width: isLandscape ? 'auto' : '100%',
-                  height: isLandscape ? '100%' : 'auto',
-                  top: '50%',
-                  left: '50%',
-                  transform: `translate(-50%, -50%) translate(${position.x}px, ${position.y}px) scale(${zoom})`,
-                }}
-                draggable={false}
-              />
-            </div>
-            
-            {/* Zoom control slider */}
-            <div className={styles.zoomControl}>
-              <span className={styles.zoomLabel}>Zoom</span>
-              <input 
-                type="range"
-                min="1"
-                max="3"
-                step="0.05"
-                value={zoom}
-                onChange={(e) => setZoom(parseFloat(e.target.value))}
-                className={styles.zoomSlider}
-              />
-            </div>
-
-            <div className={styles.lightboxActions}>
-              <FormButton 
-                variant="secondary" 
-                onClick={() => setRawImage(null)}
-              >
-                Cancel
-              </FormButton>
-              <FormButton 
-                variant="primary" 
-                onClick={cropImage}
-              >
-                Apply Crop
-              </FormButton>
-            </div>
-          </div>
+          <AvatarCropper
+            rawImage={rawImage}
+            imgRef={imgRef}
+            zoom={zoom}
+            setZoom={setZoom}
+            position={position}
+            setPosition={setPosition}
+            isDragging={isDragging}
+            setIsDragging={setIsDragging}
+            dragStart={dragStart}
+            setDragStart={setDragStart}
+            isLandscape={isLandscape}
+            constrainPosition={constrainPosition}
+            onCancel={() => setRawImage(null)}
+            onSave={cropImage}
+          />
         ) : (
           <>
             <div className={styles.modalContent}>

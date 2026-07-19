@@ -37,7 +37,7 @@ const TwoFactorSettings = ({ forceWidth }) => {
   };
 
   // Fetch current user
-  const { data: user, isLoading } = useSecureQuery({
+  const { data: user, isLoading, isFetching } = useSecureQuery({
     queryKey: ['user'],
     queryFn: async () => {
       const res = await api.get('/auth/me');
@@ -49,7 +49,7 @@ const TwoFactorSettings = ({ forceWidth }) => {
   useEffect(() => {
     if (user) {
       setFormVal({
-        twoFactorEnabled: user.isEmailVerified,
+        twoFactorEnabled: user.twoFactorEnabled ?? false,
         'twoFactorMethods.email': true,
         'twoFactorMethods.authenticator': user.twoFactorMethods?.authenticator ?? false,
         twoFactorPrimary: user.twoFactorPrimary ?? 'email'
@@ -160,7 +160,7 @@ const TwoFactorSettings = ({ forceWidth }) => {
     router
   };
 
-  if (isLoading) {
+  if (isLoading || (isFetching && (!user || !user.isEmailVerified))) {
     return (
       <div style={{ 
         display: 'flex', 

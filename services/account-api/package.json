@@ -39,6 +39,7 @@
     "otplib": "^13.4.1",
     "qrcode": "^1.5.4",
     "schema-package": "file:../../packages/schemaPackage",
+    "sharp": "^0.34.5",
     "socket.io": "^4.8.3"
   },
   "devDependencies": {

@@ -12,19 +12,19 @@
 }
 
 .successBox {
-  background: rgba(0, 133, 222, 0.574);
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
-  border: 1px solid rgba(0, 149, 246, 0.3);
+  background: rgba(179, 179, 179, 0.198);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(178, 178, 178, 0.053);
   padding: 24px;
-  border-radius: 20px;
+  border-radius: 28px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 130px;
   height: 130px;
-  box-shadow: 0 8px 32px 0 rgba(0, 149, 246, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 148, 246, 0);
   animation: scaleIn 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
@@ -45,16 +45,16 @@
   stroke-width: 3;
   stroke: #0095f6;
   stroke-miterlimit: 10;
-  box-shadow: inset 0px 0px 0px #0095f6;
+  box-shadow: inset 0px 0px 0px #0094f600;
   animation: fill .3s ease-in-out .25s forwards, scale .3s ease-in-out .7s both;
 }
 
 .checkmarkCircle {
   stroke-dasharray: 166;
   stroke-dashoffset: 166;
-  stroke-width: 3;
+  stroke-width: 6;
   stroke-miterlimit: 10;
-  stroke: #0095f6;
+  stroke: #f3f3f3a4;
   fill: none;
   animation: stroke 0.5s cubic-bezier(0.65, 0, 0.45, 1) forwards;
 }
@@ -63,7 +63,7 @@
   transform-origin: 50% 50%;
   stroke-dasharray: 48;
   stroke-dashoffset: 48;
-  stroke: #ffffff;
+  stroke: #ffffffb2;
   animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.45s forwards;
 }
 
@@ -86,6 +86,6 @@
 
 @keyframes fill {
   100% {
-    box-shadow: inset 0px 0px 0px 30px rgba(0, 149, 246, 0.25);
+    box-shadow: inset 0px 0px 0px 30px rgba(0, 148, 246, 0);
   }
 }

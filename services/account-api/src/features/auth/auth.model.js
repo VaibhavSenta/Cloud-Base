@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema({
     profilePic: {
         type: String,
         required: false,
-        default: '/icons/default-avatar.jpg'
+        default: '/user-icon.png'
     },
     dob: {
         type: Date,

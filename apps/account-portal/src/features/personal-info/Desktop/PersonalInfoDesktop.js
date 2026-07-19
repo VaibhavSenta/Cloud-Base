@@ -7,6 +7,7 @@ import FormButton from '../UI/FormButton/FormButton';
 import ProfileBanner from '../UI/ProfileBanner/ProfileBanner';
 import ProfileLightbox from '../UI/ProfileLightbox/ProfileLightbox';
 import IdentityTrustCard from '../UI/IdentityTrustCard/IdentityTrustCard';
+import KeyValueList from '@/components/UI/List/KeyValueList';
 import styles from './PersonalInfoDesktop.module.css';
 
 /**
@@ -78,18 +79,7 @@ export default function PersonalInfoDesktop({
             frontContent={(
               <>
                 <h3 className={styles.cardTitle}>Basic Profile</h3>
-                <div className={styles.metadataList}>
-                  {infoFields.map((field, idx) => (
-                    <div 
-                      key={idx} 
-                      className={`${styles.metaItem} ${!field.isEditable ? styles.nonEditable : ''}`}
-                      onClick={field.isEditable ? () => handleEditClick(field.key) : undefined}
-                    >
-                      <span className={styles.metaLabel}>{field.label}</span>
-                      <span className={styles.metaValue}>{field.value}</span>
-                    </div>
-                  ))}
-                </div>
+                <KeyValueList fields={infoFields} onEditClick={handleEditClick} />
               </>
             )}
             backContent={(
@@ -187,18 +177,7 @@ export default function PersonalInfoDesktop({
             frontContent={(
               <>
                 <h3 className={styles.cardTitle}>Contact Details</h3>
-                <div className={styles.metadataList}>
-                  {contactFields.map((field, idx) => (
-                    <div 
-                      key={idx} 
-                      className={`${styles.metaItem} ${!field.isEditable ? styles.nonEditable : ''}`}
-                      onClick={field.isEditable ? () => handleEditClick(field.key) : undefined}
-                    >
-                      <span className={styles.metaLabel}>{field.label}</span>
-                      <span className={styles.metaValue}>{field.value}</span>
-                    </div>
-                  ))}
-                </div>
+                <KeyValueList fields={contactFields} onEditClick={handleEditClick} />
               </>
             )}
             backContent={(

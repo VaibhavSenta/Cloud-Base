@@ -9,10 +9,13 @@
   transition: all 0.3s ease-in-out;
   padding: 15px 3px;
 }
-.listGroup:hover {
-  background-color: #33333347;
-  transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.5); /* Fixed the syntax error */
+
+@media (hover: hover) {
+  .listGroup:hover {
+    background-color: #33333347;
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.5);
+  }
 }
 
 .listItem {
@@ -26,9 +29,11 @@
   border-radius: 7px;
 }
 
-.listItem:hover {
-  background: #264873;
-  border-color: #333;
+@media (hover: hover) {
+  .listItem:hover {
+    background: #264873;
+    border-color: #333;
+  }
 }
 
 .listItem:active {
@@ -70,7 +75,9 @@
   transition: transform 0.3s ease, opacity 0.3s ease, color 0.3s ease;
 }
 
-.listItem:hover .arrow {
-  opacity: 1;
-  color: #ffffff;
+@media (hover: hover) {
+  .listItem:hover .arrow {
+    opacity: 1;
+    color: #ffffff;
+  }
 }

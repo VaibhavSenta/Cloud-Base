@@ -439,18 +439,41 @@ const getAvatar = async (req, res) => {
         const { userId } = req.params;
         const user = await USER.findById(userId);
         if (!user || !user.profilePic) {
+            const path = require('path');
+            const fs = require('fs');
+            const defaultPath = path.join(__dirname, '../../../public/user-icon.png');
+            if (fs.existsSync(defaultPath)) {
+                return res.sendFile(defaultPath);
+            }
             return res.status(404).json({ message: 'Avatar not found' });
         }
 
-        // 1. If it's a local/fallback avatar path
-        if (user.profilePic.startsWith('/uploads/') || user.profilePic.startsWith('/icons/')) {
+        // 1. If it's a local upload
+        if (user.profilePic.startsWith('/uploads/')) {
             const path = require('path');
             const fs = require('fs');
             const localPath = path.join(__dirname, '../../../public', user.profilePic);
             if (fs.existsSync(localPath)) {
-                return res.sendFile(localPath);
+                try {
+                    const encryptedBuffer = fs.readFileSync(localPath);
+                    const crypto = require('crypto');
+                    const { deriveKeyAndIv } = require('./drive.service');
+                    const { key, iv } = deriveKeyAndIv(userId);
+                    const decipher = crypto.createDecipheriv('aes-256-cbc', key, iv);
+                    const decryptedBuffer = Buffer.concat([decipher.update(encryptedBuffer), decipher.final()]);
+
+                    res.setHeader('Content-Type', 'image/png');
+                    res.setHeader('Cache-Control', 'public, max-age=86400');
+                    return res.send(decryptedBuffer);
+                } catch (decErr) {
+                    console.error("⚠️ Local avatar decryption failed, serving fallback:", decErr.message);
+                }
             }
-            return res.status(404).json({ message: 'Avatar not found' });
+            // Fallback if local file was deleted/missing
+            const defaultPath = path.join(__dirname, '../../../public/user-icon.png');
+            if (fs.existsSync(defaultPath)) {
+                return res.sendFile(defaultPath);
+            }
         }
 
         // 2. If it's a Google Drive URL, proxy and decrypt it
@@ -489,14 +512,20 @@ const getAvatar = async (req, res) => {
             return res.send(decryptedBuffer);
         }
 
-        // 3. Fallback: standard external URL redirect (e.g. Gravatar link)
-        return res.redirect(user.profilePic);
+        // 3. Fallback: serve the default avatar image for all other cases
+        const path = require('path');
+        const fs = require('fs');
+        const defaultPath = path.join(__dirname, '../../../public/user-icon.png');
+        if (fs.existsSync(defaultPath)) {
+            return res.sendFile(defaultPath);
+        }
+        return res.status(404).json({ message: 'Default avatar not found' });
     } catch (error) {
         console.error('❌ Decryption proxy server error:', error.message);
         // Fallback to local default person icon if things go wrong
         const path = require('path');
         const fs = require('fs');
-        const defaultPath = path.join(__dirname, '../../../public/icons/default-avatar.jpg');
+        const defaultPath = path.join(__dirname, '../../../public/user-icon.png');
         if (fs.existsSync(defaultPath)) {
             return res.sendFile(defaultPath);
         }

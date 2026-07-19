@@ -63,6 +63,8 @@
   transition: color 0.2s ease;
 }
 
-.listItem:hover .arrow {
-  color: #ffffff;
+@media (hover: hover) {
+  .listItem:hover .arrow {
+    color: #ffffff;
+  }
 }

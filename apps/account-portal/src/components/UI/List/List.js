@@ -1,8 +1,8 @@
 'use client';
 import useWindowSize from '../../../hooks/useWindowSize';
-import ListMobile from './Mobile/ListMobile';
-import ListDesktop from './Desktop/ListDesktop';
-import ListTablet from './Tablet/ListTablet';
+import ListMobile from './Mobile/ListMobile/ListMobile';
+import ListDesktop from './Desktop/ListDesktop/ListDesktop';
+import ListTablet from './Tablet/ListTablet/ListTablet';
 
 /**
  * Universal List Component

@@ -39,7 +39,7 @@ export default function SecuritySettingsMobile() {
   }, [countdown]);
 
   // Fetch current user from React Query cache
-  const { data: user, isLoading } = useSecureQuery({
+  const { data: user, isLoading, isFetching } = useSecureQuery({
     queryKey: ['user'],
     queryFn: async () => {
       const res = await api.get('/auth/me');
@@ -330,7 +330,7 @@ export default function SecuritySettingsMobile() {
     }
   };
 
-  if (isLoading) {
+  if (isLoading || (isFetching && (!user || !user.isEmailVerified))) {
     return <div className={styles.loading}>Loading credentials...</div>;
   }
 

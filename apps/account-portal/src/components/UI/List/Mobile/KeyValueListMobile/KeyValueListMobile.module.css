@@ -1,0 +1,92 @@
+.card {
+  background-color: rgba(216, 216, 216, 0.039);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 2rem;
+  overflow: hidden;
+}
+
+.cardTitle {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 1.2rem 1.2rem 0.4rem 1.2rem;
+  margin: 0;
+}
+
+.infoList {
+  display: flex;
+  flex-direction: column;
+}
+
+.infoItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.7rem 1.2rem;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #111;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+}
+
+.infoItem:last-child {
+  border-bottom: none;
+}
+
+@media (hover: hover) {
+  .infoItem:hover {
+    background: rgba(255, 255, 255, 0.02);
+  }
+}
+
+.infoItem.nonEditable {
+  cursor: default;
+}
+
+@media (hover: hover) {
+  .infoItem.nonEditable:hover {
+    background: transparent;
+  }
+}
+
+.rowMeta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.22rem;
+}
+
+.infoLabel {
+  color: #666;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.infoValue {
+  color: #ddd;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.editArrow {
+  color: #222;
+  font-size: 1.1rem;
+  line-height: 1;
+  position: absolute;
+  right: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@media (hover: hover) {
+  .infoItem:hover .editArrow {
+    color: #0095f6;
+  }
+}

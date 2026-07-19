@@ -135,6 +135,34 @@ export default function PersonalInfo({ forceWidth }) {
     setIsLandscape(false);
   };
 
+  const constrainPosition = (x, y, z) => {
+    const imgEl = imgRef.current;
+    if (!imgEl) return { x, y };
+
+    const naturalWidth = imgEl.naturalWidth;
+    const naturalHeight = imgEl.naturalHeight;
+    if (!naturalWidth || !naturalHeight) return { x, y };
+
+    let displayWidth, displayHeight;
+    if (naturalWidth > naturalHeight) {
+      displayHeight = 240;
+      displayWidth = 240 * (naturalWidth / naturalHeight);
+    } else {
+      displayWidth = 240;
+      displayHeight = 240 * (naturalHeight / naturalWidth);
+    }
+
+    const minX = 120 - (displayWidth * z) / 2;
+    const maxX = (displayWidth * z) / 2 - 120;
+    const minY = 120 - (displayHeight * z) / 2;
+    const maxY = (displayHeight * z) / 2 - 120;
+
+    return {
+      x: Math.min(Math.max(x, minX), maxX),
+      y: Math.min(Math.max(y, minY), maxY)
+    };
+  };
+
   const cropImage = () => {
     if (!rawImage) return;
     const img = new window.Image();
@@ -155,21 +183,24 @@ export default function PersonalInfo({ forceWidth }) {
         displayHeight = 240 * (img.naturalHeight / img.naturalWidth);
       }
 
-      // Calculate display coordinate bounds with 50%-based centering offset
-      const imageLeft = 120 + position.x - (displayWidth * zoom) / 2;
-      const imageTop = 120 + position.y - (displayHeight * zoom) / 2;
+      // Constrain position to prevent blank space in cropped canvas
+      const constrained = constrainPosition(position.x, position.y, zoom);
 
-      // Distance from image top-left to viewport (40, 40)
-      const cropXDisplay = 40 - imageLeft;
-      const cropYDisplay = 40 - imageTop;
+      // Calculate display coordinate bounds with 50%-based centering offset
+      const imageLeft = 120 + constrained.x - (displayWidth * zoom) / 2;
+      const imageTop = 120 + constrained.y - (displayHeight * zoom) / 2;
+
+      // Distance from image top-left to viewport (0, 0)
+      const cropXDisplay = 0 - imageLeft;
+      const cropYDisplay = 0 - imageTop;
 
       // Map display coordinate sizes to natural image dimensions
       const scaleFactor = img.naturalWidth / (displayWidth * zoom);
 
       const sx = cropXDisplay * scaleFactor;
       const sy = cropYDisplay * scaleFactor;
-      const sWidth = 160 * scaleFactor;
-      const sHeight = 160 * scaleFactor;
+      const sWidth = 240 * scaleFactor;
+      const sHeight = 240 * scaleFactor;
 
       ctx.drawImage(img, sx, sy, sWidth, sHeight, 0, 0, 300, 300);
 
@@ -211,8 +242,8 @@ export default function PersonalInfo({ forceWidth }) {
   }
 
   const getSafeAvatar = (path) => {
-    if (!path || path.includes('..') || path.includes('defaultLogos') || path === '/icons/person.svg') {
-      return '/icons/default-avatar.jpg';
+    if (!path || path.includes('..') || path.includes('defaultLogos') || path === '/icons/person.svg' || path.includes('gravatar.com')) {
+      return '/user-icon.png';
     }
     return path;
   };
@@ -256,7 +287,8 @@ export default function PersonalInfo({ forceWidth }) {
     setDragStart,
     imgRef,
     cropImage,
-    isLandscape
+    isLandscape,
+    constrainPosition
   };
 
   // SSR / Hydration Fallback

@@ -51,13 +51,26 @@ const updateProfile = async (userId, updateData) => {
     if (matches && matches.length === 3) {
       const mimeType = matches[1];
       const extension = mimeType.split('/')[1] || 'png';
-      const fileBuffer = Buffer.from(matches[2], 'base64');
-      const filename = `profile_${userId}_${Date.now()}.${extension}`;
+      let fileBuffer = Buffer.from(matches[2], 'base64');
       
+      // Sanitize and compress the image to a fixed 300x300 size using sharp (strips EXIF & malware payloads)
+      const sharp = require('sharp');
+      try {
+        fileBuffer = await sharp(fileBuffer)
+          .resize(300, 300, { fit: 'cover' })
+          .png({ quality: 85, compressionLevel: 8 })
+          .toBuffer();
+      } catch (sharpErr) {
+        console.error("⚠️ Sharp image processing failed:", sharpErr.message);
+        throw new Error("Invalid image format or corrupted file");
+      }
+
+      const filename = `profile_${userId}_${Date.now()}.${extension}`;
       const { drive } = require('../../common/config/googleDrive');
       
       if (drive) {
         try {
+          const { uploadToDrive } = require('./drive.service');
           const publicUrl = await uploadToDrive(fileBuffer, filename, mimeType, userId);
           
           // Clean up previous local custom profile picture if it existed
@@ -85,8 +98,16 @@ const updateProfile = async (userId, updateData) => {
           if (!fs.existsSync(uploadDir)) {
             fs.mkdirSync(uploadDir, { recursive: true });
           }
+          
+          // Encrypt fileBuffer before saving to local disk
+          const crypto = require('crypto');
+          const { deriveKeyAndIv } = require('./drive.service');
+          const { key, iv } = deriveKeyAndIv(userId);
+          const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
+          const encryptedBuffer = Buffer.concat([cipher.update(fileBuffer), cipher.final()]);
+
           const filePath = path.join(uploadDir, filename);
-          fs.writeFileSync(filePath, fileBuffer);
+          fs.writeFileSync(filePath, encryptedBuffer);
           filteredUpdate.profilePic = `/uploads/${filename}`;
         }
       } else {
@@ -99,8 +120,15 @@ const updateProfile = async (userId, updateData) => {
           fs.mkdirSync(uploadDir, { recursive: true });
         }
         
+        // Encrypt fileBuffer before saving to local disk
+        const crypto = require('crypto');
+        const { deriveKeyAndIv } = require('./drive.service');
+        const { key, iv } = deriveKeyAndIv(userId);
+        const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
+        const encryptedBuffer = Buffer.concat([cipher.update(fileBuffer), cipher.final()]);
+
         const filePath = path.join(uploadDir, filename);
-        fs.writeFileSync(filePath, fileBuffer);
+        fs.writeFileSync(filePath, encryptedBuffer);
         
         // Clean up previous custom profile picture if it exists
         const user = await USER.findById(userId);

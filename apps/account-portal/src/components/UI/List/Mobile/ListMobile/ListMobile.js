@@ -1,8 +1,11 @@
 'use client';
 import Image from 'next/image';
-import styles from './ListTablet.module.css';
+import styles from './ListMobile.module.css';
+import { useRouter } from 'next/navigation';
 
-const ListTablet = ({ items, variant = 'link' }) => {
+const ListMobile = ({ items, variant = 'link' }) => {
+  const router = useRouter();
+  
   return (
     <div className={styles.listGroup}>
       {items.map((item, index) => (
@@ -19,12 +22,10 @@ const ListTablet = ({ items, variant = 'link' }) => {
             )}
           </div>
           {variant === 'link' && <span className={styles.arrow}>›</span>}
-          
         </div>
-        
       ))}
     </div>
   );
 };
 
-export default ListTablet;
+export default ListMobile;

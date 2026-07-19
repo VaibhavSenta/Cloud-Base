@@ -1,6 +1,7 @@
 'use client';
 import SuccessOverlay from '@/components/UI/SuccessOverlay/SuccessOverlay';
 import InfoModal from '@/components/UI/InfoModal/InfoModal';
+import Image from 'next/image';
 import styles from './TwoFactorSettingsDesktop.module.css';
 
 export default function TwoFactorSettingsDesktop({
@@ -43,10 +44,13 @@ export default function TwoFactorSettingsDesktop({
                 
                 {authenticatorSetupData.qrCodeUrl && (
                   <div style={{ display: 'flex', justifyContent: 'center', margin: '0.5rem 0' }}>
-                    <img 
+                    <Image 
                       src={authenticatorSetupData.qrCodeUrl} 
                       alt="2FA QR Code" 
-                      style={{ background: '#ffffff', padding: '10px', borderRadius: '12px', width: '160px', height: '160px' }}
+                      width={160}
+                      height={160}
+                      unoptimized
+                      style={{ background: '#ffffff', padding: '10px', borderRadius: '12px' }}
                     />
                   </div>
                 )}
