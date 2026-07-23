@@ -1,10 +1,12 @@
 'use client';
-import { useSecureQuery } from '../../../hooks/useSecureQuery';
-import api from '../../../utils/api';
-import styles from './LoggedDevicesMobile.module.css';
+import { useSecureQuery } from '../../../../hooks/useSecureQuery';
+import api from '../../../../utils/api';
+import ActionList from '@/components/UI/List/ActionList';
+import PageHeader from '@/components/UI/PageHeader/PageHeader';
+import styles from './RecentActivityMobile.module.css';
 import { useRouter } from 'next/navigation';
 
-export default function LoggedDevicesMobile() {
+export default function RecentActivityMobile() {
   const router = useRouter();
 
   // Fetch current user from React Query cache
@@ -99,38 +101,61 @@ export default function LoggedDevicesMobile() {
 
   if (isLoading) {
     return <div className={styles.loading}>Loading activity logs...</div>;
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+        <CloudSpinner size={64} />
+      </div>
+    );
   }
 
   const logs = getActivityLogs();
 
+  const getGroupedLogs = (logsList) => {
+    const groups = {};
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    logsList.forEach((log) => {
+      const date = new Date(log.timestamp);
+      const year = date.getFullYear();
+      const monthName = monthNames[date.getMonth()];
+      const key = `${monthName} ${year}`;
+
+      if (!groups[key]) {
+        groups[key] = [];
+      }
+      groups[key].push(log);
+    });
+
+    return Object.entries(groups);
+  };
+
+  const groupedLogs = getGroupedLogs(logs);
+
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
-        <h1 className={styles.title}>Recent Activity</h1>
-        <p className={styles.subtitle}>Review security audits, credentials changes, and device authorization records.</p>
-      </header>
+      <PageHeader 
+        title="Recent Activity"
+        subtitle="Review security audits, credentials changes, and device authorization records."
+      />
 
-      <div className={styles.card}>
-        <div className={styles.infoList}>
-          {logs.map((log) => (
-            <div 
-              key={log.id} 
-              className={styles.infoItem}
-              onClick={() => router.push(`/dashboard/security/devices/${log.id}`)}
-            >
-              <div className={styles.rowMeta}>
-                <span className={styles.infoValue}>{log.action}</span>
-                <span className={styles.lastActive}>{formatTimestamp(log.timestamp)}</span>
-              </div>
+      {groupedLogs.length > 0 ? (
+        <div className={styles.mobileLayout}>
+          {groupedLogs.map(([monthKey, monthLogs]) => (
+            <div key={monthKey} className={styles.monthGroup}>
+              <h2 className={styles.sectionHeader}>{monthKey}</h2>
+              <ActionList items={monthLogs.map((log) => ({
+                label: log.action,
+                subtitle: formatTimestamp(log.timestamp),
+                onClick: () => router.push(`/dashboard/security/devices/${log.id}`),
+              }))} />
             </div>
           ))}
-          {logs.length === 0 && (
-            <p style={{ color: '#666', textAlign: 'center', fontSize: '0.88rem', padding: '2rem 0' }}>
-              No recent activity recorded.
-            </p>
-          )}
         </div>
-      </div>
+      ) : (
+        <p style={{ color: '#666', textAlign: 'center', fontSize: '0.88rem', padding: '2rem 0' }}>
+          No recent activity recorded.
+        </p>
+      )}
     </div>
   );
 }

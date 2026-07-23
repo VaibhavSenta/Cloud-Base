@@ -1,10 +1,10 @@
-import LoggedDevices from '@/features/security-settings/LoggedDevices';
+import RecentActivity from '@/features/security-settings/RecentActivity';
 
 export const metadata = {
-  title: 'Logged Devices | Cloud-Base',
-  description: 'Revoke active sessions and view logged terminal coordinates.',
+  title: 'Recent Activity | Cloud-Base',
+  description: 'Review security audit log and activity history.',
 };
 
-export default function LoggedDevicesPage() {
-  return <LoggedDevices />;
+export default function RecentActivityPage() {
+  return <RecentActivity />;
 }

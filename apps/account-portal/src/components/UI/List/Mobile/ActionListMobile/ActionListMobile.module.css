@@ -1,0 +1,107 @@
+/* ActionListMobile — Card-based clickable list with optional indicators */
+
+.card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 1.25rem;
+  overflow: hidden;
+}
+
+.cardDanger {
+  /* Only text should be red, card border remains standard */
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.2rem;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #111;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  box-sizing: border-box;
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.item:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.22rem;
+}
+
+.label {
+  color: #cccccc;
+  font-size: var(--row-title-size-mobile);
+  font-weight: var(--row-title-weight-mobile);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.labelDanger {
+  color: #ff4d4d;
+  font-size: var(--row-title-size-mobile);
+  font-weight: var(--row-title-weight-mobile);
+}
+
+.subtitle {
+  color: #666;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.badge {
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: #0095f6;
+  letter-spacing: 0.5px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.dotBlue {
+  width: 6px;
+  height: 6px;
+  background-color: #0095f6;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #0095f6;
+  flex-shrink: 0;
+}
+
+.dotRed {
+  width: 6px;
+  height: 6px;
+  background-color: #ff4d4d;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #ff4d4d;
+  flex-shrink: 0;
+}
+
+.dotGreen {
+  width: 6px;
+  height: 6px;
+  background-color: #4ade80;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #4ade80;
+  flex-shrink: 0;
+}

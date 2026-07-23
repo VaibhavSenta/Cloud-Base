@@ -2,6 +2,7 @@
 import SuccessOverlay from '@/components/UI/SuccessOverlay/SuccessOverlay';
 import InfoModal from '@/components/UI/InfoModal/InfoModal';
 import Image from 'next/image';
+import PageHeader from '@/components/UI/PageHeader/PageHeader';
 import styles from './TwoFactorSettingsMobile.module.css';
 
 export default function TwoFactorSettingsMobile({
@@ -25,10 +26,10 @@ export default function TwoFactorSettingsMobile({
 }) {
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
-        <h1 className={styles.title}>Two-Factor Authentication</h1>
-        <p className={styles.subtitle}>Enforce an extra layer of safety and security of your account.</p>
-      </header>
+      <PageHeader 
+        title="Two-Factor Authentication"
+        subtitle="Enforce an extra layer of safety and security of your account."
+      />
 
       {errorMessage && <p className={styles.errorText}>{errorMessage}</p>}
 

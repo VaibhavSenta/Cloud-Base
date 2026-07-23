@@ -1,4 +1,4 @@
-import SessionDetailMobile from './Mobile/SessionDetailMobile';
+import SessionDetailMobile from './Mobile/SessionDetailMobile/SessionDetailMobile';
 
 /**
  * Logged Device / Session Details Wrapper

@@ -1,0 +1,37 @@
+/* PageHeader Component Styles — Standardized Heading for all pages */
+
+.header {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+}
+
+.title {
+  font-size: var(--title-size-mobile, 1.2rem);
+  font-weight: var(--title-weight-mobile, 700);
+  letter-spacing: var(--title-spacing-mobile, -0.3px);
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.subtitle {
+  font-size: 0.82rem;
+  color: #888888;
+  line-height: 1.45;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 1.35rem;
+  }
+  
+  .subtitle {
+    font-size: 0.85rem;
+  }
+}

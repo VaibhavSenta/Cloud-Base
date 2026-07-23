@@ -9,6 +9,7 @@ import styles from '../Header.module.css';
 export default function HeaderTablet({ 
   isSubpage, 
   handleBack, 
+  handleLogoClick,
   onToggleSidebar, 
   isSidebarOpen, 
   isOnline, 
@@ -37,7 +38,7 @@ export default function HeaderTablet({
             </button>
           )}
 
-          <div className={styles.logoWrapper}>
+          <div className={styles.logoWrapper} onClick={handleLogoClick}>
             <Logo className={styles.logo} forceVersion="icon" theme="monochrome" />
           </div>
 

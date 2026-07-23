@@ -1,8 +1,8 @@
 'use client';
 import useWindowSize from '../../hooks/useWindowSize';
-import SecuritySettingsMobile from './Mobile/SecuritySettingsMobile';
-import SecuritySettingsTablet from './Tablet/SecuritySettingsTablet';
-import SecuritySettingsDesktop from './Desktop/SecuritySettingsDesktop';
+import SecuritySettingsMobile from './Mobile/SecuritySettingsMobile/SecuritySettingsMobile';
+import SecuritySettingsTablet from './Tablet/SecuritySettingsTablet/SecuritySettingsTablet';
+import SecuritySettingsDesktop from './Desktop/SecuritySettingsDesktop/SecuritySettingsDesktop';
 
 /**
  * Signin & Security Settings Component Wrapper

@@ -6,6 +6,8 @@ import { useSecureQuery, useSecureQueryClient } from '../../../hooks/useSecureQu
 import api from '../../../utils/api';
 import { encryptPayload } from '../../../utils/security/networkCrypto';
 import BottomSheet from '@/components/UI/BottomSheet/BottomSheet';
+import ActionList from '@/components/UI/List/ActionList';
+import PageHeader from '@/components/UI/PageHeader/PageHeader';
 import styles from './PasswordOptionsMobile.module.css';
 
 /**
@@ -88,38 +90,23 @@ export default function PasswordOptionsMobile() {
 
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
-        <h1 className={styles.title}>Password Options</h1>
-        <p className={styles.subtitle}>Change your login password or securely view your authentication settings.</p>
-      </header>
+      <PageHeader 
+        title="Password Options"
+        subtitle="Change your login password or securely view your authentication settings."
+      />
 
-      <section className={styles.section}>
-        <div className={styles.card}>
-          <div className={styles.infoList}>
-            {/* Change Password Row */}
-            <div className={styles.infoItem} onClick={() => handleEditClick('change')}>
-              <div className={styles.meta}>
-                <span className={styles.infoLabel}>Change Password</span>
-                <span className={styles.infoValue}>Update your login password credentials</span>
-              </div>
-              <div className={styles.rightGroup}>
-                <span className={styles.arrow}>›</span>
-              </div>
-            </div>
-
-            {/* View Password Row */}
-            <div className={styles.infoItem} onClick={() => handleEditClick('reveal')}>
-              <div className={styles.meta}>
-                <span className={styles.infoLabel}>View Password</span>
-                <span className={styles.infoValue}>Securely reveal your current login password</span>
-              </div>
-              <div className={styles.rightGroup}>
-                <span className={styles.arrow}>›</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ActionList items={[
+        {
+          label: 'Change Password',
+          subtitle: 'Update your login password credentials',
+          onClick: () => handleEditClick('change'),
+        },
+        {
+          label: 'View Password',
+          subtitle: 'Securely reveal your current login password',
+          onClick: () => handleEditClick('reveal'),
+        },
+      ]} />
 
       {/* 📱 Bottom Sheet Dialog Modal */}
       <BottomSheet

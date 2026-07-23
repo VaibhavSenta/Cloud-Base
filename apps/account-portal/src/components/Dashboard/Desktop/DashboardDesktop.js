@@ -40,7 +40,7 @@ const DashboardDesktop = ({ user }) => {
           <Image 
             src={getSafeAvatar(user?.profilePic)} 
             alt="Profile" width={160} height={160} 
-            className={styles.avatar} priority 
+            className={styles.avatar} priority unoptimized
           />
         </div>
         <h2 className={styles.displayFullName}>{user?.firstName} {user?.lastName}</h2>
@@ -61,11 +61,11 @@ const DashboardDesktop = ({ user }) => {
 
         <div className={styles.statusCard} onClick={() => router.push('/dashboard/connected-services')}>
           <div className={styles.statusIconArea}>
-            <Image src="/icons/Connected_Services.svg" alt="Storage" width={18} height={18} className={styles.statusSvg} />
+            <Image src="/icons/Connected_Services.svg" alt="Connected Services" width={18} height={18} className={styles.statusSvg} />
           </div>
           <div className={styles.statusText}>
-            <h4>Cloud Vault</h4>
-            <p>Secure Cloud Storage</p>
+            <h4>Connected Services</h4>
+            <p>Explore & link apps</p>
           </div>
         </div>
 

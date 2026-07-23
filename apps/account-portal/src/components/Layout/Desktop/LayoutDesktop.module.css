@@ -17,7 +17,7 @@
 .mainContent {
   flex: 1;
   width: 100%;
-  padding: 100px 3rem 3rem 290px; /* Top offset + Left offset */
+  padding: 100px 3rem 3rem 295px; /* Top offset + Left offset */
   background: linear-gradient(to right, #161616 0%, #151515 50%, #141414 100%); /* Horizontal blend to eliminate color-banding seams */
   min-height: 100vh;
   box-sizing: border-box;

@@ -2,11 +2,13 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
-import { useSecureQuery, useSecureQueryClient } from '../../../hooks/useSecureQuery';
-import api from '../../../utils/api';
-import styles from './LoggedSessionsMobile.module.css';
+import { useSecureQuery, useSecureQueryClient } from '../../../../hooks/useSecureQuery';
+import api from '../../../../utils/api';
+import PageHeader from '@/components/UI/PageHeader/PageHeader';
+import ActionList from '@/components/UI/List/ActionList';
+import styles from './ActiveSessionsMobile.module.css';
 
-export default function LoggedSessionsMobile() {
+export default function ActiveSessionsMobile() {
   const router = useRouter();
   const queryClient = useSecureQueryClient();
   const [revokingId, setRevokingId] = useState(null);
@@ -124,44 +126,28 @@ export default function LoggedSessionsMobile() {
         <p className={styles.subtitle}>Manage your active account logins and revoke security tokens of other devices.</p>
       </header>
 
-      <div className={styles.card}>
-        <div className={styles.infoList}>
-          {sessions.map((session) => (
-            <div 
-              key={session.sessionId} 
-              className={styles.infoItem}
-              onClick={() => router.push(`/dashboard/security/sessions/${session.sessionId}`)}
-            >
-              <div className={styles.rowMeta}>
-                <div className={styles.deviceName}>
-                  {session.deviceName || 'Unknown Device'}
-                  {session.isCurrent && <span className={styles.currentBadge}>• This device</span>}
-                </div>
-                <div className={styles.sessionDetails}>
-                  {session.browser || 'Browser'} • {session.isCurrent ? 'Active now' : `Last active: ${formatRelativeTime(session.lastActive)}`}
-                </div>
-              </div>
-            </div>
-          ))}
-          {sessions.length === 0 && (
-            <p style={{ color: '#666', textAlign: 'center', fontSize: '0.88rem', padding: '2rem 0' }}>
-              No active sessions found.
-            </p>
-          )}
-        </div>
-      </div>
+      <div className={styles.mobileLayout}>
+        {sessions.length > 0 ? (
+          <ActionList items={sessions.map((session) => ({
+            label: session.deviceName || 'Unknown Device',
+            badge: session.isCurrent ? '• This device' : null,
+            subtitle: `${session.browser || 'Browser'} • ${session.isCurrent ? 'Active now' : `Last active: ${formatRelativeTime(session.lastActive)}`}`,
+            onClick: () => router.push(`/dashboard/security/sessions/${session.sessionId}`),
+          }))} />
+        ) : (
+          <p style={{ color: '#666', textAlign: 'center', fontSize: '0.88rem', padding: '2rem 0' }}>
+            No active sessions found.
+          </p>
+        )}
 
-      {sessions.length > 1 && (
-        <div className={styles.revokeActionCard}>
-          <button 
-            className={styles.logoutAllBtn}
-            onClick={handleRevokeAllOther}
-            disabled={isLoggingOutAllOther}
-          >
-            {isLoggingOutAllOther ? 'Logging out other devices...' : 'Logout from all other devices'}
-          </button>
-        </div>
-      )}
+        {sessions.length > 1 && (
+          <ActionList danger items={[{
+            label: isLoggingOutAllOther ? 'Logging out other devices...' : 'Logout from all other devices',
+            onClick: handleRevokeAllOther,
+            variant: 'danger'
+          }]} />
+        )}
+      </div>
 
       {showConfirmModal && (
         <div className={styles.modalOverlay} onClick={() => setShowConfirmModal(false)}>

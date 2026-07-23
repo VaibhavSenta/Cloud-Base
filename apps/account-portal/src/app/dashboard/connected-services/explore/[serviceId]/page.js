@@ -8,6 +8,8 @@ import CloudSpinner from '@/components/UI/CloudSpinner/CloudSpinner';
 
 import { localEncrypt, localDecrypt } from 'secure-query-cache';
 
+import ServiceConsentCard from '@/components/UI/ServiceConsentCard/ServiceConsentCard';
+
 export default function ServiceConsentPage() {
   const params = useParams();
   const router = useRouter();
@@ -113,120 +115,15 @@ export default function ServiceConsentPage() {
       color: '#ffffff',
       fontFamily: 'Inter, sans-serif'
     }}>
-      <div style={{
-        width: '100%',
-        maxWidth: '500px',
-        background: 'rgba(255, 255, 255, 0.01)',
-        border: '1px solid #262626',
-        borderRadius: '24px',
-        padding: '40px 32px',
-        boxSizing: 'border-box',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '24px'
-      }}>
-        <header style={{ textAlign: 'center' }}>
-          <span style={{
-            fontSize: '0.68rem',
-            fontWeight: '800',
-            letterSpacing: '1px',
-            color: '#0095f6',
-            textTransform: 'uppercase',
-            display: 'block',
-            marginBottom: '12px'
-          }}>
-            Service Onboarding
-          </span>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: '800', margin: '0 0 8px 0', letterSpacing: '-0.4px' }}>
-            Link {service.name}
-          </h2>
-          <p style={{ fontSize: '0.8rem', color: '#888888', margin: 0, lineHeight: 1.4 }}>
-            {service.description}
-          </p>
-        </header>
-
-        <div style={{ borderBottom: '1px solid #1a1a1a', margin: '8px 0' }}></div>
-
-        <div>
-          <h4 style={{ fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px', color: '#888888', margin: '0 0 12px 0' }}>
-            Permissions Requested
-          </h4>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {service.scopes.map((scope, index) => (
-              <div key={index} style={{
-                display: 'flex',
-                gap: '12px',
-                alignItems: 'flex-start',
-                fontSize: '0.82rem',
-                lineHeight: 1.4,
-                color: '#d4d4d4'
-              }}>
-                <span style={{ color: '#0095f6', fontWeight: 'bold' }}>•</span>
-                <span>{scope}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div style={{ borderBottom: '1px solid #1a1a1a', margin: '8px 0' }}></div>
-
-        <p style={{ fontSize: '0.72rem', color: '#666666', lineHeight: 1.4, margin: 0 }}>
-          By clicking Accept & Connect, you authorize Cloud-Base to bridge your account tokens with {service.name} and share the metadata items listed above in accordance with the application privacy parameters.
-        </p>
-
-        {errorMessage && (
-          <p style={{ color: '#ff453a', fontSize: '0.78rem', margin: 0, textAlign: 'center' }}>
-            {errorMessage}
-          </p>
-        )}
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '12px' }}>
-          <button
-            onClick={handleConnect}
-            disabled={connectMutation.isPending}
-            style={{
-              background: '#0095f6',
-              border: 'none',
-              color: '#ffffff',
-              fontWeight: '700',
-              fontSize: '0.85rem',
-              padding: '14px',
-              borderRadius: '12px',
-              cursor: connectMutation.isPending ? 'not-allowed' : 'pointer',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              gap: '10px'
-            }}
-          >
-            {connectMutation.isPending ? (
-              <>
-                <CloudSpinner size={16} />
-                <span>Linking...</span>
-              </>
-            ) : (
-              'Accept & Connect'
-            )}
-          </button>
-
-          <button
-            onClick={() => router.push('/dashboard/connected-services/explore')}
-            disabled={connectMutation.isPending}
-            style={{
-              background: 'transparent',
-              border: '1px solid #262626',
-              color: '#888888',
-              fontWeight: '600',
-              fontSize: '0.85rem',
-              padding: '14px',
-              borderRadius: '12px',
-              cursor: 'pointer'
-            }}
-          >
-            Cancel
-          </button>
-        </div>
-      </div>
+      <ServiceConsentCard 
+        name={service.name}
+        description={service.description}
+        scopes={service.scopes}
+        isPending={connectMutation.isPending}
+        errorMessage={errorMessage}
+        onConnect={handleConnect}
+        onCancel={() => router.push('/dashboard/connected-services/explore')}
+      />
     </div>
   );
 }

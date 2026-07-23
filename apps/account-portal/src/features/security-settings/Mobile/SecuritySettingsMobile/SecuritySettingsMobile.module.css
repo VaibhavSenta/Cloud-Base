@@ -406,7 +406,7 @@
 }
 
 .cardDanger {
-  border-color: rgba(255, 77, 77, 0.15) !important;
+  /* Only text should be red, card border remains standard */
 }
 
 .dangerLabel {

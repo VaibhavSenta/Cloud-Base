@@ -9,6 +9,7 @@ import styles from '../Header.module.css';
 export default function HeaderDesktop({ 
   isSubpage, 
   handleBack, 
+  handleLogoClick,
   isOnline, 
   getHeaderTitle, 
   getBreadcrumbs, 
@@ -31,7 +32,7 @@ export default function HeaderDesktop({
             </button>
           )}
 
-          <div className={styles.logoWrapper}>
+          <div className={styles.logoWrapper} onClick={handleLogoClick}>
             <Logo className={styles.logo} forceVersion="icon" theme="monochrome" />
           </div>
 

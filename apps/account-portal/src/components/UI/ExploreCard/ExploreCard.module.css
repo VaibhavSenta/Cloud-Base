@@ -1,0 +1,158 @@
+/* ExploreCard UI Component Styles — Premium AMOLED Dark Theme */
+
+.card {
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 1.25rem;
+  padding: 1.25rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  width: 100%;
+  transition: border-color 0.25s ease, background-color 0.25s ease, transform 0.2s ease;
+}
+
+.card:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.topRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.serviceHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+/* Service Logo Box */
+.logoContainer {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.logoImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.logoMonogram {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #0095f6;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.titleGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.serviceTitle {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -0.2px;
+}
+
+.categoryTag {
+  font-size: 0.7rem;
+  color: #666666;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Status Badge */
+.statusBadgeConnected {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 100px;
+  background: rgba(0, 149, 246, 0.12);
+  color: #0095f6;
+  border: 1px solid rgba(0, 149, 246, 0.3);
+}
+
+.statusBadgeAvailable {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.03);
+  color: #666666;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.description {
+  font-size: 0.82rem;
+  color: #a8a8a8;
+  margin: 0;
+  line-height: 1.45;
+}
+
+.actionRow {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 0.2rem;
+}
+
+.connectBtn {
+  background: #0095f6;
+  border: none;
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 8px 22px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+}
+
+.connectBtn:hover {
+  opacity: 0.9;
+}
+
+.connectBtn:active {
+  transform: scale(0.97);
+}
+
+.manageBtn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #cccccc;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.manageBtn:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.manageBtn:active {
+  background: rgba(255, 255, 255, 0.06);
+}

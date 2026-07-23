@@ -19,6 +19,7 @@ export default function ProfileBanner({ user, getSafeAvatar, onClick }) {
           height={100} 
           className={styles.avatarImg}
           priority
+          unoptimized
         />
       </div>
       <div className={styles.bannerText}>

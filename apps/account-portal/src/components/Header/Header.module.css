@@ -212,6 +212,7 @@
   width: auto;
   aspect-ratio: 1/1;
   border-radius: 50%;
+  cursor: pointer;
   /* border: 1px solid rgba(245, 245, 245, 0.125); */
   /* background: rgba(128, 128, 128, 0.281); */
 }
@@ -306,7 +307,6 @@
 
 .tabletBackBtn:hover {
   background: rgba(255, 255, 255, 0.15);
-  border-color: #0095f6;
 }
 
 @keyframes tabletBack-entrance {

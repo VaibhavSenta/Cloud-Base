@@ -51,6 +51,7 @@ export default function PersonalInfo({ forceWidth }) {
         if (!old) return data;
         return { ...old, ...data };
       });
+      queryClient.invalidateQueries({ queryKey: ['user'] });
       handleCloseModal();
     },
     onError: (err) => {

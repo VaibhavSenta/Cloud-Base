@@ -84,6 +84,7 @@ export default function ProfileLightbox({
                 height={533} 
                 className={styles.lightboxBgImg}
                 priority
+                unoptimized
               />
               
               {/* Sharp Foreground Layer */}
@@ -94,6 +95,7 @@ export default function ProfileLightbox({
                 height={533} 
                 className={styles.lightboxImg}
                 priority
+                unoptimized
               />
             </div>
 

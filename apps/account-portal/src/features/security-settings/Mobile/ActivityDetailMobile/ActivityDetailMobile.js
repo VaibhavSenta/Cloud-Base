@@ -1,6 +1,6 @@
 'use client';
-import { useSecureQuery } from '../../../hooks/useSecureQuery';
-import api from '../../../utils/api';
+import { useSecureQuery } from '../../../../hooks/useSecureQuery';
+import api from '../../../../utils/api';
 import styles from './ActivityDetailMobile.module.css';
 import { useRouter } from 'next/navigation';
 

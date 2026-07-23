@@ -2,8 +2,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
-import { useSecureQuery, useSecureQueryClient } from '../../../hooks/useSecureQuery';
-import api from '../../../utils/api';
+import { useSecureQuery, useSecureQueryClient } from '../../../../hooks/useSecureQuery';
+import api from '../../../../utils/api';
 import styles from './SessionDetailMobile.module.css';
 
 export default function SessionDetailMobile({ sessionId }) {

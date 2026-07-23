@@ -1,0 +1,97 @@
+/* SidebarNavList Component Styles — Exact Original List Hover Restored */
+
+.listGroup {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid #222222;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  padding: 10px 4px;
+  background: transparent;
+  box-sizing: border-box;
+  transition: all 0.3s ease-in-out;
+}
+
+@media (hover: hover) {
+  .listGroup:hover {
+    background-color: #33333347;
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.5);
+  }
+}
+
+.listItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0.85rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 7px;
+  margin-bottom: 2px;
+}
+
+.listItem:last-child {
+  margin-bottom: 0;
+}
+
+@media (hover: hover) {
+  .listItem:hover {
+    background: #264873;
+    border-color: #333;
+  }
+}
+
+.listItem:active {
+  transform: scale(0.98);
+}
+
+.activeItem {
+  background: #264873 !important;
+}
+
+.iconArea {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.iconSvg {
+  filter: brightness(0) invert(0.85);
+  transition: filter 0.2s;
+}
+
+.listItem:hover .iconSvg {
+  filter: brightness(0) invert(1);
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #ffffff;
+  letter-spacing: -0.2px;
+}
+
+.arrow {
+  color: #555555;
+  font-size: 1.3rem;
+  opacity: 0.5;
+  transition: transform 0.3s ease, opacity 0.3s ease, color 0.3s ease;
+}
+
+@media (hover: hover) {
+  .listItem:hover .arrow {
+    opacity: 1;
+    color: #ffffff;
+  }
+}

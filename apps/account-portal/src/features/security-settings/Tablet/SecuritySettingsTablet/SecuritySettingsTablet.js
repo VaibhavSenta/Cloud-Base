@@ -2,11 +2,11 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
-import { useSecureQuery, useSecureQueryClient } from '../../../hooks/useSecureQuery';
-import api from '../../../utils/api';
-import { encryptPayload } from '../../../utils/security/networkCrypto';
+import { useSecureQuery, useSecureQueryClient } from '../../../../hooks/useSecureQuery';
+import api from '../../../../utils/api';
+import { encryptPayload } from '../../../../utils/security/networkCrypto';
 import styles from './SecuritySettingsTablet.module.css';
-import { auth } from '../../../utils/firebase';
+import { auth } from '../../../../utils/firebase';
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 
 /**
@@ -47,6 +47,7 @@ export default function SecuritySettingsTablet() {
         if (!old) return data;
         return { ...old, ...data };
       });
+      queryClient.invalidateQueries({ queryKey: ['user'] });
       handleCloseModal();
     },
     onError: (err) => {

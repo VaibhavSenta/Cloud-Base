@@ -1,6 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import ServiceCard from '@/components/UI/ServiceCard/ServiceCard';
 import styles from './ConnectedServicesDesktop.module.css';
 
 export default function ConnectedServicesDesktop({ connectedServices }) {
@@ -60,18 +61,14 @@ export default function ConnectedServicesDesktop({ connectedServices }) {
           </div>
           <div className={styles.exploreGrid}>
             {availableList.map(app => (
-              <div key={app.id} className={styles.appStoreCard}>
-                <div className={styles.appInfo}>
-                  <span className={styles.appName}>{app.name}</span>
-                  <span className={styles.appTagline}>{app.tagline}</span>
-                </div>
-                <button 
-                  className={styles.getBtn}
-                  onClick={() => router.push(`/dashboard/connected-services/explore/${app.id}`)}
-                >
-                  GET
-                </button>
-              </div>
+              <ServiceCard 
+                key={app.id}
+                title={app.name}
+                tagline={app.tagline}
+                actionType="get"
+                actionText="GET"
+                onClick={() => router.push(`/dashboard/connected-services/explore/${app.id}`)}
+              />
             ))}
           </div>
         </section>

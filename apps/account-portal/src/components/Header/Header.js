@@ -105,9 +105,14 @@ const Header = ({ onToggleSidebar, isSidebarOpen, forceWidth }) => {
     };
   }, []);
 
+  const handleLogoClick = () => {
+    router.push('/dashboard');
+  };
+
   const layoutProps = {
     isSubpage,
     handleBack,
+    handleLogoClick,
     onToggleSidebar,
     isSidebarOpen,
     isOnline,

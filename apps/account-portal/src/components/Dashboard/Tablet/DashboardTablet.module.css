@@ -1,9 +1,12 @@
 .container {
   width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1.5rem 1.5rem 2.5rem 1.5rem;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: transparent;
 }
 
 .homeView {
@@ -12,27 +15,58 @@
   align-items: center;
   text-align: center;
   width: 100%;
+  margin-bottom: 2.2rem;
 }
 
 .avatarCircleLarge {
-  width: 120px;
-  height: 120px;
-  background: rgba(10, 10, 10, 0.5);
+  width: 130px;
+  height: 130px;
+  background: rgba(255, 255, 255, 0.02);
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   overflow: hidden;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .displayFullName {
-  font-size: 2rem;
-  font-weight: 900;
-  letter-spacing: -0.5px;
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+  color: #ffffff;
   margin: 0;
 }
 
 .displayEmail {
-  font-size: 1rem;
-  color: #666;
-  margin-top: 0.25rem;
+  font-size: 0.95rem;
+  color: #888888;
+  margin-top: 0.35rem;
+}
+
+/* 3 Status Cards Section for Tablet Layout:
+   - 2 cards on top (side-by-side)
+   - 3rd card centered below
+*/
+.statusSection {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  width: 100%;
+  max-width: 640px;
+}
+
+.statusSection > :nth-child(3) {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: calc(50% - 8px);
+  min-width: 260px;
 }

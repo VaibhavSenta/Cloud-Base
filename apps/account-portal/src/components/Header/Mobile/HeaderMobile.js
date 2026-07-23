@@ -9,6 +9,7 @@ import styles from '../Header.module.css';
 export default function HeaderMobile({ 
   isSubpage, 
   handleBack, 
+  handleLogoClick,
   onToggleSidebar, 
   isSidebarOpen, 
   isOnline, 
@@ -47,7 +48,7 @@ export default function HeaderMobile({
             )
           )}
 
-          <div className={styles.logoWrapper}>
+          <div className={styles.logoWrapper} onClick={handleLogoClick}>
             <Logo className={styles.logo} forceVersion="icon" theme="monochrome" />
           </div>
 

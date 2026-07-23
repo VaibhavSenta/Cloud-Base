@@ -148,7 +148,8 @@ const userSchema = new mongoose.Schema({
 userSchema.set('toObject', {
   transform: function (doc, ret, options) {
     if (ret.profilePic && (ret.profilePic.startsWith('https://drive.google.com/') || ret.profilePic.startsWith('/uploads/'))) {
-      ret.profilePic = `/api/v1/auth/profile/avatar/${ret._id}`;
+      const v = ret.updatedAt ? new Date(ret.updatedAt).getTime() : Date.now();
+      ret.profilePic = `/api/v1/auth/profile/avatar/${ret._id}?v=${v}`;
     }
     return ret;
   }
@@ -157,7 +158,8 @@ userSchema.set('toObject', {
 userSchema.set('toJSON', {
   transform: function (doc, ret, options) {
     if (ret.profilePic && (ret.profilePic.startsWith('https://drive.google.com/') || ret.profilePic.startsWith('/uploads/'))) {
-      ret.profilePic = `/api/v1/auth/profile/avatar/${ret._id}`;
+      const v = ret.updatedAt ? new Date(ret.updatedAt).getTime() : Date.now();
+      ret.profilePic = `/api/v1/auth/profile/avatar/${ret._id}?v=${v}`;
     }
     return ret;
   }

@@ -14,6 +14,11 @@ const nextConfig = {
   allowedDevOrigins: process.env.NODE_ENV === 'development' ? ['172.20.10.2'] : [],
 
   images: {
+    localPatterns: [
+      {
+        pathname: '/**',
+      },
+    ],
     remotePatterns: [
       {
         protocol: 'https',

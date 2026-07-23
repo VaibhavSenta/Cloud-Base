@@ -54,6 +54,7 @@ export default function PersonalInfoMobile({
                 height={80} 
                 className={styles.avatarImg}
                 priority
+                unoptimized
               />
             </div>
             <div className={styles.heroText}>

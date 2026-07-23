@@ -463,7 +463,7 @@ const getAvatar = async (req, res) => {
                     const decryptedBuffer = Buffer.concat([decipher.update(encryptedBuffer), decipher.final()]);
 
                     res.setHeader('Content-Type', 'image/png');
-                    res.setHeader('Cache-Control', 'public, max-age=86400');
+                    res.setHeader('Cache-Control', 'public, max-age=86400, must-revalidate');
                     return res.send(decryptedBuffer);
                 } catch (decErr) {
                     console.error("⚠️ Local avatar decryption failed, serving fallback:", decErr.message);
@@ -508,7 +508,7 @@ const getAvatar = async (req, res) => {
 
             // Set dynamic caching and content type headers
             res.setHeader('Content-Type', 'image/png');
-            res.setHeader('Cache-Control', 'public, max-age=86400'); // Cache for 1 day
+            res.setHeader('Cache-Control', 'public, max-age=86400, must-revalidate');
             return res.send(decryptedBuffer);
         }
 

@@ -15,6 +15,12 @@
   gap: 0.4rem;
 }
 
+.mobileLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
 .title {
   font-size: var(--title-size-mobile);
   font-weight: var(--title-weight-mobile);

@@ -78,7 +78,7 @@ const DashboardMobile = ({ user }) => {
         <div className={styles.avatarCircle}>
           <Image 
             src={getSafeAvatar(user?.profilePic)} 
-            alt="Profile" width={120} height={120} className={styles.avatar} priority
+            alt="Profile" width={120} height={120} className={styles.avatar} priority unoptimized
           />
         </div>
         <h1 className={styles.userName}>{user?.firstName} {user?.lastName}</h1>

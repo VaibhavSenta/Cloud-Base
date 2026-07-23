@@ -60,6 +60,11 @@ html, body {
   background: #000000; /* AMOLED Black for Mobile as per project rules */
   color: var(--text-primary);
   font-family: 'Inter', -apple-system, system-ui, sans-serif;
+  cursor: default;
+}
+
+button, a, [role="button"] {
+  cursor: pointer;
 }
 
 @media (min-width: 768px) {

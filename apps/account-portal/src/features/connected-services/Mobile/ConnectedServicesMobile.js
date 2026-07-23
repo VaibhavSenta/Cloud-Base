@@ -1,6 +1,8 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import PageHeader from '@/components/UI/PageHeader/PageHeader';
+import ServiceCard from '@/components/UI/ServiceCard/ServiceCard';
 import styles from './ConnectedServicesMobile.module.css';
 
 export default function ConnectedServicesMobile({ connectedServices }) {
@@ -22,12 +24,10 @@ export default function ConnectedServicesMobile({ connectedServices }) {
 
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
-        <h1 className={styles.title}>Connected Services</h1>
-        <p className={styles.subtitle}>
-          Configure settings and management parameters for your active cloud applications.
-        </p>
-      </header>
+      <PageHeader 
+        title="Connected Services"
+        subtitle="Configure settings and management parameters for your active cloud applications."
+      />
 
       {connectedList.length > 0 ? (
         <div className={styles.content}>
@@ -58,32 +58,23 @@ export default function ConnectedServicesMobile({ connectedServices }) {
           </div>
           <div className={styles.exploreGrid}>
             {availableList.map(app => (
-              <div key={app.id} className={styles.appStoreCard}>
-                <div className={styles.appInfo}>
-                  <span className={styles.appName}>{app.name}</span>
-                  <span className={styles.appTagline}>{app.tagline}</span>
-                </div>
-                <button 
-                  className={styles.getBtn}
-                  onClick={() => router.push(`/dashboard/connected-services/explore/${app.id}`)}
-                >
-                  GET
-                </button>
-              </div>
+              <ServiceCard 
+                key={app.id}
+                title={app.name}
+                tagline={app.tagline}
+                actionType="get"
+                actionText="GET"
+                onClick={() => router.push(`/dashboard/connected-services/explore/${app.id}`)}
+              />
             ))}
 
             {/* App Store style Explore All Card at the end of the scroll list */}
-            <div 
-              className={styles.appStoreCard}
+            <ServiceCard 
+              title="Explore All"
+              tagline="Discover more apps"
+              actionType="arrow"
               onClick={() => router.push('/dashboard/connected-services/explore')}
-              style={{ cursor: 'pointer' }}
-            >
-              <div className={styles.appInfo}>
-                <span className={styles.appName}>Explore All</span>
-                <span className={styles.appTagline}>Discover more apps</span>
-              </div>
-              <span className={styles.arrowIcon}>→</span>
-            </div>
+            />
           </div>
         </section>
       )}

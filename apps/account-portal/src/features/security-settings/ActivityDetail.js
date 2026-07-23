@@ -1,6 +1,6 @@
 'use client';
 import useWindowSize from '../../hooks/useWindowSize';
-import ActivityDetailMobile from './Mobile/ActivityDetailMobile';
+import ActivityDetailMobile from './Mobile/ActivityDetailMobile/ActivityDetailMobile';
 
 /**
  * Activity Detail View Wrapper

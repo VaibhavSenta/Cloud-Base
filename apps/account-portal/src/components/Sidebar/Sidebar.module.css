@@ -17,7 +17,7 @@
 /* Tablet Settings */
 .tabletSidebar {
   top: 95px; /* Aligned with LayoutTablet mainContent top padding */
-  width: 240px;
+  width: 245px;
 }
 
 .tabletSidebar.closed {
@@ -27,5 +27,5 @@
 /* Desktop Settings */
 .desktopSidebar {
   top: 100px; /* Aligned with LayoutDesktop mainContent top padding */
-  width: 260px;
+  width: 265px;
 }

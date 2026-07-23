@@ -1,29 +1,24 @@
 'use client';
-import { useState, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
-import { useSecureQuery, useSecureQueryClient } from '../../../hooks/useSecureQuery';
-import api from '../../../utils/api';
-import { encryptPayload } from '../../../utils/security/networkCrypto';
-import { auth } from '../../../utils/firebase';
+import { useSecureQuery, useSecureQueryClient } from '../../../../hooks/useSecureQuery';
+import api from '../../../../utils/api';
+import { encryptPayload } from '../../../../utils/security/networkCrypto';
+import BottomSheet from '@/components/UI/BottomSheet/BottomSheet';
+import { auth } from '../../../../utils/firebase';
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
-import {
-  IdentityVerificationCard,
-  PasswordHubCard,
-  MultifactorAuthCard,
-  RecentActivityCard,
-  DangerZoneCard
-} from '../UI/BentoCards/BentoCards';
-import SecuritySettingsModal from '../UI/SecuritySettingsModal/SecuritySettingsModal';
-import styles from './SecuritySettingsDesktop.module.css';
+import SecurityFormFields from '../../UI/SecurityFormFields/SecurityFormFields';
+import ActionList from '@/components/UI/List/ActionList';
+import styles from './SecuritySettingsMobile.module.css';
 
 /**
- * Premium Bento-Grid Desktop view for Signin & Security Page
+ * Mobile view for Signin & Security Page
  */
-export default function SecuritySettingsDesktop() {
+export default function SecuritySettingsMobile() {
   const queryClient = useSecureQueryClient();
   const router = useRouter();
-  const [editField, setEditField] = useState(null); // 'email', 'phone', '2fa', 'deactivate', 'delete'
+  const [editField, setEditField] = useState(null); // 'email', 'phone', 'password', '2fa', 'deactivate', 'delete'
   const [formVal, setFormVal] = useState({});
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -33,6 +28,16 @@ export default function SecuritySettingsDesktop() {
   const [isSupportSubmitted, setIsSupportSubmitted] = useState(false);
   const [authenticatorSetupData, setAuthenticatorSetupData] = useState(null);
   const [authenticatorCode, setAuthenticatorCode] = useState('');
+  const [countdown, setCountdown] = useState(0);
+
+  // Manage countdown timer for deactivation/deletion friction
+  useEffect(() => {
+    if (countdown <= 0) return;
+    const timer = setTimeout(() => {
+      setCountdown(prev => prev - 1);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [countdown]);
 
   // Fetch current user from React Query cache
   const { data: user, isLoading, isFetching } = useSecureQuery({
@@ -55,7 +60,8 @@ export default function SecuritySettingsDesktop() {
         if (!old) return data;
         return { ...old, ...data };
       });
-      handleCloseModal();
+      queryClient.invalidateQueries({ queryKey: ['user'] });
+      handleCloseBottomSheet();
     },
     onError: (err) => {
       setErrorMessage(err.response?.data?.message || 'Failed to update credentials');
@@ -95,7 +101,7 @@ export default function SecuritySettingsDesktop() {
     },
     onSuccess: (data) => {
       queryClient.setSecureQueryData(['user'], (old) => ({ ...old, ...data.data }));
-      handleCloseModal();
+      handleCloseBottomSheet();
     },
     onError: (err) => {
       setErrorMessage(err.response?.data?.message || 'Failed to update 2FA settings');
@@ -164,7 +170,7 @@ export default function SecuritySettingsDesktop() {
     }
   });
 
-  const handleEditClick = useCallback((field) => {
+  const handleEditClick = (field) => {
     setEditField(field);
     setErrorMessage('');
     setIsOtpSent(false);
@@ -173,6 +179,8 @@ export default function SecuritySettingsDesktop() {
       setFormVal({ newEmail: '' });
     } else if (field === 'phone') {
       setFormVal({ phonenumber: user?.phonenumber || '', otpCode: '' });
+    } else if (field === 'password') {
+      setFormVal({ currentPassword: '', newPassword: '', confirmPassword: '' });
     } else if (field === '2fa') {
       setFormVal({
         twoFactorEnabled: user?.twoFactorEnabled ?? false,
@@ -184,15 +192,20 @@ export default function SecuritySettingsDesktop() {
       setAuthenticatorCode('');
     } else if (field === 'deactivate' || field === 'delete') {
       setFormVal({ password: '', otpCode: '', confirmText: '' });
+      if (field === 'deactivate') {
+        setCountdown(3);
+      } else {
+        setCountdown(5);
+      }
     }
-  }, [user]);
+  };
 
-  const handleInputChange = useCallback((e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormVal(prev => ({ ...prev, [name]: value }));
-  }, []);
+  };
 
-  const handleCloseModal = useCallback(() => {
+  const handleCloseBottomSheet = () => {
     setEditField(null);
     setFormVal({});
     setIsOtpSent(false);
@@ -201,7 +214,7 @@ export default function SecuritySettingsDesktop() {
     setIsSupportSubmitted(false);
     setAuthenticatorSetupData(null);
     setAuthenticatorCode('');
-  }, []);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -335,52 +348,91 @@ export default function SecuritySettingsDesktop() {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <div className={styles.headerTitleArea}>
-          <h1 className={styles.title}>Signin & Security</h1>
-          <div className={styles.securityStatus}>
-            <div className={styles.statusDotActive}></div>
-            <span className={styles.statusTitle}>Shield Active</span>
-          </div>
-        </div>
-        <p className={styles.subtitle}>Protect your account credentials, encryption standards, and active login sessions.</p>
+        <p className={styles.subtitle}>Protect your account credentials and active login sessions.</p>
       </header>
 
-      {/* 🍱 Premium Bento Grid Layout */}
-      <div className={styles.bentoGrid}>
-        <IdentityVerificationCard user={user} onEditClick={handleEditClick} />
-        <PasswordHubCard onManageClick={() => router.push('/dashboard/security/password')} />
-        <MultifactorAuthCard user={user} onConfigureClick={handleEditClick} />
-        <RecentActivityCard onViewClick={() => router.push('/dashboard/security/devices')} />
-        <DangerZoneCard
-          onDeactivateClick={() => handleEditClick('deactivate')}
-          onDeleteClick={() => handleEditClick('delete')}
-        />
+      <div className={styles.mobileLayout}>
+        {/* Section 1: Verifications */}
+        <ActionList items={[
+          { label: user?.email, onClick: () => handleEditClick('email'), indicator: !user?.isEmailVerified ? 'blue' : null },
+          { label: user?.phonenumber || 'Add mobile number', onClick: () => handleEditClick('phone'), indicator: !user?.phonenumber ? 'blue' : null },
+        ]} />
+
+        {/* Section 2: Password Manager & 2FA */}
+        <ActionList items={[
+          { label: 'Password Manager', onClick: () => router.push('/dashboard/security/password') },
+          { label: 'Two-Factor Authentication', onClick: () => router.push('/dashboard/security/2fa') },
+        ]} />
+
+        {/* Section 3: Logins & Activity */}
+        <ActionList items={[
+          { label: 'Logged Devices', onClick: () => router.push('/dashboard/security/sessions') },
+          { label: 'Recent Activity', onClick: () => router.push('/dashboard/security/devices') },
+        ]} />
+
+        {/* Section 4: Deactivate Account */}
+        <ActionList danger items={[
+          { label: 'Deactivate Account', onClick: () => handleEditClick('deactivate'), variant: 'danger' },
+        ]} />
+
+        {/* Section 5: Delete Account */}
+        <ActionList danger items={[
+          { label: 'Delete Account', onClick: () => handleEditClick('delete'), variant: 'danger' },
+        ]} />
       </div>
 
-      {/* 🖥️ Centered Modal Dialog */}
-      <SecuritySettingsModal
+      {/* 📱 Bottom Sheet Modal Drawer */}
+      <BottomSheet
         isOpen={!!editField}
-        editField={editField}
-        user={user}
-        formVal={formVal}
-        handleInputChange={handleInputChange}
-        isOtpSent={isOtpSent}
-        authenticatorSetupData={authenticatorSetupData}
-        authenticatorCode={authenticatorCode}
-        setAuthenticatorCode={setAuthenticatorCode}
-        verifyAuthenticatorMutation={verifyAuthenticatorMutation}
-        setupAuthenticatorMutation={setupAuthenticatorMutation}
-        isSupportSubmitted={isSupportSubmitted}
-        setIsSupportSubmitted={setIsSupportSubmitted}
-        errorMessage={errorMessage}
-        setErrorMessage={setErrorMessage}
-        setFormVal={setFormVal}
-        isPending={isPending}
-        isVerifyRequestSent={isVerifyRequestSent}
-        handleCloseModal={handleCloseModal}
-        handleSubmit={handleSubmit}
-      />
-
+        onClose={handleCloseBottomSheet}
+        title={
+          editField === 'email' ? 'Email Verification' :
+          editField === 'phone' ? 'Phone Setup' :
+          editField === '2fa' ? 'Two-Factor Authentication' :
+          editField === 'deactivate' ? 'Deactivate Account' :
+          editField === 'delete' ? 'Delete Account' : ''
+        }
+        subtitle={
+          editField === 'delete'
+            ? 'This action is irreversible. All databases will be wiped.'
+            : 'Verify identity to confirm changes.'
+        }
+        onSubmit={handleSubmit}
+        isPending={isPending || countdown > 0}
+        submitText={
+          editField === 'delete'
+            ? (countdown > 0 ? `Delete Account (${countdown}s)` : 'Delete Account')
+            : editField === 'deactivate'
+            ? (countdown > 0 ? `Deactivate Account (${countdown}s)` : 'Deactivate Account')
+            : 'Save Changes'
+        }
+        pendingText={
+          editField === 'delete'
+            ? 'Deleting...'
+            : editField === 'deactivate'
+            ? 'Deactivating...'
+            : 'Saving...'
+        }
+      >
+        <SecurityFormFields
+          editField={editField}
+          user={user}
+          formVal={formVal}
+          handleInputChange={handleInputChange}
+          isOtpSent={isOtpSent}
+          authenticatorSetupData={authenticatorSetupData}
+          authenticatorCode={authenticatorCode}
+          setAuthenticatorCode={setAuthenticatorCode}
+          verifyAuthenticatorMutation={verifyAuthenticatorMutation}
+          setupAuthenticatorMutation={setupAuthenticatorMutation}
+          isSupportSubmitted={isSupportSubmitted}
+          setIsSupportSubmitted={setIsSupportSubmitted}
+          errorMessage={errorMessage}
+          setErrorMessage={setErrorMessage}
+          setFormVal={setFormVal}
+        />
+      </BottomSheet>
+      
       {/* 🤖 Invisible reCAPTCHA Anchor */}
       <div id="recaptcha-container"></div>
     </div>
