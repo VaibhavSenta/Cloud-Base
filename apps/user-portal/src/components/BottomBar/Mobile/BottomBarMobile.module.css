@@ -1,0 +1,51 @@
+/* ===== BOTTOM BAR MOBILE =====
+ * Inner content only — no positioning here.
+ * Positioning is handled by parent BottomBar wrapper.
+ */
+
+.bottomBar {
+  width: 100%;
+  height: auto;
+  padding: 10px;
+  column-gap: 20px;
+  background: rgba(172, 172, 172, 0.08);
+  border: 1px solid #1a1a1a;
+  border-radius: 1000px;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.tabItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  background: transparent;
+  border: none;
+  border-radius: 1000px;
+  cursor: pointer;
+  height: 45px;
+  width: auto;
+  flex: 1;
+  transition: all 0.2s ease;
+}
+
+.tabLabel {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #666666;
+  transition: color 0.2s ease;
+}
+
+.tabItem.active .tabLabel {
+  color: #0095f6;
+  font-weight: 600;
+}
+.tabItem.active {
+  background: rgba(128, 128, 128, 0.448);
+  
+}

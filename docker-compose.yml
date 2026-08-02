@@ -11,6 +11,8 @@ services:
     volumes:
       - .:/app
       - /app/services/account-api/node_modules
+    networks:
+      - cloudbase-net
 
   account-portal:
     build:
@@ -22,18 +24,10 @@ services:
       - .:/app
       - /app/apps/account-portal/node_modules
       - /app/apps/account-portal/.next
+    networks:
+      - cloudbase-net
 
   # --- USER MODULE ---
-  user-api:
-    build:
-      context: .
-      dockerfile: ./services/user-api/Dockerfile
-    ports:
-      - "5005:5005"
-    volumes:
-      - .:/app
-      - /app/services/user-api/node_modules
-
   user-portal:
     build:
       context: .
@@ -44,6 +38,8 @@ services:
       - .:/app
       - /app/apps/user-portal/node_modules
       - /app/apps/user-portal/.next
+    networks:
+      - cloudbase-net
 
   # --- ADMIN MODULE ---
   admin-api:
@@ -55,6 +51,8 @@ services:
     volumes:
       - .:/app
       - /app/services/admin-api/node_modules
+    networks:
+      - cloudbase-net
 
   admin-portal:
     build:
@@ -66,3 +64,51 @@ services:
       - .:/app
       - /app/apps/admin-portal/node_modules
       - /app/apps/admin-portal/.next
+    networks:
+      - cloudbase-net
+
+  # --- CHAT MODULE ---
+  chat-api:
+    build:
+      context: .
+      dockerfile: ./services/chat-api/Dockerfile
+    ports:
+      - "5006:5006"
+    volumes:
+      - .:/app
+      - /app/services/chat-api/node_modules
+    networks:
+      - cloudbase-net
+
+  chat-portal:
+    build:
+      context: .
+      dockerfile: ./apps/chat-portal/Dockerfile
+    command: npm run dev -- --hostname 0.0.0.0 # Force development hot reloading on host interfaces
+    ports:
+      - "3003:3001"
+    volumes:
+      - .:/app
+      - /app/apps/chat-portal/node_modules
+      - /app/apps/chat-portal/.next
+    networks:
+      - cloudbase-net
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - user-portal
+      - account-portal
+      - admin-portal
+      - chat-portal
+      - chat-api
+    networks:
+      - cloudbase-net
+
+networks:
+  cloudbase-net:
+    driver: bridge

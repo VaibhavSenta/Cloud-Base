@@ -1,134 +1,134 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useMemo } from 'react';
+import Logo from '@/components/Logo/Logo';
+import BottomBar from '@/components/BottomBar/BottomBar';
 import styles from './page.module.css';
-import NextImage from 'next/image';
-import axios from 'axios';
 
-export default function Home() {
-  const [dynamicCategories, setCategories] = useState([]);
-  
-  // Static Core Categories (The Hubs)
-  const coreHubs = [
-    { title: 'Cinema Hub', desc: '4K Movies & Series', icon: '🎬', link: '/movies', color: '#ff4d4d' },
-    { title: 'Music Sync', desc: 'Lossless Audio Library', icon: '🎵', link: '/music', color: '#1a73e8' },
-    { title: 'App Forge', desc: 'Software & Tools', icon: '🚀', link: '/apps', color: '#10b981' },
-    { title: 'Game Zone', desc: 'Windows & Mobile Games', icon: '🎮', link: '/games', color: '#f59e0b' },
-  ];
+const ALL_EMOJIS = [
+  '💬', '☁️', '🔒', '⚡', '🚀', '🌐', '📁',
+  '🔗', '💎', '🛡️', '✨', '🎯', '📡', '🎨',
+  '🔥', '💡', '🧩',
+];
 
-  useEffect(() => {
-    const fetchHome = async () => {
-      try {
-        const res = await axios.get('/api/v1/home');
-        setCategories(res.data.categories || []);
-      } catch (err) {
-        console.error("Link to ecosystem failed:", err);
-      }
-    };
-    fetchHome();
-  }, []);
+/**
+ * Generates circle positions in concentric rings (Apple Watch dome style).
+ * Center circle is biggest, outer rings progressively smaller.
+ */
+function generateClusterPositions() {
+  const cx = 140; // center X of 280px container
+  const cy = 140; // center Y of 280px container
+  const positions = [];
+
+  // Ring 0: Center circle (biggest)
+  positions.push({ x: cx, y: cy, size: 62 });
+
+  // Ring 1: 6 circles around center (medium)
+  const ring1Radius = 66;
+  const ring1Count = 6;
+  const ring1Size = 52;
+  for (let i = 0; i < ring1Count; i++) {
+    const angle = (i * 360 / ring1Count) - 90; // start from top
+    const rad = (angle * Math.PI) / 180;
+    positions.push({
+      x: cx + ring1Radius * Math.cos(rad),
+      y: cy + ring1Radius * Math.sin(rad),
+      size: ring1Size,
+    });
+  }
+
+  // Ring 2: 10 circles on outer edge (smallest)
+  const ring2Radius = 120;
+  const ring2Count = 10;
+  const ring2Size = 40;
+  for (let i = 0; i < ring2Count; i++) {
+    const angle = (i * 360 / ring2Count) - 90 + 18; // offset for stagger
+    const rad = (angle * Math.PI) / 180;
+    positions.push({
+      x: cx + ring2Radius * Math.cos(rad),
+      y: cy + ring2Radius * Math.sin(rad),
+      size: ring2Size,
+    });
+  }
+
+  return positions;
+}
+
+export default function UserPortalHome() {
+  const clusterPositions = useMemo(() => generateClusterPositions(), []);
 
   return (
-    <main className={styles.main}>
-      {/* 🌟 HERO SECTION */}
-      <section className={styles.hero}>
-        <div className="container">
-          <div className={styles.badge}>v1.0 • Global Release</div>
-          <h1>The Cloud<span>Base</span><br/>Experience</h1>
-          <p>Explore a massive library of high-quality digital assets. From 4K cinema to professional software, everything is just one click away.</p>
-          <div className={styles.heroActions}>
-            <a href="#explore" className={styles.cta}>Start Exploring</a>
-            <a href="/login" className={styles.secondaryBtn}>Sign In</a>
-          </div>
+    <main className={styles.container}>
+      {/* Rotating ribbon text background */}
+      <div className={styles.ribbonWrapper}>
+        <div className={styles.ribbonTrack}>
+          <span className={styles.ribbonText}>
+            CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;
+          </span>
+          <span className={styles.ribbonText} aria-hidden="true">
+            CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;
+          </span>
         </div>
-      </section>
-
-      <div className="container" id="explore">
-        {/* 📂 CORE HUBS SECTION */}
-        <div className={styles.sectionTitle}>
-          <div>
-            <h2>Digital Ecosystem</h2>
-            <p>Select a hub to begin your journey</p>
-          </div>
-          <a href="/categories">View All</a>
+        <div className={styles.ribbonTrackReverse}>
+          <span className={styles.ribbonText}>
+            CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;
+          </span>
+          <span className={styles.ribbonText} aria-hidden="true">
+            CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;
+          </span>
         </div>
-        
-        <div className={styles.grid}>
-          {coreHubs.map((hub, i) => (
-            <a href={hub.link} key={i} className={styles.categoryCard}>
-              <div className={styles.cardIcon} style={{ background: `${hub.color}15`, color: hub.color }}>{hub.icon}</div>
-              <h3>{hub.title}</h3>
-              <p>{hub.desc}</p>
-              <div className={styles.cardArrow}>→</div>
-            </a>
-          ))}
-        </div>
-
-        {/* 🎬 FEATURED CONTENT (DYNAMIC OR MOCK) */}
-        <div className={styles.sectionTitle}>
-          <div>
-            <h2>Cinema Spotlights</h2>
-            <p>Recently added 4K HDR releases</p>
-          </div>
-          <a href="/movies">Explore Cinema</a>
-        </div>
-        
-        <div className={styles.contentGrid}>
-          {[1, 2, 3, 4, 5, 6].map((m) => (
-            <div key={m} className={styles.contentCard}>
-               {/* Use a colored placeholder since we don't have movie posters yet */}
-              <div style={{ width: '100%', height: '100%', background: '#111' }}></div>
-              <div className={styles.overlay}>
-                <span>Action • Thriller</span>
-                <h4>Matrix Resurrection: 4K</h4>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* 💻 ESSENTIAL SOFTWARES */}
-        <div className={styles.sectionTitle}>
-          <div>
-            <h2>Software Forge</h2>
-            <p>Verified tools for creators and developers</p>
-          </div>
-          <a href="/software">Browse Tools</a>
-        </div>
-        
-        <div className={styles.softwareList}>
-          {[1, 2, 3, 4].map((s) => (
-            <div key={s} className={styles.softwareItem}>
-              <div className={styles.softIcon}>⚡</div>
-              <div className={styles.softInfo}>
-                <h4>Adobe Photoshop 2026</h4>
-                <p>Graphics & Design • 2.4 GB</p>
-              </div>
-              <button className={styles.downloadBtn}>Download</button>
-            </div>
-          ))}
+        <div className={styles.ribbonTrack}>
+          <span className={styles.ribbonText}>
+            CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;
+          </span>
+          <span className={styles.ribbonText} aria-hidden="true">
+            CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;
+          </span>
         </div>
       </div>
 
-      {/* 🏁 FOOTER */}
-      <footer className={styles.footer}>
-        <div className="container">
-          <div className={styles.footerTop}>
-            <div className={styles.footerLogo}>
-              <NextImage src="/icons/logo.jpeg" width={48} height={48} alt="CB" style={{ borderRadius: '12px' }} />
-              <h3>CloudBase</h3>
-            </div>
-            <div className={styles.footerLinks}>
-              <a href="#">Terms</a>
-              <a href="#">Privacy</a>
-              <a href="#">Security</a>
-              <a href="#">Support</a>
-            </div>
-          </div>
-          <div className={styles.footerBottom}>
-            <p>&copy; 2026 CloudBase Global Ecosystem. Developed by Vaibhav Senta.</p>
-          </div>
+      {/* Gradient overlay */}
+      <div className={styles.ribbonOverlay} />
+
+      {/* Main content */}
+      <div className={styles.content}>
+        <div className={styles.logoContainer}>
+          <Logo forceVersion="full" />
         </div>
-      </footer>
+
+        <h2 className={styles.tagline}>
+          Your workspace,{'\n'}everywhere
+        </h2>
+
+        {/* Apple Watch style emoji globe */}
+        <div className={styles.emojiGlobe}>
+          {clusterPositions.map((pos, index) => (
+            <div
+              key={index}
+              className={styles.emojiCircle}
+              style={{
+                width: `${pos.size}px`,
+                height: `${pos.size}px`,
+                left: `${pos.x - pos.size / 2}px`,
+                top: `${pos.y - pos.size / 2}px`,
+                fontSize: `${pos.size * 0.5}px`,
+                animationDelay: `${index * 0.2}s`,
+                animationDuration: `${2.8 + (index % 5) * 0.4}s`,
+              }}
+            >
+              <span className={styles.emoji}>
+                {ALL_EMOJIS[index % ALL_EMOJIS.length]}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <p className={styles.subtitle}>
+          Chat, store, and collaborate — all in one place.
+        </p>
+      </div>
+
+      <BottomBar />
     </main>
   );
 }

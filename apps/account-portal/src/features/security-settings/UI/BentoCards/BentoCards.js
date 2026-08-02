@@ -13,7 +13,7 @@ export const IdentityVerificationCard = memo(function IdentityVerificationCard({
         <h2 className={styles.cardTitle}>Identity & Verification</h2>
       </div>
       
-      <div className={styles.interactiveRows}>
+      <div className={styles.rowItemsList}>
         {/* Email Verification Row */}
         <div className={styles.rowItem} onClick={() => onEditClick('email')}>
           <div className={styles.rowMeta}>
@@ -21,12 +21,9 @@ export const IdentityVerificationCard = memo(function IdentityVerificationCard({
             <span className={styles.rowValue}>{user?.email}</span>
           </div>
           <div className={styles.rowControls}>
-            {user?.isEmailVerified ? (
-              <span className={styles.statusBadgeGreen}>Verified</span>
-            ) : (
-              <span className={styles.statusBadgeRed}>Unverified</span>
+            {!user?.isEmailVerified && (
+              <span className={styles.statusIndicatorBlue} />
             )}
-            <span className={styles.actionLink}>Modify</span>
           </div>
         </div>
 
@@ -37,12 +34,9 @@ export const IdentityVerificationCard = memo(function IdentityVerificationCard({
             <span className={styles.rowValue}>{user?.phonenumber || 'Not added to profile'}</span>
           </div>
           <div className={styles.rowControls}>
-            {user?.phonenumber ? (
-              <span className={styles.statusBadgeGreen}>Verified</span>
-            ) : (
-              <span className={styles.statusBadgeOrange}>Action Required</span>
+            {!user?.phonenumber && (
+              <span className={styles.statusIndicatorBlue} />
             )}
-            <span className={styles.actionLink}>Modify</span>
           </div>
         </div>
       </div>
@@ -133,13 +127,17 @@ export const DangerZoneCard = memo(function DangerZoneCard({ onDeactivateClick, 
         <h2 className={styles.cardTitleDanger}>Danger Zone</h2>
       </div>
       <div className={styles.dangerZoneRows}>
-        <div className={styles.dangerRow} onClick={onDeactivateClick}>
+        <div className={styles.dangerRow}>
           <span className={styles.dangerRowLabel}>Deactivate Account</span>
-          <span className={styles.dangerActionText}>Disable</span>
+          <button className={styles.dangerActionButton} onClick={onDeactivateClick}>
+            Disable
+          </button>
         </div>
-        <div className={styles.dangerRow} onClick={onDeleteClick}>
+        <div className={styles.dangerRow}>
           <span className={styles.dangerRowLabel}>Delete Account Permanently</span>
-          <span className={styles.dangerActionText}>Wipe Vault</span>
+          <button className={styles.dangerActionButton} onClick={onDeleteClick}>
+            Wipe Vault
+          </button>
         </div>
       </div>
     </div>

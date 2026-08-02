@@ -8,10 +8,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.7rem 1.2rem;
+  padding: 0.9rem 1rem;
   background: transparent;
   border: none;
-  border-bottom: 1px solid #111;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   cursor: pointer;
   transition: background-color 0.2s;
   box-sizing: border-box;
@@ -23,20 +23,12 @@
   border-bottom: none;
 }
 
-@media (hover: hover) {
-  .infoItem:hover {
-    background: rgba(255, 255, 255, 0.02);
-  }
+.infoItem:active:not(.nonEditable) {
+  background: rgba(255, 255, 255, 0.05); /* Highlight on click */
 }
 
 .infoItem.nonEditable {
   cursor: default;
-}
-
-@media (hover: hover) {
-  .infoItem.nonEditable:hover {
-    background: transparent;
-  }
 }
 
 .rowMeta {
@@ -47,30 +39,15 @@
 }
 
 .infoLabel {
-  color: #666;
+  color: #555555;
   font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.3px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 .infoValue {
-  color: #ddd;
-  font-size: 0.88rem;
+  color: #ffffff;
+  font-size: 0.9rem;
   font-weight: 500;
-}
-
-.editArrow {
-  color: #222;
-  font-size: 1.1rem;
-  line-height: 1;
-  position: absolute;
-  right: 1.2rem;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-@media (hover: hover) {
-  .infoItem:hover .editArrow {
-    color: #0095f6;
-  }
 }

@@ -73,7 +73,7 @@
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 24px;
+  border-radius: 2rem;
   padding: 1.8rem;
   box-sizing: border-box;
   display: flex;
@@ -374,7 +374,7 @@
   max-width: 480px;
   background: #000000;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 24px;
+  border-radius: 2rem;
   padding: 2rem;
   box-sizing: border-box;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 149, 246, 0.05);

@@ -1,0 +1,39 @@
+/* ===== BOTTOM BAR WRAPPER =====
+ * Outer wrapper: Full-width, fixed positioning on all devices.
+ * Inner container: Responsive max-width constraints.
+ *
+ * Mobile  → 100% width (edge-to-edge)
+ * Tablet  → max-width constrained, centered
+ * Desktop → narrower max-width, centered
+ */
+
+.wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.innerContainer {
+  width: 100%;
+  padding: 0px 26px;
+  padding-bottom: 8px;
+}
+
+/* Tablet: constrain width */
+@media (min-width: 768px) {
+  .innerContainer {
+    max-width: 600px;
+  }
+}
+
+/* Desktop: narrower */
+@media (min-width: 1024px) {
+  .innerContainer {
+    max-width: 480px;
+  }
+}

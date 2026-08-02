@@ -116,7 +116,7 @@
 /* Row 2: 3-column lower section using 3D Flip Bento Cards */
 .lowerSection {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
   width: 100%;
 }

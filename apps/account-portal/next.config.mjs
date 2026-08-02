@@ -11,7 +11,7 @@ const withPWA = withPWAInit({
 const nextConfig = {
   // Turbopack compatibility if needed
   transpilePackages: ['lucide-react', 'next-pwa', 'secure-query-cache'],
-  allowedDevOrigins: process.env.NODE_ENV === 'development' ? ['172.20.10.2'] : [],
+  allowedDevOrigins: ['172.20.10.2', 'localhost', '*.localhost', 'cloudbase.local', '*.cloudbase.local', 'chat.cloudbase.local', 'account.cloudbase.local', 'admin.cloudbase.local', 'user.cloudbase.local'],
 
   images: {
     localPatterns: [

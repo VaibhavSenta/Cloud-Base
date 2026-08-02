@@ -1,13 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
-import Card3D from '../UI/Card3D/Card3D';
-import FormInput from '../UI/FormInput/FormInput';
-import FormSelect from '../UI/FormSelect/FormSelect';
-import FormButton from '../UI/FormButton/FormButton';
 import ProfileBanner from '../UI/ProfileBanner/ProfileBanner';
 import ProfileLightbox from '../UI/ProfileLightbox/ProfileLightbox';
-import IdentityTrustCard from '../UI/IdentityTrustCard/IdentityTrustCard';
-import KeyValueList from '@/components/UI/List/KeyValueList';
+import PersonalInfoCard from '../UI/PersonalInfoCard/PersonalInfoCard';
 import styles from './PersonalInfoDesktop.module.css';
 
 /**
@@ -67,147 +62,37 @@ export default function PersonalInfoDesktop({
           onClick={() => handleEditClick('profilePic')}
         />
 
-        {/* Row 2: 3-column lower section using 3D Flip Bento Cards */}
+        {/* Row 2: 2-column lower section using 3D Flip Bento Cards */}
         <div className={styles.lowerSection}>
           
-          {/* Column 1: Identity & Trust Status */}
-          <IdentityTrustCard />
-
-          {/* Column 2: Basic Profile Metadata */}
-          <Card3D 
+          {/* Column 1: Basic Profile Metadata */}
+          <PersonalInfoCard
+            title="Basic Profile"
+            fields={infoFields}
+            onEditClick={handleEditClick}
             isFlipped={isBasicFlipped}
-            frontContent={(
-              <>
-                <h3 className={styles.cardTitle}>Basic Profile</h3>
-                <KeyValueList fields={infoFields} onEditClick={handleEditClick} />
-              </>
-            )}
-            backContent={(
-              <div className={styles.backContent}>
-                <h3 className={styles.backTitle}>
-                  {activeField === 'username' ? 'Edit Username' :
-                   activeField === 'name' ? 'Edit Name' :
-                   activeField === 'dob' ? 'Edit Birthday' :
-                   activeField === 'gender' ? 'Edit Gender' : ''}
-                </h3>
-                
-                <form onSubmit={handleSubmit} className={styles.backForm}>
-                  
-                  {/* Username Field */}
-                  {activeField === 'username' && (
-                    <div className={styles.fieldBody}>
-                      <FormInput
-                        label="Username"
-                        name="userName"
-                        value={formVal.userName}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
-                  )}
-
-                  {/* Name Fields */}
-                  {activeField === 'name' && (
-                    <div className={styles.fieldBody}>
-                      <FormInput
-                        label="First Name"
-                        name="firstName"
-                        value={formVal.firstName}
-                        onChange={handleInputChange}
-                        required
-                      />
-                      <FormInput
-                        label="Last Name"
-                        name="lastName"
-                        value={formVal.lastName}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
-                  )}
-
-                  {/* Birthday Date Picker */}
-                  {activeField === 'dob' && (
-                    <div className={styles.fieldBody}>
-                      <FormInput
-                        label="Date of Birth"
-                        type="date"
-                        name="dob"
-                        value={formVal.dob}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
-                  )}
-
-                  {/* Gender Selector */}
-                  {activeField === 'gender' && (
-                    <div className={styles.fieldBody}>
-                      <FormSelect
-                        label="Gender"
-                        name="gender"
-                        value={formVal.gender || 'Not selected'}
-                        onChange={handleInputChange}
-                        options={[
-                          { value: 'Male', label: 'Male' },
-                          { value: 'Female', label: 'Female' },
-                          { value: 'Other', label: 'Other' },
-                          { value: 'Not selected', label: 'Not selected' }
-                        ]}
-                      />
-                    </div>
-                  )}
-
-                  <div className={styles.backActions}>
-                    <FormButton variant="secondary" onClick={handleCloseModal}>
-                      Cancel
-                    </FormButton>
-                    <FormButton type="submit" variant="primary" disabled={isPending}>
-                      {isPending ? 'Saving...' : 'Save'}
-                    </FormButton>
-                  </div>
-                </form>
-              </div>
-            )}
+            editField={editField}
+            activeField={activeField}
+            formVal={formVal}
+            handleInputChange={handleInputChange}
+            handleCloseModal={handleCloseModal}
+            handleSubmit={handleSubmit}
+            isPending={isPending}
           />
 
-          {/* Column 3: Contact Details */}
-          <Card3D 
+          {/* Column 2: Contact Details */}
+          <PersonalInfoCard
+            title="Contact Details"
+            fields={contactFields}
+            onEditClick={handleEditClick}
             isFlipped={isContactFlipped}
-            frontContent={(
-              <>
-                <h3 className={styles.cardTitle}>Contact Details</h3>
-                <KeyValueList fields={contactFields} onEditClick={handleEditClick} />
-              </>
-            )}
-            backContent={(
-              <div className={styles.backContent}>
-                <h3 className={styles.backTitle}>Edit Recovery Email</h3>
-                
-                <form onSubmit={handleSubmit} className={styles.backForm}>
-                  <div className={styles.fieldBody}>
-                    <FormInput
-                      label="Recovery Email Address"
-                      type="email"
-                      name="recoveryEmail"
-                      value={formVal.recoveryEmail}
-                      onChange={handleInputChange}
-                      placeholder="name@example.com"
-                      required
-                    />
-                  </div>
-
-                  <div className={styles.backActions}>
-                    <FormButton variant="secondary" onClick={handleCloseModal}>
-                      Cancel
-                    </FormButton>
-                    <FormButton type="submit" variant="primary" disabled={isPending}>
-                      {isPending ? 'Saving...' : 'Save'}
-                    </FormButton>
-                  </div>
-                </form>
-              </div>
-            )}
+            editField={editField}
+            activeField={activeField}
+            formVal={formVal}
+            handleInputChange={handleInputChange}
+            handleCloseModal={handleCloseModal}
+            handleSubmit={handleSubmit}
+            isPending={isPending}
           />
 
         </div>

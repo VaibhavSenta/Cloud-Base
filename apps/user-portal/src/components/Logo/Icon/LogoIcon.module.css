@@ -1,0 +1,67 @@
+.logoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 60px;
+  max-height: 60px;
+  aspect-ratio: 1;
+}
+
+.shield {
+  position: relative;
+  width: 75%;
+  height: 86.6%;
+  background: #1e293b;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.innerCloud {
+  width: 55.5%;
+  height: 26.9%;
+  background: #0095f6; /* Custom Instagram Blue */
+  border-radius: 100px;
+  position: relative;
+}
+
+.innerCloud::before {
+  content: '';
+  position: absolute;
+  width: 56%;
+  height: 100%;
+  background: #0095f6; /* Custom Instagram Blue */
+  border-radius: 50%;
+  top: -50%;
+  left: 12%;
+}
+
+.nodePoint {
+  position: absolute;
+  width: 10%;
+  height: 10%;
+  background: #f8fafc;
+  border-radius: 50%;
+  bottom: 20%;
+  right: 20%;
+  border: 1.5px solid #1e293b;
+}
+
+/* MONOCHROME VARIANT */
+.monochrome .shield {
+  background: #111111; /* Darkest Gray */
+}
+
+.monochrome .innerCloud,
+.monochrome .innerCloud::before {
+  background: #666666; /* Gray */
+}
+
+.monochrome .nodePoint {
+  background: #ffffff; /* White */
+  border: 1.5px solid #111111;
+}

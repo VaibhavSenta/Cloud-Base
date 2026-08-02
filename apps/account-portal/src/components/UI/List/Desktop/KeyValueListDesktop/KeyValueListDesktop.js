@@ -14,7 +14,6 @@ export default function KeyValueListDesktop({ fields = [], onEditClick }) {
             <span className={styles.infoLabel}>{field.label}</span>
             <span className={styles.infoValue}>{field.value}</span>
           </div>
-          {field.isEditable && <span className={styles.editArrow}>›</span>}
         </div>
       ))}
     </div>

@@ -7,11 +7,11 @@
 - [x] React Query State Management.
 - [x] Responsive Dashboard Routing.
 
-## Phase 2: User Polish & Verification (CURRENT)
-- [ ] Email Verification (Nodemailer + OTP/Magic Link).
-- [ ] Profile Progress Indicator (2/4 steps completed).
-- [ ] Active Session Management (List/Kill sessions).
-- [ ] Personal Information Editing.
+## Phase 2: User Polish & Verification (COMPLETED)
+- [x] Email Verification (Nodemailer + OTP/Magic Link).
+- [x] Profile Progress Indicator (2/4 steps completed).
+- [x] Active Session Management (List/Kill sessions).
+- [x] Personal Information Editing.
 
 ## Phase 3: Service Expansion
 - [ ] Real-time Chat Service (Socket.io).

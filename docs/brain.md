@@ -31,10 +31,10 @@ This file serves as the persistent memory of the AI Agent (Antigravity). It cont
 - [x] React Query caching setup.
 - [x] Responsive routing/session redirection.
 
-### Phase 2: User Polish & Verification (CURRENT SPRINT)
-- [ ] Email Verification (Nodemailer + OTP/Magic Link).
-- [ ] Profile Progress Indicator (2/4 steps completed).
-- [ ] Active Session Management (List/Kill active sessions in Account Portal).
+### Phase 2: User Polish & Verification (COMPLETED)
+- [x] Email Verification (Nodemailer + OTP/Magic Link).
+- [x] Profile Progress Indicator (2/4 steps completed).
+- [x] Active Session Management (List/Kill active sessions in Account Portal).
 - [x] Personal Information Editing in Profile.
 - [x] Hybrid RSA + AES selective request payload encryption (Signup/Login/Profile updates).
 - [x] In-memory React Query state cache encryption/decryption via custom hooks.
@@ -44,7 +44,7 @@ This file serves as the persistent memory of the AI Agent (Antigravity). It cont
 - [ ] Chat Service (Socket.io real-time chat).
 - [ ] Cloud Storage integration.
 - [ ] OTP Login UI design.
-- [ ] **Google Drive Encrypted Asset Storage**: User profile pictures and drive assets will be saved on their connected personal Google Drive in an encrypted file format. The backend will decrypt them on load before serving them to the frontend, ensuring absolute user privacy and data ownership.
+- [ ] Google Drive Encrypted Asset Storage
 
 ---
 

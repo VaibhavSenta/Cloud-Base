@@ -113,8 +113,10 @@ const loginAccount = async (loginData, deviceInfo) => {
     }
 
     if (!user.sessions) user.sessions = [];
+    // Auto-prune oldest session if max limit (6) reached
     if (user.sessions.length >= 6) {
-      throw new Error('You have logged in to too many devices');
+      user.sessions = user.sessions.slice(-5);
+      await user.save();
     }
   
     if (isPartial) {
@@ -199,9 +201,9 @@ const loginAccount = async (loginData, deviceInfo) => {
     // Initialize sessions if it doesn't exist
     if (!user.sessions) user.sessions = [];
     
-    // Limits sessions to 6 max
+    // Keep sessions array within 6 max by pruning oldest
     if (user.sessions.length >= 6) {
-      throw new Error('You have logged in to too many devices');
+      user.sessions = user.sessions.slice(-5);
     }
     
     // Automatic Gravatar Sync if profilePic is default or missing

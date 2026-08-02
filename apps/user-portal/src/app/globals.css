@@ -1,77 +1,126 @@
 :root {
-  --background: #000000;
-  --foreground: #ededed;
-  --primary: #8ab4f8; /* Google-Style Soft Blue */
-  --card-bg: #15181a;
-  --card-hover: #1d2022;
-  --border: rgba(255, 255, 255, 0.05);
+  /* Light Theme Colors (Optional, for future) */
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --accent-primary: #2563eb;
+  --accent-secondary: #3b82f6;
+  --border-color: #e2e8f0;
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --error: #ef4444;
+  --success: #10b981;
+
+  /* Mobile Title & Heading Typography Reusable Tokens */
+  --title-size-mobile: 1.2rem;
+  --title-weight-mobile: 700;
+  --title-spacing-mobile: -0.3px;
+  --row-title-size-mobile: 0.88rem;
+  --row-title-weight-mobile: 500;
+}
+
+[data-theme='dark'] {
+  /* Premium Dark Grey (Matching mainContent background) */
+  --bg-primary: #161616;
+  --bg-secondary: #161616;
+  --text-primary: #ffffff;
+  --text-secondary: #a8a8a8;
+  --accent-primary: #0095f6; /* Instagram Blue */
+  --accent-secondary: #1877f2;
+  --border-color: #262626;
+  --glass-bg: rgba(22, 22, 22, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --error: #ff4d4d;
+  --success: #00f28f;
+}
+
+/* Global Animations */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.shake {
+  animation: shake 0.3s ease-in-out 0s 2;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-body {
-  background-color: var(--background);
-  color: var(--foreground);
-  overflow-x: hidden;
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: #000000; /* AMOLED Black for Mobile as per project rules */
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, system-ui, sans-serif;
+  cursor: default;
 }
 
-/* 🌟 GLOBAL SHIMMER ANIMATION */
-@keyframes shimmer {
-  0% { background-position: -468px 0; }
-  100% { background-position: 468px 0; }
-}
-
-.shimmer {
-  background: #1d2022;
-  background-image: linear-gradient(to right, #1d2022 0%, #25282a 20%, #1d2022 40%, #1d2022 100%);
-  background-repeat: no-repeat;
-  background-size: 800px 104px;
-  animation: shimmer 1.5s linear infinite forwards;
-}
-
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: var(--background);
-}
-::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
+button, a, [role="button"] {
   cursor: pointer;
 }
 
-button {
-  cursor: pointer;
-  border: none;
-  outline: none;
-  background: none;
+@media (min-width: 768px) {
+  html, body {
+    background: #161616; /* Deep Dark Grey for Desktop/Tablet */
+  }
 }
 
-.container {
-  max-width: 1300px;
-  margin: 0 auto;
-  padding: 0 20px;
+/* Custom Scrollbar for Pitch Black Feel (Desktop/Tablet only) */
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #161616;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #262626;
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #363636;
+  }
 }
 
-/* Custom Shape (Replacing SVGs) */
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--primary);
-  display: inline-block;
+/* Hide scrollbars completely on Mobile views but preserve scroll function */
+@media (max-width: 767px) {
+  ::-webkit-scrollbar {
+    display: none !important;
+  }
+  * {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+  }
+  *::-webkit-scrollbar {
+    display: none !important;
+  }
+}
+
+/* Global Backdrop Filter Helper */
+.glass {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
+  border: 1px solid var(--glass-border);
+}
+
+/* Hide floating Google reCAPTCHA badge for clean UI */
+.grecaptcha-badge {
+  visibility: hidden !important;
 }

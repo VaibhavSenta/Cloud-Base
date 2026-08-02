@@ -1,0 +1,59 @@
+.fullLogoContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shield {
+  position: relative;
+  width: 40px;
+  height: 46px;
+  background: #1e293b; /* Default Midnight Navy */
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.innerCloud {
+  width: 22px;
+  height: 12px;
+  background: #0095f6; /* Custom Instagram Blue */
+  border-radius: 20px;
+}
+
+.brandName {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #ffffff; /* We want it white in dark mode/amoled */
+}
+
+.blueText {
+  color: #0095f6; /* Instagram Blue */
+}
+
+/* MONOCHROME VARIANT */
+.monochrome .shield {
+  background: #111111; /* Darkest Gray */
+}
+
+.monochrome .innerCloud {
+  background: #666666; /* Gray */
+}
+
+.monochrome .brandName {
+  color: #ffffff; /* White */
+}
+
+.monochrome .accentText {
+  color: #cccccc; /* Light Gray */
+}

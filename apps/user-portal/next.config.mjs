@@ -9,27 +9,16 @@ const withPWA = withPWAInit({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Turbopack compatibility
-  transpilePackages: ['next-pwa'],
+  transpilePackages: ['lucide-react', 'next-pwa'],
+  allowedDevOrigins: ['172.20.10.2', 'localhost', '*.localhost', 'cloudbase.local', '*.cloudbase.local', 'chat.cloudbase.local', 'account.cloudbase.local', 'admin.cloudbase.local', 'user.cloudbase.local'],
+
   async rewrites() {
     return [
       {
         source: '/api/v1/:path*',
-        destination: 'http://localhost:5000/api/v1/:path*',
+        destination: `http://172.20.10.2:5005/api/v1/:path*`,
       },
     ];
-  },
-
-  // Google Drive images ko allow karne ke liye ye add karo
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'lh3.googleusercontent.com',
-        port: '',
-        pathname: '/d/**',
-      },
-    ],
   },
 };
 

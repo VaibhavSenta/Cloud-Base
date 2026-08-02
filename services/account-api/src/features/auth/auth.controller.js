@@ -24,6 +24,7 @@ const signup = async (req, res) => {
         secure: false, 
         sameSite: 'lax',
         path: '/',
+        domain: 'localhost',
         maxAge: 7 * 24 * 60 * 60 * 1000 
     });
     res.status(201).json({ success: true, data: result });
@@ -55,13 +56,8 @@ const login = async (req, res) => {
       return res.status(200).json({ success: true, twoFactorRequired: true, data: result });
     }
     
-    res.cookie('token', result.token, {
-        httpOnly: true,
-        secure: false, 
-        sameSite: 'lax',
-        path: '/',
-        maxAge: 7 * 24 * 60 * 60 * 1000 
-    });
+    const { cookieConfig } = require('../../common/config/env.config');
+    res.cookie('token', result.token, cookieConfig);
     
 
     console.log('✅ Login successful for:', identifier);
@@ -90,7 +86,7 @@ const login = async (req, res) => {
 };
 
 const logout = async (req, res) => {
-  res.clearCookie('token', { path: '/' });
+  res.clearCookie('token', { path: '/', domain: 'localhost' });
   res.status(200).json({ success: true, message: 'Logged out successfully' });
 };
 
@@ -104,7 +100,7 @@ const getMe = async (req, res) => {
         const user = await USER.findById(userId).select('-password');
         console.log("🔍 [DEBUG] getMe: USER.findById resolved. User found:", !!user);
         if (!user || user.accountStatus !== 'active') {
-            res.clearCookie('token');
+            res.clearCookie('token', { path: '/', domain: 'localhost' });
             throw new Error(user ? `Account is ${user.accountStatus}` : 'User not found in DB');
         }
 
@@ -279,13 +275,8 @@ const verify2faLogin = async (req, res) => {
         const deviceInfo = sessionService.parseDeviceInfo(req);
         const result = await authService.verify2faLogin(ticket, code, method, deviceInfo);
         
-        res.cookie('token', result.token, {
-            httpOnly: true,
-            secure: false, 
-            sameSite: 'lax',
-            path: '/',
-            maxAge: 7 * 24 * 60 * 60 * 1000 
-        });
+        const { cookieConfig } = require('../../common/config/env.config');
+        res.cookie('token', result.token, cookieConfig);
 
         res.status(200).json({ success: true, data: result });
     } catch (error) {
@@ -304,6 +295,7 @@ const socialLogin = async (req, res) => {
         secure: false, 
         sameSite: 'lax',
         path: '/',
+        domain: 'localhost',
         maxAge: 7 * 24 * 60 * 60 * 1000 
     });
 
@@ -318,7 +310,7 @@ const deactivateAccount = async (req, res) => {
   try {
     const { password } = req.body;
     await authService.deactivateAccount(req.user.userId, password);
-    res.clearCookie('token');
+    res.clearCookie('token', { path: '/', domain: 'localhost' });
     res.status(200).json({ success: true, message: 'Account deactivated successfully' });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
@@ -329,7 +321,7 @@ const deleteAccount = async (req, res) => {
   try {
     const { password } = req.body;
     const result = await authService.deleteAccount(req.user.userId, password);
-    res.clearCookie('token');
+    res.clearCookie('token', { path: '/', domain: 'localhost' });
     res.status(200).json({ 
       success: true, 
       message: 'Account scheduled for deletion in 3 days',
@@ -363,6 +355,7 @@ const reactivateAccount = async (req, res) => {
         secure: false, 
         sameSite: 'lax',
         path: '/',
+        domain: 'localhost',
         maxAge: 7 * 24 * 60 * 60 * 1000 
     });
 
