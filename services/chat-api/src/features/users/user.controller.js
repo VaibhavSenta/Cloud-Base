@@ -1,4 +1,21 @@
 const ChatProfile = require('./user.model');
+const { globalBloomFilter } = require('../../utils/bloomFilter');
+
+// Fetch Bloom Filter bitArray for client-side O(1) instant checking
+const getBloomFilter = async (req, res) => {
+  try {
+    const allProfiles = await ChatProfile.find({}, 'chatUsername');
+    allProfiles.forEach(p => globalBloomFilter.add(p.chatUsername));
+
+    return res.status(200).json({
+      bitArray: globalBloomFilter.getBitArray(),
+      size: globalBloomFilter.size,
+      hashFunctions: globalBloomFilter.hashFunctions
+    });
+  } catch (error) {
+    return res.status(500).json({ error: 'Failed to generate Bloom Filter' });
+  }
+};
 
 // Check if username is already taken
 const checkUsername = async (req, res) => {
@@ -16,12 +33,18 @@ const checkUsername = async (req, res) => {
       return res.status(400).json({ error: 'Username can only contain alphanumeric characters and underscores.' });
     }
 
+    // First check Bloom Filter
+    if (!globalBloomFilter.has(cleanedUsername)) {
+      return res.status(200).json({ available: true, source: 'bloom_filter' });
+    }
+
+    // Bloom Filter says "might exist" -> verify against MongoDB
     const existingProfile = await ChatProfile.findOne({ chatUsername: cleanedUsername });
     if (existingProfile) {
       return res.status(200).json({ available: false, error: 'Username is already taken.' });
     }
 
-    return res.status(200).json({ available: true });
+    return res.status(200).json({ available: true, source: 'database' });
   } catch (error) {
     return res.status(500).json({ error: 'Internal server error during username check.' });
   }
@@ -31,10 +54,14 @@ const checkUsername = async (req, res) => {
 const createProfile = async (req, res) => {
   try {
     const { username, publicKey } = req.body;
-    const userId = req.user.id || req.user._id; // Extracted from verified JWT context middleware
+    const userId = String(req.user.userId || req.user.id || req.user._id || req.user.sub);
 
-    if (!username || !publicKey) {
-      return res.status(400).json({ error: 'Username and Public Key parameters are required.' });
+    if (!userId || userId === 'undefined') {
+      return res.status(400).json({ error: 'User identification missing from auth token.' });
+    }
+
+    if (!username) {
+      return res.status(400).json({ error: 'Username parameter is required.' });
     }
 
     const cleanedUsername = username.trim().toLowerCase();
@@ -53,10 +80,14 @@ const createProfile = async (req, res) => {
     const newProfile = new ChatProfile({
       userId,
       chatUsername: cleanedUsername,
-      publicKey
+      publicKey: publicKey || ''
     });
 
     await newProfile.save();
+    
+    // Insert into global Bloom Filter bitArray instantly
+    globalBloomFilter.add(cleanedUsername);
+
     return res.status(201).json({ status: 'success', profile: newProfile });
   } catch (error) {
     return res.status(500).json({ error: `Internal server error during profile creation: ${error.message}` });
@@ -95,7 +126,6 @@ const searchUser = async (req, res) => {
       return res.status(404).json({ error: 'User not found. Exact match only.' });
     }
 
-    // Return public profiles details (exclude private userId bindings)
     return res.status(200).json({
       username: profile.chatUsername,
       publicKey: profile.publicKey,
@@ -107,6 +137,7 @@ const searchUser = async (req, res) => {
 };
 
 module.exports = {
+  getBloomFilter,
   checkUsername,
   createProfile,
   getProfile,

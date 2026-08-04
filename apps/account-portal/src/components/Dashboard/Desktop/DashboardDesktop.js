@@ -16,7 +16,7 @@ const DashboardDesktop = ({ user }) => {
   }, []);
 
   const getSafeAvatar = (path) => {
-    if (!path || path.includes('..') || path.includes('defaultLogos') || path === '/icons/person.svg' || path.includes('gravatar.com')) {
+    if (!path || path.includes('..') || path.includes('defaultLogos') || path === '/icons/person.svg') {
       return '/user-icon.png';
     }
     return path;
@@ -37,10 +37,14 @@ const DashboardDesktop = ({ user }) => {
       {/* 👤 Centered Profile Section */}
       <div className={styles.profileCentered}>
         <div className={styles.avatarCircleLarge}>
-          <Image 
+          <img 
             src={getSafeAvatar(user?.profilePic)} 
-            alt="Profile" width={160} height={160} 
-            className={styles.avatar} priority unoptimized
+            alt="Profile" 
+            className={styles.avatar} 
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = '/user-icon.png';
+            }}
           />
         </div>
         <h2 className={styles.displayFullName}>{user?.firstName} {user?.lastName}</h2>

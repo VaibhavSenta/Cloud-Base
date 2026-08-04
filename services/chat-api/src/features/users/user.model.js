@@ -19,7 +19,8 @@ const chatProfileSchema = new mongoose.Schema({
   },
   publicKey: {
     type: String,
-    required: true // Store the client's RSA Public Key for asymmetric wrap routing
+    required: false,
+    default: ''
   },
   avatarUrl: {
     type: String,

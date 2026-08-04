@@ -13,14 +13,43 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     if (typeof window !== 'undefined') {
-      const token = window.__cb_session_token; // Load from memory storage context index
+      const token = window.__cb_session_token;
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
     }
     return config;
   },
-  (error) => {
+  (error) => Promise.reject(error)
+);
+
+// Response interceptor to handle silent token refresh on 401
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      try {
+        // Call refresh token endpoint on account-api
+        const refreshRes = await axios.post(
+          'http://account.cloudbase.local/api/v1/auth/refresh',
+          {},
+          { withCredentials: true }
+        );
+
+        if (refreshRes.data?.success && refreshRes.data?.token) {
+          window.__cb_session_token = refreshRes.data.token;
+          originalRequest.headers.Authorization = `Bearer ${refreshRes.data.token}`;
+          return api(originalRequest);
+        }
+      } catch (refreshErr) {
+        console.warn('🔄 Silent token refresh failed. User session terminated.');
+        if (typeof window !== 'undefined') {
+          window.location.href = 'http://account.cloudbase.local';
+        }
+      }
+    }
     return Promise.reject(error);
   }
 );

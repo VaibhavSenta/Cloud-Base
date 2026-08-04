@@ -21,10 +21,19 @@ const nextConfig = {
         source: '/api/v1/chat/:path*',
         destination: 'http://172.20.10.2:5006/api/v1/chat/:path*',
       },
+      {
+        source: '/uploads/:path*',
+        destination: 'http://172.20.10.2:5010/uploads/:path*',
+      },
     ];
   },
-  webpack(config) {
-    // Add custom configuration adjustments if needed
+  webpack(config, { dev }) {
+    if (dev) {
+      config.watchOptions = {
+        poll: 800,
+        aggregateTimeout: 300,
+      };
+    }
     return config;
   },
 };

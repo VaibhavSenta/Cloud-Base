@@ -25,8 +25,9 @@ const verifyAuth = (req, res, next) => {
   }
 };
 
-// Open endpoint (No token needed for initial username avail checking)
+// Open endpoints (No token needed for initial username check & Bloom Filter sync)
 router.post('/check-username', userController.checkUsername);
+router.get('/bloom-filter', userController.getBloomFilter);
 
 // Secure endpoints
 router.post('/profile', verifyAuth, userController.createProfile);

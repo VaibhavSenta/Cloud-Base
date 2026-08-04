@@ -19,14 +19,9 @@ const signup = async (req, res) => {
     const deviceInfo = sessionService.parseDeviceInfo(req);
     const result = await authService.createAccount(req.body, deviceInfo);
     
-    res.cookie('token', result.token, {
-        httpOnly: true,
-        secure: false, 
-        sameSite: 'lax',
-        path: '/',
-        domain: 'localhost',
-        maxAge: 7 * 24 * 60 * 60 * 1000 
-    });
+    const { getCookieConfig } = require('../../common/config/env.config');
+    res.cookie('token', result.token, getCookieConfig(req, 15 * 60 * 1000));
+    res.cookie('refreshToken', result.refreshToken, getCookieConfig(req, 5 * 24 * 60 * 60 * 1000));
     res.status(201).json({ success: true, data: result });
   } catch (error) {
     console.error('❌ Signup Error:', error.message);
@@ -56,9 +51,9 @@ const login = async (req, res) => {
       return res.status(200).json({ success: true, twoFactorRequired: true, data: result });
     }
     
-    const { cookieConfig } = require('../../common/config/env.config');
-    res.cookie('token', result.token, cookieConfig);
-    
+    const { getCookieConfig } = require('../../common/config/env.config');
+    res.cookie('token', result.token, getCookieConfig(req, 15 * 60 * 1000));
+    res.cookie('refreshToken', result.refreshToken, getCookieConfig(req, 5 * 24 * 60 * 60 * 1000));
 
     console.log('✅ Login successful for:', identifier);
     res.status(200).json({ success: true, data: result });
@@ -447,20 +442,8 @@ const getAvatar = async (req, res) => {
             const fs = require('fs');
             const localPath = path.join(__dirname, '../../../public', user.profilePic);
             if (fs.existsSync(localPath)) {
-                try {
-                    const encryptedBuffer = fs.readFileSync(localPath);
-                    const crypto = require('crypto');
-                    const { deriveKeyAndIv } = require('./drive.service');
-                    const { key, iv } = deriveKeyAndIv(userId);
-                    const decipher = crypto.createDecipheriv('aes-256-cbc', key, iv);
-                    const decryptedBuffer = Buffer.concat([decipher.update(encryptedBuffer), decipher.final()]);
-
-                    res.setHeader('Content-Type', 'image/png');
-                    res.setHeader('Cache-Control', 'public, max-age=86400, must-revalidate');
-                    return res.send(decryptedBuffer);
-                } catch (decErr) {
-                    console.error("⚠️ Local avatar decryption failed, serving fallback:", decErr.message);
-                }
+                res.setHeader('Cache-Control', 'public, max-age=86400, must-revalidate');
+                return res.sendFile(localPath);
             }
             // Fallback if local file was deleted/missing
             const defaultPath = path.join(__dirname, '../../../public/user-icon.png');
@@ -526,12 +509,49 @@ const getAvatar = async (req, res) => {
     }
 };
 
+const refreshToken = async (req, res) => {
+    try {
+        let token = req.cookies?.refreshToken;
+        if (!token && req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+            token = req.headers.authorization.split(' ')[1];
+        }
+
+        if (!token) {
+            return res.status(401).json({ success: false, message: 'Refresh token missing.' });
+        }
+
+        const jwt = require('jsonwebtoken');
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'CB_SUPER_SECRET_KEY');
+
+        const { USER } = require('./auth.model');
+        const user = await USER.findById(decoded.userId);
+
+        if (!user || user.accountStatus !== 'active') {
+            return res.status(401).json({ success: false, message: 'User session terminated.' });
+        }
+
+        const newAccessToken = jwt.sign(
+            { userId: user._id, role: user.role, sessionId: decoded.sessionId, type: 'access' },
+            process.env.JWT_SECRET || 'CB_SUPER_SECRET_KEY',
+            { expiresIn: '15m' }
+        );
+
+        const { accessCookieConfig } = require('../../common/config/env.config');
+        res.cookie('token', newAccessToken, accessCookieConfig);
+
+        return res.status(200).json({ success: true, token: newAccessToken });
+    } catch (err) {
+        return res.status(401).json({ success: false, message: 'Invalid or expired refresh token.' });
+    }
+};
+
 module.exports = { 
     handshake, 
     signup, 
     login, 
     socialLogin,
     logout, 
+    refreshToken,
     getMe, 
     updateProfile, 
     getAvatar, 

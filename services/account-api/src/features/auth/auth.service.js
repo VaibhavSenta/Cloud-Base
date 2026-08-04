@@ -61,9 +61,15 @@ const createAccount = async (userData, deviceInfo) => {
   console.log(`✨ USER CREATED: ${newUser.userName} with sessionId: ${sessionId}`);
 
   const token = jwt.sign(
-    { userId: newUser._id, role: newUser.role, sessionId: sessionId },
+    { userId: newUser._id, role: newUser.role, sessionId: sessionId, type: 'access' },
     process.env.JWT_SECRET || 'CB_SUPER_SECRET_KEY',
-    { expiresIn: '7d' }
+    { expiresIn: '15m' }
+  );
+
+  const refreshToken = jwt.sign(
+    { userId: newUser._id, role: newUser.role, sessionId: sessionId, type: 'refresh' },
+    process.env.JWT_SECRET || 'CB_SUPER_SECRET_KEY',
+    { expiresIn: '5d' }
   );
 
   return {
@@ -78,6 +84,7 @@ const createAccount = async (userData, deviceInfo) => {
       sessions: newUser.sessions
     },
     token,
+    refreshToken,
     tempPassword: isPartial ? finalPassword : null
   };
 };
@@ -232,9 +239,15 @@ const loginAccount = async (loginData, deviceInfo) => {
     console.log(`🔑 LOGIN: ${user.userName} registered session: ${sessionId}`);
   
     const token = jwt.sign(
-      { userId: user._id, role: user.role, sessionId: sessionId },
+      { userId: user._id, role: user.role, sessionId: sessionId, type: 'access' },
       process.env.JWT_SECRET || 'CB_SUPER_SECRET_KEY',
-      { expiresIn: '7d' }
+      { expiresIn: '15m' }
+    );
+
+    const refreshToken = jwt.sign(
+      { userId: user._id, role: user.role, sessionId: sessionId, type: 'refresh' },
+      process.env.JWT_SECRET || 'CB_SUPER_SECRET_KEY',
+      { expiresIn: '5d' }
     );
   
     return {
@@ -249,6 +262,7 @@ const loginAccount = async (loginData, deviceInfo) => {
         sessions: user.sessions
       },
       token,
+      refreshToken,
       sessionIdHash: bcrypt.hash(sessionId, 10)
     };
   };

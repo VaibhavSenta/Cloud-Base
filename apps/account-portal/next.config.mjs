@@ -27,11 +27,24 @@ const nextConfig = {
     ],
   },
 
+  webpack(config, { dev }) {
+    if (dev) {
+      config.watchOptions = {
+        poll: 800,
+        aggregateTimeout: 300,
+      };
+    }
+    return config;
+  },
   async rewrites() {
     return [
       {
         source: '/api/v1/:path*',
         destination: `http://172.20.10.2:5010/api/v1/:path*`,
+      },
+      {
+        source: '/uploads/:path*',
+        destination: `http://172.20.10.2:5010/uploads/:path*`,
       },
     ];
   },

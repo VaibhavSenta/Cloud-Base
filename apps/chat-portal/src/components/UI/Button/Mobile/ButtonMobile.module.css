@@ -1,0 +1,57 @@
+.button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  border-radius: 2rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border: none;
+  user-select: none;
+}
+
+/* Primary Variant (Instagram Blue Gradient) */
+.primary {
+  background: linear-gradient(135deg, #00b0ff 0%, #0095f6 100%);
+  color: #ffffff;
+}
+
+.primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.primary:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+/* Secondary Variant (Dark Glass) */
+.secondary {
+  background: #161616;
+  color: #0095f6;
+  border: 1px solid rgba(0, 149, 246, 0.4);
+}
+
+.secondary:hover:not(:disabled) {
+  background: rgba(0, 149, 246, 0.18);
+  border-color: #0095f6;
+}
+
+.secondary:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+/* Disabled State */
+.button:disabled {
+  background: #0b0b0b;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  color: #444444;
+  cursor: not-allowed;
+  transform: none;
+  filter: none;
+}

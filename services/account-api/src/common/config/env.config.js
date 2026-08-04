@@ -1,17 +1,54 @@
 const isDev = process.env.NODE_ENV !== 'production';
 
+const getCookieConfig = (req, maxAge) => {
+  const host = req ? (req.hostname || req.headers?.host || '').split(':')[0] : '';
+  const isIp = /^(\d{1,3}\.){3}\d{1,3}$/.test(host);
+  const isLocalhost = host === 'localhost' || host === '127.0.0.1';
+  
+  const options = {
+    httpOnly: true,
+    secure: !isDev,
+    sameSite: 'lax',
+    path: '/',
+    maxAge: maxAge
+  };
+
+  // Only set domain attribute if accessing via a real domain name
+  if (!isIp && !isLocalhost && !isDev) {
+    options.domain = process.env.COOKIE_DOMAIN || '.cloud-base.dev';
+  } else if (!isIp && !isLocalhost && isDev) {
+    options.domain = '.cloudbase.local';
+  }
+
+  return options;
+};
+
 module.exports = {
   isDev,
   isProd: !isDev,
   port: process.env.PORT || 5010,
   jwtSecret: process.env.JWT_SECRET || (isDev ? 'CB_SUPER_SECRET_KEY_FOR_LOCAL_DEV' : null),
+  getCookieConfig,
   cookieConfig: {
     httpOnly: true,
-    secure: !isDev, // HTTP in dev, HTTPS in prod
+    secure: !isDev,
     sameSite: 'lax',
     path: '/',
-    domain: isDev ? '.cloudbase.local' : (process.env.COOKIE_DOMAIN || '.cloud-base.dev'),
-    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    maxAge: 15 * 60 * 1000 // 15 mins default access token
+  },
+  accessCookieConfig: {
+    httpOnly: true,
+    secure: !isDev,
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 15 * 60 * 1000 // 15 mins
+  },
+  refreshCookieConfig: {
+    httpOnly: true,
+    secure: !isDev,
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 5 * 24 * 60 * 60 * 1000 // 5 days
   },
   allowedOrigins: process.env.ALLOWED_ORIGINS 
     ? process.env.ALLOWED_ORIGINS.split(',') 

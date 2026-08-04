@@ -1,6 +1,8 @@
 import "./globals.css";
 import AdminLayout from "@/components/AdminLayout/Component";
 import QueryProvider from "@/components/admin/QueryProvider";
+import DevToolsGuard from "@/components/Providers/DevToolsGuard";
+
 export const metadata = {
   title: "CloudBase Admin Console",
   description: "Secure backend admin management portal",
@@ -33,9 +35,11 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <QueryProvider>
-          <AdminLayout>
-            {children}
-          </AdminLayout>
+          <DevToolsGuard>
+            <AdminLayout>
+              {children}
+            </AdminLayout>
+          </DevToolsGuard>
         </QueryProvider>
       </body>
     </html>
