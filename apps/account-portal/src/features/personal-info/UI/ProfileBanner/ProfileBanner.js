@@ -12,14 +12,14 @@ export default function ProfileBanner({ user, getSafeAvatar, onClick }) {
   return (
     <div className={styles.bannerCard}>
       <div className={styles.avatarWrapper} onClick={onClick}>
-        <img 
+        <Image 
           src={getSafeAvatar(user.profilePic)} 
           alt="Profile" 
+          width={100} 
+          height={100} 
           className={styles.avatarImg}
-          onError={(e) => {
-            e.currentTarget.onerror = null;
-            e.currentTarget.src = '/user-icon.png';
-          }}
+          priority
+          unoptimized
         />
       </div>
       <div className={styles.bannerText}>

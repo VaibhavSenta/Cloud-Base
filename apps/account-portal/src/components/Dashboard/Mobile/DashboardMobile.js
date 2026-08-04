@@ -17,7 +17,7 @@ const DashboardMobile = ({ user }) => {
   }
 
   const getSafeAvatar = (path) => {
-    if (!path || path.includes('..') || path.includes('defaultLogos') || path === '/icons/person.svg') {
+    if (!path || path.includes('..') || path.includes('defaultLogos') || path === '/icons/person.svg' || path.includes('gravatar.com')) {
       return '/user-icon.png';
     }
     return path;
@@ -26,11 +26,7 @@ const DashboardMobile = ({ user }) => {
   const handleLogout = async () => {
     try {
       await api.post('/auth/logout');
-      if (typeof queryClient?.clear === 'function') {
-        queryClient.clear();
-      } else if (typeof queryClient?.queryClient?.clear === 'function') {
-        queryClient.queryClient.clear();
-      }
+      queryClient.clear();
       window.location.href = '/';
     } catch (err) {
       console.error("Logout failed:", err);
@@ -80,14 +76,9 @@ const DashboardMobile = ({ user }) => {
 
       <header className={styles.profileHeader}>
         <div className={styles.avatarCircle}>
-          <img 
+          <Image 
             src={getSafeAvatar(user?.profilePic)} 
-            alt="Profile" 
-            className={styles.avatar} 
-            onError={(e) => {
-              e.currentTarget.onerror = null;
-              e.currentTarget.src = '/user-icon.png';
-            }}
+            alt="Profile" width={120} height={120} className={styles.avatar} priority unoptimized
           />
         </div>
         <h1 className={styles.userName}>{user?.firstName} {user?.lastName}</h1>

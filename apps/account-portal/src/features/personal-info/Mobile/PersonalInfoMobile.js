@@ -47,14 +47,14 @@ export default function PersonalInfoMobile({
         {user && (
           <div className={styles.profileHero}>
             <div className={styles.heroAvatar} onClick={() => handleEditClick('profilePic')}>
-              <img 
+              <Image 
                 src={getSafeAvatar(user.profilePic)} 
                 alt="Profile" 
+                width={80} 
+                height={80} 
                 className={styles.avatarImg}
-                onError={(e) => {
-                  e.currentTarget.onerror = null;
-                  e.currentTarget.src = '/user-icon.png';
-                }}
+                priority
+                unoptimized
               />
             </div>
             <div className={styles.heroText}>

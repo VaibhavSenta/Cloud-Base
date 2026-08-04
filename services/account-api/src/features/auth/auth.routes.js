@@ -74,7 +74,4 @@ router.post('/connected-services/disconnect', protect, authController.disconnect
 // LOGOUT: Simple logout to clear session/cookies
 router.post('/logout', authController.logout);
 
-// REFRESH: Issue fresh 15-minute access token using 5-day refresh token
-router.post('/refresh', authController.refreshToken);
-
 module.exports = router;

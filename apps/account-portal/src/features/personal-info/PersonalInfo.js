@@ -243,7 +243,7 @@ export default function PersonalInfo({ forceWidth }) {
   }
 
   const getSafeAvatar = (path) => {
-    if (!path || path.includes('..') || path.includes('defaultLogos') || path === '/icons/person.svg') {
+    if (!path || path.includes('..') || path.includes('defaultLogos') || path === '/icons/person.svg' || path.includes('gravatar.com')) {
       return '/user-icon.png';
     }
     return path;
