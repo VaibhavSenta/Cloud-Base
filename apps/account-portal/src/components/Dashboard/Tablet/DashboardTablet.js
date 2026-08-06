@@ -1,5 +1,5 @@
 'use client';
-import Image from 'next/image';
+
 import { useRouter } from 'next/navigation';
 import HomeStatusCard from '@/components/UI/HomeStatusCard/HomeStatusCard';
 import styles from './DashboardTablet.module.css';
@@ -24,14 +24,10 @@ const DashboardTablet = ({ user }) => {
       {/* Profile Header */}
       <div className={styles.homeView}>
         <div className={styles.avatarCircleLarge}>
-          <Image 
+          <img 
             src={getSafeAvatar(user?.profilePic)} 
-            alt="Profile" 
-            width={130} 
-            height={130} 
-            className={styles.avatar} 
-            priority 
-            unoptimized 
+            alt="Profile" className={styles.avatar}
+            onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/user-icon.png'; }}
           />
         </div>
         <h1 className={styles.displayFullName}>{user?.firstName} {user?.lastName}</h1>

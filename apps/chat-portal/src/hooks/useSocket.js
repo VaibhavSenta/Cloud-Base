@@ -51,6 +51,12 @@ export function useSocket(isAuthenticated) {
     socket.on('disconnect', (reason) => {
       console.log('❌ Socket disconnected:', reason);
       setIsConnected(false);
+      if (reason === 'io server disconnect') {
+        console.warn('⚠️ Disconnected by server. Redirecting to Account Portal...');
+        if (typeof window !== 'undefined') {
+          window.location.href = config.accountPortalUrl;
+        }
+      }
     });
 
     socket.on('connect_error', (error) => {

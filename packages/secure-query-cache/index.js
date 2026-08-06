@@ -53,27 +53,29 @@ export function useSecureQuery(options) {
 export function useSecureQueryClient() {
   const queryClient = useQueryClient();
 
-  return {
-    ...queryClient,
-    
-    /**
-     * Update cache data securely
-     */
-    setSecureQueryData: (queryKey, updateFn) => {
-      queryClient.setQueryData(queryKey, (oldEncrypted) => {
-        const oldDecrypted = localDecrypt(oldEncrypted);
-        // Compute updated value
-        const updated = typeof updateFn === 'function' ? updateFn(oldDecrypted) : updateFn;
-        return localEncrypt(updated);
-      });
-    },
+  return new Proxy(queryClient, {
+    get(target, prop, receiver) {
+      if (prop === 'setSecureQueryData') {
+        return (queryKey, updateFn) => {
+          target.setQueryData(queryKey, (oldEncrypted) => {
+            const oldDecrypted = localDecrypt(oldEncrypted);
+            const updated = typeof updateFn === 'function' ? updateFn(oldDecrypted) : updateFn;
+            return localEncrypt(updated);
+          });
+        };
+      }
+      if (prop === 'getSecureQueryData') {
+        return (queryKey) => {
+          const encrypted = target.getQueryData(queryKey);
+          return localDecrypt(encrypted);
+        };
+      }
 
-    /**
-     * Retrieve cache data securely
-     */
-    getSecureQueryData: (queryKey) => {
-      const encrypted = queryClient.getQueryData(queryKey);
-      return localDecrypt(encrypted);
+      const value = Reflect.get(target, prop, receiver);
+      if (typeof value === 'function') {
+        return value.bind(target);
+      }
+      return value;
     }
-  };
+  });
 }

@@ -26,7 +26,7 @@ const initSocket = (server) => {
   io.use((socket, next) => {
     try {
       const cookies = parseCookies(socket.handshake.headers?.cookie);
-      const rawToken = socket.handshake.auth?.token || socket.handshake.query?.token || cookies.token;
+      const rawToken = socket.handshake.auth?.token || socket.handshake.query?.token || cookies.cb_chat_token || cookies.token;
 
       if (!rawToken) {
         console.log('⚠️ [Chat-API] Socket Connection Refused: No token provided');
@@ -108,4 +108,25 @@ const getIO = () => {
   return io;
 };
 
-module.exports = { initSocket, getIO };
+const disconnectUserSession = async (userId, sessionId) => {
+  if (!io) return;
+  try {
+    const sockets = await io.fetchSockets();
+    for (const socket of sockets) {
+      const socketUserId = socket.userId;
+      const socketSessionId = socket.user?.sessionId;
+
+      const userIdMatches = socketUserId && String(socketUserId) === String(userId);
+      const sessionIdMatches = !sessionId || (socketSessionId && String(socketSessionId) === String(sessionId));
+
+      if (userIdMatches && sessionIdMatches) {
+        console.log(`🔌 [Chat-API] Force disconnecting socket ${socket.id} for user ${userId} (session: ${sessionId || 'all'})`);
+        socket.disconnect(true);
+      }
+    }
+  } catch (err) {
+    console.error('⚠️ [Chat-API] Failed to force disconnect sockets:', err.message);
+  }
+};
+
+module.exports = { initSocket, getIO, disconnectUserSession };

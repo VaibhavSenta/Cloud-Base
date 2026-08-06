@@ -136,10 +136,63 @@ const searchUser = async (req, res) => {
   }
 };
 
+const logoutSession = async (req, res) => {
+  try {
+    const { userId, sessionId } = req.body;
+    if (!userId) {
+      return res.status(400).json({ error: 'userId is required' });
+    }
+
+    const { disconnectUserSession } = require('../../config/socket');
+    
+    // Clear cookies for double check
+    const isDev = process.env.NODE_ENV !== 'production';
+    const domain = isDev ? undefined : (process.env.COOKIE_DOMAIN || '.cloud-base.dev');
+    
+    res.clearCookie('token', { path: '/', domain });
+    res.clearCookie('cb_chat_token', { path: '/', domain });
+
+    // Disconnect active socket connection
+    await disconnectUserSession(userId, sessionId);
+
+    console.log(`🔒 [Chat-API] Session terminated backend-to-backend for user: ${userId}, session: ${sessionId || 'all'}`);
+    return res.status(200).json({ success: true, message: 'Session disconnected and cookies cleared' });
+  } catch (error) {
+    console.error('❌ [Chat-API] Error in logoutSession controller:', error.message);
+    return res.status(500).json({ error: `Internal server error during logout session: ${error.message}` });
+  }
+};
+
+const updatePublicKey = async (req, res) => {
+  try {
+    const { publicKey } = req.body;
+    const userId = String(req.user.userId || req.user.id || req.user._id);
+
+    if (!publicKey) {
+      return res.status(400).json({ error: 'publicKey parameter is required.' });
+    }
+
+    const profile = await ChatProfile.findOne({ userId });
+    if (!profile) {
+      return res.status(404).json({ error: 'Chat profile not found.' });
+    }
+
+    profile.publicKey = publicKey;
+    await profile.save();
+
+    console.log(`🔑 [Chat-API] Updated public key for user: ${userId}`);
+    return res.status(200).json({ status: 'success', profile });
+  } catch (error) {
+    return res.status(500).json({ error: `Internal server error during public key update: ${error.message}` });
+  }
+};
+
 module.exports = {
   getBloomFilter,
   checkUsername,
   createProfile,
   getProfile,
-  searchUser
+  searchUser,
+  logoutSession,
+  updatePublicKey
 };

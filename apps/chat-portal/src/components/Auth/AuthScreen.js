@@ -30,7 +30,27 @@ export default function AuthScreen({ onAuthComplete }) {
           try {
             const profileResponse = await api.get('/chat/users/profile');
             if (profileResponse.data?.profile) {
-              onAuthComplete(profileResponse.data.profile, 'sso-cookie');
+              // 1. Generate or load RSA Key Pair
+              let privateKey = sessionStorage.getItem('cb_chat_private_key');
+              let publicKey = profileResponse.data.profile.publicKey;
+              
+              if (!privateKey) {
+                console.log('🔑 Generating new session RSA keypair...');
+                const keyPair = await generateKeyPair();
+                privateKey = keyPair.privateKey;
+                publicKey = keyPair.publicKey;
+                sessionStorage.setItem('cb_chat_private_key', privateKey);
+                
+                // Update on backend
+                await api.put('/chat/users/profile/public-key', { publicKey });
+              }
+              
+              window.__cb_chat_private_key = privateKey;
+
+              onAuthComplete({
+                ...profileResponse.data.profile,
+                publicKey
+              }, 'sso-cookie');
               return;
             }
           } catch (profileErr) {
@@ -106,9 +126,18 @@ export default function AuthScreen({ onAuthComplete }) {
     setLoading(true);
     setError('');
     try {
+      // 1. Generate new RSA Key Pair
+      console.log('🔑 Generating RSA keypair for new profile...');
+      const keyPair = await generateKeyPair();
+      const { privateKey, publicKey } = keyPair;
+      
+      sessionStorage.setItem('cb_chat_private_key', privateKey);
+      window.__cb_chat_private_key = privateKey;
+
       // Register username profile in chat-api
       const response = await api.post('/chat/users/profile', {
-        username
+        username,
+        publicKey
       });
 
       const { profile } = response.data;

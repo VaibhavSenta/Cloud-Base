@@ -47,14 +47,10 @@ export default function PersonalInfoMobile({
         {user && (
           <div className={styles.profileHero}>
             <div className={styles.heroAvatar} onClick={() => handleEditClick('profilePic')}>
-              <Image 
+              <img 
                 src={getSafeAvatar(user.profilePic)} 
-                alt="Profile" 
-                width={80} 
-                height={80} 
-                className={styles.avatarImg}
-                priority
-                unoptimized
+                alt="Profile" className={styles.avatarImg}
+                onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/user-icon.png'; }}
               />
             </div>
             <div className={styles.heroText}>
@@ -121,13 +117,11 @@ export default function PersonalInfoMobile({
           ) : (
             <div className={styles.avatarUploadGroup}>
               <div className={styles.uploadPreview}>
-                <Image 
+                <img 
                   src={selectedPreview || getSafeAvatar(user?.profilePic)} 
                   alt="Avatar Preview" 
-                  width={120} 
-                  height={120} 
                   className={styles.largePreviewImg}
-                  priority
+                  onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/user-icon.png'; }}
                 />
               </div>
               

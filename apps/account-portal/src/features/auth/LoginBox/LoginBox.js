@@ -82,6 +82,7 @@ const LoginBox = ({ onAuthSuccess, forceWidth }) => {
         if (response.data.success) {
             // Update React Query Cache securely immediately
             queryClient.setSecureQueryData(['user'], response.data.data.user);
+            queryClient.invalidateQueries({ queryKey: ['user'] });
             if (onAuthSuccess) onAuthSuccess(response.data.data.user);
         }
     } catch (err) {
@@ -121,6 +122,7 @@ const LoginBox = ({ onAuthSuccess, forceWidth }) => {
             } else {
                 // Update React Query Cache securely immediately
                 queryClient.setSecureQueryData(['user'], response.data.data.user);
+                queryClient.invalidateQueries({ queryKey: ['user'] });
                 if (onAuthSuccess) onAuthSuccess(response.data.data.user);
             }
         }
@@ -148,6 +150,7 @@ const LoginBox = ({ onAuthSuccess, forceWidth }) => {
 
       if (response.data.success) {
         queryClient.setSecureQueryData(['user'], response.data.data.user);
+        queryClient.invalidateQueries({ queryKey: ['user'] });
         if (onAuthSuccess) onAuthSuccess(response.data.data.user);
       }
     } catch (err) {
@@ -208,6 +211,7 @@ const LoginBox = ({ onAuthSuccess, forceWidth }) => {
         setReactivationData(null);
         // Update React Query Cache securely immediately
         queryClient.setSecureQueryData(['user'], response.data.data.user);
+        queryClient.invalidateQueries({ queryKey: ['user'] });
         if (onAuthSuccess) onAuthSuccess(response.data.data.user);
       }
     } catch (err) {
@@ -238,6 +242,7 @@ const LoginBox = ({ onAuthSuccess, forceWidth }) => {
       });
       if (response.data.success) {
         queryClient.setSecureQueryData(['user'], response.data.data.user);
+        queryClient.invalidateQueries({ queryKey: ['user'] });
         if (onAuthSuccess) onAuthSuccess(response.data.data.user);
       }
     } catch (err) {

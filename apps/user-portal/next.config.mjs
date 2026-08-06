@@ -10,7 +10,7 @@ const withPWA = withPWAInit({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: ['lucide-react', 'next-pwa'],
-  allowedDevOrigins: ['172.20.10.2', 'localhost', '*.localhost', 'cloudbase.local', '*.cloudbase.local', 'chat.cloudbase.local', 'account.cloudbase.local', 'admin.cloudbase.local', 'user.cloudbase.local'],
+  allowedDevOrigins: ['172.20.10.2', 'localhost', '*.localhost', 'cloudbase.local', '*.cloudbase.local', 'chat.cloudbase.local', 'account.cloudbase.local', 'admin.cloudbase.local', 'user.cloudbase.local', 'nothingbox.site', '*.nothingbox.site', 'account.nothingbox.site', 'chat.nothingbox.site', 'admin.nothingbox.site', 'user.nothingbox.site'],
 
   async rewrites() {
     return [

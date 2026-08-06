@@ -1,5 +1,5 @@
 'use client';
-import Image from 'next/image';
+
 import { useRouter } from 'next/navigation';
 import styles from './DashboardMobile.module.css';
 import api from '../../../utils/api';
@@ -76,9 +76,10 @@ const DashboardMobile = ({ user }) => {
 
       <header className={styles.profileHeader}>
         <div className={styles.avatarCircle}>
-          <Image 
+          <img 
             src={getSafeAvatar(user?.profilePic)} 
-            alt="Profile" width={120} height={120} className={styles.avatar} priority unoptimized
+            alt="Profile" className={styles.avatar}
+            onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/user-icon.png'; }}
           />
         </div>
         <h1 className={styles.userName}>{user?.firstName} {user?.lastName}</h1>
@@ -100,7 +101,7 @@ const DashboardMobile = ({ user }) => {
 
         <footer className={styles.footer}>
           <button className={styles.logoutBtn} onClick={handleLogout}>
-            <Image src="/icons/action-logout.svg" alt="" width={20} height={20} className={styles.btnIconSvg} />
+            <img src="/icons/action-logout.svg" alt="" width={20} height={20} className={styles.btnIconSvg} />
             Log Out
           </button>
         </footer>

@@ -3,6 +3,21 @@ const encryptionService = require('../../common/utils/encryptionService');
 const crypto = require('crypto');
 const { USER } = require('./auth.model');
 const sessionService = require('./session.service');
+const { cookieConfig } = require('../../common/config/env.config');
+const { maxAge, ...clearOptions } = cookieConfig;
+
+const propagateLogout = async (userId, sessionId) => {
+  if (!userId) return;
+  try {
+    const axios = require('axios');
+    await axios.post('http://172.20.10.2:5006/api/v1/chat/auth/logout-session', {
+      userId,
+      sessionId
+    });
+  } catch (err) {
+    console.error('Failed to propagate logout to chat-api:', err.message);
+  }
+};
 
 const handshake = async (req, res) => {
     try {
@@ -56,8 +71,8 @@ const login = async (req, res) => {
       return res.status(200).json({ success: true, twoFactorRequired: true, data: result });
     }
     
-    const { cookieConfig } = require('../../common/config/env.config');
     res.cookie('token', result.token, cookieConfig);
+    res.cookie('cb_chat_token', result.token, cookieConfig);
     
 
     console.log('✅ Login successful for:', identifier);
@@ -86,7 +101,23 @@ const login = async (req, res) => {
 };
 
 const logout = async (req, res) => {
-  res.clearCookie('token', { path: '/', domain: 'localhost' });
+  try {
+    let token = req.cookies?.token || req.cookies?.cb_chat_token;
+    if (token) {
+      const jwt = require('jsonwebtoken');
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'CB_SUPER_SECRET_KEY_FOR_LOCAL_DEV', { ignoreExpiration: true });
+      const userId = decoded.userId || decoded.id;
+      const sessionId = decoded.sessionId;
+      if (userId) {
+        propagateLogout(userId, sessionId);
+      }
+    }
+  } catch (err) {
+    console.error('Error during logout propagation:', err.message);
+  }
+
+  res.clearCookie('token', clearOptions);
+  res.clearCookie('cb_chat_token', clearOptions);
   res.status(200).json({ success: true, message: 'Logged out successfully' });
 };
 
@@ -100,7 +131,8 @@ const getMe = async (req, res) => {
         const user = await USER.findById(userId).select('-password');
         console.log("🔍 [DEBUG] getMe: USER.findById resolved. User found:", !!user);
         if (!user || user.accountStatus !== 'active') {
-            res.clearCookie('token', { path: '/', domain: 'localhost' });
+            res.clearCookie('token', clearOptions);
+            res.clearCookie('cb_chat_token', clearOptions);
             throw new Error(user ? `Account is ${user.accountStatus}` : 'User not found in DB');
         }
 
@@ -166,6 +198,9 @@ const terminateSession = async (req, res) => {
         const { logSecurityEvent } = require('./audit.service');
         await logSecurityEvent(user, 'Authorized device session terminated', req);
 
+        // Propagate session termination to chat-api
+        propagateLogout(userId, sessionId);
+
         res.status(200).json({ success: true, message: 'Session terminated' });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
@@ -179,9 +214,19 @@ const terminateAllOtherSessions = async (req, res) => {
 
         const user = await USER.findById(userId);
         if (user) {
+            // Collect other session IDs to propagate logout
+            const otherSessionIds = user.sessions
+                .map(s => s.sessionId)
+                .filter(sid => sid !== currentSessionId);
+
             user.sessions = user.sessions.filter(s => s.sessionId === currentSessionId);
             const { logSecurityEvent } = require('./audit.service');
             await logSecurityEvent(user, 'All other sessions terminated', req);
+
+            // Propagate logout to chat-api for all other sessions
+            for (const sid of otherSessionIds) {
+                propagateLogout(userId, sid);
+            }
         }
 
         res.status(200).json({ success: true, message: 'All other sessions terminated' });
@@ -275,8 +320,8 @@ const verify2faLogin = async (req, res) => {
         const deviceInfo = sessionService.parseDeviceInfo(req);
         const result = await authService.verify2faLogin(ticket, code, method, deviceInfo);
         
-        const { cookieConfig } = require('../../common/config/env.config');
         res.cookie('token', result.token, cookieConfig);
+        res.cookie('cb_chat_token', result.token, cookieConfig);
 
         res.status(200).json({ success: true, data: result });
     } catch (error) {
@@ -290,14 +335,8 @@ const socialLogin = async (req, res) => {
     const deviceInfo = sessionService.parseDeviceInfo(req);
     const result = await authService.socialLoginAccount(provider, token, clientData, deviceInfo);
 
-    res.cookie('token', result.token, {
-        httpOnly: true,
-        secure: false, 
-        sameSite: 'lax',
-        path: '/',
-        domain: 'localhost',
-        maxAge: 7 * 24 * 60 * 60 * 1000 
-    });
+    res.cookie('token', result.token, cookieConfig);
+    res.cookie('cb_chat_token', result.token, cookieConfig);
 
     res.status(200).json({ success: true, data: result });
   } catch (error) {
@@ -310,7 +349,9 @@ const deactivateAccount = async (req, res) => {
   try {
     const { password } = req.body;
     await authService.deactivateAccount(req.user.userId, password);
-    res.clearCookie('token', { path: '/', domain: 'localhost' });
+    res.clearCookie('token', clearOptions);
+    res.clearCookie('cb_chat_token', clearOptions);
+    propagateLogout(req.user.userId, req.user.sessionId);
     res.status(200).json({ success: true, message: 'Account deactivated successfully' });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
@@ -321,7 +362,9 @@ const deleteAccount = async (req, res) => {
   try {
     const { password } = req.body;
     const result = await authService.deleteAccount(req.user.userId, password);
-    res.clearCookie('token', { path: '/', domain: 'localhost' });
+    res.clearCookie('token', clearOptions);
+    res.clearCookie('cb_chat_token', clearOptions);
+    propagateLogout(req.user.userId, req.user.sessionId);
     res.status(200).json({ 
       success: true, 
       message: 'Account scheduled for deletion in 3 days',
@@ -340,6 +383,11 @@ const reactivateAccount = async (req, res) => {
     // Issue new session & JWT token
     const deviceInfo = sessionService.parseDeviceInfo(req);
     const sessionId = crypto.randomBytes(16).toString('hex');
+    
+    if (user.sessions && user.sessions.length >= 6) {
+      return res.status(400).json({ success: false, message: 'Maximum login limit reached. You can log in to a maximum of 6 devices. Please log out from another device.' });
+    }
+
     user.sessions.push({ ...deviceInfo, sessionId, lastActive: new Date() });
     await user.save();
 
@@ -350,14 +398,8 @@ const reactivateAccount = async (req, res) => {
       { expiresIn: '7d' }
     );
 
-    res.cookie('token', token, {
-        httpOnly: true,
-        secure: false, 
-        sameSite: 'lax',
-        path: '/',
-        domain: 'localhost',
-        maxAge: 7 * 24 * 60 * 60 * 1000 
-    });
+    res.cookie('token', token, cookieConfig);
+    res.cookie('cb_chat_token', token, cookieConfig);
 
     res.status(200).json({ 
       success: true, 

@@ -201,9 +201,9 @@ const loginAccount = async (loginData, deviceInfo) => {
     // Initialize sessions if it doesn't exist
     if (!user.sessions) user.sessions = [];
     
-    // Keep sessions array within 6 max by pruning oldest
+    // Enforce strict limit of 6 devices/sessions
     if (user.sessions.length >= 6) {
-      user.sessions = user.sessions.slice(-5);
+      throw new Error('Maximum login limit reached. You can log in to a maximum of 6 devices. Please log out from another device.');
     }
     
     // Automatic Gravatar Sync if profilePic is default or missing
@@ -445,7 +445,7 @@ const verify2faLogin = async (ticket, code, method, deviceInfo) => {
   const sessionId = deviceInfo.sessionId;
   if (!user.sessions) user.sessions = [];
   if (user.sessions.length >= 6) {
-    throw new Error('You have logged in to too many devices');
+    throw new Error('Maximum login limit reached. You can log in to a maximum of 6 devices. Please log out from another device.');
   }
 
   if (!user.profilePic || user.profilePic === '/icons/person.svg') {
@@ -566,7 +566,7 @@ const socialLoginAccount = async (provider, token, clientData, deviceInfo) => {
   const sessionId = deviceInfo.sessionId;
   if (!user.sessions) user.sessions = [];
   if (user.sessions.length >= 6) {
-    throw new Error('You have logged in to too many devices');
+    throw new Error('Maximum login limit reached. You can log in to a maximum of 6 devices. Please log out from another device.');
   }
 
   user.sessions.push({ ...deviceInfo, lastActive: new Date() });

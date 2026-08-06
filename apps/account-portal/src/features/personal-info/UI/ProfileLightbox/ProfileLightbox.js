@@ -77,25 +77,17 @@ export default function ProfileLightbox({
               />
               
               {/* Blurred Background Layer */}
-              <Image 
+              <img 
                 src={selectedPreview || getSafeAvatar(user?.profilePic)} 
-                alt="Profile Background" 
-                width={400} 
-                height={533} 
-                className={styles.lightboxBgImg}
-                priority
-                unoptimized
+                alt="Profile Background" className={styles.lightboxBgImg}
+                onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/user-icon.png'; }}
               />
               
               {/* Sharp Foreground Layer */}
-              <Image 
+              <img 
                 src={selectedPreview || getSafeAvatar(user?.profilePic)} 
-                alt="Profile Picture" 
-                width={400} 
-                height={533} 
-                className={styles.lightboxImg}
-                priority
-                unoptimized
+                alt="Profile Picture" className={styles.lightboxImg}
+                onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/user-icon.png'; }}
               />
             </div>
 

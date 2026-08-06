@@ -4,7 +4,7 @@ const conversationController = require('./conversation.controller');
 
 const verifyAuth = (req, res, next) => {
   try {
-    let token = req.cookies?.token;
+    let token = req.cookies?.cb_chat_token || req.cookies?.token;
     if (!token && req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
       token = req.headers.authorization.split(' ')[1];
     }

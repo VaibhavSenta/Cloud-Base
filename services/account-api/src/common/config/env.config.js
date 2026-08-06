@@ -7,10 +7,10 @@ module.exports = {
   jwtSecret: process.env.JWT_SECRET || (isDev ? 'CB_SUPER_SECRET_KEY_FOR_LOCAL_DEV' : null),
   cookieConfig: {
     httpOnly: true,
-    secure: !isDev, // HTTP in dev, HTTPS in prod
+    secure: !isDev,
     sameSite: 'lax',
     path: '/',
-    domain: isDev ? '.cloudbase.local' : (process.env.COOKIE_DOMAIN || '.cloud-base.dev'),
+    domain: process.env.COOKIE_DOMAIN || (isDev ? undefined : '.cloud-base.dev'),
     maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
   },
   allowedOrigins: process.env.ALLOWED_ORIGINS 

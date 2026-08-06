@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { encryptPayload } from './security/networkCrypto';
+import { config } from './config';
 
 const api = axios.create({
   baseURL: '/api/v1',
@@ -11,14 +12,14 @@ const api = axios.create({
 
 // Request interceptor to dynamically inject session token from memory state
 api.interceptors.request.use(
-  (config) => {
+  (reqConfig) => {
     if (typeof window !== 'undefined') {
       const token = window.__cb_session_token;
       if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+        reqConfig.headers.Authorization = `Bearer ${token}`;
       }
     }
-    return config;
+    return reqConfig;
   },
   (error) => Promise.reject(error)
 );
@@ -31,9 +32,9 @@ api.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
-        // Call refresh token endpoint on account-api
+        // Call refresh token endpoint on account-api using config url
         const refreshRes = await axios.post(
-          'http://account.cloudbase.local/api/v1/auth/refresh',
+          `${config.accountApiUrl}/auth/refresh`,
           {},
           { withCredentials: true }
         );
@@ -46,7 +47,7 @@ api.interceptors.response.use(
       } catch (refreshErr) {
         console.warn('🔄 Silent token refresh failed. User session terminated.');
         if (typeof window !== 'undefined') {
-          window.location.href = 'http://account.cloudbase.local';
+          window.location.href = config.accountPortalUrl;
         }
       }
     }

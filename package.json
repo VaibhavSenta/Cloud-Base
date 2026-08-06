@@ -9,15 +9,15 @@
     "packages/*"
   ],
   "scripts": {
-    "dev:api": "npm run dev --workspace=services/user-api",
     "dev:portal": "npm run dev --workspace=apps/user-portal",
     "dev:admapi": "npm run dev --workspace=services/admin-api",
     "dev:admportal": "npm run dev --workspace=apps/admin-portal",
     "dev:admuploadapi": "npm run dev --workspace=services/upload-api",
     "dev:chat": "npm run dev --workspace=apps/chat-portal",
+    "dev:chatapi": "npm run dev --workspace=services/chat-api",
     "dev:account": "npm run dev --workspace=apps/account-portal",
     "dev:accountapi": "npm run dev --workspace=services/account-api",
-    "dev": "npx concurrently \"npm run dev:api\" \"npm run dev:portal\" \"npm run dev:admportal\" \"npm run dev:admapi\" \"npm run dev:admuploadapi\" \"npm run dev:chat\" \"npm run dev:account\" \"npm run dev:accountapi\"",
+    "dev": "npx concurrently \"npm run dev:portal\" \"npm run dev:admportal\" \"npm run dev:admapi\" \"npm run dev:admuploadapi\" \"npm run dev:chat\" \"npm run dev:chatapi\" \"npm run dev:account\" \"npm run dev:accountapi\"",
     "install:all": "npm install"
   },
   "devDependencies": {
