@@ -1,0 +1,29 @@
+.bottomBar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 64px;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: env(safe-area-inset-bottom);
+  z-index: 100;
+}
+
+.tabItem {
+  background: none;
+  border: none;
+  color: #555555;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 8px 16px;
+  transition: color 0.2s ease;
+}
+
+.activeTab {
+  color: #0095f6;
+  font-weight: 800;
+}
