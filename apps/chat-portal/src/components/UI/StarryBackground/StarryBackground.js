@@ -15,11 +15,14 @@ export default function StarryBackground() {
     const generateStars = (count, r) => {
       const list = [];
       for (let i = 0; i < count; i++) {
+        // Randomly decide if a circle is filled or hollow (30% filled, 70% hollow)
+        const isFilled = Math.random() < 0.3;
         list.push({
           id: i,
           x: Math.random() * 100, // percentage x
           y: Math.random() * 100, // percentage y
           r,
+          isFilled,
           strokeWidth: r > 4 ? 1.2 : 0.8,
           opacity: Math.random() * 0.4 + 0.3
         });
@@ -28,9 +31,9 @@ export default function StarryBackground() {
     };
 
     return [
-      { id: 1, duration: 50, stars: generateStars(35, 2.5) }, // Small fast stars
-      { id: 2, duration: 90, stars: generateStars(25, 4) },   // Medium speed stars
-      { id: 3, duration: 140, stars: generateStars(15, 5.5) }  // Large slow stars
+      { id: 1, duration: 50, stars: generateStars(60, 2.5) }, // Small fast stars
+      { id: 2, duration: 90, stars: generateStars(45, 4) },   // Medium speed stars
+      { id: 3, duration: 140, stars: generateStars(30, 5.5) }  // Large slow stars
     ];
   }, []);
 
@@ -55,9 +58,9 @@ export default function StarryBackground() {
                 cx={`${star.x}%`}
                 cy={`${star.y}%`}
                 r={star.r}
-                fill="none"
-                stroke="rgba(255, 255, 255, 0.85)"
-                strokeWidth={star.strokeWidth}
+                fill={star.isFilled ? "rgba(255, 255, 255, 0.85)" : "none"}
+                stroke={star.isFilled ? "none" : "rgba(255, 255, 255, 0.85)"}
+                strokeWidth={star.isFilled ? undefined : star.strokeWidth}
                 opacity={star.opacity}
               />
             ))}
@@ -68,9 +71,9 @@ export default function StarryBackground() {
                 cx={`${star.x}%`}
                 cy={`calc(${star.y}% + 100vh)`}
                 r={star.r}
-                fill="none"
-                stroke="rgba(255, 255, 255, 0.85)"
-                strokeWidth={star.strokeWidth}
+                fill={star.isFilled ? "rgba(255, 255, 255, 0.85)" : "none"}
+                stroke={star.isFilled ? "none" : "rgba(255, 255, 255, 0.85)"}
+                strokeWidth={star.isFilled ? undefined : star.strokeWidth}
                 opacity={star.opacity}
               />
             ))}
