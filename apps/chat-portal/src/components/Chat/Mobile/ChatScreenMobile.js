@@ -386,22 +386,24 @@ export default function ChatScreenMobile({
                   key={msg.messageId || index} 
                   className={`${styles.messageRow} ${isMine ? styles.messageRowSent : styles.messageRowReceived}`}
                 >
-                  {/* Delivered State 1px line indicator above bubble with 1px gap */}
-                  {isMine && msg.status === 'delivered' && (
-                    <div className={styles.deliveredLine} />
-                  )}
-
-                  <div className={`
-                    ${styles.bubble} 
-                    ${isMine ? styles.bubbleSent : styles.bubbleReceived}
-                    ${isMine && msg.status === 'sent' ? styles.bubbleStateSent : ''}
-                  `}>
-                    {/* Send Failed Red Dot Indicator */}
-                    {isMine && msg.status === 'failed' && (
-                      <span className={styles.failedDot} title="Failed to send" />
+                  <div className={styles.bubbleWrapper}>
+                    {/* Delivered State 1px line indicator above bubble with 1px gap */}
+                    {isMine && msg.status === 'delivered' && (
+                      <div className={styles.deliveredLine} />
                     )}
 
-                    {msg.decryptedText || msg.encryptedPayload}
+                    <div className={`
+                      ${styles.bubble} 
+                      ${isMine ? styles.bubbleSent : styles.bubbleReceived}
+                      ${isMine && msg.status === 'sent' ? styles.bubbleStateSent : ''}
+                    `}>
+                      {/* Send Failed Red Dot Indicator */}
+                      {isMine && msg.status === 'failed' && (
+                        <span className={styles.failedDot} title="Failed to send" />
+                      )}
+
+                      {msg.decryptedText || msg.encryptedPayload}
+                    </div>
                   </div>
 
                   <span className={styles.timestamp}>
