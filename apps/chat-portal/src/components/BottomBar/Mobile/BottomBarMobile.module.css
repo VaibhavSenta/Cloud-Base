@@ -7,7 +7,7 @@
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 2.5rem;
+  border-radius: 2rem;
   padding: 6px;
   box-sizing: border-box;
   column-gap: 6px;
@@ -25,7 +25,7 @@
   background: transparent;
   color: #666666;
   cursor: pointer;
-  border-radius: 1.1rem;
+  border-radius: 2rem;
   gap: 2px;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -55,15 +55,15 @@
 }
 
 .activeTab {
-  color: #0095f6;
-  background-color: rgba(0, 149, 246, 0.1);
+  color: #ffffff;
+  background-color: rgba(72, 72, 72, 0.244);
 }
 
 .activeTab .tabIcon {
   opacity: 1;
-  filter: invert(47%) sepia(87%) saturate(2250%) hue-rotate(181deg) brightness(98%) contrast(102%);
+  filter: brightness(0) invert(1);
 }
 
 .activeTab .profileAvatar {
-  border-color: #0095f6;
+  border-color: #ffffff;
 }
