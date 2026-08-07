@@ -19,16 +19,21 @@ export default function AuthScreen({ onAuthComplete }) {
   const [stage, setStage] = useState('auth'); // 'auth' | 'username'
   const { generateKeyPair } = useRSA();
 
-  // SSO Check: On mount, check if user is already authenticated via shared cookie
   useEffect(() => {
     let isMounted = true;
     const checkExistingAuth = async () => {
       try {
-        const meResponse = await api.get('/auth/me');
+        console.log('📡 SSO: Initiating /auth/me API call with 5s timeout...');
+        const meResponse = await api.get('/auth/me', { timeout: 5000 });
+        console.log('📡 SSO: /auth/me response received:', meResponse.status);
+        
         if (meResponse.data?.success && meResponse.data?.data) {
           console.log('🔑 SSO: User already authenticated via shared cookie.');
           try {
-            const profileResponse = await api.get('/chat/users/profile');
+            console.log('📡 SSO: Fetching chat profile with 5s timeout...');
+            const profileResponse = await api.get('/chat/users/profile', { timeout: 5000 });
+            console.log('📡 SSO: Chat profile fetched successfully.');
+            
             if (profileResponse.data?.profile) {
               // 1. Generate or load RSA Key Pair
               let privateKey = sessionStorage.getItem('cb_chat_private_key');
@@ -42,7 +47,8 @@ export default function AuthScreen({ onAuthComplete }) {
                 sessionStorage.setItem('cb_chat_private_key', privateKey);
                 
                 // Update on backend
-                await api.put('/chat/users/profile/public-key', { publicKey });
+                console.log('📡 SSO: Uploading new RSA public key...');
+                await api.put('/chat/users/profile/public-key', { publicKey }, { timeout: 5000 });
               }
               
               window.__cb_chat_private_key = privateKey;
