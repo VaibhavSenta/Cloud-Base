@@ -13,6 +13,14 @@ const arrayBufferToBase64 = (buffer) => {
 
 export const useRSA = () => {
   const generateKeyPair = async () => {
+    if (typeof window === 'undefined') return;
+    
+    if (!window.crypto || !window.crypto.subtle) {
+      throw new Error(
+        'Web Cryptography is disabled by the browser. This happens when accessing over insecure HTTP (non-localhost). Please use localhost, HTTPS, or enable chrome://flags/#unsafely-treat-insecure-origin-as-secure.'
+      );
+    }
+
     try {
       // Generate RSA-OAEP Key Pair (2048-bit security targets)
       const keyPair = await window.crypto.subtle.generateKey(
@@ -41,8 +49,8 @@ export const useRSA = () => {
         rawPrivateKey: keyPair.privateKey
       };
     } catch (error) {
-      console.error('[RSA-Hook] Key Generation Failure:', error);
-      throw new Error('Asymmetric crypto handshake initialization failed.');
+      console.warn('[RSA-Hook] Key Generation Failure:', error.message);
+      throw new Error('Asymmetric crypto handshake initialization failed: ' + error.message);
     }
   };
 
