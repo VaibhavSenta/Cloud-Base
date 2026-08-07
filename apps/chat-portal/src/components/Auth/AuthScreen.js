@@ -54,11 +54,12 @@ export default function AuthScreen({ onAuthComplete }) {
               return;
             }
           } catch (profileErr) {
+            console.error('🔑 Profile lookup/key generation failed:', profileErr);
             if (isMounted) setStage('username');
           }
         }
       } catch (err) {
-        console.log('🔓 SSO: No active session found. Rendering Login UI.');
+        console.warn('🔓 SSO: No active session found. Rendering Login UI.', err);
       } finally {
         if (isMounted) {
           setSsoChecked(true);
