@@ -2,29 +2,38 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  height: 64px;
-  background: rgba(36, 36, 36, 0.85);
-  -webkit-backdrop-filter: blur(20px);
+  width: 100%;
+  background: rgba(18, 18, 18, 0.6);
   backdrop-filter: blur(20px);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding-bottom: env(safe-area-inset-bottom);
-  z-index: 100;
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.5rem;
+  padding: 6px;
+  box-sizing: border-box;
+  column-gap: 6px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .tabItem {
-  background: none;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 42px;
   border: none;
-  color: #555555;
+  background: transparent;
+  color: #666666;
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   cursor: pointer;
-  padding: 8px 16px;
-  transition: color 0.2s ease;
+  border-radius: 1.1rem;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .activeTab {
   color: #0095f6;
+  background-color: rgba(0, 149, 246, 0.1);
   font-weight: 800;
 }
