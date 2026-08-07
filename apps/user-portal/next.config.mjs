@@ -13,7 +13,8 @@ const nextConfig = {
   allowedDevOrigins: ['localhost', '*.localhost', 'nothingbox.site', '*.nothingbox.site', 'account.nothingbox.site', 'chat.nothingbox.site', 'admin.nothingbox.site', 'user.nothingbox.site'],
 
   async rewrites() {
-    const userApiUrl = process.env.USER_API_URL || 'http://172.20.10.2:5005';
+    let userApiUrl = process.env.USER_API_URL || process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5005';
+    userApiUrl = userApiUrl.replace(/\/api\/v1\/?$/, '');
     return [
       {
         source: '/api/v1/:path*',

@@ -12,8 +12,13 @@ const nextConfig = {
   transpilePackages: ['lucide-react', 'next-pwa'],
   allowedDevOrigins: ['localhost', '*.localhost', 'nothingbox.site', '*.nothingbox.site', 'account.nothingbox.site', 'chat.nothingbox.site', 'admin.nothingbox.site', 'user.nothingbox.site'],
   async rewrites() {
-    const accountApiUrl = process.env.ACCOUNT_API_URL || 'http://172.20.10.2:5010';
-    const chatApiUrl = process.env.CHAT_API_URL || 'http://172.20.10.2:5006';
+    let accountApiUrl = process.env.ACCOUNT_API_URL || process.env.NEXT_PUBLIC_ACCOUNT_API_URL || 'http://localhost:5010';
+    let chatApiUrl = process.env.CHAT_API_URL || process.env.NEXT_PUBLIC_CHAT_API_URL || 'http://localhost:5006';
+
+    // Strip trailing /api/v1 if present in environment variables to prevent duplicate paths
+    accountApiUrl = accountApiUrl.replace(/\/api\/v1\/?$/, '');
+    chatApiUrl = chatApiUrl.replace(/\/api\/v1\/?$/, '');
+
     return [
       {
         source: '/api/v1/auth/:path*',
