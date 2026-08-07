@@ -56,3 +56,6 @@ MEMORY.md
 *.pem
 *.tsbuildinfo
 next-env.d.ts
+
+# Local test scripts
+/tests/
