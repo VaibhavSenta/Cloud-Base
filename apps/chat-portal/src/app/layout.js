@@ -1,3 +1,4 @@
+import "@/utils/errorLogger";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/components/Providers/QueryProvider";
