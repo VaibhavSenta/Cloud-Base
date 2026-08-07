@@ -4,6 +4,8 @@ import { useState } from 'react';
 import styles from './LoginBoxMobile.module.css';
 import Button from '@/components/UI/Button/Button';
 
+import { config } from '@/utils/config';
+
 export default function LoginBoxMobile({
   onSSOLogin,
   onAuthenticate,
@@ -53,7 +55,7 @@ export default function LoginBoxMobile({
             </Button>
 
             <p className={styles.ssoHint}>
-              You will be redirected to account.cloudbase.local to sign in securely.
+              You will be redirected to {config.accountPortalUrl ? config.accountPortalUrl.replace('https://', '').replace('http://', '') : 'account.nothingbox.site'} to sign in securely.
             </p>
           </div>
         ) : (

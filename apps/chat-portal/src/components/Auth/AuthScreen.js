@@ -10,7 +10,7 @@ import StarryBackground from '@/components/UI/StarryBackground/StarryBackground'
 import LoadingScreen from '@/components/UI/LoadingScreen/LoadingScreen';
 
 /**
- * AuthScreen — Handles SSO login via account.cloudbase.local and username creation.
+ * AuthScreen — Handles SSO login via centralized account portal and username creation.
  */
 export default function AuthScreen({ onAuthComplete }) {
   const [loading, setLoading] = useState(true);
@@ -71,7 +71,7 @@ export default function AuthScreen({ onAuthComplete }) {
     return () => { isMounted = false; };
   }, [onAuthComplete]);
 
-  // SSO Login: Redirect to account.cloudbase.local for centralized login
+  // SSO Login: Redirect to centralized account portal for login
   const handleSSOLogin = () => {
     const currentUrl = window.location.origin + window.location.pathname;
     const accountLoginUrl = `${config.accountPortalUrl}?continue=${currentUrl}`;

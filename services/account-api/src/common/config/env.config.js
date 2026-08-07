@@ -10,13 +10,13 @@ module.exports = {
     secure: !isDev,
     sameSite: 'lax',
     path: '/',
-    domain: process.env.COOKIE_DOMAIN || (isDev ? undefined : '.cloud-base.dev'),
+    domain: process.env.COOKIE_DOMAIN || (isDev ? undefined : '.nothingbox.site'),
     maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
   },
   allowedOrigins: process.env.ALLOWED_ORIGINS 
     ? process.env.ALLOWED_ORIGINS.split(',') 
     : (isDev 
-        ? ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3003', 'http://localhost', 'http://cloudbase.local', 'http://chat.cloudbase.local', 'http://account.cloudbase.local', 'http://admin.cloudbase.local', 'http://user.cloudbase.local', 'http://chat.localhost', 'http://account.localhost', 'http://admin.localhost', 'http://172.20.10.2:3000', 'http://172.20.10.2:3001', 'http://172.20.10.2:3003', 'http://172.20.10.2:5010', 'http://172.20.10.2:5006']
-        : ['https://cloud-base.dev', 'https://account.cloud-base.dev', 'https://chat.cloud-base.dev', 'https://admin.cloud-base.dev']
+        ? ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3003', 'http://localhost', 'http://nothingbox.site', 'http://account.nothingbox.site', 'http://chat.nothingbox.site', 'http://admin.nothingbox.site', 'http://user.nothingbox.site']
+        : ['https://nothingbox.site', 'https://account.nothingbox.site', 'https://chat.nothingbox.site', 'https://admin.nothingbox.site', 'https://user.nothingbox.site']
       )
 };
