@@ -11,6 +11,7 @@ import {
   decryptMessagePayload
 } from '@/utils/security/keyRotationEngine';
 import styles from './ChatScreenMobile.module.css';
+import BottomBar from '@/components/BottomBar/BottomBar';
 
 export default function ChatScreenMobile({
   profile,
@@ -497,26 +498,7 @@ export default function ChatScreenMobile({
 
       {/* 3. FOOTER / BOTTOM BAR */}
       {!activeConv && (
-        <nav className={styles.bottomBar}>
-          <button 
-            className={`${styles.tabItem} ${activeTab === 'chat' ? styles.activeTab : ''}`}
-            onClick={() => setActiveTab('chat')}
-          >
-            Chat
-          </button>
-          <button 
-            className={`${styles.tabItem} ${activeTab === 'search' ? styles.activeTab : ''}`}
-            onClick={() => setActiveTab('search')}
-          >
-            Search
-          </button>
-          <button 
-            className={`${styles.tabItem} ${activeTab === 'settings' ? styles.activeTab : ''}`}
-            onClick={() => setActiveTab('settings')}
-          >
-            Settings
-          </button>
-        </nav>
+        <BottomBar activeTab={activeTab} setActiveTab={setActiveTab} />
       )}
     </div>
   );
