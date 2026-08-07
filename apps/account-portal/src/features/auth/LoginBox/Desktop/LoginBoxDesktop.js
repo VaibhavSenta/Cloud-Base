@@ -123,6 +123,11 @@ const LoginBoxDesktop = ({
             </div>
 
             <form onSubmit={onSubmit} className={styles.form}>
+              {error?.field === 'general' && (
+                <div style={{ color: 'var(--error, #ff453a)', fontSize: '0.85rem', textAlign: 'center', marginBottom: '8px', fontWeight: '600' }}>
+                  {error.message}
+                </div>
+              )}
               <Input 
                 label="Email or Username"
                 placeholder="john.doe@example.com"

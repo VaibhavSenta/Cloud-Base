@@ -21,6 +21,11 @@ const SignupBoxDesktop = ({ formData, step, nextStep, prevStep, onChange, onSoci
         </div>
 
         <div className={styles.formContainer}>
+            {error?.field === 'general' && (
+                <div style={{ color: 'var(--error, #ff453a)', fontSize: '0.85rem', textAlign: 'center', marginBottom: '12px', fontWeight: '600' }}>
+                  {error.message}
+                </div>
+            )}
             {step === 1 && (
                 <Input 
                     label="Username"

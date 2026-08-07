@@ -107,7 +107,7 @@ const SignupBox = ({ onAuthSuccess }) => {
             if (onAuthSuccess) onAuthSuccess(response.data.data.user);
         }
     } catch (err) {
-        console.error("Signup Error:", err);
+        console.warn("Signup Error:", err.message);
         setError({ 
             field: err.response?.data?.field || 'general', 
             message: err.response?.data?.message || 'Something went wrong.' 

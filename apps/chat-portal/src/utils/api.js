@@ -65,7 +65,7 @@ export const securePost = async (url, data) => {
       },
     });
   } catch (error) {
-    console.error(`Secure POST failed for ${url}:`, error);
+    console.warn(`Secure POST failed for ${url}:`, error.message);
     throw error;
   }
 };

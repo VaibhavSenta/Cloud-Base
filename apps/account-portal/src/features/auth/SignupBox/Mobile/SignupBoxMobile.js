@@ -16,6 +16,11 @@ const SignupBoxMobile = ({ formData, step, nextStep, prevStep, onChange, onSocia
         <h1 className={styles.brandTitle}>Create Account</h1>
         <p className={styles.brandSubtitle}>Sign up to see photos and videos from your friends.</p>
 
+        {error?.field === 'general' && (
+          <div style={{ color: 'var(--error, #ff453a)', fontSize: '0.85rem', textAlign: 'center', marginBottom: '12px', fontWeight: '600', padding: '0 20px' }}>
+            {error.message}
+          </div>
+        )}
         <div className={styles.stepContainer}>
           <div className={styles.slider} style={{ transform: `translateX(-${(step - 1) * 100}%)` }}>
             
