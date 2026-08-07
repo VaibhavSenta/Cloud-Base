@@ -11,7 +11,13 @@ const withPWA = withPWAInit({
 const nextConfig = {
   // Turbopack compatibility if needed
   transpilePackages: ['lucide-react', 'next-pwa', 'secure-query-cache'],
-  allowedDevOrigins: ['localhost', '*.localhost', 'nothingbox.site', '*.nothingbox.site', 'account.nothingbox.site', 'chat.nothingbox.site', 'admin.nothingbox.site', 'user.nothingbox.site'],
+  allowedDevOrigins: [
+    'localhost', '*.localhost',
+    'nothingbox.site', '*.nothingbox.site',
+    'nothingbox.test', '*.nothingbox.test',
+    'account.nothingbox.test', 'chat.nothingbox.test', 'admin.nothingbox.test', 'user.nothingbox.test',
+    'account.nothingbox.site', 'chat.nothingbox.site', 'admin.nothingbox.site', 'user.nothingbox.site'
+  ],
 
   images: {
     localPatterns: [

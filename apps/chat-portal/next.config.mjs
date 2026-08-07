@@ -10,7 +10,13 @@ const withPWA = withPWAInit({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: ['lucide-react', 'next-pwa'],
-  allowedDevOrigins: ['localhost', '*.localhost', 'nothingbox.site', '*.nothingbox.site', 'account.nothingbox.site', 'chat.nothingbox.site', 'admin.nothingbox.site', 'user.nothingbox.site'],
+  allowedDevOrigins: [
+    'localhost', '*.localhost',
+    'nothingbox.site', '*.nothingbox.site',
+    'nothingbox.test', '*.nothingbox.test',
+    'account.nothingbox.test', 'chat.nothingbox.test', 'admin.nothingbox.test', 'user.nothingbox.test',
+    'account.nothingbox.site', 'chat.nothingbox.site', 'admin.nothingbox.site', 'user.nothingbox.site'
+  ],
   async rewrites() {
     let accountApiUrl = process.env.ACCOUNT_API_URL || process.env.NEXT_PUBLIC_ACCOUNT_API_URL || 'http://localhost:5010';
     let chatApiUrl = process.env.CHAT_API_URL || process.env.NEXT_PUBLIC_CHAT_API_URL || 'http://localhost:5006';
