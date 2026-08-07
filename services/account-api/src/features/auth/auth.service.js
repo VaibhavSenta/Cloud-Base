@@ -39,9 +39,7 @@ const createAccount = async (userData, deviceInfo) => {
 
   // Register Session
   const sessionId = deviceInfo.sessionId;
-  // Generate default Gravatar from email
-  const md5 = crypto.createHash('md5').update(email.toLowerCase().trim()).digest('hex');
-  newUser.profilePic = `https://www.gravatar.com/avatar/${md5}?d=mp`;
+  newUser.profilePic = '/user-icon.png';
 
   newUser.sessions.push({ ...deviceInfo, lastActive: new Date() });
   newUser.activityLogs = [
@@ -212,10 +210,8 @@ const loginAccount = async (loginData, deviceInfo) => {
       throw new Error('Maximum login limit reached. You can log in to a maximum of 6 devices. Please log out from another device.');
     }
     
-    // Automatic Gravatar Sync if profilePic is default or missing
     if (!user.profilePic || user.profilePic === '/icons/person.svg') {
-        const md5 = crypto.createHash('md5').update(user.email.toLowerCase().trim()).digest('hex');
-        user.profilePic = `https://www.gravatar.com/avatar/${md5}?d=mp`;
+        user.profilePic = '/user-icon.png';
     }
 
     user.sessions.push({ ...deviceInfo, lastActive: new Date() });
@@ -455,8 +451,7 @@ const verify2faLogin = async (ticket, code, method, deviceInfo) => {
   }
 
   if (!user.profilePic || user.profilePic === '/icons/person.svg') {
-    const md5 = crypto.createHash('md5').update(user.email.toLowerCase().trim()).digest('hex');
-    user.profilePic = `https://www.gravatar.com/avatar/${md5}?d=mp`;
+    user.profilePic = '/user-icon.png';
   }
 
   user.sessions.push({ ...deviceInfo, lastActive: new Date() });

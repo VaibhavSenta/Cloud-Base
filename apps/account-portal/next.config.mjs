@@ -19,12 +19,6 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'www.gravatar.com',
-      },
-    ],
   },
 
   async rewrites() {
