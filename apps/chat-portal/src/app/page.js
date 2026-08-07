@@ -10,10 +10,21 @@ export default function Home() {
 
   useEffect(() => {
     const handleError = (event) => {
-      setGlobalError(event.error?.stack || event.message || 'Unknown error');
+      const stack = event.error?.stack || '';
+      const message = event.message || '';
+      // Ignore benign development-only HMR stylesheet removal errors
+      if (message.includes('removeChild') || stack.includes('mini-css-extract-plugin') || stack.includes('hotModuleReplacement')) {
+        console.warn('⚠️ Ignored benign Next.js HMR style sheet hot-reload error:', message);
+        return;
+      }
+      setGlobalError(stack || message || 'Unknown error');
     };
     const handleRejection = (event) => {
-      setGlobalError(event.reason?.stack || event.reason?.message || String(event.reason) || 'Promise rejection');
+      const reason = event.reason?.stack || event.reason?.message || String(event.reason) || '';
+      if (reason.includes('removeChild') || reason.includes('mini-css-extract-plugin')) {
+        return;
+      }
+      setGlobalError(reason || 'Promise rejection');
     };
     window.addEventListener('error', handleError);
     window.addEventListener('unhandledrejection', handleRejection);
