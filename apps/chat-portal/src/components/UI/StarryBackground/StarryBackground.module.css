@@ -16,6 +16,7 @@
   width: 1px;
   height: 1px;
   background: transparent;
+  border-radius: 50%;
   box-shadow:
     501px 811px #fff,
     1450px 1324px #fff,
@@ -126,6 +127,7 @@
   width: 1px;
   height: 1px;
   background: transparent;
+  border-radius: 50%;
   box-shadow:
     501px 811px #fff,
     1450px 1324px #fff,
@@ -231,6 +233,7 @@
   width: 2px;
   height: 2px;
   background: transparent;
+  border-radius: 50%;
   box-shadow:
     1925px 1320px #fff,
     693px 1778px #fff,
@@ -443,6 +446,7 @@
   width: 2px;
   height: 2px;
   background: transparent;
+  border-radius: 50%;
   box-shadow:
     1925px 1320px #fff,
     693px 1778px #fff,
@@ -650,6 +654,7 @@
   width: 3px;
   height: 3px;
   background: transparent;
+  border-radius: 50%;
   box-shadow:
     200px 981px #fff,
     1731px 521px #fff,
@@ -762,6 +767,7 @@
   width: 3px;
   height: 3px;
   background: transparent;
+  border-radius: 50%;
   box-shadow:
     200px 981px #fff,
     1731px 521px #fff,
