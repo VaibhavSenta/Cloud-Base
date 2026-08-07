@@ -9,7 +9,7 @@ const LogoFull = ({ theme = 'default' }) => {
         </div>
       </div>
       <div className={styles.brandName}>
-        Cloud-<span className={theme === 'monochrome' ? styles.accentText : styles.blueText}>Base</span>
+        Nothing <span className={theme === 'monochrome' ? styles.accentText : styles.blueText}>Box</span>
       </div>
     </div>
   );
