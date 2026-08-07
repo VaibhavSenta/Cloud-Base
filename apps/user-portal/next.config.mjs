@@ -13,10 +13,11 @@ const nextConfig = {
   allowedDevOrigins: ['172.20.10.2', 'localhost', '*.localhost', 'cloudbase.local', '*.cloudbase.local', 'chat.cloudbase.local', 'account.cloudbase.local', 'admin.cloudbase.local', 'user.cloudbase.local', 'nothingbox.site', '*.nothingbox.site', 'account.nothingbox.site', 'chat.nothingbox.site', 'admin.nothingbox.site', 'user.nothingbox.site'],
 
   async rewrites() {
+    const userApiUrl = process.env.USER_API_URL || 'http://172.20.10.2:5005';
     return [
       {
         source: '/api/v1/:path*',
-        destination: `http://172.20.10.2:5005/api/v1/:path*`,
+        destination: `${userApiUrl}/api/v1/:path*`,
       },
     ];
   },

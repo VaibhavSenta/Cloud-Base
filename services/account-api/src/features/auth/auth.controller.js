@@ -3,7 +3,7 @@ const encryptionService = require('../../common/utils/encryptionService');
 const crypto = require('crypto');
 const { USER } = require('./auth.model');
 const sessionService = require('./session.service');
-const { cookieConfig } = require('../../common/config/env.config');
+const { cookieConfig, jwtSecret } = require('../../common/config/env.config');
 const { maxAge, ...clearOptions } = cookieConfig;
 
 const propagateLogout = async (userId, sessionId) => {
@@ -105,7 +105,7 @@ const logout = async (req, res) => {
     let token = req.cookies?.token || req.cookies?.cb_chat_token;
     if (token) {
       const jwt = require('jsonwebtoken');
-      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'CB_SUPER_SECRET_KEY_FOR_LOCAL_DEV', { ignoreExpiration: true });
+      const decoded = jwt.verify(token, jwtSecret, { ignoreExpiration: true });
       const userId = decoded.userId || decoded.id;
       const sessionId = decoded.sessionId;
       if (userId) {
@@ -394,7 +394,7 @@ const reactivateAccount = async (req, res) => {
     const jwt = require('jsonwebtoken');
     const token = jwt.sign(
       { userId: user._id, role: user.role, sessionId },
-      process.env.JWT_SECRET || 'CB_SUPER_SECRET_KEY',
+      jwtSecret,
       { expiresIn: '7d' }
     );
 

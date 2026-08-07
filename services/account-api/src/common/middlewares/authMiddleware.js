@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const config = require('../config/env.config');
 
 /**
  * Middleware to verify JWT token from cookies OR Authorization header
@@ -18,7 +19,7 @@ const protect = async (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'CB_SUPER_SECRET_KEY');
+    const decoded = jwt.verify(token, config.jwtSecret);
     console.log('✅ Auth Middleware: Token verified for user', decoded.userId);
     
     // Pass everything in the payload (userId, role, sessionId)

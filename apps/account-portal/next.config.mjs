@@ -28,14 +28,15 @@ const nextConfig = {
   },
 
   async rewrites() {
+    const backendUrl = process.env.BACKEND_URL || 'http://172.20.10.2:5010';
     return [
       {
         source: '/api/v1/:path*',
-        destination: `http://172.20.10.2:5010/api/v1/:path*`,
+        destination: `${backendUrl}/api/v1/:path*`,
       },
       {
         source: '/uploads/:path*',
-        destination: `http://172.20.10.2:5010/uploads/:path*`,
+        destination: `${backendUrl}/uploads/:path*`,
       },
     ];
   },

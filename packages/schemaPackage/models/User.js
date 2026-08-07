@@ -55,8 +55,12 @@ const userSchema = new mongoose.Schema({
     },
     accountStatus: {
         type: String,
-        enum: ['active', 'deleted', 'banned'],
+        enum: ['active', 'deleted', 'banned', 'deactivated', 'scheduled_deletion'],
         default: 'active'
+    },
+    deletionDate: {
+        type: Date,
+        required: false
     },
     role: {
         type: String,

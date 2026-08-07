@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const profileService = require('./profile.service');
 const emailService = require('../../common/services/emailService');
+const { jwtSecret } = require('../../common/config/env.config');
 
 /**
  * SIGNUP SERVICE
@@ -60,9 +61,14 @@ const createAccount = async (userData, deviceInfo) => {
   await newUser.save();
   console.log(`✨ USER CREATED: ${newUser.userName} with sessionId: ${sessionId}`);
 
+  // Send welcome privacy policy disclosure email asynchronously
+  emailService.sendPrivacyDisclosureEmail({ email: newUser.email }).catch(err => {
+    console.error('❌ Failed to send welcome privacy email:', err.message);
+  });
+
   const token = jwt.sign(
     { userId: newUser._id, role: newUser.role, sessionId: sessionId },
-    process.env.JWT_SECRET || 'CB_SUPER_SECRET_KEY',
+    jwtSecret,
     { expiresIn: '7d' }
   );
 
@@ -233,7 +239,7 @@ const loginAccount = async (loginData, deviceInfo) => {
   
     const token = jwt.sign(
       { userId: user._id, role: user.role, sessionId: sessionId },
-      process.env.JWT_SECRET || 'CB_SUPER_SECRET_KEY',
+      jwtSecret,
       { expiresIn: '7d' }
     );
   
@@ -458,7 +464,7 @@ const verify2faLogin = async (ticket, code, method, deviceInfo) => {
 
   const token = jwt.sign(
     { userId: user._id, role: user.role, sessionId: sessionId },
-    process.env.JWT_SECRET || 'CB_SUPER_SECRET_KEY',
+    jwtSecret,
     { expiresIn: '7d' }
   );
 
@@ -522,6 +528,8 @@ const socialLoginAccount = async (provider, token, clientData, deviceInfo) => {
   const { firebaseAdminActive, admin } = require('../../common/config/firebaseAdmin');
   let email, name, profilePic;
 
+  const { isDev } = require('../../common/config/env.config');
+
   // 1. Verify token if Firebase Admin is active and token is passed
   if (firebaseAdminActive && token) {
     try {
@@ -534,6 +542,9 @@ const socialLoginAccount = async (provider, token, clientData, deviceInfo) => {
       throw new Error('Social token verification failed');
     }
   } else {
+    if (!isDev) {
+      throw new Error('Social login authentication service is currently unavailable in production.');
+    }
     // Local Dev Bypass / Mock Mode
     console.log(`ℹ️ Social token verification in bypass mode for provider: ${provider}`);
     email = clientData.email;
@@ -574,7 +585,7 @@ const socialLoginAccount = async (provider, token, clientData, deviceInfo) => {
 
   const jwtToken = require('jsonwebtoken').sign(
     { userId: user._id, role: user.role, sessionId: sessionId },
-    process.env.JWT_SECRET || 'CB_SUPER_SECRET_KEY',
+    jwtSecret,
     { expiresIn: '7d' }
   );
 
