@@ -28,7 +28,7 @@ const nextConfig = {
   },
 
   async rewrites() {
-    const backendUrl = process.env.BACKEND_URL || 'http://172.20.10.2:5010';
+    const backendUrl = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5010';
     return [
       {
         source: '/api/v1/:path*',
