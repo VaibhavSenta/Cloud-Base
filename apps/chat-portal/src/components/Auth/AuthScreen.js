@@ -68,6 +68,7 @@ export default function AuthScreen({ onAuthComplete }) {
         console.warn('🔓 SSO: No active session found. Rendering Login UI.', err);
       } finally {
         if (isMounted) {
+          console.log('🏁 SSO Check Complete. Setting state to unblock loading screen.');
           setSsoChecked(true);
           setLoading(false);
         }
