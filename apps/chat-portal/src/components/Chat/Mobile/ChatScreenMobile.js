@@ -11,7 +11,7 @@ import {
   decryptMessagePayload
 } from '@/utils/security/keyRotationEngine';
 import styles from './ChatScreenMobile.module.css';
-import BottomBar from '@/components/BottomBar/BottomBar';
+import Footer from '@/components/Footer/Footer';
 
 export default function ChatScreenMobile({
   profile,
@@ -498,7 +498,7 @@ export default function ChatScreenMobile({
 
       {/* 3. FOOTER / BOTTOM BAR */}
       {!activeConv && (
-        <BottomBar activeTab={activeTab} setActiveTab={setActiveTab} />
+        <Footer activeTab={activeTab} setActiveTab={setActiveTab} />
       )}
     </div>
   );
