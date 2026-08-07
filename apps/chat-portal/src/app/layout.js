@@ -15,11 +15,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Cloud-Base Chat",
+  title: "Nothing Box Chat",
   description: "Secure workspace messenger module.",
   manifest: "/manifest.json",
   appleWebApp: {
-    title: "Cloud-Base Chat",
+    title: "Nothing Box Chat",
     statusBarStyle: "black-translucent",
   },
 };

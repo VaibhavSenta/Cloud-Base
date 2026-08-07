@@ -47,7 +47,7 @@ export default function ServiceConsentCard({
       <div className={styles.divider}></div>
 
       <p className={styles.disclaimer}>
-        By clicking Accept & Connect, you authorize Cloud-Base to bridge your account tokens with {name} and share the metadata items listed above in accordance with the application privacy parameters.
+        By clicking Accept & Connect, you authorize Nothing Box to bridge your account tokens with {name} and share the metadata items listed above in accordance with the application privacy parameters.
       </p>
 
       {errorMessage && (

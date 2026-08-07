@@ -1,7 +1,7 @@
 import ActivityDetail from '@/features/security-settings/ActivityDetail';
 
 export const metadata = {
-  title: 'Activity Log Detail | Cloud-Base',
+  title: 'Activity Log Detail | Nothing Box',
   description: 'View detailed security audit log metadata.',
 };
 

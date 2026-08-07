@@ -8,7 +8,7 @@ export default function LoadingScreen() {
     <>
       <StarryBackground />
       <div className={styles.wrapper}>
-        <div className={styles.brand}>CloudBase</div>
+        <div className={styles.brand}>Nothing Box</div>
       </div>
     </>
   );

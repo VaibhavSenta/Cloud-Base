@@ -25,7 +25,7 @@ const WelcomeScreen = ({ onComplete }) => {
       <div className={styles.content}>
         <div className={styles.brandContainer}>
           <span className={styles.subText}>initializing</span>
-          <h1 className={styles.brandTitle}>CLOUD-BASE</h1>
+          <h1 className={styles.brandTitle}>NOTHING BOX</h1>
         </div>
         <p className={styles.welcomeMsg}>Welcome to your secure space</p>
       </div>

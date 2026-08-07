@@ -6,7 +6,7 @@ import AvatarCropperTablet from './Tablet/AvatarCropperTablet';
 
 /**
  * AvatarCropper Component Wrapper (Controller)
- * Enforces the Component Wrapper Pattern for Cloud-Base avatar cropping.
+ * Enforces the Component Wrapper Pattern for Nothing Box avatar cropping.
  */
 const AvatarCropper = (props) => {
   const { width } = useWindowSize();

@@ -1,7 +1,7 @@
 import PasswordOptions from '@/features/password-options/PasswordOptions';
 
 export const metadata = {
-  title: 'Password Options | Cloud-Base',
+  title: 'Password Options | Nothing Box',
   description: 'Manage account password settings and credentials.',
 };
 

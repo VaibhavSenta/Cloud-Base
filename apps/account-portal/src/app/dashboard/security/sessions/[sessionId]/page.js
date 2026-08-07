@@ -1,7 +1,7 @@
 import SessionDetail from '@/features/security-settings/SessionDetail';
 
 export const metadata = {
-  title: 'Session Details | Cloud-Base',
+  title: 'Session Details | Nothing Box',
   description: 'View detailed security metadata for this active session and manage access.',
 };
 

@@ -190,7 +190,7 @@ const LoginBoxMobile = ({
         </div>
         <div className={styles.fromCloud}>
           <span>from</span>
-          <p className={styles.cloudText}>CLOUD-BASE</p>
+          <p className={styles.cloudText}>NOTHING BOX</p>
         </div>
       </footer>
     </div>

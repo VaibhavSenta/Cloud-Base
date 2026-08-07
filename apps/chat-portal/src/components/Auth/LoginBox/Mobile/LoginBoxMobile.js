@@ -33,11 +33,11 @@ export default function LoginBoxMobile({
       <div className={styles.card}>
         <div className={styles.header}>
           <h1 className={styles.title}>
-            {isLogin ? 'Cloud-Base' : 'Create Account'}
+            {isLogin ? 'Nothing Box' : 'Create Account'}
           </h1>
           <p className={styles.subtitle}>
             {isLogin
-              ? 'Login via your Cloud-Base account to access messenger'
+              ? 'Login via your Nothing Box account to access messenger'
               : 'Sign up to start secure end-to-end encrypted messaging'}
           </p>
         </div>
@@ -51,7 +51,7 @@ export default function LoginBoxMobile({
               onClick={onSSOLogin}
               disabled={loading}
             >
-              {loading ? 'Redirecting...' : 'Login with Cloud-Base Account'}
+              {loading ? 'Redirecting...' : 'Login with Nothing Box Account'}
             </Button>
 
             <p className={styles.ssoHint}>

@@ -55,7 +55,7 @@ function VerifyEmailContent() {
         <div className={styles.loaderContainer}>
           <div className={styles.customLoader}></div>
           <h2 className={styles.title}>Verifying Email</h2>
-          <p className={styles.subtitle}>Connecting to Cloud-Base secure network...</p>
+          <p className={styles.subtitle}>Connecting to Nothing Box secure network...</p>
         </div>
       )}
 

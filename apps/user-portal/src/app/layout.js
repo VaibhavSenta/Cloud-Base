@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Cloud-Base",
+  title: "Nothing Box",
   description: "Your personal cloud workspace. Access all your apps from one place.",
   manifest: "/manifest.json",
   icons: {
@@ -23,7 +23,7 @@ export const metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Cloud-Base",
+    title: "Nothing Box",
     startupImage: [
       {
         url: "/splash/iphone_splash.png",

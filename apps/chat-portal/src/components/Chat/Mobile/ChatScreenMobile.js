@@ -263,7 +263,7 @@ export default function ChatScreenMobile({
       <header className={styles.header}>
         <div className={styles.headerTitleGroup}>
           <h1 className={styles.headerTitle}>
-            {activeConv ? activeConv.partner?.chatUsername || 'Chat' : 'Cloud-Base Chat'}
+            {activeConv ? activeConv.partner?.chatUsername || 'Chat' : 'Nothing Box Chat'}
           </h1>
           <span className={`${styles.statusTag} ${isConnected ? styles.statusOnline : styles.statusOffline}`}>
             {isConnected ? 'ONLINE' : 'OFFLINE'}

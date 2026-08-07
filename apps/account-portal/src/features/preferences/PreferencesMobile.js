@@ -7,7 +7,7 @@ export default function PreferencesMobile() {
     <div className={styles.container}>
       <PageHeader 
         title="Preferences"
-        subtitle="Personalize your Cloud-Base experience and portal settings."
+        subtitle="Personalize your Nothing Box experience and portal settings."
       />
 
       <div className={styles.card}>

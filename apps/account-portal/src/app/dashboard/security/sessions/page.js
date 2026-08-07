@@ -1,7 +1,7 @@
 import ActiveSessions from '@/features/security-settings/ActiveSessions';
 
 export const metadata = {
-  title: 'Active Sessions | Cloud-Base',
+  title: 'Active Sessions | Nothing Box',
   description: 'Manage and revoke your active logged in device sessions securely.',
 };
 

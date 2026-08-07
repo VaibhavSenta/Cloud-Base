@@ -88,7 +88,7 @@ const SignupBoxMobile = ({ formData, step, nextStep, prevStep, onChange, onSocia
             {!isPartial && (
               <div className={styles.stepPage}>
                 <h2 className={styles.stepTitle}>Set Password</h2>
-                <p className={styles.stepSubtitle}>Secure your Cloud-Base account.</p>
+                <p className={styles.stepSubtitle}>Secure your Nothing Box account.</p>
                 <Input 
                   type="password"
                   placeholder="Password"

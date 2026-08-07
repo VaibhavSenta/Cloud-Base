@@ -116,7 +116,7 @@ const LoginBoxTablet = ({
               <Logo forceVersion="full" theme="monochrome" className={styles.logo} />
               <h2 className={styles.title}>Welcome Back</h2>
               <p className={styles.subtitle}>
-                {isPartial ? "Please verify your account" : "Secure access to your Cloud-Base"}
+                {isPartial ? "Please verify your account" : "Secure access to your Nothing Box"}
               </p>
             </div>
 

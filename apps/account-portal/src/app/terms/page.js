@@ -16,12 +16,12 @@ export default function TermsPage() {
 
         <div className={styles.content}>
           <p>
-            By accessing or using the Cloud-Base portal and its services, you agree to comply with and be bound by the following Terms of Service.
+            By accessing or using the Nothing Box portal and its services, you agree to comply with and be bound by the following Terms of Service.
           </p>
 
           <h3>1. Description of Service</h3>
           <p>
-            Cloud-Base provides a secure web portal for managing personal profile information, settings, and integrated cloud storage. The platform is designed to give you direct ownership over your data using client-side cryptographic tools.
+            Nothing Box provides a secure web portal for managing personal profile information, settings, and integrated cloud storage. The platform is designed to give you direct ownership over your data using client-side cryptographic tools.
           </p>
 
           <h3>2. User Responsibilities</h3>
@@ -31,12 +31,12 @@ export default function TermsPage() {
 
           <h3>3. Acceptable Use</h3>
           <p>
-            You agree to use Cloud-Base only for lawful purposes. You must not use the services to distribute malware, upload illegal materials, or attempt to compromise the network security of the Cloud-Base ecosystem.
+            You agree to use Nothing Box only for lawful purposes. You must not use the services to distribute malware, upload illegal materials, or attempt to compromise the network security of the Nothing Box ecosystem.
           </p>
 
           <h3>4. Disclaimer & Limitation of Liability</h3>
           <p>
-            Cloud-Base is provided on an "as is" and "as available" basis without warranties of any kind. In no event shall Cloud-Base be liable for any direct, indirect, incidental, or consequential damages resulting from data loss or security breaches.
+            Nothing Box is provided on an "as is" and "as available" basis without warranties of any kind. In no event shall Nothing Box be liable for any direct, indirect, incidental, or consequential damages resulting from data loss or security breaches.
           </p>
         </div>
 

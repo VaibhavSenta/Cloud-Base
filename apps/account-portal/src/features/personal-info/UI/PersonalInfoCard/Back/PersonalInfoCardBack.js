@@ -27,7 +27,7 @@ export default function PersonalInfoCardBack({
            activeField === 'recoveryEmail' ? 'Edit Recovery Email' : 'Edit Details'}
         </h3>
         <p className={styles.backSubtitle}>
-          {activeField === 'username' ? 'Choose a unique username to identify yourself on Cloud-Base.' :
+          {activeField === 'username' ? 'Choose a unique username to identify yourself on Nothing Box.' :
            activeField === 'name' ? 'Enter your legal first name and last name.' :
            activeField === 'dob' ? 'Provide your date of birth to complete account details verification.' :
            activeField === 'gender' ? 'Select your gender representation or choose not to set.' :

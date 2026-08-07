@@ -72,7 +72,7 @@ export default function ExploreServicesPage() {
     <div className={styles.container}>
       <PageHeader 
         title="Explore Services"
-        subtitle="Discover and link active cloud applications directly to your primary Cloud-Base account parameters."
+        subtitle="Discover and link active cloud applications directly to your primary Nothing Box account parameters."
       />
 
       <div className={styles.cardsGrid}>

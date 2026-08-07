@@ -63,26 +63,26 @@ export default function UserPortalHome() {
       <div className={styles.ribbonWrapper}>
         <div className={styles.ribbonTrack}>
           <span className={styles.ribbonText}>
-            CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;
+            NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;
           </span>
           <span className={styles.ribbonText} aria-hidden="true">
-            CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;
+            NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;
           </span>
         </div>
         <div className={styles.ribbonTrackReverse}>
           <span className={styles.ribbonText}>
-            CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;
+            NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;
           </span>
           <span className={styles.ribbonText} aria-hidden="true">
-            CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;
+            NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;
           </span>
         </div>
         <div className={styles.ribbonTrack}>
           <span className={styles.ribbonText}>
-            CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;
+            NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;
           </span>
           <span className={styles.ribbonText} aria-hidden="true">
-            CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;CLOUD-BASE&nbsp;&nbsp;
+            NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;NOTHING BOX&nbsp;&nbsp;
           </span>
         </div>
       </div>

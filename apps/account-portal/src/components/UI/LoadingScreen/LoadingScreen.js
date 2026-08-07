@@ -3,7 +3,7 @@ import Logo from '../../Logo/Logo';
 import styles from './LoadingScreen.module.css';
 
 const LoadingScreen = ({ fullScreen = true }) => {
-  const brandName = "CLOUD-BASE";
+  const brandName = "NOTHING BOX";
 
   return (
     <div className={`${styles.container} ${fullScreen ? styles.fullScreen : styles.inline}`}>

@@ -1,7 +1,7 @@
 import RecentActivity from '@/features/security-settings/RecentActivity';
 
 export const metadata = {
-  title: 'Recent Activity | Cloud-Base',
+  title: 'Recent Activity | Nothing Box',
   description: 'Review security audit log and activity history.',
 };
 

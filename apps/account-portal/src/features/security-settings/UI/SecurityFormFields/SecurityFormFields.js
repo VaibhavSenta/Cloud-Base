@@ -93,7 +93,7 @@ export default function SecurityFormFields({
             </p>
           ) : (
             <p className={styles.helpText}>
-              We will send a secure verification link to <strong>{user?.email}</strong>. Clicking the link will verify and unlock all features of your Cloud-Base account.
+              We will send a secure verification link to <strong>{user?.email}</strong>. Clicking the link will verify and unlock all features of your Nothing Box account.
             </p>
           )}
         </div>

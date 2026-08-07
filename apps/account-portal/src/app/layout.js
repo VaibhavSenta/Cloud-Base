@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Cloud-Base Account",
-  description: "Manage your security, privacy, and preferences to make Cloud-Base work better for you.",
+  title: "Nothing Box Account",
+  description: "Manage your security, privacy, and preferences to make Nothing Box work better for you.",
   manifest: "/manifest.json",
   icons: {
     apple: "/icons/apple-touch-icon.png",
