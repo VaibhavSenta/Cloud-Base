@@ -4,10 +4,10 @@
   align-items: center;
   width: 100%;
   background: rgba(18, 18, 18, 0.6);
-  backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 1.5rem;
+  border-radius: 2.5rem;
   padding: 6px;
   box-sizing: border-box;
   column-gap: 6px;
@@ -17,23 +17,53 @@
 .tabItem {
   flex: 1;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 42px;
+  height: 52px;
   border: none;
   background: transparent;
   color: #666666;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
   cursor: pointer;
   border-radius: 1.1rem;
+  gap: 2px;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tabIcon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  opacity: 0.5;
+  transition: opacity 0.2s ease, filter 0.2s ease;
+}
+
+.tabLabel {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.profileAvatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid #555555;
+  transition: border-color 0.2s ease;
 }
 
 .activeTab {
   color: #0095f6;
   background-color: rgba(0, 149, 246, 0.1);
-  font-weight: 800;
+}
+
+.activeTab .tabIcon {
+  opacity: 1;
+  filter: invert(47%) sepia(87%) saturate(2250%) hue-rotate(181deg) brightness(98%) contrast(102%);
+}
+
+.activeTab .profileAvatar {
+  border-color: #0095f6;
 }

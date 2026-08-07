@@ -23,9 +23,9 @@ function useWindowSize() {
   return windowSize;
 }
 
-export default function Footer({ activeTab, setActiveTab }) {
+export default function Footer({ activeTab, setActiveTab, profile }) {
   const { width } = useWindowSize();
 
   // Mobile-First default wrapper
-  return <FooterMobile activeTab={activeTab} setActiveTab={setActiveTab} />;
+  return <FooterMobile activeTab={activeTab} setActiveTab={setActiveTab} profile={profile} />;
 }

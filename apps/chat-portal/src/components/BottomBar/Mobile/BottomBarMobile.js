@@ -2,26 +2,37 @@
 
 import styles from './BottomBarMobile.module.css';
 
-export default function BottomBarMobile({ activeTab, setActiveTab }) {
+export default function BottomBarMobile({ activeTab, setActiveTab, profile }) {
+  const avatarUrl = profile?.avatarUrl;
+
   return (
     <nav className={styles.bottomBar}>
       <button 
         className={`${styles.tabItem} ${activeTab === 'chat' ? styles.activeTab : ''}`}
         onClick={() => setActiveTab('chat')}
       >
-        Chat
+        <img src="/chat-icon.svg" alt="Chat" className={styles.tabIcon} />
+        <span className={styles.tabLabel}>Chat</span>
       </button>
+
       <button 
         className={`${styles.tabItem} ${activeTab === 'search' ? styles.activeTab : ''}`}
         onClick={() => setActiveTab('search')}
       >
-        Search
+        <img src="/search-icon.svg" alt="Search" className={styles.tabIcon} />
+        <span className={styles.tabLabel}>Search</span>
       </button>
+
       <button 
-        className={`${styles.tabItem} ${activeTab === 'settings' ? styles.activeTab : ''}`}
-        onClick={() => setActiveTab('settings')}
+        className={`${styles.tabItem} ${activeTab === 'profile' ? styles.activeTab : ''}`}
+        onClick={() => setActiveTab('profile')}
       >
-        Settings
+        {avatarUrl ? (
+          <img src={avatarUrl} alt="Profile" className={styles.profileAvatar} />
+        ) : (
+          <img src="/profile-icon.svg" alt="Profile" className={styles.tabIcon} />
+        )}
+        <span className={styles.tabLabel}>Profile</span>
       </button>
     </nav>
   );

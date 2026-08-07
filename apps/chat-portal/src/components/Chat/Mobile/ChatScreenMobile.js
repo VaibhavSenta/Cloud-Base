@@ -498,7 +498,7 @@ export default function ChatScreenMobile({
 
       {/* 3. FOOTER / BOTTOM BAR */}
       {!activeConv && (
-        <Footer activeTab={activeTab} setActiveTab={setActiveTab} />
+        <Footer activeTab={activeTab} setActiveTab={setActiveTab} profile={profile} />
       )}
     </div>
   );
