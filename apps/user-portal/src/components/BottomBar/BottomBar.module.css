@@ -16,6 +16,7 @@
   display: flex;
   justify-content: center;
   padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: 6px;
 }
 
 .innerContainer {

@@ -45,12 +45,6 @@ export default function BottomBarMobile() {
         <span className={styles.tabLabel}>Chat</span>
       </button>
       <button 
-        className={`${styles.tabItem} ${isActive('vault') ? styles.active : ''}`}
-        onClick={() => handleNavigation('vault')}
-      >
-        <span className={styles.tabLabel}>Playground</span>
-      </button>
-      <button 
         className={`${styles.tabItem} ${isActive('account') ? styles.active : ''}`}
         onClick={() => handleNavigation('account')}
       >
