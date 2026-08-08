@@ -18,6 +18,9 @@ export const metadata = {
   title: "Nothing Box Chat",
   description: "Secure workspace messenger module.",
   manifest: "/manifest.json",
+  icons: {
+    apple: "/icons/apple-touch-icon.png",
+  },
   appleWebApp: {
     title: "Nothing Box Chat",
     statusBarStyle: "black-translucent",
