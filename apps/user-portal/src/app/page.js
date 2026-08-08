@@ -1,9 +1,11 @@
 'use client';
 
 import { useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import api from '@/utils/api';
 import Logo from '@/components/Logo/Logo';
-import Header from '@/components/Header/Header';
 import BottomBar from '@/components/BottomBar/BottomBar';
+import Header from '@/components/Header/Header';
 import styles from './page.module.css';
 
 const ALL_EMOJIS = [
@@ -58,9 +60,22 @@ function generateClusterPositions() {
 export default function UserPortalHome() {
   const clusterPositions = useMemo(() => generateClusterPositions(), []);
 
+  const { data: user, error, isError } = useQuery({
+    queryKey: ['authMe'],
+    queryFn: async () => {
+      const res = await api.get('/auth/me');
+      return res.data?.data || null;
+    },
+    retry: false,
+    enabled: typeof window !== 'undefined',
+  });
+
   return (
     <main className={styles.container}>
+
       <Header />
+
+
       {/* Rotating ribbon text background */}
       <div className={styles.ribbonWrapper}>
         <div className={styles.ribbonTrack}>
@@ -101,6 +116,13 @@ export default function UserPortalHome() {
         <h2 className={styles.tagline}>
           Your workspace,{'\n'}everywhere
         </h2>
+
+        {/* Debug block for authentication verification */}
+        <div style={{ margin: '10px auto', textAlign: 'center', zIndex: 10 }}>
+          {user ? null : (
+          <div>We don't charge money for visits. <br /> Go ahead.</div>
+        )}
+        </div>
 
         {/* Apple Watch style emoji globe */}
         <div className={styles.emojiGlobe}>
