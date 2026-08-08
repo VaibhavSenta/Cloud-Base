@@ -35,3 +35,26 @@
   letter-spacing: -0.02em;
   margin: 0;
 }
+
+.profileCircle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #111111;
+  transition: border-color 0.2s ease;
+}
+
+.profileCircle:hover {
+  border-color: #0095f6;
+}
+
+.avatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

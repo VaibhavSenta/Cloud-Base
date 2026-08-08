@@ -2,6 +2,7 @@
 
 import { useMemo } from 'react';
 import Logo from '@/components/Logo/Logo';
+import Header from '@/components/Header/Header';
 import BottomBar from '@/components/BottomBar/BottomBar';
 import styles from './page.module.css';
 
@@ -59,6 +60,7 @@ export default function UserPortalHome() {
 
   return (
     <main className={styles.container}>
+      <Header />
       {/* Rotating ribbon text background */}
       <div className={styles.ribbonWrapper}>
         <div className={styles.ribbonTrack}>

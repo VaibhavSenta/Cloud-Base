@@ -1,8 +1,21 @@
-'use client';
-
+import { useQuery } from '@tanstack/react-query';
+import api from '@/utils/api';
 import styles from './HeaderMobile.module.css';
 
-export default function HeaderMobile({ title, leftAction, rightAction }) {
+export default function HeaderMobile({ title, leftAction }) {
+  const { data: user } = useQuery({
+    queryKey: ['authMe'],
+    queryFn: async () => {
+      try {
+        const res = await api.get('/auth/me');
+        return res.data?.data?.user || null;
+      } catch (err) {
+        return null;
+      }
+    },
+    retry: false,
+  });
+
   return (
     <header className={styles.header}>
       <div className={styles.left}>
@@ -12,7 +25,15 @@ export default function HeaderMobile({ title, leftAction, rightAction }) {
         <h1 className={styles.title}>{title || 'Nothing Box'}</h1>
       </div>
       <div className={styles.right}>
-        {rightAction}
+        {user ? (
+          <div className={styles.profileCircle}>
+            <img 
+              src={user.profilePic || '/user-icon.png'} 
+              alt="Profile" 
+              className={styles.avatarImg} 
+            />
+          </div>
+        ) : null}
       </div>
     </header>
   );
