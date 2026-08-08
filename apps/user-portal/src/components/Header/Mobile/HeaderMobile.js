@@ -23,7 +23,7 @@ export default function HeaderMobile() {
         {user ? (
           <div className={styles.profileCircle}>
             <img 
-              src="/user-icon.png" 
+              src={user.profilePic || "/user-icon.png"} 
               alt="Profile" 
               className={styles.avatarImg} 
             />
