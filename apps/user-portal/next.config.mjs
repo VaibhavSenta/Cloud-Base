@@ -19,7 +19,7 @@ const nextConfig = {
   ],
 
   async rewrites() {
-    let userApiUrl = process.env.USER_API_URL || process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5005';
+    let userApiUrl = process.env.USER_API_URL || process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5010';
     userApiUrl = userApiUrl.replace(/\/api\/v1\/?$/, '');
     return [
       {
