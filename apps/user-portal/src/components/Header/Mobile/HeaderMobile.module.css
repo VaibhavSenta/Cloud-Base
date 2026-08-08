@@ -2,38 +2,18 @@
   width: 100%;
   height: auto;
   min-height: 56px;
-  background-color: #000000;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: transparent;
+  border-bottom: none;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
-  padding: 10px 16px;
+  padding: 16px 26px;
   box-sizing: border-box;
 }
 
-.left, .right {
-  display: flex;
-  align-items: center;
-  width: 70px;
-}
-
 .right {
-  justify-content: flex-end;
-}
-
-.center {
-  flex: 1;
   display: flex;
-  justify-content: center;
   align-items: center;
-}
-
-.title {
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: #ffffff;
-  letter-spacing: -0.02em;
-  margin: 0;
 }
 
 .profileCircle {

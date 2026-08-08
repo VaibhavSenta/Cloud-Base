@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import api from '@/utils/api';
 import styles from './HeaderMobile.module.css';
 
-export default function HeaderMobile({ title, leftAction }) {
+export default function HeaderMobile() {
   const { data: user } = useQuery({
     queryKey: ['authMe'],
     queryFn: async () => {
@@ -19,12 +19,6 @@ export default function HeaderMobile({ title, leftAction }) {
 
   return (
     <header className={styles.header}>
-      <div className={styles.left}>
-        {leftAction}
-      </div>
-      <div className={styles.center}>
-        <h1 className={styles.title}>{title || 'Nothing Box'}</h1>
-      </div>
       <div className={styles.right}>
         {user ? (
           <div className={styles.profileCircle}>
