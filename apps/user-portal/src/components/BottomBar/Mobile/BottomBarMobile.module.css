@@ -30,7 +30,7 @@
   border-radius: 2rem;
   cursor: pointer;
   height: 44px;
-  aspect-ratio: 2.2 / 1; /* Aspect ratio ensures all tabs are exactly the same size regardless of text length */
+  aspect-ratio: 2.0 / 1; /* Aspect ratio ensures all tabs are exactly the same size regardless of text length */
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   box-sizing: border-box;
 }

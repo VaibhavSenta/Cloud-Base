@@ -35,5 +35,6 @@
 @media (min-width: 1024px) {
   .innerContainer {
     max-width: 480px;
+    padding: 0px 16px;
   }
 }
