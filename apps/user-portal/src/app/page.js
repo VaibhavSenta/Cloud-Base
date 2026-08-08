@@ -6,6 +6,8 @@ import api from '@/utils/api';
 import Logo from '@/components/Logo/Logo';
 import BottomBar from '@/components/BottomBar/BottomBar';
 import Header from '@/components/Header/Header';
+import { useStandaloneMode } from '@/hooks/useStandaloneMode';
+import { getAppUrl } from '@/utils/navigation';
 import styles from './page.module.css';
 
 const ALL_EMOJIS = [
@@ -59,6 +61,8 @@ function generateClusterPositions() {
 
 export default function UserPortalHome() {
   const clusterPositions = useMemo(() => generateClusterPositions(), []);
+  const isStandalone = useStandaloneMode();
+  const signupUrl = `${getAppUrl('account', isStandalone)}/signup`;
 
   const { data: user, error, isError } = useQuery({
     queryKey: ['authMe'],
@@ -120,8 +124,13 @@ export default function UserPortalHome() {
         {/* Debug block for authentication verification */}
         <div style={{ margin: '10px auto', textAlign: 'center', zIndex: 10 }}>
           {user ? null : (
-          <div>We don't charge money for visits. <br /> Go ahead.</div>
-        )}
+            <div>
+              We don't charge money for visits. <br /> 
+              <a href={signupUrl} style={{ color: '#0095f6', textDecoration: 'none', fontWeight: 'bold' }}>
+                Go ahead.
+              </a>
+            </div>
+          )}
         </div>
 
         {/* Apple Watch style emoji globe */}
