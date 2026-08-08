@@ -9,7 +9,7 @@ export default function StandaloneChatPage() {
       <iframe
         src="http://chat.nothingbox.site"
         className={styles.iframe}
-        title="Cloud-Base Chat"
+        title="Nothing Box Chat"
         allow="clipboard-read; clipboard-write"
       />
       <BottomBar />

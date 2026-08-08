@@ -27,7 +27,7 @@ export default function HeaderTitle({ isSubpage, title, breadcrumb, isFirstLevel
     <div>
 
       <span className={styles.dashboardTitle}>
-        Cloud-Base
+        Nothing Box
       </span>
     </div>
   );

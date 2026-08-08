@@ -46,9 +46,6 @@ api.interceptors.response.use(
         }
       } catch (refreshErr) {
         console.warn('🔄 Silent token refresh failed. User session terminated.');
-        if (typeof window !== 'undefined') {
-          window.location.href = config.accountPortalUrl;
-        }
       }
     }
     return Promise.reject(error);
@@ -68,7 +65,7 @@ export const securePost = async (url, data) => {
       },
     });
   } catch (error) {
-    console.error(`Secure POST failed for ${url}:`, error);
+    console.warn(`Secure POST failed for ${url}:`, error.message);
     throw error;
   }
 };

@@ -1,7 +1,7 @@
 {
-  "name": "Cloud-Base Account",
+  "name": "Nothing Box Account",
   "short_name": "CB Account",
-  "description": "Manage your Cloud-Base account and security.",
+  "description": "Manage your Nothing Box account and security.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f8fafc",

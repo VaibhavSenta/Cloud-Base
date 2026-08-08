@@ -48,7 +48,13 @@ const nextConfig = {
     ],
   },
   // Allow local dev IP as per project rules
-  allowedDevOrigins: ['172.20.10.2'],
+  allowedDevOrigins: [
+    'localhost', '*.localhost',
+    'nothingbox.site', '*.nothingbox.site',
+    'nothingbox.test', '*.nothingbox.test',
+    'account.nothingbox.test', 'chat.nothingbox.test', 'admin.nothingbox.test', 'user.nothingbox.test',
+    'account.nothingbox.site', 'chat.nothingbox.site', 'admin.nothingbox.site', 'user.nothingbox.site'
+  ],
 };
 
 export default withPWAConfig(nextConfig);

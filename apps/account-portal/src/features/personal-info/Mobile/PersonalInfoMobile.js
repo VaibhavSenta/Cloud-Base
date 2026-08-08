@@ -90,7 +90,7 @@ export default function PersonalInfoMobile({
         subtitle={
           editField === 'profilePic'
             ? (rawImage ? "Drag to center and use slider to zoom." : "Upload a custom avatar picture. Real-time preview is shown below.")
-            : "Changes will sync instantly across all Cloud-Base services."
+            : "Changes will sync instantly across all Nothing Box services."
         }
         onSubmit={handleSubmit}
         isPending={isPending}

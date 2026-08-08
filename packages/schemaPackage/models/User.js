@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema({
     profilePic: {
         type: String,
         required: false,
-        default: '/icons/person.svg'
+        default: '/user-icon.png'
     },
     dob: {
         type: Date,
@@ -55,8 +55,12 @@ const userSchema = new mongoose.Schema({
     },
     accountStatus: {
         type: String,
-        enum: ['active', 'deleted', 'banned'],
+        enum: ['active', 'deleted', 'banned', 'deactivated', 'scheduled_deletion'],
         default: 'active'
+    },
+    deletionDate: {
+        type: Date,
+        required: false
     },
     role: {
         type: String,

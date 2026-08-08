@@ -17,7 +17,7 @@ export const securePost = async (url, data) => {
     const encryptedBody = await encryptPayload(data);
     return await api.post(url, encryptedBody);
   } catch (error) {
-    console.error(`Secure POST failed for ${url}:`, error);
+    console.warn(`Secure POST failed for ${url}:`, error.message);
     throw error;
   }
 };

@@ -147,7 +147,7 @@ const logoutSession = async (req, res) => {
     
     // Clear cookies for double check
     const isDev = process.env.NODE_ENV !== 'production';
-    const domain = isDev ? undefined : (process.env.COOKIE_DOMAIN || '.cloud-base.dev');
+    const domain = isDev ? undefined : (process.env.COOKIE_DOMAIN || '.nothingbox.site');
     
     res.clearCookie('token', { path: '/', domain });
     res.clearCookie('cb_chat_token', { path: '/', domain });

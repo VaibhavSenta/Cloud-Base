@@ -3,7 +3,7 @@ const encryptionService = require('../../common/utils/encryptionService');
 const crypto = require('crypto');
 const { USER } = require('./auth.model');
 const sessionService = require('./session.service');
-const { cookieConfig } = require('../../common/config/env.config');
+const { cookieConfig, jwtSecret } = require('../../common/config/env.config');
 const { maxAge, ...clearOptions } = cookieConfig;
 
 const propagateLogout = async (userId, sessionId) => {
@@ -73,6 +73,7 @@ const login = async (req, res) => {
     
     res.cookie('token', result.token, cookieConfig);
     res.cookie('cb_chat_token', result.token, cookieConfig);
+    res.cookie('cb_account_token', result.token, cookieConfig);
     
 
     console.log('✅ Login successful for:', identifier);
@@ -102,10 +103,10 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
-    let token = req.cookies?.token || req.cookies?.cb_chat_token;
+    let token = req.cookies?.token || req.cookies?.cb_chat_token || req.cookies?.cb_account_token;
     if (token) {
       const jwt = require('jsonwebtoken');
-      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'CB_SUPER_SECRET_KEY_FOR_LOCAL_DEV', { ignoreExpiration: true });
+      const decoded = jwt.verify(token, jwtSecret, { ignoreExpiration: true });
       const userId = decoded.userId || decoded.id;
       const sessionId = decoded.sessionId;
       if (userId) {
@@ -118,6 +119,7 @@ const logout = async (req, res) => {
 
   res.clearCookie('token', clearOptions);
   res.clearCookie('cb_chat_token', clearOptions);
+  res.clearCookie('cb_account_token', clearOptions);
   res.status(200).json({ success: true, message: 'Logged out successfully' });
 };
 
@@ -133,6 +135,7 @@ const getMe = async (req, res) => {
         if (!user || user.accountStatus !== 'active') {
             res.clearCookie('token', clearOptions);
             res.clearCookie('cb_chat_token', clearOptions);
+            res.clearCookie('cb_account_token', clearOptions);
             throw new Error(user ? `Account is ${user.accountStatus}` : 'User not found in DB');
         }
 
@@ -322,6 +325,7 @@ const verify2faLogin = async (req, res) => {
         
         res.cookie('token', result.token, cookieConfig);
         res.cookie('cb_chat_token', result.token, cookieConfig);
+        res.cookie('cb_account_token', result.token, cookieConfig);
 
         res.status(200).json({ success: true, data: result });
     } catch (error) {
@@ -337,6 +341,7 @@ const socialLogin = async (req, res) => {
 
     res.cookie('token', result.token, cookieConfig);
     res.cookie('cb_chat_token', result.token, cookieConfig);
+    res.cookie('cb_account_token', result.token, cookieConfig);
 
     res.status(200).json({ success: true, data: result });
   } catch (error) {
@@ -351,6 +356,7 @@ const deactivateAccount = async (req, res) => {
     await authService.deactivateAccount(req.user.userId, password);
     res.clearCookie('token', clearOptions);
     res.clearCookie('cb_chat_token', clearOptions);
+    res.clearCookie('cb_account_token', clearOptions);
     propagateLogout(req.user.userId, req.user.sessionId);
     res.status(200).json({ success: true, message: 'Account deactivated successfully' });
   } catch (error) {
@@ -364,6 +370,7 @@ const deleteAccount = async (req, res) => {
     const result = await authService.deleteAccount(req.user.userId, password);
     res.clearCookie('token', clearOptions);
     res.clearCookie('cb_chat_token', clearOptions);
+    res.clearCookie('cb_account_token', clearOptions);
     propagateLogout(req.user.userId, req.user.sessionId);
     res.status(200).json({ 
       success: true, 
@@ -394,12 +401,13 @@ const reactivateAccount = async (req, res) => {
     const jwt = require('jsonwebtoken');
     const token = jwt.sign(
       { userId: user._id, role: user.role, sessionId },
-      process.env.JWT_SECRET || 'CB_SUPER_SECRET_KEY',
+      jwtSecret,
       { expiresIn: '7d' }
     );
 
     res.cookie('token', token, cookieConfig);
     res.cookie('cb_chat_token', token, cookieConfig);
+    res.cookie('cb_account_token', token, cookieConfig);
 
     res.status(200).json({ 
       success: true, 

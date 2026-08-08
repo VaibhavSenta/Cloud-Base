@@ -16,7 +16,7 @@ export default function PrivacyPage() {
 
         <div className={styles.content}>
           <p>
-            At Cloud-Base, privacy is not just a policy; it is the fundamental core of our architectural design. This Privacy Policy outlines how your data is secured and managed across the Cloud-Base ecosystem.
+            At Nothing Box, privacy is not just a policy; it is the fundamental core of our architectural design. This Privacy Policy outlines how your data is secured and managed across the Nothing Box ecosystem.
           </p>
 
           <h3>1. Data Sovereignty & Decryption Keys</h3>

@@ -53,7 +53,7 @@ const Header = ({ onToggleSidebar, isSidebarOpen, forceWidth }) => {
     if (path.includes('security')) return 'Signin & Security';
     if (path.includes('preferences')) return 'Preferences';
     if (path.includes('connected-services')) return 'Connected Services';
-    return 'Cloud-Base';
+    return 'Nothing Box';
   };
 
   const getBreadcrumbs = (path) => {

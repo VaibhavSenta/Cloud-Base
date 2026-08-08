@@ -11,6 +11,7 @@ import {
   decryptMessagePayload
 } from '@/utils/security/keyRotationEngine';
 import styles from './ChatScreenMobile.module.css';
+import Footer from '@/components/Footer/Footer';
 
 export default function ChatScreenMobile({
   profile,
@@ -20,7 +21,7 @@ export default function ChatScreenMobile({
   sendTypingStatus,
   sendKeyRotation
 }) {
-  const [activeTab, setActiveTab] = useState('inbox'); // 'inbox', 'search'
+  const [activeTab, setActiveTab] = useState('chat'); // 'chat', 'search', 'settings'
   const [conversations, setConversations] = useState([]);
   const [activeConv, setActiveConv] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -259,189 +260,245 @@ export default function ChatScreenMobile({
 
   return (
     <div className={styles.wrapper}>
-      {/* Top Header Bar */}
+      {/* 1. HEADER BAR */}
       <header className={styles.header}>
-        <div className={styles.headerTitleGroup}>
-          <h1 className={styles.headerTitle}>
-            {activeConv ? activeConv.partner?.chatUsername || 'Chat' : 'Cloud-Base Chat'}
-          </h1>
-          <span className={`${styles.statusTag} ${isConnected ? styles.statusOnline : styles.statusOffline}`}>
-            {isConnected ? 'ONLINE' : 'OFFLINE'}
-          </span>
+        <div className={styles.headerLeft}>
+          {activeConv && (
+            <button className={styles.backBtn} onClick={() => setActiveConv(null)}>
+              Back
+            </button>
+          )}
         </div>
 
-        <div className={styles.headerActions}>
+        <h1 className={styles.headerTitle}>
+          {activeConv 
+            ? `@${activeConv.partner?.chatUsername || 'User'}` 
+            : activeTab === 'chat' 
+              ? 'Nothing Box Chat' 
+              : activeTab === 'search' 
+                ? 'Search' 
+                : 'Settings'
+          }
+        </h1>
+
+        <div className={styles.headerRight}>
           {activeConv ? (
-            <button className={styles.textBtn} onClick={() => setActiveConv(null)}>
-              Back to Inbox
+            <button className={styles.moreBtn} onClick={() => console.log('More options clicked')}>
+              ...
             </button>
           ) : (
-            <button 
-              className={styles.textBtnPrimary} 
-              onClick={() => setActiveTab(activeTab === 'inbox' ? 'search' : 'inbox')}
-            >
-              {activeTab === 'inbox' ? 'Find User' : 'Inbox'}
-            </button>
+            <span className={`${styles.statusDot} ${isConnected ? styles.statusOnline : styles.statusOffline}`} />
           )}
         </div>
       </header>
 
-      {/* Main Content Area */}
-      {!activeConv ? (
-        <>
-          {/* Search Tab (Exact Username Privacy Rule) */}
-          {activeTab === 'search' && (
-            <section className={styles.searchSection}>
-              <form onSubmit={handleSearchUser} className={styles.searchInputGroup}>
-                <input
-                  type="text"
-                  placeholder="Exact username (e.g. vaibhav)"
-                  className={styles.inputField}
-                  value={searchUsername}
-                  onChange={(e) => setSearchUsername(e.target.value)}
-                />
-                <button type="submit" className={styles.textBtnPrimary} disabled={isSearching}>
-                  {isSearching ? 'Searching...' : 'Search'}
-                </button>
-              </form>
+      {/* 2. MAIN CONTENT AREA */}
+      <main className={styles.mainContent}>
+        {activeConv ? (
+          /* CHAT THREAD VIEW */
+          <div className={styles.chatContainer}>
+            {/* Opt-In Message Request Banner */}
+            {activeConv.status === 'pending' && String(activeConv.requestedBy) !== String(profile.userId) && (
+              <div className={styles.requestBanner}>
+                <div className={styles.requestTitle}>Message Request</div>
+                <div className={styles.requestSubtitle}>
+                  @{activeConv.partner?.chatUsername} wants to start a chat with you.
+                </div>
+                <div className={styles.requestActions}>
+                  <button className={styles.textBtnPrimary} onClick={handleAcceptRequest}>
+                    Accept Request
+                  </button>
+                </div>
+              </div>
+            )}
 
-              {searchError && <div style={{ color: '#ff453a', fontSize: '0.72rem', marginTop: '4px' }}>{searchError}</div>}
+            {/* Messages Area */}
+            <div className={styles.messagesList}>
+              {messages.map((msg, index) => {
+                const isMine = String(msg.senderId) === String(profile.userId);
 
-              {searchResult && (
-                <div 
-                  className={styles.conversationItem} 
-                  style={{ marginTop: '10px', borderRadius: '12px', background: '#080808' }}
-                  onClick={() => {
-                    handleSelectConversation({
-                      ...searchResult.conversation,
-                      partner: searchResult.targetUser
-                    });
-                  }}
-                >
-                  <div>
-                    <div className={styles.convUsername}>@{searchResult.targetUser.chatUsername}</div>
-                    <div className={styles.convSnippet}>Click to open messaging thread</div>
+                return (
+                  <div 
+                    key={msg.messageId || index} 
+                    className={`${styles.messageRow} ${isMine ? styles.messageRowSent : styles.messageRowReceived}`}
+                  >
+                    <div className={styles.bubbleWrapper}>
+                      {/* Delivered Line */}
+                      {isMine && msg.status === 'delivered' && (
+                        <div className={styles.deliveredLine} />
+                      )}
+
+                      <div className={`
+                        ${styles.bubble} 
+                        ${isMine ? styles.bubbleSent : styles.bubbleReceived}
+                        ${isMine && msg.status === 'sent' ? styles.bubbleStateSent : ''}
+                      `}>
+                        {isMine && msg.status === 'failed' && (
+                          <span className={styles.failedDot} title="Failed to send" />
+                        )}
+                        {msg.decryptedText || msg.encryptedPayload}
+                      </div>
+                    </div>
+
+                    <span className={styles.timestamp}>
+                      {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </span>
                   </div>
-                  <button className={styles.textBtnPrimary}>Chat</button>
+                );
+              })}
+              <div ref={messagesEndRef} />
+            </div>
+
+            {/* Typing Indicator */}
+            <div className={styles.typingContainer}>
+              {partnerTyping && (
+                <div className={styles.typingWave}>
+                  <span className={styles.dot} />
+                  <span className={styles.dot} />
                 </div>
               )}
-            </section>
-          )}
-
-          {/* Conversations List / Inbox */}
-          <section className={styles.conversationList}>
-            {conversations.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '40px 20px', color: '#555', fontSize: '0.8rem' }}>
-                No active chats yet. Click "Find User" to start messaging.
-              </div>
-            ) : (
-              conversations.map(conv => (
-                <div 
-                  key={conv.conversationId} 
-                  className={styles.conversationItem}
-                  onClick={() => handleSelectConversation(conv)}
-                >
-                  <div>
-                    <div className={styles.convUsername}>
-                      @{conv.partner?.chatUsername || 'User'}
-                    </div>
-                    <div className={styles.convSnippet}>
-                      {conv.status === 'pending' ? 'Message Request Pending' : 'Tap to open chat'}
-                    </div>
-                  </div>
-
-                  {conv.status === 'pending' && (
-                    <span className={styles.badgeRequest}>Request</span>
-                  )}
-                </div>
-              ))
-            )}
-          </section>
-        </>
-      ) : (
-        /* Chat Thread View */
-        <section className={styles.chatContainer}>
-          {/* Opt-In Message Request Banner */}
-          {activeConv.status === 'pending' && String(activeConv.requestedBy) !== String(profile.userId) && (
-            <div className={styles.requestBanner}>
-              <div className={styles.requestTitle}>Message Request</div>
-              <div className={styles.requestSubtitle}>
-                @{activeConv.partner?.chatUsername} wants to start a chat with you.
-              </div>
-              <div className={styles.requestActions}>
-                <button className={styles.textBtnPrimary} onClick={handleAcceptRequest}>
-                  Accept Request
-                </button>
-              </div>
             </div>
-          )}
 
-          {/* Messages Area */}
-          <div className={styles.messagesList}>
-            {messages.map((msg, index) => {
-              const isMine = String(msg.senderId) === String(profile.userId);
-
-              return (
-                <div 
-                  key={msg.messageId || index} 
-                  className={`${styles.messageRow} ${isMine ? styles.messageRowSent : styles.messageRowReceived}`}
-                >
-                  {/* Delivered State 1px line indicator above bubble with 1px gap */}
-                  {isMine && msg.status === 'delivered' && (
-                    <div className={styles.deliveredLine} />
-                  )}
-
-                  <div className={`
-                    ${styles.bubble} 
-                    ${isMine ? styles.bubbleSent : styles.bubbleReceived}
-                    ${isMine && msg.status === 'sent' ? styles.bubbleStateSent : ''}
-                  `}>
-                    {/* Send Failed Red Dot Indicator */}
-                    {isMine && msg.status === 'failed' && (
-                      <span className={styles.failedDot} title="Failed to send" />
-                    )}
-
-                    {msg.decryptedText || msg.encryptedPayload}
-                  </div>
-
-                  <span className={styles.timestamp}>
-                    {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </span>
-                </div>
-              );
-            })}
-            <div ref={messagesEndRef} />
+            {/* Input Bar */}
+            <form onSubmit={handleSendMessage} className={styles.inputBar}>
+              <input
+                type="text"
+                placeholder={activeConv.status === 'pending' ? 'Message request pending...' : 'Type message...'}
+                className={styles.inputField}
+                value={text}
+                onChange={handleTextChange}
+                disabled={activeConv.status === 'pending' && String(activeConv.requestedBy) !== String(profile.userId)}
+              />
+              <button 
+                type="submit" 
+                className={styles.sendBtn} 
+                disabled={!text.trim() || !isConnected}
+              >
+                Send
+              </button>
+            </form>
           </div>
+        ) : (
+          /* MAIN TABS */
+          <div className={styles.tabContainer}>
+            {activeTab === 'chat' && (
+              /* CONVERSATIONS LIST / INBOX */
+              <div className={styles.conversationList}>
+                {conversations.length === 0 ? (
+                  <div className={styles.emptyState}>
+                    No active chats yet. Go to "Search" to find users.
+                  </div>
+                ) : (
+                  conversations.map(conv => (
+                    <div 
+                      key={conv.conversationId} 
+                      className={styles.conversationItem}
+                      onClick={() => handleSelectConversation(conv)}
+                    >
+                      <div>
+                        <div className={styles.convUsername}>
+                          @{conv.partner?.chatUsername || 'User'}
+                        </div>
+                        <div className={styles.convSnippet}>
+                          {conv.status === 'pending' ? 'Message Request Pending' : 'Tap to open chat'}
+                        </div>
+                      </div>
 
-          {/* Typing Indicator (2 Horizontal Wave Dots) */}
-          <div className={styles.typingContainer}>
-            {partnerTyping && (
-              <div className={styles.typingWave}>
-                <span className={styles.dot} />
-                <span className={styles.dot} />
+                      {conv.status === 'pending' && (
+                        <span className={styles.badgeRequest}>Request</span>
+                      )}
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+
+            {activeTab === 'search' && (
+              /* SEARCH VIEW */
+              <div className={styles.searchSection}>
+                <form onSubmit={handleSearchUser} className={styles.searchInputGroup}>
+                  <input
+                    type="text"
+                    placeholder="Exact username (e.g. vaibhav)"
+                    className={styles.inputField}
+                    value={searchUsername}
+                    onChange={(e) => setSearchUsername(e.target.value)}
+                  />
+                  <button type="submit" className={styles.textBtnPrimary} disabled={isSearching}>
+                    {isSearching ? 'Searching...' : 'Search'}
+                  </button>
+                </form>
+
+                {searchError && <div className={styles.searchError}>{searchError}</div>}
+
+                {searchResult && (
+                  <div 
+                    className={styles.conversationItem} 
+                    style={{ marginTop: '14px', borderRadius: '16px', background: '#050505', border: '1px solid rgba(255, 255, 255, 0.05)' }}
+                    onClick={() => {
+                      handleSelectConversation({
+                        ...searchResult.conversation,
+                        partner: searchResult.targetUser
+                      });
+                    }}
+                  >
+                    <div>
+                      <div className={styles.convUsername}>@{searchResult.targetUser.chatUsername}</div>
+                      <div className={styles.convSnippet}>Click to open messaging thread</div>
+                    </div>
+                    <button className={styles.textBtnPrimary}>Chat</button>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {activeTab === 'settings' && (
+              /* SETTINGS VIEW */
+              <div className={styles.settingsSection}>
+                <div className={styles.profileCard}>
+                  <div className={styles.profileMeta}>
+                    <div className={styles.profileLabel}>DISPLAY NAME</div>
+                    <div className={styles.profileValue}>{profile.firstName} {profile.lastName}</div>
+                  </div>
+                  <div className={styles.profileMeta}>
+                    <div className={styles.profileLabel}>CHAT USERNAME</div>
+                    <div className={styles.profileValue}>@{profile.chatUsername}</div>
+                  </div>
+                  <div className={styles.profileMeta}>
+                    <div className={styles.profileLabel}>EMAIL ADDRESS</div>
+                    <div className={styles.profileValue}>{profile.email || 'None'}</div>
+                  </div>
+                </div>
+
+                <div className={styles.settingsList}>
+                  <a 
+                    href={`${config.accountPortalUrl}/dashboard`} 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    className={styles.settingsLink}
+                  >
+                    Manage Security & 2FA ↗
+                  </a>
+                  <button 
+                    onClick={() => {
+                      // Perform clean cookie logout
+                      document.cookie = "token=; domain=localhost; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+                      window.location.reload();
+                    }} 
+                    className={styles.logoutBtn}
+                  >
+                    Logout Account
+                  </button>
+                </div>
               </div>
             )}
           </div>
+        )}
+      </main>
 
-          {/* Input Bar */}
-          <form onSubmit={handleSendMessage} className={styles.inputBar}>
-            <input
-              type="text"
-              placeholder={activeConv.status === 'pending' ? 'Message request pending...' : 'Type message...'}
-              className={styles.inputField}
-              value={text}
-              onChange={handleTextChange}
-              disabled={activeConv.status === 'pending' && String(activeConv.requestedBy) !== String(profile.userId)}
-            />
-            <button 
-              type="submit" 
-              className={styles.sendBtn} 
-              disabled={!text.trim() || !isConnected}
-            >
-              Send
-            </button>
-          </form>
-        </section>
+      {/* 3. FOOTER / BOTTOM BAR */}
+      {!activeConv && (
+        <Footer activeTab={activeTab} setActiveTab={setActiveTab} profile={profile} />
       )}
     </div>
   );

@@ -80,7 +80,7 @@
   flex-direction: column;
   align-items: center;
   padding: 0 1.5rem;
-  padding-top: 26vh;
+  padding-top: 22.5vh;
 }
 
 .logoContainer {
@@ -123,6 +123,7 @@
 
 .emoji {
   line-height: 1;
+  -webkit-user-select: none;
   user-select: none;
 }
 
@@ -143,11 +144,7 @@
 }
 
 .subtitle {
-  font-size: 0.95rem;
-  color: #a8a8a8;
-  text-align: center;
-  margin-top: 2rem;
-  animation: fadeInUp 0.8s ease-out 0.6s both;
+  display: none;
 }
 
 @keyframes fadeInUp {
@@ -172,7 +169,7 @@
   }
 
   .content {
-    padding-top: 20vh;
+    padding-top: 16vh;
   }
 
 
@@ -184,6 +181,16 @@
   .emojiGlobe {
     width: 360px;
     height: 360px;
+  }
+
+  .subtitle {
+    display: block;
+    font-size: 0.88rem;
+    color: #a8a8a8;
+    text-align: center;
+    margin-top: 2.5rem;
+    letter-spacing: 0.02em;
+    animation: fadeInUp 0.8s ease-out 0.6s both;
   }
 }
 

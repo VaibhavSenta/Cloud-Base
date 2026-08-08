@@ -1,7 +1,7 @@
 import TwoFactorSettings from '@/features/two-factor-settings/TwoFactorSettings';
 
 export const metadata = {
-  title: 'Two-Factor Authentication | Cloud-Base',
+  title: 'Two-Factor Authentication | Nothing Box',
   description: 'Manage account security keys, authentication channels, and Multi-factor options.',
 };
 

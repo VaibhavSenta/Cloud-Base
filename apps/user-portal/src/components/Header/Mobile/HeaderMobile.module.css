@@ -1,0 +1,40 @@
+.header {
+  width: 100%;
+  height: auto;
+  min-height: 56px;
+  background-color: transparent;
+  border-bottom: none;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 16px 26px;
+  box-sizing: border-box;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+}
+
+.profileCircle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #111111;
+  transition: border-color 0.2s ease;
+}
+
+.profileCircle:hover {
+  border-color: #0095f6;
+}
+
+.avatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

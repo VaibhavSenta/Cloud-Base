@@ -7,7 +7,7 @@ import KeyValueListTablet from './Tablet/KeyValueListTablet/KeyValueListTablet';
 /**
  * KeyValueList Component Wrapper (Controller)
  * Displays a styled title card containing key-value metadata list rows.
- * Complies with the Component Wrapper Pattern for Cloud-Base.
+ * Complies with the Component Wrapper Pattern for Nothing Box.
  *
  * @param {String} title - The section/card title (e.g. 'Basic Info')
  * @param {Array} fields - Array of field objects [{ key, label, value, isEditable }]

@@ -2,7 +2,7 @@ import styles from './CloudSpinner.module.css';
 
 /**
  * CloudSpinner component - A premium hardware-accelerated glowing loader
- * that traces the outline of the Cloud-Base logo cloud geometric shape.
+ * that traces the outline of the Nothing Box logo cloud geometric shape.
  */
 export default function CloudSpinner({ size = 64 }) {
   return (

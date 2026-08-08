@@ -11,7 +11,7 @@ const ConnectedServicesDesktop = dynamic(() => import('./Desktop/ConnectedServic
 
 /**
  * Connected Services Settings Component Wrapper (Controller)
- * Enforces the Component Wrapper Pattern for Cloud-Base services.
+ * Enforces the Component Wrapper Pattern for Nothing Box services.
  */
 const ConnectedServices = () => {
   const { width } = useWindowSize();

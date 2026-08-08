@@ -9,7 +9,7 @@ export default function StandaloneAccountPage() {
       <iframe
         src="http://account.nothingbox.site"
         className={styles.iframe}
-        title="Cloud-Base Account"
+        title="Nothing Box Account"
         allow="clipboard-read; clipboard-write"
       />
       <BottomBar />

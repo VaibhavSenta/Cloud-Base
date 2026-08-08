@@ -10,13 +10,21 @@ const withPWA = withPWAInit({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: ['lucide-react', 'next-pwa'],
-  allowedDevOrigins: ['172.20.10.2', 'localhost', '*.localhost', 'cloudbase.local', '*.cloudbase.local', 'chat.cloudbase.local', 'account.cloudbase.local', 'admin.cloudbase.local', 'user.cloudbase.local', 'nothingbox.site', '*.nothingbox.site', 'account.nothingbox.site', 'chat.nothingbox.site', 'admin.nothingbox.site', 'user.nothingbox.site'],
+  allowedDevOrigins: [
+    'localhost', '*.localhost',
+    'nothingbox.site', '*.nothingbox.site',
+    'nothingbox.test', '*.nothingbox.test',
+    'account.nothingbox.test', 'chat.nothingbox.test', 'admin.nothingbox.test', 'user.nothingbox.test',
+    'account.nothingbox.site', 'chat.nothingbox.site', 'admin.nothingbox.site', 'user.nothingbox.site'
+  ],
 
   async rewrites() {
+    let userApiUrl = process.env.USER_API_URL || process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5010';
+    userApiUrl = userApiUrl.replace(/\/api\/v1\/?$/, '');
     return [
       {
         source: '/api/v1/:path*',
-        destination: `http://172.20.10.2:5005/api/v1/:path*`,
+        destination: `${userApiUrl}/api/v1/:path*`,
       },
     ];
   },

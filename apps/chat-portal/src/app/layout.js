@@ -1,3 +1,4 @@
+import "@/utils/errorLogger";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/components/Providers/QueryProvider";
@@ -14,11 +15,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Cloud-Base Chat",
+  title: "Nothing Box Chat",
   description: "Secure workspace messenger module.",
   manifest: "/manifest.json",
   appleWebApp: {
-    title: "Cloud-Base Chat",
+    title: "Nothing Box Chat",
     statusBarStyle: "black-translucent",
   },
 };
