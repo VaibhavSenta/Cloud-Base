@@ -4,7 +4,8 @@
  */
 
 .bottomBar {
-  width: 100%;
+  max-width: 100%;
+  width: max-content;
   height: auto;
   padding: 5px;
   background: rgba(18, 18, 18, 0.6);
@@ -22,7 +23,6 @@
 
 .tabItem {
   display: flex;
-  flex: 1;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -30,10 +30,9 @@
   border: none;
   border-radius: 2rem;
   cursor: pointer;
+  width: 80px; /* Explicit width prevents circular size dependency with max-content parent */
   height: auto;
-  max-height: 48px;
-  max-width: 85px; /* Restrict width so it doesn't look too wide with 3 options */
-  aspect-ratio: 2.0 / 1; /* Aspect ratio ensures all tabs are exactly the same size regardless of text length */
+  aspect-ratio: 2.0 / 1; /* Symmetrical aspect ratio */
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   box-sizing: border-box;
 }
@@ -60,7 +59,7 @@
 /* Tablet / Desktop scaling */
 @media (min-width: 768px) {
   .tabItem {
-    height: 48px;
+    width: 90px;
   }
   .tabLabel {
     font-size: 0.74rem;
