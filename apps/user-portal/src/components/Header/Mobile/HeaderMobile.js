@@ -14,6 +14,7 @@ export default function HeaderMobile({ title, leftAction }) {
       }
     },
     retry: false,
+    enabled: typeof window !== 'undefined', // Client-only query execution to bypass Next.js SSR
   });
 
   return (
