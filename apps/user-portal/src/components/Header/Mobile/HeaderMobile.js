@@ -8,7 +8,7 @@ export default function HeaderMobile() {
     queryFn: async () => {
       try {
         const res = await api.get('/auth/me');
-        return res.data?.data?.user || null;
+        return res.data?.data || null;
       } catch (err) {
         return null;
       }
