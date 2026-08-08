@@ -126,7 +126,7 @@ export default function UserPortalHome() {
           {user ? null : (
             <div>
               We don't charge money for visits. <br /> 
-              <a href={signupUrl} style={{ color: '#0095f6', textDecoration: 'none', fontWeight: 'bold' }}>
+              <a href={signupUrl} style={{ color: '#a8a8a8', textDecoration: 'none', fontWeight: 'bold' }}>
                 Go ahead.
               </a>
             </div>
