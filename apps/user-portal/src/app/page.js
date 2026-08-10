@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import api from '@/utils/api';
 import Logo from '@/components/Logo/Logo';
@@ -61,6 +61,12 @@ function generateClusterPositions() {
 
 export default function UserPortalHome() {
   const clusterPositions = useMemo(() => generateClusterPositions(), []);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const isStandalone = useStandaloneMode();
   const signupUrl = `${getAppUrl('account', isStandalone)}/signup`;
 
@@ -126,9 +132,13 @@ export default function UserPortalHome() {
           {user ? null : (
             <div>
               We don't charge money for visits. <br /> 
-              <a href={signupUrl} style={{ color: '#a8a8a8', textDecoration: 'none', fontWeight: 'bold' }}>
-                Go ahead.
-              </a>
+              {mounted ? (
+                <a href={signupUrl} style={{ color: '#a8a8a8', textDecoration: 'none', fontWeight: 'bold' }}>
+                  Go ahead.
+                </a>
+              ) : (
+                <span style={{ color: '#a8a8a8', fontWeight: 'bold' }}>Go ahead.</span>
+              )}
             </div>
           )}
         </div>
