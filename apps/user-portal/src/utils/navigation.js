@@ -19,14 +19,12 @@ export const getAppUrl = (appName, isStandalone) => {
 
   const subdomainMap = {
     chat: `${protocol}//chat.${domain}`,
-    vault: `${protocol}//chat.${domain}`,
     account: `${protocol}//account.${domain}`,
     admin: `${protocol}//admin.${domain}`,
   };
 
   const subpathMap = {
     chat: '/apps/chat',
-    vault: '/apps/chat',
     account: '/account',
     admin: '/admin',
   };
