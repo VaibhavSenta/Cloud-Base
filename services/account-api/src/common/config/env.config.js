@@ -16,7 +16,7 @@ module.exports = {
   allowedOrigins: process.env.ALLOWED_ORIGINS 
     ? process.env.ALLOWED_ORIGINS.split(',') 
     : (isDev 
-        ? ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3003', 'http://localhost', 'http://nothingbox.site', 'http://account.nothingbox.site', 'http://chat.nothingbox.site', 'http://admin.nothingbox.site', 'http://user.nothingbox.site']
-        : ['https://nothingbox.site', 'https://account.nothingbox.site', 'https://chat.nothingbox.site', 'https://admin.nothingbox.site', 'https://user.nothingbox.site']
+        ? ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3003', 'http://localhost', 'http://nothingbox.site', 'http://account.nothingbox.site', 'http://chat.nothingbox.site', 'http://admin.nothingbox.site']
+        : ['https://nothingbox.site', 'https://account.nothingbox.site', 'https://chat.nothingbox.site', 'https://admin.nothingbox.site']
       )
 };

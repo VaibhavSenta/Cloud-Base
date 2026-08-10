@@ -15,8 +15,8 @@ const nextConfig = {
     'localhost', '*.localhost',
     'nothingbox.site', '*.nothingbox.site',
     'nothingbox.test', '*.nothingbox.test',
-    'account.nothingbox.test', 'chat.nothingbox.test', 'admin.nothingbox.test', 'user.nothingbox.test',
-    'account.nothingbox.site', 'chat.nothingbox.site', 'admin.nothingbox.site', 'user.nothingbox.site'
+    'account.nothingbox.test', 'chat.nothingbox.test', 'admin.nothingbox.test',
+    'account.nothingbox.site', 'chat.nothingbox.site', 'admin.nothingbox.site'
   ],
 
   images: {
