@@ -107,6 +107,11 @@
   max-width: 280px;
 }
 
+.terms a {
+  color: var(--accent-primary);
+  text-decoration: none;
+}
+
 .footerArea {
   padding-bottom: 2rem;
 }

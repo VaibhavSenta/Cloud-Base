@@ -109,7 +109,7 @@ const SignupBoxMobile = ({ formData, step, nextStep, prevStep, onChange, onSocia
 
         {step === 1 && (
           <p className={styles.terms}>
-            By signing up, you agree to our <strong>Terms</strong>, <strong>Privacy Policy</strong> and <strong>Cookies Policy</strong>.
+            By signing up, you agree to our <Link href="/terms"><strong>Terms</strong></Link>, <Link href="/terms#7-privacy-policy"><strong>Privacy Policy</strong></Link> and <Link href="/terms#8-cookie-policy"><strong>Cookies Policy</strong></Link>.
           </p>
         )}
 

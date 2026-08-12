@@ -118,6 +118,10 @@ const SignupBoxTablet = ({
           </div>
         )}
 
+        <p className={styles.terms}>
+          By signing up, you agree to our <Link href="/terms"><strong>Terms</strong></Link>, <Link href="/terms#7-privacy-policy"><strong>Privacy Policy</strong></Link> and <Link href="/terms#8-cookie-policy"><strong>Cookies Policy</strong></Link>.
+        </p>
+
         <div className={styles.footer}>
           <p>Already have an account? <Link href="/">Log in</Link></p>
         </div>

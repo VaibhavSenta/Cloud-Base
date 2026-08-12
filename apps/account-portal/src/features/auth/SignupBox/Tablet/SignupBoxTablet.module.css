@@ -130,3 +130,15 @@
   transform: scale(0.98);
 }
 
+.terms {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-top: 1.5rem;
+  line-height: 1.5;
+}
+
+.terms a {
+  color: var(--accent-primary);
+  text-decoration: none;
+}
