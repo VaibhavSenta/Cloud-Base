@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const { Server } = require('socket.io');
 const jwt = require('jsonwebtoken');
 

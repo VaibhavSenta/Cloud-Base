@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 import React from 'react';
 import styles from './SettingsGroup.module.css';
 

@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 import RecentActivity from '@/features/security-settings/RecentActivity';
 
 export const metadata = {

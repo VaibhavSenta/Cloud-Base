@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';

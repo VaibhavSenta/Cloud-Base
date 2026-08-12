@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 import styles from './LogoIcon.module.css';
 
 const LogoIcon = ({ theme = 'default' }) => {

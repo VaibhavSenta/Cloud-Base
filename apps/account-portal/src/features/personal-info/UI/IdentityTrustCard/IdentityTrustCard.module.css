@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 .cardFront {
   background: rgba(255, 255, 255, 0.01); /* Solid dark translucent overlay to prevent slanting artifacts */
   border: 1px solid rgba(163, 163, 163, 0.094);

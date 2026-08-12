@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const Message = require('./message.model');
 const Conversation = require('../conversations/conversation.model');
 const { getIO } = require('../../config/socket');

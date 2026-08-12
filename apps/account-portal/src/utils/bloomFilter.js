@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 /**
  * A simple Bloom Filter implementation for client-side use.
  */

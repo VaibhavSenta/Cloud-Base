@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 'use client';
 import useWindowSize from '../../hooks/useWindowSize';
 import LayoutMobile from './Mobile/LayoutMobile';

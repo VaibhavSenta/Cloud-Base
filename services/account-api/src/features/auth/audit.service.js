@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const { parseDeviceInfo } = require('./session.service');
 
 /**

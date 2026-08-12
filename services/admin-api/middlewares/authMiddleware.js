@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const SecurityService = require('../services/SecurityService');
 const { SESSION } = require('../models/centralstation');
 const crypto = require('crypto');

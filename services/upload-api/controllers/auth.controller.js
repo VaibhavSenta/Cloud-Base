@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const { loginToAccount, createAccount } = require("../services/auth.service");
 const jwt = require("jsonwebtoken");
 

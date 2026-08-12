@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const mongoose = require('mongoose');
 
 const ManagedAppSchema = new mongoose.Schema({

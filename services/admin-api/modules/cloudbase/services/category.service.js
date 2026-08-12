@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const { name } = require('ejs');
 const { CATEGORYLIST } = require('../models/central.models');
 const slugify = require('slugify');

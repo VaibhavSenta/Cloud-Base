@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 import styles from './InfoModal.module.css';
 
 export default function InfoModal({ isOpen, title, message, onClose }) {

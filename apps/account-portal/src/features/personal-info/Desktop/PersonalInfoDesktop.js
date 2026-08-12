@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 'use client';
 import { useState, useEffect } from 'react';
 import ProfileBanner from '../UI/ProfileBanner/ProfileBanner';

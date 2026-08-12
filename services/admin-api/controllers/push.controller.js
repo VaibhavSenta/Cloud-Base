@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const pushService = require('../services/push.service');
 
 const subscribe = async (req, res, next) => {

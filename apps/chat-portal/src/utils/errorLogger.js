@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 if (typeof window !== 'undefined') {
   // Create log console overlay
   const setupLogBox = () => {

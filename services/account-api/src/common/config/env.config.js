@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const isDev = process.env.NODE_ENV !== 'production';
 
 module.exports = {

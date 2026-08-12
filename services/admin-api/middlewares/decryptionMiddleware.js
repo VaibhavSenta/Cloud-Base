@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const EncryptionService = require('../services/EncryptionService');
 const { GLOBALCONFIG } = require('../models/centralstation');
 const crypto = require('crypto');

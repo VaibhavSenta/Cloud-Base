@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 'use client';
 import Logo from '../../Logo/Logo';
 import styles from './LoadingScreen.module.css';

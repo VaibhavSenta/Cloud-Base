@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const authService = require('./auth.service');
 const encryptionService = require('../../common/utils/encryptionService');
 const crypto = require('crypto');

@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const webauthnService = require('../services/webauthn.service');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');

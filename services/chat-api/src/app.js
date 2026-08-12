@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const express = require('express');
 const http = require('http');
 const cors = require('cors');

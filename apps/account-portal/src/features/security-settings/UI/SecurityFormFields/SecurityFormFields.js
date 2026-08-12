@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 'use client';
 import FormInput from '@/features/personal-info/UI/FormInput/FormInput';
 import FormSelect from '@/features/personal-info/UI/FormSelect/FormSelect';

@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const profileServices = require('../services/profile.services');
 const auditService = require('../services/audit.service');
 

@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 'use client';
 import { useState, useEffect, useMemo } from 'react';
 import { useSecureQueryClient } from '@/hooks/useSecureQuery';

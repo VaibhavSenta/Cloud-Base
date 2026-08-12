@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router({mergeParams: true});

@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const { MANAGEDAPP } = require('../models/centralstation');
 
 async function addApp(allDetails) {

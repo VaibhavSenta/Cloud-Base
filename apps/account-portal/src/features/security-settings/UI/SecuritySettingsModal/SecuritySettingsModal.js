@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 'use client';
 import FormButton from '@/features/personal-info/UI/FormButton/FormButton';
 import SecurityFormFields from '../SecurityFormFields/SecurityFormFields';

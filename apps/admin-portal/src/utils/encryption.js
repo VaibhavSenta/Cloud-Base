@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 /**
  * Encryption Utility for Web Crypto API
  * Handles RSA Key Import and AES Data Encryption

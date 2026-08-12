@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 'use client';
 import CloudSpinner from '@/components/UI/CloudSpinner/CloudSpinner';
 import styles from './ServiceConsentCard.module.css';

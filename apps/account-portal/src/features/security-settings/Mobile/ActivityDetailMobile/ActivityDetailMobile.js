@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 'use client';
 import { useSecureQuery } from '../../../../hooks/useSecureQuery';
 import api from '../../../../utils/api';

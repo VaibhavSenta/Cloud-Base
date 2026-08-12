@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 import styles from './LogoFull.module.css';
 
 const LogoFull = ({ theme = 'default' }) => {

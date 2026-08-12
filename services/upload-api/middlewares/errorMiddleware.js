@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const globalErrorHandler = (err, req, res, next) => {
     console.error("=== GLOBAL ERROR LOG ===");
     console.error(err.stack);

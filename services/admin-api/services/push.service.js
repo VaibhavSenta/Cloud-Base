@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const webpush = require('web-push');
 const { ADMIN } = require('../models/admin/admin');
 

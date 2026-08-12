@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const jwt = require('jsonwebtoken');
 const config = require('../config/env.config');
 

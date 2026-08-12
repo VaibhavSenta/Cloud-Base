@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const mongoose = require('mongoose');
 
 const globalConfigSchema = new mongoose.Schema({

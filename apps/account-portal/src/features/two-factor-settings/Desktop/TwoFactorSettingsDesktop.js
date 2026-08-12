@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 'use client';
 import SuccessOverlay from '@/components/UI/SuccessOverlay/SuccessOverlay';
 import InfoModal from '@/components/UI/InfoModal/InfoModal';

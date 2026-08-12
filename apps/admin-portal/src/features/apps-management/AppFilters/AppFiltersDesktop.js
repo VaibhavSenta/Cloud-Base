@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 import NextImage from 'next/image';
 import styles from './AppFiltersDesktop.module.css';
 

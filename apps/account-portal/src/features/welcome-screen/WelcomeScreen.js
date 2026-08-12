@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 'use client';
 import { useEffect, useState } from 'react';
 import styles from './WelcomeScreen.module.css';

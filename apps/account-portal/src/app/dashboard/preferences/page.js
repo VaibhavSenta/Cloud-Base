@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 import Preferences from '@/features/preferences/Preferences';
 
 export const metadata = {

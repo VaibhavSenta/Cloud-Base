@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
 import { config } from '../config';

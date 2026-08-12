@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 import CryptoJS from 'crypto-js';
 
 // Generate a random local key in memory (RAM) for this session

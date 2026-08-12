@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const ChatProfile = require('./user.model');
 const { globalBloomFilter } = require('../../utils/bloomFilter');
 

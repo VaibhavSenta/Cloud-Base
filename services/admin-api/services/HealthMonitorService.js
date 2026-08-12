@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const cron = require('node-cron');
 const axios = require('axios');
 const { MANAGEDAPP } = require('../models/centralstation');

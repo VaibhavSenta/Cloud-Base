@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 'use client';
 import Link from 'next/link';
 import styles from './LoginBoxMobile.module.css';

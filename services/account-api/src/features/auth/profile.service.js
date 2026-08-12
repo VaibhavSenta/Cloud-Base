@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const { USER } = require('./auth.model');
 const { firebaseAdminActive, admin } = require('../../common/config/firebaseAdmin');
 

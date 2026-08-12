@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 'use client';
 import { useEffect } from 'react';
 import styles from './BottomSheet.module.css';

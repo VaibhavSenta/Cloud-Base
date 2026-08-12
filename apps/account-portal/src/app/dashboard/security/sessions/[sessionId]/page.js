@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 import SessionDetail from '@/features/security-settings/SessionDetail';
 
 export const metadata = {

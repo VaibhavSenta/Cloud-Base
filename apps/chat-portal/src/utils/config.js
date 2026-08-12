@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 export const isDev = process.env.NODE_ENV !== 'production';
 
 // Get base domain dynamically in browser, fallback to nothingbox.site

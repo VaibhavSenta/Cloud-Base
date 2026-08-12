@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const { v4: uuidv4 } = require('crypto'); // Built-in Node crypto UUID
 const Conversation = require('./conversation.model');
 const ChatProfile = require('../users/user.model');

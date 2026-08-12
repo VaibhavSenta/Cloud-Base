@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const SecurityService = require('../services/SecurityService');
 
 const verifyToken = (req, res, next) => {

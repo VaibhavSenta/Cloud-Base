@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 import withPWA from 'next-pwa';
 
 const withPWAConfig = withPWA({

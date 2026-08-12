@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 import "./globals.css";
 import AdminLayout from "@/components/AdminLayout/Component";
 import QueryProvider from "@/components/admin/QueryProvider";

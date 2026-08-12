@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const admin = require('firebase-admin');
 const fs = require('fs');
 const path = require('path');

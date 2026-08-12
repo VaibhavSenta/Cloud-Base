@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const managedappsServicess = require('../services/managedapps.services');
 const auditService = require('../services/audit.service');
 

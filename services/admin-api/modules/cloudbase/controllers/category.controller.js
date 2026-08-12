@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const categoryService = require('../services/category.service');
 
 // 1. Add Category

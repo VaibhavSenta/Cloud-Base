@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 import axios from 'axios';
 import { encryptPayload } from './security/networkCrypto';
 import { config } from './config';

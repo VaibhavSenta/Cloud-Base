@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 import CryptoJS from 'crypto-js';
 import JSEncrypt from 'jsencrypt';
 

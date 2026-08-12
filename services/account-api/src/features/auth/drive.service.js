@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const { Readable } = require('stream');
 const crypto = require('crypto');
 const { drive, GOOGLE_DRIVE_FOLDER_ID } = require('../../common/config/googleDrive');

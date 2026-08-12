@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 import React from 'react';
 import Header from '../../admin/Header/Header';
 import Sidebar from '../../admin/Sidebar/Sidebar';

@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const {ADMIN, SESSION} = require('../models/centralstation');
 
 // 1. Fetch profile from DB excluding password

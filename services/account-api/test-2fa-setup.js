@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 require('dotenv').config();
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env.local') });

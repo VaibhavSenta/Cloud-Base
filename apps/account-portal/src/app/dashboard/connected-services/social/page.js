@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 'use client';
 import { useRouter } from 'next/navigation';
 import { useSecureQuery } from '@/hooks/useSecureQuery';

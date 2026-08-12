@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 'use client';
 import PageHeader from '@/components/UI/PageHeader/PageHeader';
 import styles from './PreferencesMobile.module.css';

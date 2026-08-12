@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 import Image from 'next/image';
 import styles from './FixedBackground.module.css';
 

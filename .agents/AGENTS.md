@@ -17,3 +17,4 @@
 - **Zero-Touch Policy**: Never overwrite or modify manual CSS, HTML, or logic changes made by Vaibhav (the Partner) without explicit permission.
 - **Network testing IP**: Use `172.20.10.2` for local network testing.
 - **Environment variables**: Prompt Vaibhav immediately when a new `.env` parameter is added or modified.
+- **Copyright Notice**: Always include the comment `/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */` (or file-type equivalent `#` or `<!-- -->`) at the absolute top of all new or modified source files.

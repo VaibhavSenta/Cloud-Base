@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 import TwoFactorSettings from '@/features/two-factor-settings/TwoFactorSettings';
 
 export const metadata = {

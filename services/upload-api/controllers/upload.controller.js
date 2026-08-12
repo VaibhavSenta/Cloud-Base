@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 // controllers/upload.controller.js
 const Busboy = require('busboy');
 const mongoose = require('mongoose');

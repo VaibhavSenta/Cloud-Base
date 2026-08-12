@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 /**
  * Returns the appropriate URL for a given app based on context.
  * Browser mode (Dev): localhost subdomains (e.g., account.localhost)

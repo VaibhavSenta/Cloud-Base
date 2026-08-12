@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 import ActiveSessions from '@/features/security-settings/ActiveSessions';
 
 export const metadata = {

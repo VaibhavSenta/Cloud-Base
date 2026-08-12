@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Copyright (c) 2026 Vaibhav Senta. All Rights Reserved.
 
 # Simple watchdog to keep both Frontend (admin-portal) and Backend (admin-api) dev servers running.
 # If either process exits, it will be restarted.

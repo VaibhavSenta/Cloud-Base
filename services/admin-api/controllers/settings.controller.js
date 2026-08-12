@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const { GLOBALCONFIG } = require('../models/centralstation');
 const auditService = require('../services/audit.service');
 

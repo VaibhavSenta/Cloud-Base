@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 /**
  * Server-side Bloom Filter manager for Chat API usernames.
  */

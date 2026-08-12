@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 'use client';
 import Header from '../../Header/Header';
 import Sidebar from '../../Sidebar/Sidebar';

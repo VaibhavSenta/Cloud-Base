@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 import React from 'react';
 import NextImage from 'next/image';
 import styles from './UserFiltersDesktop.module.css';

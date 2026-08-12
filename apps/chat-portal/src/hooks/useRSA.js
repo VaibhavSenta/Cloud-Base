@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 import JSEncrypt from 'jsencrypt';
 
 // Helper to convert ArrayBuffer to Base64 PEM-like string

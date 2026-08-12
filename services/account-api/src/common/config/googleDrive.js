@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const { google } = require('googleapis');
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;

@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 /* eslint-disable no-undef */
 import { skipWaiting, clientsClaim } from 'workbox-core';
 import { precacheAndRoute } from 'workbox-precaching';

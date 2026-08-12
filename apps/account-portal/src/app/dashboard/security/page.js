@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 import SecuritySettings from '@/features/security-settings/SecuritySettings';
 
 export const metadata = {

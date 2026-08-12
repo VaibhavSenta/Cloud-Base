@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 import { useQuery } from '@tanstack/react-query';
 import api from '@/utils/api';
 import styles from './HeaderMobile.module.css';

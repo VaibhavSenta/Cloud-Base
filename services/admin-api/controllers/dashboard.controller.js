@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const { GLOBALCONFIG, USER, MANAGEDAPP } = require('../models/centralstation');
 
 const getSystemAnalytics = async (req, res, next) => {

@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 'use client';
 import styles from './AvatarCropperDesktop.module.css';
 import FormButton from '@/features/personal-info/UI/FormButton/FormButton';

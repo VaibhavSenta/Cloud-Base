@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const express = require('express');
 const router = express.Router({ mergeParams: true });
 const profileController = require('../controllers/profile.controller');

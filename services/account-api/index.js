@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const path = require('path');
 // Load environment variables from .env.local if it exists
 require('dotenv').config({ path: path.join(__dirname, '.env.local') });

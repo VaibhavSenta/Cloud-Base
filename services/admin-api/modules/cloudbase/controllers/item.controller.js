@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const itemService = require('../services/items.service'); // Path check kar lena
 const { ITEMLIST } = require('../models/itemList')
 

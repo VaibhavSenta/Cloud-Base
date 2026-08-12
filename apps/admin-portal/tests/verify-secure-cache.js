@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const CryptoJS = require('crypto-js');
 
 // Simulate the exact encryption logic of secure-query-cache localCrypto.js

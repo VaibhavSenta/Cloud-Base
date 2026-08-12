@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 /**
  * Bloom Filter Data Structure for Instant O(1) Client-side Username Availability Checking.
  * No False Negatives: If has(item) returns false, the item is GUARANTEED available!

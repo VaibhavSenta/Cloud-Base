@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 // config/googleConfig.js
 const { google } = require('googleapis');
 
