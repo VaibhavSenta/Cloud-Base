@@ -308,7 +308,7 @@ export default function ChatScreenMobile({
         ) : activeTab === 'chat' ? (
           <div style={{ display: 'flex', flexDirection: 'column', width: '100%', gap: '12px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <h1 className={styles.largeTitle} style={{ padding: 0 }}>Chat</h1>
+              <h1 className={styles.largeTitle} style={{ padding: 0 }}>Nothingbox Chat</h1>
             </div>
 
             <div className={styles.searchBarContainer} style={{ margin: 0 }}>
