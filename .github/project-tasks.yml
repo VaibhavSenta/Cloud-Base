@@ -1,0 +1,86 @@
+# Copyright (c) 2026 Vaibhav Senta. All Rights Reserved.
+version: 1
+generated_by: "Bella (CEO)"
+generated_at: "2026-08-17T08:19:25Z"
+signature: ""
+tasks:
+  - id: todo-001
+    type: issue
+    title: "Verify WebSocket client-to-server auth envelope encryption"
+    body: |
+      Audit the socket connection handshake sequence. In apps/chat-portal/src/hooks/useSocket.js, ensure:
+      1. Session token is fetched securely from window.__cb_session_token (no localStorage).
+      2. The token is double-encrypted using the current server tunnel key exchange protocol.
+      3. Connection is tested on local network IP 172.20.10.2:5006.
+      
+      Safety and rules compliance checks:
+      - Confirm no icons or emojis in the auth error UI.
+      - Ensure Copyright header exists on modified files.
+    labels: ["backend", "security", "websocket"]
+    priority: high
+    assignees: ["VaibhavSenta"]
+    project: "users/VaibhavSenta/projects/6"
+    column: "Todo"
+    due: "2026-08-20"
+
+  - id: todo-002
+    type: issue
+    title: "Implement offline messaging sync queue"
+    body: |
+      Create offline synchronization handler in chat-portal:
+      1. Detect network status change (online/offline).
+      2. When offline, cache message details in local memory or secure transient queue (zero localStorage).
+      3. Mark message status in local state as 'sent'.
+      4. Upon reconnection, emit 'sync_offline_queue' event via Socket.io with unsent message payloads.
+      5. Update message status to 'delivered' once verified by server.
+    labels: ["frontend", "offline-sync"]
+    priority: medium
+    assignees: ["VaibhavSenta"]
+    project: "users/VaibhavSenta/projects/6"
+    column: "Todo"
+    due: "2026-08-25"
+
+  - id: todo-003
+    type: issue
+    title: "Integrate IndexedDB cache store for chat logs"
+    body: |
+      Integrate IndexedDB inside the React Query wrapper for chat history:
+      1. Setup IndexedDB store with encryption keys derived from sessionStorage to persist messages.
+      2. Ensure zero trace of plaintext messages or user credentials in the DB.
+      3. Query from IndexedDB cache first when offline before requesting API endpoints.
+    labels: ["frontend", "security", "indexeddb"]
+    priority: high
+    assignees: ["VaibhavSenta"]
+    project: "users/VaibhavSenta/projects/6"
+    column: "Todo"
+    due: "2026-08-22"
+
+  - id: todo-004
+    type: issue
+    title: "Audit account-portal 2FA authentication state flow"
+    body: |
+      Ensure strict token lifecycle validation:
+      1. Refresh token must have 5-days expiry and access token must have 15-minutes expiry.
+      2. Double check 2FA code verification is verified properly via securePost.
+      3. Cleanly clear cookies on all domains upon user logout.
+    labels: ["backend", "auth", "security"]
+    priority: high
+    assignees: ["VaibhavSenta"]
+    project: "users/VaibhavSenta/projects/6"
+    column: "Todo"
+    due: "2026-08-20"
+
+  - id: todo-005
+    type: issue
+    title: "Verify PWA standalone mode routing configuration"
+    body: |
+      Validate user-portal navigation wrapper for standalone mode:
+      1. Ensure useStandaloneMode detection hook handles iOS navigator.standalone and Android referrers correctly.
+      2. Redirect browser users using subdomains, and standalone PWA users using subpaths without page refresh.
+      3. Ensure no icons are used in the navigation bar.
+    labels: ["frontend", "pwa"]
+    priority: medium
+    assignees: ["VaibhavSenta"]
+    project: "users/VaibhavSenta/projects/6"
+    column: "Todo"
+    due: "2026-08-28"
