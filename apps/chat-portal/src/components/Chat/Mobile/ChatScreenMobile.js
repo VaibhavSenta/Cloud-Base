@@ -3,6 +3,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import api from '@/utils/api';
+import { config } from '@/utils/config';
 import styles from './ChatScreenMobile.module.css';
 import Footer from '@/components/Footer/Footer';
 
