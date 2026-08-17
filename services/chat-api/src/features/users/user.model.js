@@ -23,6 +23,11 @@ const chatProfileSchema = new mongoose.Schema({
     required: false,
     default: ''
   },
+  encryptedPrivateKey: {
+    type: String,
+    required: false,
+    default: ''
+  },
   avatarUrl: {
     type: String,
     default: ''

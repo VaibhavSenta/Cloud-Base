@@ -1,0 +1,163 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 420px;
+  min-height: 100vh;
+  background: transparent;
+  padding: 24px;
+  margin: 0 auto;
+  position: relative;
+  overflow: visible;
+  z-index: 1;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 28px;
+  background: linear-gradient(165deg, rgba(0, 149, 246, 0.1) 0%, rgba(35, 35, 35, 0.4) 45%, rgba(22, 22, 22, 0.55) 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 2rem;
+  padding: 44px 32px;
+  position: relative;
+  transform: rotate(20deg) skew(-10deg, -5deg);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1), background 0.45s ease, border-color 0.45s ease;
+  overflow: hidden;
+  animation: cardEntrance 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  will-change: transform;
+}
+
+.card:hover,
+.card.cardActive,
+.card:active {
+  transform: rotate(0deg) skew(0deg, 0deg) scale(1.0);
+  color: #ffffff;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: inherit;
+}
+
+.subtitle {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.65);
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  transition: color 0.4s linear;
+}
+
+.card:hover .subtitle,
+.card.cardActive .subtitle {
+  color: #b0b0b0;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.inputField {
+  flex: 1;
+  width: 100%;
+  background: #23232392;
+  border: 0px solid transparent;
+  color: #ffffff;
+  padding: 16px 20px;
+  border-radius: 2rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  outline: none;
+  transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.inputField:focus {
+  background: linear-gradient(40deg, rgba(170, 170, 170, 0.229), rgba(0, 0, 0, 0));
+  border: 0px solid transparent;
+  transform: translateY(-10px);
+  box-shadow: 10px 30px 20px -20px rgba(255, 255, 255, 0.207);
+}
+
+.inputField::placeholder {
+  color: #888888;
+  font-weight: 400;
+}
+
+.errorMessage {
+  color: #ff453a;
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-align: left;
+  padding-left: 4px;
+  margin-top: -8px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(20px) rotate(20deg) skew(-10deg, -5deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(20deg) skew(-10deg, -5deg);
+  }
+}
+
+@media (max-width: 480px) {
+  .wrapper {
+    padding: 16px;
+  }
+
+  .card {
+    padding: 32px 20px;
+    gap: 22px;
+    transform: rotate(3deg) skew(-2deg, -1deg);
+  }
+
+  @keyframes cardEntrance {
+    from {
+      opacity: 0;
+      transform: translateY(20px) rotate(3deg) skew(-2deg, -1deg);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) rotate(3deg) skew(-2deg, -1deg);
+    }
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+}

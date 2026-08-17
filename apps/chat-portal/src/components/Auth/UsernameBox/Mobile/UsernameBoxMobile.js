@@ -92,6 +92,9 @@ export default function UsernameBoxMobile({
     }
   };
 
+  const [passphrase, setPassphrase] = useState('');
+  const [passphraseError, setPassphraseError] = useState('');
+
   const handleInputChange = (e) => {
     const val = e.target.value;
     setUsername(val);
@@ -100,23 +103,30 @@ export default function UsernameBoxMobile({
 
   const handleUsernameSubmit = async (e) => {
     e.preventDefault();
+    setPassphraseError('');
     if (!username || !usernameAvailable) return;
-    await onCreateProfile(username);
+    if (!passphrase || passphrase.trim().length < 4) {
+      setPassphraseError('Passphrase must be at least 4 characters.');
+      return;
+    }
+    await onCreateProfile(username, passphrase.trim());
   };
 
   const handleClear = () => {
     setUsername('');
     setUsernameAvailable(null);
     setUsernameError('');
+    setPassphrase('');
+    setPassphraseError('');
   };
 
   return (
     <div className={styles.wrapper}>
-      <div className={`${styles.card} ${username.length > 0 ? styles.cardActive : ''}`}>
+      <div className={`${styles.card} ${(username.length > 0 || passphrase.length > 0) ? styles.cardActive : ''}`}>
         <div className={styles.header}>
           <h1 className={styles.title}>Choose Username</h1>
           <p className={styles.subtitle}>
-            Choose your unique Chat handle to get started
+            Set your handle and an encryption PIN/passphrase to secure your keys
           </p>
         </div>
 
@@ -144,11 +154,22 @@ export default function UsernameBoxMobile({
           {usernameAvailable && (
             <div className={styles.availableMessage}>Username is available</div>
           )}
+
+          <input
+            type="password"
+            placeholder="Security Passphrase / PIN"
+            className={styles.inputField}
+            value={passphrase}
+            onChange={(e) => setPassphrase(e.target.value)}
+            required
+            disabled={loading || !usernameAvailable}
+          />
+          {passphraseError && <div className={styles.errorMessage}>{passphraseError}</div>}
           {error && <div className={styles.errorMessage}>{error}</div>}
 
           <Button
             type="submit"
-            disabled={loading || !usernameAvailable}
+            disabled={loading || !usernameAvailable || !passphrase}
           >
             {loading ? 'Continuing...' : 'Continue'}
           </Button>

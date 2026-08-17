@@ -54,7 +54,7 @@ const checkUsername = async (req, res) => {
 // Create new chat profile inside chat DB index
 const createProfile = async (req, res) => {
   try {
-    const { username, publicKey } = req.body;
+    const { username, publicKey, encryptedPrivateKey } = req.body;
     const userId = String(req.user.userId || req.user.id || req.user._id || req.user.sub);
 
     if (!userId || userId === 'undefined') {
@@ -81,7 +81,8 @@ const createProfile = async (req, res) => {
     const newProfile = new ChatProfile({
       userId,
       chatUsername: cleanedUsername,
-      publicKey: publicKey || ''
+      publicKey: publicKey || '',
+      encryptedPrivateKey: encryptedPrivateKey || ''
     });
 
     await newProfile.save();
@@ -188,6 +189,30 @@ const updatePublicKey = async (req, res) => {
   }
 };
 
+const updateEncryptedPrivateKey = async (req, res) => {
+  try {
+    const { encryptedPrivateKey } = req.body;
+    const userId = String(req.user.userId || req.user.id || req.user._id);
+
+    if (!encryptedPrivateKey) {
+      return res.status(400).json({ error: 'encryptedPrivateKey parameter is required.' });
+    }
+
+    const profile = await ChatProfile.findOne({ userId });
+    if (!profile) {
+      return res.status(404).json({ error: 'Chat profile not found.' });
+    }
+
+    profile.encryptedPrivateKey = encryptedPrivateKey;
+    await profile.save();
+
+    console.log(`🔑 [Chat-API] Updated encrypted private key for user: ${userId}`);
+    return res.status(200).json({ status: 'success', profile });
+  } catch (error) {
+    return res.status(500).json({ error: `Internal server error during private key update: ${error.message}` });
+  }
+};
+
 module.exports = {
   getBloomFilter,
   checkUsername,
@@ -195,5 +220,6 @@ module.exports = {
   getProfile,
   searchUser,
   logoutSession,
-  updatePublicKey
+  updatePublicKey,
+  updateEncryptedPrivateKey
 };
