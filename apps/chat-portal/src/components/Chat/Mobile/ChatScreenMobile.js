@@ -275,26 +275,18 @@ export default function ChatScreenMobile({
   };
 
   const filteredConversations = conversations.filter(conv => {
-    // 1. Filter by segment control (All vs Requests/Missed)
-    if (chatFilter === 'requests') {
-      if (conv.status !== 'pending') return false;
-    } else {
-      if (conv.status === 'pending') return false;
-    }
-
-    // 2. Filter by search text
+    // Filter by search text
     if (chatSearchText.trim()) {
       const username = (conv.partner?.chatUsername || '').toLowerCase();
       return username.includes(chatSearchText.trim().toLowerCase());
     }
-
     return true;
   });
 
   return (
     <div className={styles.wrapper}>
       {/* 1. HEADER BAR */}
-      <header className={styles.header}>
+      <header className={styles.header} style={(!activeConv && activeTab === 'chat') ? { flexDirection: 'column', alignItems: 'stretch', gap: '10px' } : {}}>
         {activeConv ? (
           <>
             <div className={styles.headerLeft}>
@@ -314,35 +306,23 @@ export default function ChatScreenMobile({
             </div>
           </>
         ) : activeTab === 'chat' ? (
-          <>
-            <div className={styles.headerLeft}>
-              <button className={styles.headerTextBtn} onClick={() => console.log('Edit clicked')}>Edit</button>
+          <div style={{ display: 'flex', flexDirection: 'column', width: '100%', gap: '12px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h1 className={styles.largeTitle} style={{ padding: 0 }}>Chat</h1>
+              <span className={`${styles.statusDot} ${isConnected ? styles.statusOnline : styles.statusOffline}`} />
             </div>
 
-            <div className={styles.segmentControl}>
-              <button 
-                className={`${styles.segmentBtn} ${chatFilter === 'all' ? styles.segmentBtnActive : ''}`} 
-                onClick={() => setChatFilter('all')}
-              >
-                All
-              </button>
-              <button 
-                className={`${styles.segmentBtn} ${chatFilter === 'requests' ? styles.segmentBtnActive : ''}`} 
-                onClick={() => setChatFilter('requests')}
-              >
-                Missed
-              </button>
+            <div className={styles.searchBarContainer} style={{ margin: 0 }}>
+              <span className={styles.searchBarIcon}>🔍</span>
+              <input
+                type="text"
+                placeholder="Search"
+                className={styles.searchBarInput}
+                value={chatSearchText}
+                onChange={(e) => setChatSearchText(e.target.value)}
+              />
             </div>
-
-            <div className={styles.headerRight}>
-              <button 
-                className={styles.headerTextBtn} 
-                onClick={() => setChatFilter(chatFilter === 'all' ? 'requests' : 'all')}
-              >
-                Filter
-              </button>
-            </div>
-          </>
+          </div>
         ) : (
           <>
             <div className={styles.headerLeft} />
@@ -448,19 +428,6 @@ export default function ChatScreenMobile({
             {activeTab === 'chat' && (
               /* CONVERSATIONS LIST / INBOX (iOS Style) */
               <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%' }}>
-                <h1 className={styles.largeTitle}>Chats</h1>
-
-                <div className={styles.searchBarContainer}>
-                  <span className={styles.searchBarIcon}>🔍</span>
-                  <input
-                    type="text"
-                    placeholder="Search"
-                    className={styles.searchBarInput}
-                    value={chatSearchText}
-                    onChange={(e) => setChatSearchText(e.target.value)}
-                  />
-                </div>
-
                 <div className={styles.conversationList}>
                   {filteredConversations.length === 0 ? (
                     <div className={styles.emptyState}>
