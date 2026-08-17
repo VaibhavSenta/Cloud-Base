@@ -17,7 +17,7 @@ export default function SearchBottomBarMobile({
           
           <input
             type="text"
-            placeholder="Search"
+            placeholder="Find someone. . "
             value={searchUsername || ''}
             onChange={(e) => setSearchUsername(e.target.value)}
             className={styles.searchInput}
