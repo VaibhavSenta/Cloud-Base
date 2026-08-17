@@ -76,7 +76,8 @@
 
 .main {
   height: 100%;
-  background-color: #c40606;
+  background-color: #171717;
+  border-radius: 2rem;
   display: flex;
   flex-direction: column;
   overflow: hidden;

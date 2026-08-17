@@ -1,0 +1,93 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background-color: transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 10;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  min-width: 50px;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 50px;
+}
+
+.headerTitle {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin: 0;
+  text-align: center;
+}
+
+.backBtn {
+  background: none;
+  border: none;
+  color: #0095f6;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.2s ease;
+}
+
+.backBtn:active {
+  opacity: 0.6;
+}
+
+.moreBtn {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.2s ease;
+}
+
+.moreBtn:active {
+  opacity: 0.6;
+}
+
+.largeTitle {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  padding: 0;
+  margin: 0;
+}
+
+.searchBarContainer {
+  display: flex;
+  align-items: center;
+  background-color: #1c1c1e;
+  border-radius: 2rem;
+  padding: 8px 12px;
+  gap: 8px;
+}
+
+.searchBarInput {
+  flex: 1;
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 0.95rem;
+  outline: none;
+  padding: 0;
+}
+
+.searchBarInput::placeholder {
+  color: #8e8e93;
+}
