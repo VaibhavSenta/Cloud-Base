@@ -456,10 +456,10 @@ export default function ChatScreenMobile({
                             </div>
 
                             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '3px' }}>
-                              <div className={styles.convUsername} style={{ fontSize: '1rem', fontWeight: '700' }}>
+                              <div className={styles.convUsername}>
                                 @{conv.partner?.chatUsername || 'User'}
                               </div>
-                              <div className={styles.convSnippet} style={{ fontSize: '0.85rem', color: '#8e8e93' }}>
+                              <div className={styles.convSnippet}>
                                 {conv.status === 'pending' ? 'Message Request Pending' : 'Tap to open chat'}
                               </div>
                             </div>
