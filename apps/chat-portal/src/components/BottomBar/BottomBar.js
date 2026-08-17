@@ -24,9 +24,9 @@ function useWindowSize() {
   return windowSize;
 }
 
-export default function BottomBar({ activeTab, setActiveTab, profile }) {
+export default function BottomBar({ activeTab, setActiveTab, profile, ...rest }) {
   const { width } = useWindowSize();
 
   // Mobile-First Priority default
-  return <BottomBarMobile activeTab={activeTab} setActiveTab={setActiveTab} profile={profile} />;
+  return <BottomBarMobile activeTab={activeTab} setActiveTab={setActiveTab} profile={profile} {...rest} />;
 }

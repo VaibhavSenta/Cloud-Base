@@ -4,11 +4,11 @@
 import BottomBar from '@/components/BottomBar/BottomBar';
 import styles from './FooterMobile.module.css';
 
-export default function FooterMobile({ activeTab, setActiveTab, profile }) {
+export default function FooterMobile({ activeTab, setActiveTab, profile, ...rest }) {
   return (
     <footer className={styles.footer}>
       {/* Renders BottomBar as default inside the Footer container, with capability to render other items conditionally in future */}
-      <BottomBar activeTab={activeTab} setActiveTab={setActiveTab} profile={profile} />
+      <BottomBar activeTab={activeTab} setActiveTab={setActiveTab} profile={profile} {...rest} />
     </footer>
   );
 }

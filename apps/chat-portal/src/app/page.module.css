@@ -76,7 +76,8 @@
 
 .main {
   height: 100%;
-  background-color: #171717;
+  /* background-color: #171717; */
+  background: linear-gradient(to bottom, transparent , #171717 80%);
   border-radius: 2rem;
   display: flex;
   flex-direction: column;

@@ -447,20 +447,7 @@ export default function ChatScreenMobile({
 
             {activeTab === 'search' && (
               /* SEARCH VIEW */
-              <div className={styles.searchSection}>
-                <form onSubmit={handleSearchUser} className={styles.searchInputGroup}>
-                  <input
-                    type="text"
-                    placeholder="Exact username (e.g. vaibhav)"
-                    className={styles.inputField}
-                    value={searchUsername}
-                    onChange={(e) => setSearchUsername(e.target.value)}
-                  />
-                  <button type="submit" className={styles.textBtnPrimary} disabled={isSearching}>
-                    {isSearching ? 'Searching...' : 'Search'}
-                  </button>
-                </form>
-
+              <div className={styles.searchSection} style={{ borderBottom: 'none', background: 'transparent' }}>
                 {searchError && <div className={styles.searchError}>{searchError}</div>}
 
                 {searchResult && (
@@ -530,7 +517,15 @@ export default function ChatScreenMobile({
 
       {/* 3. FOOTER / BOTTOM BAR */}
       {!activeConv && (
-        <Footer activeTab={activeTab} setActiveTab={setActiveTab} profile={profile} />
+        <Footer
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          profile={profile}
+          searchUsername={searchUsername}
+          setSearchUsername={setSearchUsername}
+          handleSearchUser={handleSearchUser}
+          isSearching={isSearching}
+        />
       )}
     </div>
   );
