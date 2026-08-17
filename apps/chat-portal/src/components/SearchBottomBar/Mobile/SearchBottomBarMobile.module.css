@@ -1,0 +1,72 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
+.bottomBar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  background: rgba(18, 18, 18, 0.6);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 2rem;
+  padding: 6px;
+  box-sizing: border-box;
+  column-gap: 6px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.searchForm {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 12px;
+  padding: 0 4px;
+}
+
+.searchInputWrapper {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 2rem;
+  padding: 8px 14px;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.searchIcon {
+  width: 16px;
+  height: 16px;
+  opacity: 0.5;
+  filter: brightness(0) invert(1);
+}
+
+.searchInput {
+  flex: 1;
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 0.9rem;
+  outline: none;
+  padding: 0;
+}
+
+.searchInput::placeholder {
+  color: #8e8e93;
+}
+
+.backBtn {
+  background: none;
+  border: none;
+  color: #0095f6;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: opacity 0.2s ease;
+}
+
+.backBtn:active {
+  opacity: 0.6;
+}

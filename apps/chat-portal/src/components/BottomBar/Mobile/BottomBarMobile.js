@@ -4,15 +4,7 @@
 import { useState, useEffect, useRef } from 'react';
 import styles from './BottomBarMobile.module.css';
 
-export default function BottomBarMobile({
-  activeTab,
-  setActiveTab,
-  profile,
-  searchUsername,
-  setSearchUsername,
-  handleSearchUser,
-  isSearching
-}) {
+export default function BottomBarMobile({ activeTab, setActiveTab, profile }) {
   const avatarUrl = profile?.avatarUrl;
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
   const tabsRef = useRef({});
@@ -40,35 +32,6 @@ export default function BottomBarMobile({
       window.removeEventListener('resize', updateIndicator);
     };
   }, [activeTab]);
-
-  if (activeTab === 'search') {
-    return (
-      <nav className={styles.bottomBar}>
-        <form onSubmit={handleSearchUser} className={styles.searchForm}>
-          <div className={styles.searchInputWrapper}>
-            <img src="/search-icon.svg" alt="Search" className={styles.searchIcon} />
-            <input
-              type="text"
-              placeholder="Exact username (e.g. vaibhav)"
-              value={searchUsername || ''}
-              onChange={(e) => setSearchUsername(e.target.value)}
-              className={styles.searchInput}
-            />
-          </div>
-          <button 
-            type="button" 
-            onClick={() => {
-              if (setSearchUsername) setSearchUsername('');
-              setActiveTab('chat');
-            }} 
-            className={styles.backBtn}
-          >
-            Back
-          </button>
-        </form>
-      </nav>
-    );
-  }
 
   return (
     <nav className={styles.bottomBar}>
