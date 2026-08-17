@@ -274,6 +274,23 @@ export default function ChatScreenMobile({
     }
   };
 
+  const filteredConversations = conversations.filter(conv => {
+    // 1. Filter by segment control (All vs Requests/Missed)
+    if (chatFilter === 'requests') {
+      if (conv.status !== 'pending') return false;
+    } else {
+      if (conv.status === 'pending') return false;
+    }
+
+    // 2. Filter by search text
+    if (chatSearchText.trim()) {
+      const username = (conv.partner?.chatUsername || '').toLowerCase();
+      return username.includes(chatSearchText.trim().toLowerCase());
+    }
+
+    return true;
+  });
+
   return (
     <div className={styles.wrapper}>
       {/* 1. HEADER BAR */}
