@@ -40,8 +40,14 @@ export default function AuthScreen({ onAuthComplete }) {
             
             if (profileResponse.data?.profile) {
               const profile = profileResponse.data.profile;
+              const ssoUser = meResponse.data.data;
               console.log('🔑 SSO: Chat profile active. Bypassing security checks.');
-              onAuthComplete(profile, 'sso-cookie');
+              onAuthComplete({
+                ...profile,
+                firstName: ssoUser.firstName || ssoUser.username || '',
+                lastName: ssoUser.lastName || '',
+                email: ssoUser.email || ''
+              }, 'sso-cookie');
               return;
             }
           } catch (profileErr) {
@@ -117,6 +123,15 @@ export default function AuthScreen({ onAuthComplete }) {
     setLoading(true);
     setError('');
     try {
+      // Fetch SSO user details first to populate display fields
+      let ssoUser = {};
+      try {
+        const meResponse = await api.get('/auth/me', { timeout: 5000 });
+        ssoUser = meResponse.data?.data || {};
+      } catch (meErr) {
+        console.warn('⚠️ Could not fetch SSO info during profile creation:', meErr.message);
+      }
+
       // Register username profile in chat-api (skip keys for plaintext mode)
       const response = await api.post('/chat/users/profile', {
         username,
@@ -126,7 +141,12 @@ export default function AuthScreen({ onAuthComplete }) {
 
       const { profile } = response.data;
 
-      onAuthComplete(profile, window.__cb_session_token || 'sso-cookie');
+      onAuthComplete({
+        ...profile,
+        firstName: ssoUser.firstName || ssoUser.username || '',
+        lastName: ssoUser.lastName || '',
+        email: ssoUser.email || ''
+      }, window.__cb_session_token || 'sso-cookie');
     } catch (err) {
       setError(err.response?.data?.error || err.message || 'Failed to create profile.');
     } finally {
