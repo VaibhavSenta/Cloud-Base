@@ -26,6 +26,8 @@ export default function ChatScreenMobile({
   const [isSearching, setIsSearching] = useState(false);
   const [partnerTyping, setPartnerTyping] = useState(false);
   const [offlineQueue, setOfflineQueue] = useState([]);
+  const [chatFilter, setChatFilter] = useState('all'); // 'all', 'requests'
+  const [chatSearchText, setChatSearchText] = useState('');
 
   const messagesEndRef = useRef(null);
   const typingDebounceRef = useRef(null);
@@ -276,34 +278,65 @@ export default function ChatScreenMobile({
     <div className={styles.wrapper}>
       {/* 1. HEADER BAR */}
       <header className={styles.header}>
-        <div className={styles.headerLeft}>
-          {activeConv && (
-            <button className={styles.backBtn} onClick={() => setActiveConv(null)}>
-              Back
-            </button>
-          )}
-        </div>
+        {activeConv ? (
+          <>
+            <div className={styles.headerLeft}>
+              <button className={styles.backBtn} onClick={() => setActiveConv(null)}>
+                Back
+              </button>
+            </div>
 
-        <h1 className={styles.headerTitle}>
-          {activeConv 
-            ? `@${activeConv.partner?.chatUsername || 'User'}` 
-            : activeTab === 'chat' 
-              ? 'Nothing Box Chat' 
-              : activeTab === 'search' 
-                ? 'Search' 
-                : 'Settings'
-          }
-        </h1>
+            <h1 className={styles.headerTitle}>
+              @{activeConv.partner?.chatUsername || 'User'}
+            </h1>
 
-        <div className={styles.headerRight}>
-          {activeConv ? (
-            <button className={styles.moreBtn} onClick={() => console.log('More options clicked')}>
-              ...
-            </button>
-          ) : (
-            <span className={`${styles.statusDot} ${isConnected ? styles.statusOnline : styles.statusOffline}`} />
-          )}
-        </div>
+            <div className={styles.headerRight}>
+              <button className={styles.moreBtn} onClick={() => console.log('More options clicked')}>
+                ...
+              </button>
+            </div>
+          </>
+        ) : activeTab === 'chat' ? (
+          <>
+            <div className={styles.headerLeft}>
+              <button className={styles.headerTextBtn} onClick={() => console.log('Edit clicked')}>Edit</button>
+            </div>
+
+            <div className={styles.segmentControl}>
+              <button 
+                className={`${styles.segmentBtn} ${chatFilter === 'all' ? styles.segmentBtnActive : ''}`} 
+                onClick={() => setChatFilter('all')}
+              >
+                All
+              </button>
+              <button 
+                className={`${styles.segmentBtn} ${chatFilter === 'requests' ? styles.segmentBtnActive : ''}`} 
+                onClick={() => setChatFilter('requests')}
+              >
+                Missed
+              </button>
+            </div>
+
+            <div className={styles.headerRight}>
+              <button 
+                className={styles.headerTextBtn} 
+                onClick={() => setChatFilter(chatFilter === 'all' ? 'requests' : 'all')}
+              >
+                Filter
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className={styles.headerLeft} />
+            <h1 className={styles.headerTitle}>
+              {activeTab === 'search' ? 'Search' : 'Settings'}
+            </h1>
+            <div className={styles.headerRight}>
+              <span className={`${styles.statusDot} ${isConnected ? styles.statusOnline : styles.statusOffline}`} />
+            </div>
+          </>
+        )}
       </header>
 
       {/* 2. MAIN CONTENT AREA */}
@@ -396,34 +429,76 @@ export default function ChatScreenMobile({
           /* MAIN TABS */
           <div className={styles.tabContainer}>
             {activeTab === 'chat' && (
-              /* CONVERSATIONS LIST / INBOX */
-              <div className={styles.conversationList}>
-                {conversations.length === 0 ? (
-                  <div className={styles.emptyState}>
-                    No active chats yet. Go to "Search" to find users.
-                  </div>
-                ) : (
-                  conversations.map(conv => (
-                    <div 
-                      key={conv.conversationId} 
-                      className={styles.conversationItem}
-                      onClick={() => handleSelectConversation(conv)}
-                    >
-                      <div>
-                        <div className={styles.convUsername}>
-                          @{conv.partner?.chatUsername || 'User'}
-                        </div>
-                        <div className={styles.convSnippet}>
-                          {conv.status === 'pending' ? 'Message Request Pending' : 'Tap to open chat'}
-                        </div>
-                      </div>
+              /* CONVERSATIONS LIST / INBOX (iOS Style) */
+              <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%' }}>
+                <h1 className={styles.largeTitle}>Chats</h1>
 
-                      {conv.status === 'pending' && (
-                        <span className={styles.badgeRequest}>Request</span>
-                      )}
+                <div className={styles.searchBarContainer}>
+                  <span className={styles.searchBarIcon}>🔍</span>
+                  <input
+                    type="text"
+                    placeholder="Search"
+                    className={styles.searchBarInput}
+                    value={chatSearchText}
+                    onChange={(e) => setChatSearchText(e.target.value)}
+                  />
+                </div>
+
+                <div className={styles.conversationList}>
+                  {filteredConversations.length === 0 ? (
+                    <div className={styles.emptyState}>
+                      {chatFilter === 'requests' 
+                        ? 'No message requests.' 
+                        : 'No active chats yet. Go to "Search" to find users.'
+                      }
                     </div>
-                  ))
-                )}
+                  ) : (
+                    filteredConversations.map((conv, index) => {
+                      const initials = (conv.partner?.chatUsername || 'U').substring(0, 2).toUpperCase();
+                      const timeText = conv.lastMessageTimestamp 
+                        ? new Date(conv.lastMessageTimestamp).toLocaleDateString([], { month: 'short', day: 'numeric' })
+                        : 'Tap to open';
+
+                      return (
+                        <div key={conv.conversationId}>
+                          <div 
+                            className={styles.conversationItem}
+                            onClick={() => handleSelectConversation(conv)}
+                            style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '12px 18px', background: 'transparent' }}
+                          >
+                            <div className={styles.iosAvatarContainer}>
+                              {conv.partner?.avatarUrl ? (
+                                <img src={conv.partner.avatarUrl} alt="Avatar" className={styles.iosAvatar} />
+                              ) : (
+                                <div className={styles.iosInitialsAvatar}>{initials}</div>
+                              )}
+                            </div>
+
+                            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                              <div className={styles.convUsername} style={{ fontSize: '1rem', fontWeight: '700' }}>
+                                @{conv.partner?.chatUsername || 'User'}
+                              </div>
+                              <div className={styles.convSnippet} style={{ fontSize: '0.85rem', color: '#8e8e93' }}>
+                                {conv.status === 'pending' ? 'Message Request Pending' : 'Tap to open chat'}
+                              </div>
+                            </div>
+
+                            <div className={styles.iosConvMeta}>
+                              <div className={styles.iosTimeText}>{timeText}</div>
+                              <div className={styles.iosInfoBtn} onClick={(e) => {
+                                e.stopPropagation();
+                                console.log('Info clicked for:', conv.conversationId);
+                              }}>i</div>
+                            </div>
+                          </div>
+                          {index < filteredConversations.length - 1 && (
+                            <div className={styles.iosSeparator} />
+                          )}
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
               </div>
             )}
 
