@@ -2,7 +2,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import BottomBarMobile from './Mobile/BottomBarMobile';
+import DefaultBottomBar from './Mobile/Default/DefaultBottomBar';
+import SearchBottomBarMobile from './Mobile/Search/SearchBottomBarMobile';
 
 // Helper hook to track viewport width
 function useWindowSize() {
@@ -24,9 +25,13 @@ function useWindowSize() {
   return windowSize;
 }
 
-export default function BottomBar({ activeTab, setActiveTab, profile }) {
+export default function BottomBar({ activeTab, setActiveTab, profile, ...rest }) {
   const { width } = useWindowSize();
 
   // Mobile-First Priority default
-  return <BottomBarMobile activeTab={activeTab} setActiveTab={setActiveTab} profile={profile} />;
+  if (activeTab === 'search') {
+    return <SearchBottomBarMobile setActiveTab={setActiveTab} {...rest} />;
+  }
+
+  return <DefaultBottomBar activeTab={activeTab} setActiveTab={setActiveTab} profile={profile} />;
 }

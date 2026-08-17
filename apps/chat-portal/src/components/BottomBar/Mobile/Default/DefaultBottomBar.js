@@ -2,9 +2,9 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import styles from './BottomBarMobile.module.css';
+import styles from './DefaultBottomBar.module.css';
 
-export default function BottomBarMobile({ activeTab, setActiveTab, profile }) {
+export default function DefaultBottomBar({ activeTab, setActiveTab, profile }) {
   const avatarUrl = profile?.avatarUrl;
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
   const tabsRef = useRef({});
