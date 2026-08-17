@@ -5,7 +5,7 @@
   width: 100%;
   max-width: 440px;
   height: 100dvh;
-  background-color: #000000;
+  background-color: transparent;
   color: #ffffff;
   margin: 0 auto;
   position: relative;
@@ -19,7 +19,9 @@
   align-items: center;
   justify-content: space-between;
   padding: 14px 18px;
-  background-color: #030303;
+  background-color: #0303039a;
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   z-index: 10;
 }
