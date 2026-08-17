@@ -309,11 +309,10 @@ export default function ChatScreenMobile({
           <div style={{ display: 'flex', flexDirection: 'column', width: '100%', gap: '12px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <h1 className={styles.largeTitle} style={{ padding: 0 }}>Chat</h1>
-              <span className={`${styles.statusDot} ${isConnected ? styles.statusOnline : styles.statusOffline}`} />
             </div>
 
             <div className={styles.searchBarContainer} style={{ margin: 0 }}>
-              <span className={styles.searchBarIcon}>🔍</span>
+              <img src="/search-icon.svg" alt="Search" style={{ width: '16px', height: '16px', opacity: 0.5, filter: 'brightness(0) invert(1)' }} />
               <input
                 type="text"
                 placeholder="Search"
@@ -329,9 +328,7 @@ export default function ChatScreenMobile({
             <h1 className={styles.headerTitle}>
               {activeTab === 'search' ? 'Search' : 'Settings'}
             </h1>
-            <div className={styles.headerRight}>
-              <span className={`${styles.statusDot} ${isConnected ? styles.statusOnline : styles.statusOffline}`} />
-            </div>
+            <div className={styles.headerRight} />
           </>
         )}
       </header>
