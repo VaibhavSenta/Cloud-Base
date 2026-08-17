@@ -1,14 +1,50 @@
 /* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 'use client';
 
+import { useState, useEffect, useRef } from 'react';
 import styles from './BottomBarMobile.module.css';
 
 export default function BottomBarMobile({ activeTab, setActiveTab, profile }) {
   const avatarUrl = profile?.avatarUrl;
+  const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
+  const tabsRef = useRef({});
+
+  useEffect(() => {
+    const updateIndicator = () => {
+      // Map either 'settings' or 'profile' to 'settings' ref key for safety
+      const currentTab = activeTab === 'settings' ? 'settings' : activeTab === 'profile' ? 'settings' : activeTab;
+      const activeEl = tabsRef.current[currentTab];
+      if (activeEl) {
+        setIndicatorStyle({
+          left: activeEl.offsetLeft,
+          width: activeEl.offsetWidth
+        });
+      }
+    };
+
+    updateIndicator();
+    // Use a small timeout to make sure DOM rendering layout has completed
+    const timeoutId = setTimeout(updateIndicator, 50);
+
+    window.addEventListener('resize', updateIndicator);
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('resize', updateIndicator);
+    };
+  }, [activeTab]);
 
   return (
     <nav className={styles.bottomBar}>
+      <div 
+        className={styles.indicator} 
+        style={{
+          left: `${indicatorStyle.left}px`,
+          width: `${indicatorStyle.width}px`
+        }}
+      />
+
       <button 
+        ref={el => tabsRef.current['chat'] = el}
         className={`${styles.tabItem} ${activeTab === 'chat' ? styles.activeTab : ''}`}
         onClick={() => setActiveTab('chat')}
       >
@@ -17,6 +53,7 @@ export default function BottomBarMobile({ activeTab, setActiveTab, profile }) {
       </button>
 
       <button 
+        ref={el => tabsRef.current['search'] = el}
         className={`${styles.tabItem} ${activeTab === 'search' ? styles.activeTab : ''}`}
         onClick={() => setActiveTab('search')}
       >
@@ -25,8 +62,9 @@ export default function BottomBarMobile({ activeTab, setActiveTab, profile }) {
       </button>
 
       <button 
-        className={`${styles.tabItem} ${activeTab === 'profile' ? styles.activeTab : ''}`}
-        onClick={() => setActiveTab('profile')}
+        ref={el => tabsRef.current['settings'] = el}
+        className={`${styles.tabItem} ${activeTab === 'settings' || activeTab === 'profile' ? styles.activeTab : ''}`}
+        onClick={() => setActiveTab('settings')}
       >
         {avatarUrl ? (
           <img src={avatarUrl} alt="Profile" className={styles.profileAvatar} />

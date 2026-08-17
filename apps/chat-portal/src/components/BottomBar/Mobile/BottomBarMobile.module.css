@@ -13,6 +13,18 @@
   box-sizing: border-box;
   column-gap: 6px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.indicator {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  background-color: rgba(72, 72, 72, 0.244);
+  border-radius: 2rem;
+  transition: left 0.35s cubic-bezier(0.16, 1, 0.3, 1), width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 0;
+  pointer-events: none;
 }
 
 .tabItem {
@@ -29,6 +41,8 @@
   border-radius: 2rem;
   gap: 2px;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  z-index: 1;
 }
 
 .tabIcon {
@@ -57,7 +71,6 @@
 
 .activeTab {
   color: #ffffff;
-  background-color: rgba(72, 72, 72, 0.244);
 }
 
 .activeTab .tabIcon {
