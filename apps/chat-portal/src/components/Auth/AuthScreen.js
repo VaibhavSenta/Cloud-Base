@@ -40,20 +40,9 @@ export default function AuthScreen({ onAuthComplete }) {
             
             if (profileResponse.data?.profile) {
               const profile = profileResponse.data.profile;
-              let privateKey = sessionStorage.getItem('cb_chat_private_key');
-              
-              if (privateKey) {
-                window.__cb_chat_private_key = privateKey;
-                onAuthComplete(profile, 'sso-cookie');
-                return;
-              } else {
-                console.log('🔒 Private key missing from memory. Redirecting to unlock stage.');
-                if (isMounted) {
-                  setTempProfile(profile);
-                  setStage('unlock');
-                }
-                return;
-              }
+              console.log('🔑 SSO: Chat profile active. Bypassing security checks.');
+              onAuthComplete(profile, 'sso-cookie');
+              return;
             }
           } catch (profileErr) {
             console.error('🔑 Profile lookup failed:', profileErr);
@@ -124,28 +113,15 @@ export default function AuthScreen({ onAuthComplete }) {
     }
   };
 
-  const handleCreateProfile = async (username, passphrase) => {
+  const handleCreateProfile = async (username) => {
     setLoading(true);
     setError('');
     try {
-      // 1. Generate new RSA Key Pair
-      console.log('🔑 Generating RSA keypair for new profile...');
-      const keyPair = await generateKeyPair();
-      const { privateKey, publicKey } = keyPair;
-      
-      // 2. Encrypt Private Key with derived Master Key
-      const salt = username.toLowerCase();
-      const masterKey = deriveMasterKey(passphrase, salt);
-      const encryptedPrivateKey = encryptPrivateKey(privateKey, masterKey);
-
-      sessionStorage.setItem('cb_chat_private_key', privateKey);
-      window.__cb_chat_private_key = privateKey;
-
-      // Register username profile in chat-api
+      // Register username profile in chat-api (skip keys for plaintext mode)
       const response = await api.post('/chat/users/profile', {
         username,
-        publicKey,
-        encryptedPrivateKey
+        publicKey: '',
+        encryptedPrivateKey: ''
       });
 
       const { profile } = response.data;
@@ -153,53 +129,6 @@ export default function AuthScreen({ onAuthComplete }) {
       onAuthComplete(profile, window.__cb_session_token || 'sso-cookie');
     } catch (err) {
       setError(err.response?.data?.error || err.message || 'Failed to create profile.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleUnlockProfile = async (passphrase) => {
-    setLoading(true);
-    setError('');
-    try {
-      if (!tempProfile) {
-        throw new Error('No active profile loaded.');
-      }
-      
-      let privateKey;
-      let publicKey = tempProfile.publicKey;
-
-      // Handle legacy profiles without encryptedPrivateKey
-      if (!tempProfile.encryptedPrivateKey) {
-        console.log('⚠️ Legacy Profile: No encrypted private key. Generating and updating...');
-        const keyPair = await generateKeyPair();
-        privateKey = keyPair.privateKey;
-        publicKey = keyPair.publicKey;
-
-        const salt = tempProfile.chatUsername;
-        const masterKey = deriveMasterKey(passphrase, salt);
-        const encryptedPrivateKey = encryptPrivateKey(privateKey, masterKey);
-
-        // Upload both public & encrypted private key
-        await api.put('/chat/users/profile/public-key', { publicKey });
-        await api.put('/chat/users/profile/encrypted-private-key', { encryptedPrivateKey });
-
-        // Update the temp profile object
-        tempProfile.publicKey = publicKey;
-        tempProfile.encryptedPrivateKey = encryptedPrivateKey;
-      } else {
-        // Standard decryption path
-        const salt = tempProfile.chatUsername;
-        const masterKey = deriveMasterKey(passphrase, salt);
-        privateKey = decryptPrivateKey(tempProfile.encryptedPrivateKey, masterKey);
-      }
-
-      sessionStorage.setItem('cb_chat_private_key', privateKey);
-      window.__cb_chat_private_key = privateKey;
-
-      onAuthComplete(tempProfile, window.__cb_session_token || 'sso-cookie');
-    } catch (err) {
-      setError(err.message || 'Incorrect passphrase. Failed to decrypt your chat keys.');
     } finally {
       setLoading(false);
     }
@@ -213,14 +142,7 @@ export default function AuthScreen({ onAuthComplete }) {
   return (
     <>
       <StarryBackground />
-      {stage === 'unlock' ? (
-        <UnlockBox
-          chatUsername={tempProfile?.chatUsername}
-          onUnlock={handleUnlockProfile}
-          loading={loading}
-          error={error}
-        />
-      ) : stage === 'username' ? (
+      {stage === 'username' ? (
         <UsernameBox
           onCheckUsername={handleCheckUsername}
           onCreateProfile={handleCreateProfile}

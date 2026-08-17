@@ -3,14 +3,6 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import api from '@/utils/api';
-import {
-  getConversationKeys,
-  startKeyRotationTimer,
-  stopKeyRotationTimer,
-  applyIncomingKeyRotation,
-  encryptMessagePayload,
-  decryptMessagePayload
-} from '@/utils/security/keyRotationEngine';
 import styles from './ChatScreenMobile.module.css';
 import Footer from '@/components/Footer/Footer';
 
@@ -32,6 +24,7 @@ export default function ChatScreenMobile({
   const [searchError, setSearchError] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [partnerTyping, setPartnerTyping] = useState(false);
+  const [offlineQueue, setOfflineQueue] = useState([]);
 
   const messagesEndRef = useRef(null);
   const typingDebounceRef = useRef(null);
@@ -61,10 +54,10 @@ export default function ChatScreenMobile({
       const res = await api.get(`/chat/messages/conversation/${convId}`);
       const rawMsgs = res.data.messages || [];
 
-      // Decrypt messages on-the-fly
+      // Plaintext dev bypass: render payload directly
       const decryptedMsgs = rawMsgs.map(m => ({
         ...m,
-        decryptedText: decryptMessagePayload(m.encryptedPayload, convId)
+        decryptedText: m.encryptedPayload
       }));
 
       setMessages(decryptedMsgs);
@@ -83,31 +76,57 @@ export default function ChatScreenMobile({
     }
   }, [profile?.userId]);
 
+  const syncOfflineQueue = useCallback(async () => {
+    if (offlineQueue.length === 0) return;
+
+    console.log(`🔄 [OfflineSync] Syncing ${offlineQueue.length} offline messages...`);
+    const queueCopy = [...offlineQueue];
+
+    for (const msg of queueCopy) {
+      try {
+        await api.post('/chat/messages/send', {
+          messageId: msg.messageId,
+          conversationId: msg.conversationId,
+          receiverId: msg.receiverId,
+          encryptedPayload: msg.encryptedPayload
+        });
+
+        // Update status in UI to 'sent'
+        setMessages(prev => prev.map(m => m.messageId === msg.messageId ? { ...m, status: 'sent' } : m));
+
+        // Remove from queue
+        setOfflineQueue(prev => prev.filter(m => m.messageId !== msg.messageId));
+      } catch (err) {
+        console.error(`❌ [OfflineSync] Failed to sync message ${msg.messageId}:`, err.message);
+        break; // Stop loop to preserve order and retry later
+      }
+    }
+  }, [offlineQueue]);
+
+  // Trigger offline queue sync upon connection status changes
+  useEffect(() => {
+    if (isConnected && offlineQueue.length > 0) {
+      syncOfflineQueue();
+    }
+  }, [isConnected, offlineQueue.length, syncOfflineQueue]);
+
+  useEffect(() => {
+    const handleOnline = () => {
+      if (offlineQueue.length > 0) {
+        syncOfflineQueue();
+      }
+    };
+    window.addEventListener('online', handleOnline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+    };
+  }, [offlineQueue.length, syncOfflineQueue]);
+
   // Select conversation
   const handleSelectConversation = (conv) => {
     setActiveConv(conv);
     fetchMessages(conv.conversationId);
-
-    // Start 2-minute key rotation timer if active & partner public key present
-    if (conv.status === 'active' && conv.partner?.publicKey) {
-      startKeyRotationTimer(
-        conv.conversationId,
-        conv.partner.publicKey,
-        ({ conversationId, encryptedKeyEnvelope, keyVersion }) => {
-          sendKeyRotation(conv.partner.userId, conversationId, encryptedKeyEnvelope, keyVersion);
-        }
-      );
-    }
   };
-
-  // Cleanup key rotation timer on unmount / conv change
-  useEffect(() => {
-    return () => {
-      if (activeConv) {
-        stopKeyRotationTimer(activeConv.conversationId);
-      }
-    };
-  }, [activeConv]);
 
   // Socket Event Listeners for real-time messages & status
   useEffect(() => {
@@ -122,7 +141,7 @@ export default function ChatScreenMobile({
 
       // If message belongs to current open conversation, append it
       if (activeConv && String(newMsg.conversationId) === String(activeConv.conversationId)) {
-        const decryptedText = decryptMessagePayload(newMsg.encryptedPayload, activeConv.conversationId);
+        const decryptedText = newMsg.encryptedPayload;
         setMessages(prev => [...prev, { ...newMsg, decryptedText }]);
         setTimeout(scrollToBottom, 50);
 
@@ -143,22 +162,14 @@ export default function ChatScreenMobile({
       }
     };
 
-    // Incoming Key Rotation listener (Approach B)
-    const handleKeyRotation = ({ conversationId, encryptedKeyEnvelope, keyVersion }) => {
-      console.log(`🔑 Key Rotation Event received for conversation ${conversationId}`);
-      applyIncomingKeyRotation(conversationId, encryptedKeyEnvelope, keyVersion);
-    };
-
     socket.on('new_message', handleNewMessage);
     socket.on('message_status_change', handleStatusChange);
     socket.on('user_typing', handleUserTyping);
-    socket.on('key_rotation_received', handleKeyRotation);
 
     return () => {
       socket.off('new_message', handleNewMessage);
       socket.off('message_status_change', handleStatusChange);
       socket.off('user_typing', handleUserTyping);
-      socket.off('key_rotation_received', handleKeyRotation);
     };
   }, [socket, activeConv, fetchConversations]);
 
@@ -216,8 +227,8 @@ export default function ChatScreenMobile({
     const conversationId = activeConv.conversationId;
     const receiverId = activeConv.partner?.userId;
 
-    // Encrypt payload with active AES key
-    const encryptedPayload = encryptMessagePayload(messageText, conversationId);
+    // Plaintext dev bypass: payload contains raw text
+    const encryptedPayload = messageText;
 
     // Optimistic UI update
     const newMsgObj = {
@@ -244,6 +255,7 @@ export default function ChatScreenMobile({
     } catch (err) {
       console.error('Failed to send message:', err);
       setMessages(prev => prev.map(m => m.messageId === messageId ? { ...m, status: 'failed' } : m));
+      setOfflineQueue(prev => [...prev, newMsgObj]);
     }
   };
 
