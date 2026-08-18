@@ -36,6 +36,9 @@ export default function BottomBar({ activeTab, setActiveTab, profile, ...rest })
   // Render the new LibraryBottomBar instead of DefaultBottomBar
   return (
     <LibraryBottomBar 
+      activeTab={activeTab}
+      setActiveTab={setActiveTab}
+      profile={profile}
       onSearchClick={() => setActiveTab('search')} 
     />
   );

@@ -9,7 +9,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 18px env(safe-area-inset-bottom) 18px;
+  padding: 0 16px env(safe-area-inset-bottom) 16px;
   z-index: 1000;
   box-sizing: border-box;
 }
@@ -20,10 +20,12 @@
   border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: 2rem;
   padding: 4px;
-  gap: 4px;
+  gap: 2px;
   align-items: center;
-  height: 52px;
+  height: 54px;
   box-sizing: border-box;
+  flex: 1;
+  margin-right: 12px;
 }
 
 .segmentBtn {
@@ -31,16 +33,18 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 4px 20px;
+  padding: 4px 0;
   border-radius: 1.8rem;
   border: none;
   background: transparent;
-  color: #8e8e93;
+  color: #666666;
   cursor: pointer;
   outline: none;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   -webkit-tap-highlight-color: transparent;
   gap: 2px;
+  flex: 1;
+  height: 100%;
 }
 
 .segmentBtn:focus,
@@ -51,22 +55,44 @@
 
 .activeSegment {
   background-color: rgba(255, 255, 255, 0.12);
-  color: #0095f6;
+  color: #ffffff;
 }
 
 .segmentIcon {
   width: 20px;
   height: 20px;
+  opacity: 0.5;
+  transition: opacity 0.2s ease, filter 0.2s ease;
+  object-fit: contain;
+}
+
+.activeSegment .segmentIcon {
+  opacity: 1;
+  filter: brightness(0) invert(1);
+  color: #ffffff;
 }
 
 .segmentLabel {
   font-size: 0.65rem;
   font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.profileAvatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.activeSegment .profileAvatar {
+  border-color: #ffffff;
 }
 
 .searchActionBtn {
-  width: 52px;
-  height: 52px;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
   background-color: rgba(181, 181, 181, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.04);
@@ -78,6 +104,7 @@
   -webkit-tap-highlight-color: transparent;
   transition: all 0.2s ease;
   color: #ffffff;
+  flex-shrink: 0;
 }
 
 .searchActionBtn:focus,
