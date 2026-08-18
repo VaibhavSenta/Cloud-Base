@@ -591,6 +591,8 @@ export default function ChatScreenMobile({
 
                 {/* All Friends List */}
                 {friendsSubTab === 'allFriends' && (
+                  <>
+                  <h2 className={styles.friendsSectionTitle}>Friends</h2>
                   <div className={styles.conversationList}>
                     {conversations.filter(c => c.status === 'active').length === 0 ? (
                       <div className={styles.emptyState}>
