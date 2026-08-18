@@ -3,6 +3,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import styles from './DefaultBottomBar.module.css';
+import { triggerHaptic } from '@/utils/haptics';
 
 export default function DefaultBottomBar({ activeTab, setActiveTab, profile }) {
   const avatarUrl = profile?.avatarUrl;
@@ -46,7 +47,10 @@ export default function DefaultBottomBar({ activeTab, setActiveTab, profile }) {
       <button 
         ref={el => tabsRef.current['chat'] = el}
         className={`${styles.tabItem} ${activeTab === 'chat' ? styles.activeTab : ''}`}
-        onClick={() => setActiveTab('chat')}
+        onClick={() => {
+          triggerHaptic.selection();
+          setActiveTab('chat');
+        }}
       >
         <img src="/chat-icon.svg" alt="Chat" className={styles.tabIcon} />
         <span className={styles.tabLabel}>Chat</span>
@@ -55,7 +59,10 @@ export default function DefaultBottomBar({ activeTab, setActiveTab, profile }) {
       <button 
         ref={el => tabsRef.current['friends'] = el}
         className={`${styles.tabItem} ${activeTab === 'friends' ? styles.activeTab : ''}`}
-        onClick={() => setActiveTab('friends')}
+        onClick={() => {
+          triggerHaptic.selection();
+          setActiveTab('friends');
+        }}
       >
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={styles.tabIcon} style={{ stroke: 'currentColor' }}>
           <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -69,7 +76,10 @@ export default function DefaultBottomBar({ activeTab, setActiveTab, profile }) {
       <button 
         ref={el => tabsRef.current['search'] = el}
         className={`${styles.tabItem} ${activeTab === 'search' ? styles.activeTab : ''}`}
-        onClick={() => setActiveTab('search')}
+        onClick={() => {
+          triggerHaptic.selection();
+          setActiveTab('search');
+        }}
       >
         <img src="/search-icon.svg" alt="Search" className={styles.tabIcon} />
         <span className={styles.tabLabel}>Search</span>
@@ -78,7 +88,10 @@ export default function DefaultBottomBar({ activeTab, setActiveTab, profile }) {
       <button 
         ref={el => tabsRef.current['settings'] = el}
         className={`${styles.tabItem} ${activeTab === 'settings' || activeTab === 'profile' ? styles.activeTab : ''}`}
-        onClick={() => setActiveTab('settings')}
+        onClick={() => {
+          triggerHaptic.selection();
+          setActiveTab('settings');
+        }}
       >
         {avatarUrl ? (
           <img src={avatarUrl} alt="Profile" className={styles.profileAvatar} />

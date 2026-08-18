@@ -2,6 +2,7 @@
 'use client';
 
 import styles from './SearchBottomBarMobile.module.css';
+import { triggerHaptic } from '@/utils/haptics';
 
 export default function SearchBottomBarMobile({
   setActiveTab,
@@ -36,6 +37,7 @@ export default function SearchBottomBarMobile({
         <button 
           type="button" 
           onClick={() => {
+            triggerHaptic.selection();
             if (setSearchUsername) setSearchUsername('');
             setActiveTab('chat');
           }} 
