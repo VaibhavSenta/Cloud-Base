@@ -42,6 +42,15 @@
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   z-index: 1;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tabItem:focus,
+.tabItem:active {
+  outline: none;
+  border: none;
+  box-shadow: none;
 }
 
 .tabIcon {
