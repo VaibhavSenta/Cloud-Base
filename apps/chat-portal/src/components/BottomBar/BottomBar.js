@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import DefaultBottomBar from './Mobile/Default/DefaultBottomBar';
+import LibraryBottomBar from './Mobile/Library/LibraryBottomBar';
 import SearchBottomBarMobile from './Mobile/Search/SearchBottomBarMobile';
 
 // Helper hook to track viewport width
@@ -33,5 +33,10 @@ export default function BottomBar({ activeTab, setActiveTab, profile, ...rest })
     return <SearchBottomBarMobile setActiveTab={setActiveTab} {...rest} />;
   }
 
-  return <DefaultBottomBar activeTab={activeTab} setActiveTab={setActiveTab} profile={profile} />;
+  // Render the new LibraryBottomBar instead of DefaultBottomBar
+  return (
+    <LibraryBottomBar 
+      onSearchClick={() => setActiveTab('search')} 
+    />
+  );
 }
