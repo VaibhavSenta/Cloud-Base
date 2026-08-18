@@ -79,8 +79,8 @@
   justify-content: center;
   outline: none;
   -webkit-tap-highlight-color: transparent;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.05);
@@ -101,8 +101,8 @@
 }
 
 .profileIcon {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
   filter: brightness(0) invert(1);
   opacity: 0.8;
 }
