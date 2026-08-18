@@ -3,11 +3,12 @@
 
 import DefaultHeader from './Mobile/Default/DefaultHeader';
 import ActiveChatHeader from './Mobile/ActiveChat/ActiveChatHeader';
+import styles from './Header.module.css';
 
 export default function Header({ activeConv, ...props }) {
   // Mobile-First Priority wrapper with unified div container for easy customization
   return (
-    <div className="header-container">
+    <div className={styles.headerContainer}>
       {activeConv ? (
         <ActiveChatHeader activeConv={activeConv} setActiveConv={props.setActiveConv} />
       ) : (
