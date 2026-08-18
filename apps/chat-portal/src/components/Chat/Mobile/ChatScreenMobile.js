@@ -575,7 +575,6 @@ export default function ChatScreenMobile({
                       <line x1="15" y1="6" x2="15" y2="21"></line>
                     </svg>
                   </button>
-                  <div className={styles.capsuleSeparator} />
                   <button 
                     className={styles.capsuleActionBtn} 
                     onClick={() => triggerHaptic.selection()} 
