@@ -1,7 +1,7 @@
 /* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 'use client';
 
-import DefaultHeader from './Mobile/Default/DefaultHeader';
+import ChatHeader from './Mobile/Chat/ChatHeader';
 import ActiveChatHeader from './Mobile/ActiveChat/ActiveChatHeader';
 import styles from './Header.module.css';
 
@@ -12,7 +12,7 @@ export default function Header({ activeConv, ...props }) {
       {activeConv ? (
         <ActiveChatHeader activeConv={activeConv} setActiveConv={props.setActiveConv} />
       ) : (
-        <DefaultHeader activeTab={props.activeTab} chatSearchText={props.chatSearchText} setChatSearchText={props.setChatSearchText} />
+        <ChatHeader activeTab={props.activeTab} chatSearchText={props.chatSearchText} setChatSearchText={props.setChatSearchText} />
       )}
     </div>
   );

@@ -1,9 +1,9 @@
 /* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 'use client';
 
-import styles from './DefaultHeader.module.css';
+import styles from './ChatHeader.module.css';
 
-export default function DefaultHeader({
+export default function ChatHeader({
   activeTab,
   chatSearchText,
   setChatSearchText
