@@ -4,9 +4,13 @@
   align-items: center;
   justify-content: space-between;
   padding: 14px 18px;
-  background-color: transparent;
+  background: rgba(18, 18, 18, 0.6);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   z-index: 10;
+  height: 56px;
+  box-sizing: border-box;
 }
 
 .headerLeft,
@@ -44,7 +48,20 @@
   text-transform: uppercase;
   cursor: pointer;
   padding: 4px 8px;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease, color 0.2s ease;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.backBtn:focus,
+.backBtn:active,
+.moreBtn:focus,
+.moreBtn:active {
+  outline: none;
+  box-shadow: none;
 }
 
 .backBtn:hover,
@@ -53,35 +70,12 @@
   color: #0095f6;
 }
 
-.largeTitle {
-  font-size: 1.6rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
+.backArrow {
+  width: 20px;
+  height: 20px;
   color: #ffffff;
-  padding: 0;
-  margin: 0;
 }
 
-.searchBarContainer {
-  display: flex;
-  align-items: center;
-  background-color: #1c1c1e;
-  border-radius: 2rem;
-  padding: 8px 12px;
-  gap: 8px;
-  width: 100%;
-}
-
-.searchBarInput {
-  flex: 1;
-  background: none;
-  border: none;
-  color: #ffffff;
-  font-size: 0.95rem;
-  outline: none;
-  padding: 0;
-}
-
-.searchBarInput::placeholder {
-  color: #8e8e93;
+.backBtn:hover .backArrow {
+  color: #0095f6;
 }
