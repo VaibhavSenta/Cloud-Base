@@ -25,9 +25,11 @@ export default function DefaultHeader({
         </button>
       </div>
 
-      <h1 className={styles.headerTitle}>
-        {title}
-      </h1>
+      <div className={styles.headerCenter}>
+        <h1 className={styles.headerTitle}>
+          {title}
+        </h1>  
+      </div>
 
       <div className={styles.headerRight}>
         {rightContent}
