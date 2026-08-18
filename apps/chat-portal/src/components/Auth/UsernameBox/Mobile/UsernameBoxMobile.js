@@ -45,7 +45,7 @@ export default function UsernameBoxMobile({
 
   // Instagram-style real-time check function
   const validateUsernameRealtime = async (unameToTest) => {
-    const val = unameToTest.trim();
+    let val = unameToTest.trim().toLowerCase();
     if (!val) {
       setUsernameError('');
       setUsernameAvailable(null);
@@ -58,9 +58,28 @@ export default function UsernameBoxMobile({
       return;
     }
 
-    const usernameRegex = /^[a-z0-9_]+$/i;
+    if (val.length > 30) {
+      setUsernameError('Username cannot exceed 30 characters.');
+      setUsernameAvailable(null);
+      return;
+    }
+
+    // Instagram allowed: letters, numbers, underscores, and periods
+    const usernameRegex = /^[a-z0-9_\.]+$/;
     if (!usernameRegex.test(val)) {
-      setUsernameError('Only letters, numbers, and underscores allowed.');
+      setUsernameError('Only lowercase letters, numbers, underscores, and periods are allowed.');
+      setUsernameAvailable(null);
+      return;
+    }
+
+    if (val.startsWith('.') || val.endsWith('.')) {
+      setUsernameError('Username cannot start or end with a period.');
+      setUsernameAvailable(null);
+      return;
+    }
+
+    if (val.includes('..')) {
+      setUsernameError('Username cannot contain consecutive periods.');
       setUsernameAvailable(null);
       return;
     }
@@ -70,7 +89,7 @@ export default function UsernameBoxMobile({
     setUsernameAvailable(null);
 
     // 1. O(1) Instant Bloom Filter Check
-    const bloomResultHas = bloomFilter.has(val.toLowerCase());
+    const bloomResultHas = bloomFilter.has(val);
     
     if (!bloomResultHas) {
       // 100% Guaranteed NOT in DB! (Zero Latency Instant Pass)
@@ -93,15 +112,17 @@ export default function UsernameBoxMobile({
   };
 
   const handleInputChange = (e) => {
-    const val = e.target.value;
+    // Automatically strip '@' symbol on input
+    const val = e.target.value.replace(/@/g, '');
     setUsername(val);
     validateUsernameRealtime(val);
   };
 
   const handleUsernameSubmit = async (e) => {
     e.preventDefault();
-    if (!username || !usernameAvailable) return;
-    await onCreateProfile(username);
+    const cleanUsername = username.replace(/@/g, '').trim().toLowerCase();
+    if (!cleanUsername || !usernameAvailable) return;
+    await onCreateProfile(cleanUsername);
   };
 
   const handleClear = () => {

@@ -22,16 +22,31 @@ const getBloomFilter = async (req, res) => {
 const checkUsername = async (req, res) => {
   try {
     const { username } = req.body;
-    if (!username || username.trim().length < 3) {
-      return res.status(400).json({ error: 'Username must be at least 3 characters long.' });
+    if (!username) {
+      return res.status(400).json({ error: 'Username is required.' });
     }
 
-    const cleanedUsername = username.trim().toLowerCase();
-    
-    // Regex validation matching standard username constraints
-    const usernameRegex = /^[a-z0-9_]+$/;
+    const cleanedUsername = username.trim().toLowerCase().replace(/@/g, '');
+
+    if (cleanedUsername.length < 3) {
+      return res.status(400).json({ error: 'Username must be at least 3 characters.' });
+    }
+
+    if (cleanedUsername.length > 30) {
+      return res.status(400).json({ error: 'Username cannot exceed 30 characters.' });
+    }
+
+    const usernameRegex = /^[a-z0-9_\.]+$/;
     if (!usernameRegex.test(cleanedUsername)) {
-      return res.status(400).json({ error: 'Username can only contain alphanumeric characters and underscores.' });
+      return res.status(400).json({ error: 'Only lowercase letters, numbers, underscores, and periods are allowed.' });
+    }
+
+    if (cleanedUsername.startsWith('.') || cleanedUsername.endsWith('.')) {
+      return res.status(400).json({ error: 'Username cannot start or end with a period.' });
+    }
+
+    if (cleanedUsername.includes('..')) {
+      return res.status(400).json({ error: 'Username cannot contain consecutive periods.' });
     }
 
     // First check Bloom Filter
@@ -65,7 +80,28 @@ const createProfile = async (req, res) => {
       return res.status(400).json({ error: 'Username parameter is required.' });
     }
 
-    const cleanedUsername = username.trim().toLowerCase();
+    const cleanedUsername = username.trim().toLowerCase().replace(/@/g, '');
+
+    if (cleanedUsername.length < 3) {
+      return res.status(400).json({ error: 'Username must be at least 3 characters.' });
+    }
+
+    if (cleanedUsername.length > 30) {
+      return res.status(400).json({ error: 'Username cannot exceed 30 characters.' });
+    }
+
+    const usernameRegex = /^[a-z0-9_\.]+$/;
+    if (!usernameRegex.test(cleanedUsername)) {
+      return res.status(400).json({ error: 'Only lowercase letters, numbers, underscores, and periods are allowed.' });
+    }
+
+    if (cleanedUsername.startsWith('.') || cleanedUsername.endsWith('.')) {
+      return res.status(400).json({ error: 'Username cannot start or end with a period.' });
+    }
+
+    if (cleanedUsername.includes('..')) {
+      return res.status(400).json({ error: 'Username cannot contain consecutive periods.' });
+    }
     
     // Validate uniqueness again before write
     const existingUsername = await ChatProfile.findOne({ chatUsername: cleanedUsername });

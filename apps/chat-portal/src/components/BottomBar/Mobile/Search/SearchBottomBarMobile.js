@@ -19,7 +19,7 @@ export default function SearchBottomBarMobile({
             type="text"
             placeholder="Find someone. . "
             value={searchUsername || ''}
-            onChange={(e) => setSearchUsername(e.target.value)}
+            onChange={(e) => setSearchUsername(e.target.value.replace(/@/g, ''))}
             className={styles.searchInput}
           />
 

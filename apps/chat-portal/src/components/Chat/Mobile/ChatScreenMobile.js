@@ -273,10 +273,10 @@ export default function ChatScreenMobile({
     };
   }, [socket, activeConv, fetchConversations]);
 
-  // Handle Exact Username Search (Privacy Rule: Strict Full Match Only)
   const handleSearchUser = async (e) => {
     e.preventDefault();
-    if (!searchUsername.trim()) return;
+    const cleanSearchUsername = searchUsername.replace(/@/g, '').trim().toLowerCase();
+    if (!cleanSearchUsername) return;
 
     setIsSearching(true);
     setSearchError('');
@@ -284,7 +284,7 @@ export default function ChatScreenMobile({
 
     try {
       const res = await api.post('/chat/conversations/initiate', {
-        targetUsername: searchUsername.trim()
+        targetUsername: cleanSearchUsername
       });
 
       setSearchResult(res.data);
