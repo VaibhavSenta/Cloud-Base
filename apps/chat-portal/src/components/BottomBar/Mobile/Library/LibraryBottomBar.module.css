@@ -1,0 +1,100 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
+.bottomBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: rgba(0, 0, 0, 0.85);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 18px env(safe-area-inset-bottom) 18px;
+  z-index: 1000;
+  box-sizing: border-box;
+}
+
+.capsuleContainer {
+  display: flex;
+  background-color: rgba(181, 181, 181, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 2rem;
+  padding: 4px;
+  gap: 4px;
+  align-items: center;
+  height: 52px;
+  box-sizing: border-box;
+}
+
+.segmentBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 20px;
+  border-radius: 1.8rem;
+  border: none;
+  background: transparent;
+  color: #8e8e93;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-tap-highlight-color: transparent;
+  gap: 2px;
+}
+
+.segmentBtn:focus,
+.segmentBtn:active {
+  outline: none;
+  box-shadow: none;
+}
+
+.activeSegment {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #0095f6;
+}
+
+.segmentIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.segmentLabel {
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+
+.searchActionBtn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background-color: rgba(181, 181, 181, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: all 0.2s ease;
+  color: #ffffff;
+}
+
+.searchActionBtn:focus,
+.searchActionBtn:active {
+  outline: none;
+  box-shadow: none;
+}
+
+.searchActionBtn:active {
+  opacity: 0.6;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.searchIcon {
+  width: 20px;
+  height: 20px;
+}
