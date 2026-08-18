@@ -33,7 +33,7 @@ export default function ChatHeader({
         <>
           <div className={styles.headerLeft} />
           <h1 className={styles.headerTitle}>
-            {activeTab === 'search' ? 'Search' : 'Settings'}
+            {activeTab === 'search' ? 'Search' : activeTab === 'friends' ? 'Friends' : 'Settings'}
           </h1>
           <div className={styles.headerRight} />
         </>

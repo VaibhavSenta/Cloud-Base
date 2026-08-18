@@ -541,6 +541,54 @@ export default function ChatScreenMobile({
               </div>
             )}
 
+            {activeTab === 'friends' && (
+              /* FRIENDS VIEW (Accepted message requests / active contacts list) */
+              <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%' }}>
+                <div className={styles.conversationList}>
+                  {conversations.filter(c => c.status === 'active').length === 0 ? (
+                    <div className={styles.emptyState}>
+                      No accepted friends yet. Accept a message request or chat with active users!
+                    </div>
+                  ) : (
+                    conversations
+                      .filter(c => c.status === 'active')
+                      .map((conv, index, arr) => {
+                        const initials = (conv.partner?.chatUsername || 'U').substring(0, 2).toUpperCase();
+                        return (
+                          <div key={conv.conversationId}>
+                            <div 
+                              className={styles.conversationItem}
+                              onClick={() => handleSelectConversation(conv)}
+                              style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '12px 18px', background: 'transparent' }}
+                            >
+                              <div className={styles.iosAvatarContainer}>
+                                {conv.partner?.avatarUrl ? (
+                                  <img src={conv.partner.avatarUrl} alt="Avatar" className={styles.iosAvatar} />
+                                ) : (
+                                  <div className={styles.iosInitialsAvatar}>{initials}</div>
+                                )}
+                              </div>
+
+                              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                                <div className={styles.convUsername}>
+                                  @{conv.partner?.chatUsername || 'User'}
+                                </div>
+                                <div className={styles.convSnippet} style={{ fontSize: '0.78rem', color: '#8e8e93' }}>
+                                  {conv.partner?.firstName || ''} {conv.partner?.lastName || ''}
+                                </div>
+                              </div>
+                            </div>
+                            {index < arr.length - 1 && (
+                              <div className={styles.iosSeparator} />
+                            )}
+                          </div>
+                        );
+                      })
+                  )}
+                </div>
+              </div>
+            )}
+
             {activeTab === 'search' && (
               /* SEARCH VIEW */
               <div className={styles.searchSection} style={{ borderBottom: 'none', background: 'transparent' }}>
