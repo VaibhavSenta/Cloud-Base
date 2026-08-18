@@ -924,4 +924,54 @@
   background-color: rgba(255, 255, 255, 0.1);
 }
 
+.friendsTabContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.verticalCapsule {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 1.5rem;
+  width: 44px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 10;
+  overflow: hidden;
+}
+
+.capsuleActionBtn {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #ffffff;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.2s ease;
+}
+
+.capsuleActionBtn:active {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.capsuleSeparator {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.08);
+  width: 70%;
+  align-self: center;
+}
+
 

@@ -7,6 +7,7 @@ import { config } from '@/utils/config';
 import styles from './ChatScreenMobile.module.css';
 import Footer from '@/components/Footer/Footer';
 import Header from '@/components/Header/Header';
+import { triggerHaptic } from '@/utils/haptics';
 
 export default function ChatScreenMobile({
   profile,
@@ -560,7 +561,32 @@ export default function ChatScreenMobile({
 
             {activeTab === 'friends' && (
               /* FRIENDS VIEW (Accepted message requests / active contacts list) */
-              <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%' }}>
+              <div className={styles.friendsTabContainer}>
+                {/* Floating Capsule Bar (iOS Find My style vertical stack) */}
+                <div className={styles.verticalCapsule}>
+                  <button 
+                    className={styles.capsuleActionBtn} 
+                    onClick={() => triggerHaptic.selection()} 
+                    title="Map Layer"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon>
+                      <line x1="9" y1="3" x2="9" y2="18"></line>
+                      <line x1="15" y1="6" x2="15" y2="21"></line>
+                    </svg>
+                  </button>
+                  <div className={styles.capsuleSeparator} />
+                  <button 
+                    className={styles.capsuleActionBtn} 
+                    onClick={() => triggerHaptic.selection()} 
+                    title="Navigate Location"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+                    </svg>
+                  </button>
+                </div>
+
                 <div className={styles.conversationList}>
                   {conversations.filter(c => c.status === 'active').length === 0 ? (
                     <div className={styles.emptyState}>
