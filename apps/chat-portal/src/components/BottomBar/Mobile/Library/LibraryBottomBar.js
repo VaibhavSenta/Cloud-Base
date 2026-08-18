@@ -5,7 +5,15 @@ import { useState, useEffect, useRef } from 'react';
 import styles from './LibraryBottomBar.module.css';
 import { triggerHaptic } from '@/utils/haptics';
 
-export default function LibraryBottomBar({ activeTab, setActiveTab, profile, onSearchClick }) {
+export default function LibraryBottomBar({ 
+  activeTab, 
+  setActiveTab, 
+  profile, 
+  onSearchClick,
+  hasChatUpdate = false,
+  hasGroupsUpdate = false,
+  hasFriendsUpdate = false
+}) {
   const avatarUrl = profile?.avatarUrl;
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0, opacity: 0 });
   const tabsRef = useRef({});
@@ -68,7 +76,10 @@ export default function LibraryBottomBar({ activeTab, setActiveTab, profile, onS
           className={`${styles.segmentBtn} ${currentTab === 'chat' ? styles.activeSegment : ''}`}
           onClick={() => handleTabClick('chat')}
         >
-          <img src="/chat-icon.svg" alt="Chat" className={styles.segmentIcon} />
+          <div className={styles.iconWrapper}>
+            <img src="/chat-icon.svg" alt="Chat" className={styles.segmentIcon} />
+            {hasChatUpdate && <span className={styles.redDot} />}
+          </div>
           <span className={styles.segmentLabel}>Chat</span>
         </button>
 
@@ -78,12 +89,15 @@ export default function LibraryBottomBar({ activeTab, setActiveTab, profile, onS
           className={`${styles.segmentBtn} ${currentTab === 'groups' ? styles.activeSegment : ''}`}
           onClick={() => handleTabClick('groups')}
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={styles.segmentIcon}>
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-            <circle cx="9" cy="7" r="4"></circle>
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-          </svg>
+          <div className={styles.iconWrapper}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={styles.segmentIcon}>
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            {hasGroupsUpdate && <span className={styles.redDot} />}
+          </div>
           <span className={styles.segmentLabel}>Groups</span>
         </button>
 
@@ -93,10 +107,13 @@ export default function LibraryBottomBar({ activeTab, setActiveTab, profile, onS
           className={`${styles.segmentBtn} ${currentTab === 'friends' ? styles.activeSegment : ''}`}
           onClick={() => handleTabClick('friends')}
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={styles.segmentIcon}>
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
+          <div className={styles.iconWrapper}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={styles.segmentIcon}>
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            {hasFriendsUpdate && <span className={styles.redDot} />}
+          </div>
           <span className={styles.segmentLabel}>Friends</span>
         </button>
       </div>

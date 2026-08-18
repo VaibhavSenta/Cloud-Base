@@ -380,6 +380,21 @@ export default function ChatScreenMobile({
     return true;
   });
 
+  // Calculate dynamic indicator badge states for bottombar tabs
+  const hasChatUpdate = conversations.some(conv => {
+    if (conv.status === 'active' && conv.lastMessage) {
+      const isMine = String(conv.lastMessage.senderId) === String(localProfile?.userId);
+      return !isMine && conv.lastMessage.status !== 'read';
+    }
+    return false;
+  });
+
+  const hasFriendsUpdate = conversations.some(conv => {
+    return conv.status === 'pending' && String(conv.requestedBy) !== String(localProfile?.userId);
+  });
+
+  const hasGroupsUpdate = false;
+
   return (
     <div className={styles.wrapper}>
       {/* 1. HEADER BAR */}
@@ -778,6 +793,9 @@ export default function ChatScreenMobile({
           setSearchUsername={setSearchUsername}
           handleSearchUser={handleSearchUser}
           isSearching={isSearching}
+          hasChatUpdate={hasChatUpdate}
+          hasFriendsUpdate={hasFriendsUpdate}
+          hasGroupsUpdate={hasGroupsUpdate}
         />
       )}
     </div>
