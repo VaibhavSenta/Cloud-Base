@@ -589,6 +589,14 @@ export default function ChatScreenMobile({
               </div>
             )}
 
+            {activeTab === 'groups' && (
+              /* GROUPS VIEW (Coming Soon) */
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', gap: '10px', padding: '20px' }}>
+                <h2 style={{ fontSize: '1.4rem', fontWeight: '800', color: '#ffffff', letterSpacing: '-0.02em', margin: 0 }}>Groups</h2>
+                <p style={{ fontSize: '0.9rem', color: '#8e8e93', margin: 0, textAlign: 'center' }}>Coming Soon</p>
+              </div>
+            )}
+
             {activeTab === 'search' && (
               /* SEARCH VIEW */
               <div className={styles.searchSection} style={{ borderBottom: 'none', background: 'transparent' }}>

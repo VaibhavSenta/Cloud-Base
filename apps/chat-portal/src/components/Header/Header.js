@@ -16,7 +16,7 @@ export default function Header({ activeConv, activeTab, setActiveTab, ...props }
         <ChatHeader chatSearchText={props.chatSearchText} setChatSearchText={props.setChatSearchText} />
       ) : (
         <DefaultHeader 
-          title={activeTab === 'friends' ? 'Friends' : activeTab === 'search' ? 'Search' : 'Settings'} 
+          title={activeTab === 'friends' ? 'Friends' : activeTab === 'groups' ? 'Groups' : activeTab === 'search' ? 'Search' : 'Settings'} 
           onBack={() => setActiveTab('chat')}
         />
       )}
