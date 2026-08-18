@@ -213,6 +213,30 @@ const updateEncryptedPrivateKey = async (req, res) => {
   }
 };
 
+const updateAvatarUrl = async (req, res) => {
+  try {
+    const { avatarUrl } = req.body;
+    const userId = String(req.user.userId || req.user.id || req.user._id);
+
+    if (avatarUrl === undefined) {
+      return res.status(400).json({ error: 'avatarUrl parameter is required.' });
+    }
+
+    const profile = await ChatProfile.findOne({ userId });
+    if (!profile) {
+      return res.status(404).json({ error: 'Chat profile not found.' });
+    }
+
+    profile.avatarUrl = avatarUrl;
+    await profile.save();
+
+    console.log(`🖼️ [Chat-API] Updated avatarUrl for user: ${userId}`);
+    return res.status(200).json({ status: 'success', profile });
+  } catch (error) {
+    return res.status(500).json({ error: `Internal server error during avatarUrl update: ${error.message}` });
+  }
+};
+
 module.exports = {
   getBloomFilter,
   checkUsername,
@@ -221,5 +245,6 @@ module.exports = {
   searchUser,
   logoutSession,
   updatePublicKey,
-  updateEncryptedPrivateKey
+  updateEncryptedPrivateKey,
+  updateAvatarUrl
 };

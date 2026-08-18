@@ -71,4 +71,22 @@ export const securePost = async (url, data) => {
   }
 };
 
+/**
+ * Custom wrapper for secure PATCH requests (used for account-api).
+ */
+export const securePatch = async (url, data) => {
+  try {
+    const encryptedBody = await encryptPayload(data);
+    return await axios.patch(url, encryptedBody, {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  } catch (error) {
+    console.warn(`Secure PATCH failed for ${url}:`, error.message);
+    throw error;
+  }
+};
+
 export default api;

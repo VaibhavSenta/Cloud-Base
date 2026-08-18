@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import api from '@/utils/api';
+import api, { securePatch } from '@/utils/api';
 import { config } from '@/utils/config';
 import styles from './ChatScreenMobile.module.css';
 import Footer from '@/components/Footer/Footer';
@@ -17,6 +17,14 @@ export default function ChatScreenMobile({
   sendKeyRotation
 }) {
   const [activeTab, setActiveTab] = useState('chat'); // 'chat', 'search', 'settings'
+  const [localProfile, setLocalProfile] = useState(profile);
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [editFirstName, setEditFirstName] = useState(profile?.firstName || '');
+  const [editLastName, setEditLastName] = useState(profile?.lastName || '');
+  const [avatarPreview, setAvatarPreview] = useState(profile?.avatarUrl || '');
+  const [isSavingProfile, setIsSavingProfile] = useState(false);
+  const [profileError, setProfileError] = useState('');
+
   const [conversations, setConversations] = useState([]);
   const [activeConv, setActiveConv] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -52,6 +60,94 @@ export default function ChatScreenMobile({
     fetchConversations();
   }, [fetchConversations]);
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+      setProfileError('File size is too large (max 2MB).');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setAvatarPreview(reader.result);
+      setProfileError('');
+    };
+    reader.onerror = () => {
+      setProfileError('Failed to read file.');
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleSaveProfile = async (e) => {
+    e.preventDefault();
+    if (!editFirstName.trim()) {
+      setProfileError('First name is required.');
+      return;
+    }
+
+    setIsSavingProfile(true);
+    setProfileError('');
+
+    try {
+      let finalAvatarUrl = localProfile.avatarUrl;
+
+      // 1. If user selected a new custom picture (base64)
+      if (avatarPreview && avatarPreview.startsWith('data:image/')) {
+        console.log('🖼️ Profile: Uploading base64 image to account-api PATCH /profile...');
+        const patchRes = await securePatch(`${config.accountApiUrl}/api/v1/auth/profile`, {
+          firstName: editFirstName.trim(),
+          lastName: editLastName.trim(),
+          profilePic: avatarPreview
+        });
+
+        if (patchRes.data?.success && patchRes.data?.data) {
+          const updatedUser = patchRes.data.data;
+          console.log('🖼️ Profile: Upload success. Received profilePic URL:', updatedUser.profilePic);
+          
+          if (updatedUser.profilePic) {
+            finalAvatarUrl = updatedUser.profilePic;
+            
+            // 2. Synchronize avatar URL to chat-api Profile collection
+            console.log('🖼️ Profile: Synchronizing avatarUrl with chat-api PUT /profile/avatar...');
+            await api.put('/chat/users/profile/avatar', { avatarUrl: finalAvatarUrl });
+            console.log('🖼️ Profile: Avatar synchronization complete.');
+          }
+        } else {
+          throw new Error(patchRes.data?.message || 'Profile patch failed on account-api.');
+        }
+      } else {
+        // Just update names without picture upload
+        console.log('🖼️ Profile: Updating names only...');
+        const patchRes = await securePatch(`${config.accountApiUrl}/api/v1/auth/profile`, {
+          firstName: editFirstName.trim(),
+          lastName: editLastName.trim()
+        });
+        if (!patchRes.data?.success) {
+          throw new Error(patchRes.data?.message || 'Failed to update display name.');
+        }
+      }
+
+      // 3. Update local React state instantly
+      const updatedProfile = {
+        ...localProfile,
+        firstName: editFirstName.trim(),
+        lastName: editLastName.trim(),
+        avatarUrl: finalAvatarUrl
+      };
+      
+      setLocalProfile(updatedProfile);
+      setIsEditingProfile(false);
+      
+    } catch (err) {
+      console.error('❌ Profile update failed:', err);
+      setProfileError(err.response?.data?.error || err.response?.data?.message || err.message || 'Failed to save changes.');
+    } finally {
+      setIsSavingProfile(false);
+    }
+  };
+
   // Load messages when an active conversation is selected
   const fetchMessages = useCallback(async (convId) => {
     try {
@@ -69,7 +165,7 @@ export default function ChatScreenMobile({
 
       // Auto-mark unread messages as read
       const unreadIds = rawMsgs
-        .filter(m => String(m.receiverId) === String(profile?.userId) && m.status !== 'read')
+        .filter(m => String(m.receiverId) === String(localProfile?.userId) && m.status !== 'read')
         .map(m => m.messageId);
 
       if (unreadIds.length > 0) {
@@ -78,7 +174,7 @@ export default function ChatScreenMobile({
     } catch (err) {
       console.error('Failed to load messages:', err);
     }
-  }, [profile?.userId]);
+  }, [localProfile?.userId]);
 
   const syncOfflineQueue = useCallback(async () => {
     if (offlineQueue.length === 0) return;
@@ -238,7 +334,7 @@ export default function ChatScreenMobile({
     const newMsgObj = {
       messageId,
       conversationId,
-      senderId: profile.userId,
+      senderId: localProfile.userId,
       receiverId,
       encryptedPayload,
       decryptedText: messageText,
@@ -301,7 +397,7 @@ export default function ChatScreenMobile({
           /* CHAT THREAD VIEW */
           <div className={styles.chatContainer}>
             {/* Opt-In Message Request Banner */}
-            {activeConv.status === 'pending' && String(activeConv.requestedBy) !== String(profile.userId) && (
+            {activeConv.status === 'pending' && String(activeConv.requestedBy) !== String(localProfile.userId) && (
               <div className={styles.requestBanner}>
                 <div className={styles.requestTitle}>Message Request</div>
                 <div className={styles.requestSubtitle}>
@@ -318,7 +414,7 @@ export default function ChatScreenMobile({
             {/* Messages Area */}
             <div className={styles.messagesList}>
               {messages.map((msg, index) => {
-                const isMine = String(msg.senderId) === String(profile.userId);
+                const isMine = String(msg.senderId) === String(localProfile.userId);
 
                 return (
                   <div 
@@ -370,7 +466,7 @@ export default function ChatScreenMobile({
                 className={styles.inputField}
                 value={text}
                 onChange={handleTextChange}
-                disabled={activeConv.status === 'pending' && String(activeConv.requestedBy) !== String(profile.userId)}
+                disabled={activeConv.status === 'pending' && String(activeConv.requestedBy) !== String(localProfile.userId)}
               />
               <button 
                 type="submit" 
@@ -471,25 +567,124 @@ export default function ChatScreenMobile({
               </div>
             )}
 
-            {activeTab === 'settings' && (
+            {activeTab === 'settings' && isEditingProfile && (
+              /* EDIT PROFILE VIEW */
+              <div className={styles.settingsSection}>
+                <form onSubmit={handleSaveProfile} className={styles.editProfileForm}>
+                  {profileError && <div className={styles.profileErrorText}>{profileError}</div>}
+
+                  <div className={styles.avatarEditContainer}>
+                    <div className={styles.avatarEditWrapper}>
+                      {avatarPreview ? (
+                        <img src={avatarPreview} alt="Avatar Preview" className={styles.avatarPreviewImg} />
+                      ) : (
+                        <div className={styles.avatarPlaceholderText}>
+                          {localProfile.firstName ? localProfile.firstName[0].toUpperCase() : '?'}
+                        </div>
+                      )}
+                      <label className={styles.avatarUploadLabel}>
+                        Change
+                        <input 
+                          type="file" 
+                          accept="image/*" 
+                          onChange={handleFileChange} 
+                          className={styles.hiddenFileInput}
+                        />
+                      </label>
+                    </div>
+                  </div>
+
+                  <div className={styles.profileEditCard}>
+                    <div className={styles.editField}>
+                      <label className={styles.fieldLabel}>FIRST NAME</label>
+                      <input 
+                        type="text" 
+                        value={editFirstName} 
+                        onChange={(e) => setEditFirstName(e.target.value)} 
+                        className={styles.editInputField}
+                        placeholder="First Name"
+                      />
+                    </div>
+                    <div className={styles.editField} style={{ borderTop: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                      <label className={styles.fieldLabel}>LAST NAME</label>
+                      <input 
+                        type="text" 
+                        value={editLastName} 
+                        onChange={(e) => setEditLastName(e.target.value)} 
+                        className={styles.editInputField}
+                        placeholder="Last Name"
+                      />
+                    </div>
+                  </div>
+
+                  <div className={styles.actionButtons}>
+                    <button 
+                      type="button" 
+                      onClick={() => {
+                        setIsEditingProfile(false);
+                        setEditFirstName(localProfile.firstName || '');
+                        setEditLastName(localProfile.lastName || '');
+                        setAvatarPreview(localProfile.avatarUrl || '');
+                        setProfileError('');
+                      }} 
+                      className={styles.cancelBtn}
+                      disabled={isSavingProfile}
+                    >
+                      Cancel
+                    </button>
+                    <button 
+                      type="submit" 
+                      className={styles.saveBtn}
+                      disabled={isSavingProfile}
+                    >
+                      {isSavingProfile ? 'Saving...' : 'Save'}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            )}
+
+            {activeTab === 'settings' && !isEditingProfile && (
               /* SETTINGS VIEW */
               <div className={styles.settingsSection}>
+                <div className={styles.settingsAvatarContainer}>
+                  {localProfile.avatarUrl ? (
+                    <img src={localProfile.avatarUrl} alt="Avatar" className={styles.largeAvatar} />
+                  ) : (
+                    <div className={styles.largeAvatarPlaceholder}>
+                      {localProfile.firstName ? localProfile.firstName[0].toUpperCase() : '?'}
+                    </div>
+                  )}
+                </div>
+
                 <div className={styles.profileCard}>
                   <div className={styles.profileMeta}>
                     <div className={styles.profileLabel}>DISPLAY NAME</div>
-                    <div className={styles.profileValue}>{profile.firstName} {profile.lastName}</div>
+                    <div className={styles.profileValue}>{localProfile.firstName} {localProfile.lastName}</div>
                   </div>
                   <div className={styles.profileMeta}>
                     <div className={styles.profileLabel}>CHAT USERNAME</div>
-                    <div className={styles.profileValue}>@{profile.chatUsername}</div>
+                    <div className={styles.profileValue}>@{localProfile.chatUsername}</div>
                   </div>
                   <div className={styles.profileMeta}>
                     <div className={styles.profileLabel}>EMAIL ADDRESS</div>
-                    <div className={styles.profileValue}>{profile.email || 'None'}</div>
+                    <div className={styles.profileValue}>{localProfile.email || 'None'}</div>
                   </div>
                 </div>
 
                 <div className={styles.settingsList}>
+                  <button 
+                    onClick={() => {
+                      setIsEditingProfile(true);
+                      setEditFirstName(localProfile.firstName || '');
+                      setEditLastName(localProfile.lastName || '');
+                      setAvatarPreview(localProfile.avatarUrl || '');
+                      setProfileError('');
+                    }} 
+                    className={styles.editProfileBtn}
+                  >
+                    Edit Profile Details
+                  </button>
                   <a 
                     href={`${config.accountPortalUrl}/dashboard`} 
                     target="_blank" 
@@ -520,7 +715,7 @@ export default function ChatScreenMobile({
         <Footer
           activeTab={activeTab}
           setActiveTab={setActiveTab}
-          profile={profile}
+          profile={localProfile}
           searchUsername={searchUsername}
           setSearchUsername={setSearchUsername}
           handleSearchUser={handleSearchUser}
