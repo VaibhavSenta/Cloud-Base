@@ -26,6 +26,18 @@
   box-sizing: border-box;
   flex: 1;
   margin-right: 12px;
+  position: relative;
+}
+
+.indicator {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  background-color: rgba(255, 255, 255, 0.12);
+  border-radius: 1.8rem;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 0;
+  pointer-events: none;
 }
 
 .segmentBtn {
@@ -45,6 +57,8 @@
   gap: 2px;
   flex: 1;
   height: 100%;
+  position: relative;
+  z-index: 1;
 }
 
 .segmentBtn:focus,
@@ -54,7 +68,6 @@
 }
 
 .activeSegment {
-  background-color: rgba(255, 255, 255, 0.12);
   color: #ffffff;
 }
 
@@ -76,18 +89,6 @@
   font-size: 0.65rem;
   font-weight: 600;
   transition: color 0.2s ease;
-}
-
-.profileAvatar {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.activeSegment .profileAvatar {
-  border-color: #ffffff;
 }
 
 .searchActionBtn {

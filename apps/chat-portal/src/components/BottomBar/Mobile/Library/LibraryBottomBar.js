@@ -1,11 +1,14 @@
 /* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 'use client';
 
+import { useState, useEffect, useRef } from 'react';
 import styles from './LibraryBottomBar.module.css';
 import { triggerHaptic } from '@/utils/haptics';
 
 export default function LibraryBottomBar({ activeTab, setActiveTab, profile, onSearchClick }) {
   const avatarUrl = profile?.avatarUrl;
+  const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0, opacity: 0 });
+  const tabsRef = useRef({});
 
   const handleTabClick = (tabName) => {
     triggerHaptic.selection();
@@ -20,12 +23,48 @@ export default function LibraryBottomBar({ activeTab, setActiveTab, profile, onS
   // Map settings or profile tab safety check
   const currentTab = activeTab === 'settings' || activeTab === 'profile' ? 'settings' : activeTab;
 
+  useEffect(() => {
+    const updateIndicator = () => {
+      const activeEl = tabsRef.current[currentTab];
+      
+      if (activeEl && (currentTab === 'chat' || currentTab === 'groups' || currentTab === 'friends')) {
+        setIndicatorStyle({
+          left: activeEl.offsetLeft,
+          width: activeEl.offsetWidth,
+          opacity: 1
+        });
+      } else {
+        setIndicatorStyle(prev => ({ ...prev, width: 0, opacity: 0 }));
+      }
+    };
+
+    updateIndicator();
+    const timeoutId = setTimeout(updateIndicator, 50);
+
+    window.addEventListener('resize', updateIndicator);
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('resize', updateIndicator);
+    };
+  }, [currentTab]);
+
   return (
     <nav className={styles.bottomBar}>
       {/* Left side capsule segmented control */}
       <div className={styles.capsuleContainer}>
+        {/* Sliding active tab indicator */}
+        <div 
+          className={styles.indicator} 
+          style={{
+            left: `${indicatorStyle.left}px`,
+            width: `${indicatorStyle.width}px`,
+            opacity: indicatorStyle.opacity
+          }}
+        />
+
         {/* Chat Tab */}
         <button
+          ref={el => tabsRef.current['chat'] = el}
           className={`${styles.segmentBtn} ${currentTab === 'chat' ? styles.activeSegment : ''}`}
           onClick={() => handleTabClick('chat')}
         >
@@ -35,6 +74,7 @@ export default function LibraryBottomBar({ activeTab, setActiveTab, profile, onS
 
         {/* Groups Tab */}
         <button
+          ref={el => tabsRef.current['groups'] = el}
           className={`${styles.segmentBtn} ${currentTab === 'groups' ? styles.activeSegment : ''}`}
           onClick={() => handleTabClick('groups')}
         >
@@ -49,6 +89,7 @@ export default function LibraryBottomBar({ activeTab, setActiveTab, profile, onS
 
         {/* Friends Tab */}
         <button
+          ref={el => tabsRef.current['friends'] = el}
           className={`${styles.segmentBtn} ${currentTab === 'friends' ? styles.activeSegment : ''}`}
           onClick={() => handleTabClick('friends')}
         >
