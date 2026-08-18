@@ -18,6 +18,7 @@ export default function ChatScreenMobile({
   sendKeyRotation
 }) {
   const [activeTab, setActiveTab] = useState('chat'); // 'chat', 'search', 'settings'
+  const [friendsSubTab, setFriendsSubTab] = useState('allFriends'); // 'allFriends', 'friendRequests'
   const [localProfile, setLocalProfile] = useState(profile);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [editFirstName, setEditFirstName] = useState(profile?.firstName || '');
@@ -560,68 +561,127 @@ export default function ChatScreenMobile({
             )}
 
             {activeTab === 'friends' && (
-              /* FRIENDS VIEW (Accepted message requests / active contacts list) */
+              /* FRIENDS VIEW */
               <div className={styles.friendsTabContainer}>
-                {/* Floating Capsule Bar (iOS Find My style vertical stack) */}
+                {/* Floating Capsule Bar */}
                 <div className={styles.verticalCapsule}>
                   <button 
                     className={styles.capsuleActionBtn} 
-                    onClick={() => triggerHaptic.selection()} 
+                    onClick={() => { triggerHaptic.selection(); setFriendsSubTab('friendRequests'); }}
                     title="Friend Requests"
                   >
-                    <img src="/friendRequests.svg" alt="Friend Requests" className={styles.capsuleIcon} />
+                    <img 
+                      src="/friendRequests.svg" 
+                      alt="Friend Requests" 
+                      className={`${styles.capsuleIcon} ${friendsSubTab === 'friendRequests' ? styles.capsuleIconActive : ''}`} 
+                    />
                   </button>
                   <button 
                     className={styles.capsuleActionBtn} 
-                    onClick={() => triggerHaptic.selection()} 
+                    onClick={() => { triggerHaptic.selection(); setFriendsSubTab('allFriends'); }}
                     title="All Friends"
                   >
-                    <img src="/allfriends.svg" alt="All Friends" className={styles.capsuleIcon} />
+                    <img 
+                      src="/allfriends.svg" 
+                      alt="All Friends" 
+                      className={`${styles.capsuleIcon} ${friendsSubTab === 'allFriends' ? styles.capsuleIconActive : ''}`} 
+                    />
                   </button>
                 </div>
 
-                <div className={styles.conversationList}>
-                  {conversations.filter(c => c.status === 'active').length === 0 ? (
-                    <div className={styles.emptyState}>
-                      No accepted friends yet. Accept a message request or chat with active users!
-                    </div>
-                  ) : (
-                    conversations
-                      .filter(c => c.status === 'active')
-                      .map((conv, index, arr) => {
-                        const initials = (conv.partner?.chatUsername || 'U').substring(0, 2).toUpperCase();
-                        return (
-                          <div key={conv.conversationId}>
-                            <div 
-                              className={styles.conversationItem}
-                              onClick={() => handleSelectConversation(conv)}
-                              style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '12px 18px', background: 'transparent' }}
-                            >
-                              <div className={styles.iosAvatarContainer}>
-                                {conv.partner?.avatarUrl ? (
-                                  <img src={conv.partner.avatarUrl} alt="Avatar" className={styles.iosAvatar} />
-                                ) : (
-                                  <div className={styles.iosInitialsAvatar}>{initials}</div>
-                                )}
-                              </div>
+                {/* All Friends List */}
+                {friendsSubTab === 'allFriends' && (
+                  <div className={styles.conversationList}>
+                    {conversations.filter(c => c.status === 'active').length === 0 ? (
+                      <div className={styles.emptyState}>
+                        No friends yet. Accept a message request or chat with active users!
+                      </div>
+                    ) : (
+                      conversations
+                        .filter(c => c.status === 'active')
+                        .map((conv, index, arr) => {
+                          const initials = (conv.partner?.chatUsername || 'U').substring(0, 2).toUpperCase();
+                          return (
+                            <div key={conv.conversationId}>
+                              <div 
+                                className={styles.conversationItem}
+                                onClick={() => handleSelectConversation(conv)}
+                                style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '12px 18px', background: 'transparent' }}
+                              >
+                                <div className={styles.iosAvatarContainer}>
+                                  {conv.partner?.avatarUrl ? (
+                                    <img src={conv.partner.avatarUrl} alt="Avatar" className={styles.iosAvatar} />
+                                  ) : (
+                                    <div className={styles.iosInitialsAvatar}>{initials}</div>
+                                  )}
+                                </div>
 
-                              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '3px' }}>
-                                <div className={styles.convUsername}>
-                                  @{conv.partner?.chatUsername || 'User'}
-                                </div>
-                                <div className={styles.convSnippet} style={{ fontSize: '0.78rem', color: '#8e8e93' }}>
-                                  {conv.partner?.firstName || ''} {conv.partner?.lastName || ''}
+                                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                                  <div className={styles.convUsername}>
+                                    @{conv.partner?.chatUsername || 'User'}
+                                  </div>
+                                  <div className={styles.convSnippet} style={{ fontSize: '0.78rem', color: '#8e8e93' }}>
+                                    {conv.partner?.firstName || ''} {conv.partner?.lastName || ''}
+                                  </div>
                                 </div>
                               </div>
+                              {index < arr.length - 1 && (
+                                <div className={styles.iosSeparator} />
+                              )}
                             </div>
-                            {index < arr.length - 1 && (
-                              <div className={styles.iosSeparator} />
-                            )}
-                          </div>
-                        );
-                      })
-                  )}
-                </div>
+                          );
+                        })
+                    )}
+                  </div>
+                )}
+
+                {/* Friend Requests List */}
+                {friendsSubTab === 'friendRequests' && (
+                  <div className={styles.conversationList}>
+                    {conversations.filter(c => c.status === 'pending' && String(c.requestedBy) !== String(localProfile?.userId)).length === 0 ? (
+                      <div className={styles.emptyState}>
+                        No pending friend requests right now.
+                      </div>
+                    ) : (
+                      conversations
+                        .filter(c => c.status === 'pending' && String(c.requestedBy) !== String(localProfile?.userId))
+                        .map((conv, index, arr) => {
+                          const initials = (conv.partner?.chatUsername || 'U').substring(0, 2).toUpperCase();
+                          return (
+                            <div key={conv.conversationId}>
+                              <div 
+                                className={styles.conversationItem}
+                                onClick={() => handleSelectConversation(conv)}
+                                style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '12px 18px', background: 'transparent' }}
+                              >
+                                <div className={styles.iosAvatarContainer}>
+                                  {conv.partner?.avatarUrl ? (
+                                    <img src={conv.partner.avatarUrl} alt="Avatar" className={styles.iosAvatar} />
+                                  ) : (
+                                    <div className={styles.iosInitialsAvatar}>{initials}</div>
+                                  )}
+                                </div>
+
+                                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                                  <div className={styles.convUsername}>
+                                    @{conv.partner?.chatUsername || 'User'}
+                                  </div>
+                                  <div className={styles.convSnippet} style={{ fontSize: '0.78rem', color: '#8e8e93' }}>
+                                    {conv.partner?.firstName || ''} {conv.partner?.lastName || ''}
+                                  </div>
+                                </div>
+
+                                <div className={styles.badgeRequest}>REQUEST</div>
+                              </div>
+                              {index < arr.length - 1 && (
+                                <div className={styles.iosSeparator} />
+                              )}
+                            </div>
+                          );
+                        })
+                    )}
+                  </div>
+                )}
               </div>
             )}
 

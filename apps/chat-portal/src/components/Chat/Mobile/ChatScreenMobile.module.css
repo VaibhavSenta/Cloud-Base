@@ -938,12 +938,12 @@
   right: 16px;
   display: flex;
   flex-direction: column;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.095);
   border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: 1.5rem;
   width: 44px;
-  backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   z-index: 10;
   overflow: hidden;
 }
@@ -960,11 +960,6 @@
   cursor: pointer;
   outline: none;
   -webkit-tap-highlight-color: transparent;
-  transition: background-color 0.2s ease;
-}
-
-.capsuleActionBtn:active {
-  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .capsuleSeparator {
@@ -978,7 +973,11 @@
   width: 22px;
   height: 22px;
   filter: brightness(0) invert(1);
+  opacity: 0.35;
   display: block;
+  transition: opacity 0.2s ease;
 }
 
-
+.capsuleIconActive {
+  opacity: 1;
+}
