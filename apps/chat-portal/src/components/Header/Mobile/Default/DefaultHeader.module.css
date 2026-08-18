@@ -1,0 +1,73 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: rgba(18, 18, 18, 0.6);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 10;
+  height: 56px;
+  box-sizing: border-box;
+}
+
+.headerLeft,
+.headerRight {
+  display: flex;
+  align-items: center;
+  width: 70px;
+}
+
+.headerRight {
+  justify-content: flex-end;
+}
+
+.headerTitle {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin: 0;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+.backBtn {
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: opacity 0.2s ease, color 0.2s ease;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.backBtn:focus,
+.backBtn:active {
+  outline: none;
+  box-shadow: none;
+}
+
+.backBtn:hover {
+  opacity: 0.8;
+  color: #0095f6;
+}
+
+.backArrow {
+  width: 20px;
+  height: 20px;
+  color: #ffffff;
+}
+
+.backBtn:hover .backArrow {
+  color: #0095f6;
+}

@@ -70,22 +70,4 @@
   color: #8e8e93;
 }
 
-.headerLeft,
-.headerRight {
-  display: flex;
-  align-items: center;
-  width: 70px;
-}
 
-.headerTitle {
-  font-size: 1.15rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  color: #ffffff;
-  margin: 0;
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex: 1;
-}
