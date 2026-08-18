@@ -574,11 +574,9 @@ export default function ChatScreenMobile({
                   <button 
                     className={styles.capsuleActionBtn} 
                     onClick={() => triggerHaptic.selection()} 
-                    title="Navigate Location"
+                    title="All Friends"
                   >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
-                    </svg>
+                    <img src="/allfriends.svg" alt="All Friends" className={styles.capsuleIcon} />
                   </button>
                 </div>
 
