@@ -387,6 +387,8 @@ export default function ChatScreenMobile({
         activeConv={activeConv}
         setActiveConv={setActiveConv}
         activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        profile={localProfile}
         chatSearchText={chatSearchText}
         setChatSearchText={setChatSearchText}
       />

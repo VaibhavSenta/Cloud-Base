@@ -5,13 +5,27 @@ import styles from './ChatHeader.module.css';
 
 export default function ChatHeader({
   chatSearchText,
-  setChatSearchText
+  setChatSearchText,
+  profile,
+  onProfileClick
 }) {
   return (
     <header className={`${styles.header} ${styles.chatHeader}`}>
       <div className={styles.chatHeaderContainer}>
         <div className={styles.largeTitleRow}>
           <h1 className={styles.largeTitle}>Nothingbox Chat</h1>
+          
+          <button
+            className={styles.profileBtn}
+            onClick={onProfileClick}
+            title="Profile"
+          >
+            {profile?.avatarUrl ? (
+              <img src={profile.avatarUrl} alt="Profile" className={styles.profileAvatar} />
+            ) : (
+              <img src="/profile-icon.svg" alt="Profile" className={styles.profileIcon} />
+            )}
+          </button>
         </div>
 
         <div className={styles.searchBarContainer}>

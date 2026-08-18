@@ -58,19 +58,6 @@ export default function LibraryBottomBar({ activeTab, setActiveTab, profile, onS
           </svg>
           <span className={styles.segmentLabel}>Friends</span>
         </button>
-
-        {/* Profile/Settings Tab */}
-        <button
-          className={`${styles.segmentBtn} ${currentTab === 'settings' ? styles.activeSegment : ''}`}
-          onClick={() => handleTabClick('settings')}
-        >
-          {avatarUrl ? (
-            <img src={avatarUrl} alt="Profile" className={styles.profileAvatar} />
-          ) : (
-            <img src="/profile-icon.svg" alt="Profile" className={styles.segmentIcon} />
-          )}
-          <span className={styles.segmentLabel}>Profile</span>
-        </button>
       </div>
 
       {/* Right side circular action search button */}
