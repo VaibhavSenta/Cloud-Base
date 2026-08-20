@@ -55,6 +55,23 @@ const createOrGetConversation = async (req, res) => {
         lastMessageTimestamp: new Date()
       });
       await conversation.save();
+
+      // Send Web Push Notification to target user for new request
+      try {
+        const senderProfile = await ChatProfile.findOne({ userId: currentUserId });
+        const senderUsername = senderProfile?.chatUsername ? `@${senderProfile.chatUsername}` : 'Someone';
+        const { sendPushNotification } = require('../notifications/notification.controller');
+        sendPushNotification(targetUserId, {
+          title: 'New Friend Request',
+          body: `${senderUsername} wants to connect on Nothingbox Chat!`,
+          data: {
+            conversationId: conversation.conversationId,
+            type: 'friend_request'
+          }
+        });
+      } catch (pushErr) {
+        console.error('⚠️ Push notification warning:', pushErr.message);
+      }
     }
 
     return res.status(200).json({

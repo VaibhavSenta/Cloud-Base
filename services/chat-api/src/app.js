@@ -40,10 +40,12 @@ app.get('/health', (req, res) => {
 const userRoutes = require('./features/users/user.routes');
 const conversationRoutes = require('./features/conversations/conversation.routes');
 const messageRoutes = require('./features/messages/message.routes');
+const notificationRoutes = require('./features/notifications/notification.routes');
 
 app.use('/api/v1/chat/users', userRoutes);
 app.use('/api/v1/chat/conversations', conversationRoutes);
 app.use('/api/v1/chat/messages', messageRoutes);
+app.use('/api/v1/chat/notifications', notificationRoutes);
 
 // Initialize DB and Sockets
 connectDB();

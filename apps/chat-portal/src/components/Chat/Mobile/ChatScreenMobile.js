@@ -8,6 +8,7 @@ import styles from './ChatScreenMobile.module.css';
 import Footer from '@/components/Footer/Footer';
 import Header from '@/components/Header/Header';
 import { triggerHaptic } from '@/utils/haptics';
+import { initPushNotifications } from '@/utils/pushNotifications';
 
 export default function ChatScreenMobile({
   profile,
@@ -211,6 +212,11 @@ export default function ChatScreenMobile({
       syncOfflineQueue();
     }
   }, [isConnected, offlineQueue.length, syncOfflineQueue]);
+
+  // Initialize Web Push Notifications on mount
+  useEffect(() => {
+    initPushNotifications();
+  }, []);
 
   useEffect(() => {
     const handleOnline = () => {

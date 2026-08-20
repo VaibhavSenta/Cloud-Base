@@ -60,6 +60,25 @@ const sendMessage = async (req, res) => {
       console.error('⚠️ Socket emit warning:', socketErr.message);
     }
 
+    // Send background Web Push Notification to receiver
+    try {
+      const ChatProfile = require('../users/user.model');
+      const senderProfile = await ChatProfile.findOne({ userId: senderId });
+      const senderName = senderProfile?.chatUsername ? `@${senderProfile.chatUsername}` : 'Someone';
+
+      const { sendPushNotification } = require('../notifications/notification.controller');
+      sendPushNotification(String(receiverId), {
+        title: senderName,
+        body: 'Sent you a message',
+        data: {
+          conversationId: message.conversationId,
+          type: 'new_message'
+        }
+      });
+    } catch (pushErr) {
+      console.error('⚠️ Web push dispatch warning:', pushErr.message);
+    }
+
     return res.status(201).json({ status: 'success', message });
   } catch (error) {
     return res.status(500).json({ error: `Failed to send message: ${error.message}` });
