@@ -11,6 +11,7 @@ import { auth } from '../../../../utils/firebase';
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 import SecurityFormFields from '../../UI/SecurityFormFields/SecurityFormFields';
 import ActionList from '@/components/UI/List/ActionList';
+import FormButton from '@/features/personal-info/UI/FormButton/FormButton';
 import styles from './SecuritySettingsMobile.module.css';
 
 /**
@@ -24,12 +25,26 @@ export default function SecuritySettingsMobile() {
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [isVerifyRequestSent, setIsVerifyRequestSent] = useState(false);
+  const [resendTimer, setResendTimer] = useState(0);
   const [confirmationResult, setConfirmationResult] = useState(null);
   const [isSmsSending, setIsSmsSending] = useState(false);
   const [isSupportSubmitted, setIsSupportSubmitted] = useState(false);
   const [authenticatorSetupData, setAuthenticatorSetupData] = useState(null);
   const [authenticatorCode, setAuthenticatorCode] = useState('');
   const [countdown, setCountdown] = useState(0);
+
+  // Manage resend countdown timer for email verification
+  useEffect(() => {
+    let interval = null;
+    if (resendTimer > 0) {
+      interval = setInterval(() => {
+        setResendTimer(prev => prev - 1);
+      }, 1000);
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [resendTimer]);
 
   // Manage countdown timer for deactivation/deletion friction
   useEffect(() => {
@@ -76,6 +91,7 @@ export default function SecuritySettingsMobile() {
     },
     onSuccess: () => {
       setIsVerifyRequestSent(true);
+      setResendTimer(60);
     },
     onError: (err) => {
       setErrorMessage(err.response?.data?.message || 'Failed to send verification link');
@@ -89,6 +105,7 @@ export default function SecuritySettingsMobile() {
     },
     onSuccess: () => {
       setIsVerifyRequestSent(true);
+      setResendTimer(60);
     },
     onError: (err) => {
       setErrorMessage(err.response?.data?.message || 'Failed to request email change');
@@ -178,6 +195,9 @@ export default function SecuritySettingsMobile() {
     
     if (field === 'email') {
       setFormVal({ newEmail: '' });
+      if (resendTimer > 0) {
+        setIsVerifyRequestSent(true);
+      }
     } else if (field === 'phone') {
       setFormVal({ phonenumber: user?.phonenumber || '', otpCode: '' });
     } else if (field === 'password') {
@@ -387,7 +407,7 @@ export default function SecuritySettingsMobile() {
         isOpen={!!editField}
         onClose={handleCloseBottomSheet}
         title={
-          editField === 'email' ? 'Email Verification' :
+          editField === 'email' ? (isVerifyRequestSent ? 'Verification Link Sent' : 'Email Verification') :
           editField === 'phone' ? 'Phone Setup' :
           editField === '2fa' ? 'Two-Factor Authentication' :
           editField === 'deactivate' ? 'Deactivate Account' :
@@ -399,6 +419,7 @@ export default function SecuritySettingsMobile() {
             : 'Verify identity to confirm changes.'
         }
         onSubmit={handleSubmit}
+        showActions={!isVerifyRequestSent || editField !== 'email'}
         isPending={isPending || countdown > 0}
         submitText={
           editField === 'delete'
@@ -415,23 +436,45 @@ export default function SecuritySettingsMobile() {
             : 'Saving...'
         }
       >
-        <SecurityFormFields
-          editField={editField}
-          user={user}
-          formVal={formVal}
-          handleInputChange={handleInputChange}
-          isOtpSent={isOtpSent}
-          authenticatorSetupData={authenticatorSetupData}
-          authenticatorCode={authenticatorCode}
-          setAuthenticatorCode={setAuthenticatorCode}
-          verifyAuthenticatorMutation={verifyAuthenticatorMutation}
-          setupAuthenticatorMutation={setupAuthenticatorMutation}
-          isSupportSubmitted={isSupportSubmitted}
-          setIsSupportSubmitted={setIsSupportSubmitted}
-          errorMessage={errorMessage}
-          setErrorMessage={setErrorMessage}
-          setFormVal={setFormVal}
-        />
+        {editField === 'email' && isVerifyRequestSent ? (
+          <div className={styles.successWrapper}>
+            <div className={styles.successIcon}>✓</div>
+            <h4 className={styles.successTitle}>Verification Link Sent</h4>
+            <p className={styles.successDescription}>
+              A secure link has been sent to <strong>{user?.email}</strong>. Please check your inbox to complete the verification process.
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%', marginTop: '1rem' }}>
+              <FormButton
+                variant="secondary"
+                onClick={() => verifyRequestMutation.mutate()}
+                disabled={resendTimer > 0 || isPending}
+              >
+                {isPending ? 'Sending...' : resendTimer > 0 ? `Resend Link (${resendTimer}s)` : 'Resend Link'}
+              </FormButton>
+              <FormButton variant="primary" onClick={handleCloseBottomSheet}>
+                Done
+              </FormButton>
+            </div>
+          </div>
+        ) : (
+          <SecurityFormFields
+            editField={editField}
+            user={user}
+            formVal={formVal}
+            handleInputChange={handleInputChange}
+            isOtpSent={isOtpSent}
+            authenticatorSetupData={authenticatorSetupData}
+            authenticatorCode={authenticatorCode}
+            setAuthenticatorCode={setAuthenticatorCode}
+            verifyAuthenticatorMutation={verifyAuthenticatorMutation}
+            setupAuthenticatorMutation={setupAuthenticatorMutation}
+            isSupportSubmitted={isSupportSubmitted}
+            setIsSupportSubmitted={setIsSupportSubmitted}
+            errorMessage={errorMessage}
+            setErrorMessage={setErrorMessage}
+            setFormVal={setFormVal}
+          />
+        )}
       </BottomSheet>
       
       {/* 🤖 Invisible reCAPTCHA Anchor */}

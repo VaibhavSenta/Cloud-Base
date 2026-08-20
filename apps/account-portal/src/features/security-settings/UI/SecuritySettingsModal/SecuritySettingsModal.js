@@ -27,6 +27,8 @@ export default function SecuritySettingsModal({
   setFormVal,
   isPending,
   isVerifyRequestSent,
+  resendTimer = 0,
+  onResendLink,
   handleCloseModal,
   handleSubmit
 }) {
@@ -79,6 +81,13 @@ export default function SecuritySettingsModal({
               A secure link has been sent to <strong>{user?.email}</strong>. Please check your inbox to complete the verification process.
             </p>
             <div className={styles.modalActions}>
+              <FormButton 
+                variant="secondary" 
+                onClick={onResendLink}
+                disabled={resendTimer > 0 || isPending}
+              >
+                {isPending ? 'Sending...' : resendTimer > 0 ? `Resend Link (${resendTimer}s)` : 'Resend Link'}
+              </FormButton>
               <FormButton variant="primary" onClick={handleCloseModal}>
                 Done
               </FormButton>

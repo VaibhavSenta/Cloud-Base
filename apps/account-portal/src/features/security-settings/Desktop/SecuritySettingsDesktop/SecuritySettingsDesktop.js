@@ -1,6 +1,6 @@
 /* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 'use client';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { useSecureQuery, useSecureQueryClient } from '../../../../hooks/useSecureQuery';
@@ -30,11 +30,25 @@ export default function SecuritySettingsDesktop() {
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [isVerifyRequestSent, setIsVerifyRequestSent] = useState(false);
+  const [resendTimer, setResendTimer] = useState(0);
   const [confirmationResult, setConfirmationResult] = useState(null);
   const [isSmsSending, setIsSmsSending] = useState(false);
   const [isSupportSubmitted, setIsSupportSubmitted] = useState(false);
   const [authenticatorSetupData, setAuthenticatorSetupData] = useState(null);
   const [authenticatorCode, setAuthenticatorCode] = useState('');
+
+  // Resend Countdown Timer Effect
+  useEffect(() => {
+    let interval = null;
+    if (resendTimer > 0) {
+      interval = setInterval(() => {
+        setResendTimer(prev => prev - 1);
+      }, 1000);
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [resendTimer]);
 
   // Fetch current user from React Query cache
   const { data: user, isLoading, isFetching } = useSecureQuery({
@@ -72,6 +86,7 @@ export default function SecuritySettingsDesktop() {
     },
     onSuccess: () => {
       setIsVerifyRequestSent(true);
+      setResendTimer(60);
     },
     onError: (err) => {
       setErrorMessage(err.response?.data?.message || 'Failed to send verification link');
@@ -85,6 +100,7 @@ export default function SecuritySettingsDesktop() {
     },
     onSuccess: () => {
       setIsVerifyRequestSent(true);
+      setResendTimer(60);
     },
     onError: (err) => {
       setErrorMessage(err.response?.data?.message || 'Failed to request email change');
@@ -174,6 +190,9 @@ export default function SecuritySettingsDesktop() {
     
     if (field === 'email') {
       setFormVal({ newEmail: '' });
+      if (resendTimer > 0) {
+        setIsVerifyRequestSent(true);
+      }
     } else if (field === 'phone') {
       setFormVal({ phonenumber: user?.phonenumber || '', otpCode: '' });
     } else if (field === '2fa') {
@@ -374,6 +393,8 @@ export default function SecuritySettingsDesktop() {
         setFormVal={setFormVal}
         isPending={isPending}
         isVerifyRequestSent={isVerifyRequestSent}
+        resendTimer={resendTimer}
+        onResendLink={() => verifyRequestMutation.mutate()}
         handleCloseModal={handleCloseModal}
         handleSubmit={handleSubmit}
       />
