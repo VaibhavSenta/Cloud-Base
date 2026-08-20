@@ -57,7 +57,7 @@ export default function ChatSettingsPage() {
         gap: '1.5rem',
         color: '#a8a8a8', 
         fontSize: '0.85rem',
-        background: '#000000'
+        background: 'transparent'
       }}>
         <CloudSpinner size={72} />
         <span>Verifying connection...</span>
@@ -78,7 +78,7 @@ export default function ChatSettingsPage() {
         textAlign: 'center',
         padding: '24px',
         color: '#ffffff',
-        background: '#000000'
+        background: 'transparent'
       }}>
         <div style={{
           background: 'rgba(255, 255, 255, 0.02)',
@@ -129,7 +129,7 @@ export default function ChatSettingsPage() {
       textAlign: 'center',
       padding: '24px',
       color: '#ffffff',
-      background: '#000000'
+      background: 'transparent'
     }}>
       <div style={{
         background: 'rgba(255, 255, 255, 0.02)',

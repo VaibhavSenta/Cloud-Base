@@ -32,7 +32,7 @@ export default function ExploreServicesPage() {
         gap: '1.5rem',
         color: '#a8a8a8', 
         fontSize: '0.85rem',
-        background: '#000000'
+        background: 'transparent'
       }}>
         <CloudSpinner size={72} />
         <span>Loading available services...</span>

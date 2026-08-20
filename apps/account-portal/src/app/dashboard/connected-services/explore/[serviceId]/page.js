@@ -69,7 +69,7 @@ export default function ServiceConsentPage() {
         justifyContent: 'center',
         minHeight: '70vh',
         color: '#ffffff',
-        background: '#000000',
+        background: 'transparent',
         padding: '24px',
         textAlign: 'center'
       }}>
