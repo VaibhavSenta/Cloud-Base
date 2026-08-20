@@ -54,8 +54,15 @@ export default function AuthScreen({ onAuthComplete }) {
               if (isMounted) setStage('username');
             }
           } catch (profileErr) {
-            console.error('🔑 Profile lookup failed:', profileErr);
-            if (isMounted) setStage('username');
+            console.error('🔑 Profile lookup error:', profileErr);
+            if (isMounted) {
+              if (profileErr.response?.status === 401) {
+                setStage('auth');
+              } else {
+                setError(profileErr.response?.data?.error || 'Profile lookup failed. Please log in again.');
+                setStage('auth');
+              }
+            }
           }
         }
       } catch (err) {

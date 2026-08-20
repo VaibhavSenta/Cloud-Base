@@ -111,7 +111,8 @@ const createProfile = async (req, res) => {
 
     const existingUser = await ChatProfile.findOne({ userId });
     if (existingUser) {
-      return res.status(400).json({ error: 'User profile already exists.' });
+      console.log(`ℹ️ User profile already exists for userId: "${userId}". Returning existing profile.`);
+      return res.status(200).json({ status: 'success', profile: existingUser });
     }
 
     const newProfile = new ChatProfile({
