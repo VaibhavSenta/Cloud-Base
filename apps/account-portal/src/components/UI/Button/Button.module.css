@@ -38,6 +38,18 @@
   background: var(--border-color);
 }
 
+.danger {
+  background: rgba(86, 86, 86, 0.059);
+  border: 1px solid rgba(104, 103, 103, 0.142);
+  color: #ff3b30;
+  border-radius: 1002px;
+}
+
+.danger:hover {
+  background: rgba(86, 86, 86, 0.177);
+  border-color: rgba(255, 58, 48, 0.25);
+}
+
 .fullWidth {
   width: 100%;
 }

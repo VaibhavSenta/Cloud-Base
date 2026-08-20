@@ -7,6 +7,7 @@ import api from '@/utils/api';
 import Link from 'next/link';
 import { useState } from 'react';
 import CloudSpinner from '@/components/UI/CloudSpinner/CloudSpinner';
+import Button from '@/components/UI/Button/Button';
 
 import { localEncrypt, localDecrypt } from 'secure-query-cache';
 
@@ -171,25 +172,15 @@ export default function ChatSettingsPage() {
           Launch Nothingbox Chat
         </button>
 
-        <button 
+        <Button 
+          variant="danger"
+          fullWidth
           onClick={() => disconnectMutation.mutate()}
-          disabled={disconnectMutation.isPending}
-          style={{
-            display: 'block',
-            width: '100%',
-            background: 'rgba(255, 69, 58, 0.1)',
-            border: '1px solid #ff453a',
-            color: '#ff453a',
-            fontWeight: 'bold',
-            fontSize: '0.85rem',
-            padding: '12px',
-            borderRadius: '100px',
-            cursor: disconnectMutation.isPending ? 'not-allowed' : 'pointer',
-            marginBottom: '16px'
-          }}
+          isLoading={disconnectMutation.isPending}
+          style={{ marginBottom: '16px' }}
         >
-          {disconnectMutation.isPending ? 'Disconnecting...' : 'Disconnect Chat'}
-        </button>
+          Disconnect Chat
+        </Button>
 
         <Link href="/dashboard/connected-services" style={{
           display: 'inline-block',
