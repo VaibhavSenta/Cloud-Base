@@ -25,8 +25,8 @@ function urlBase64ToUint8Array(base64String) {
  * 4. Sends subscription object to backend
  */
 export async function initPushNotifications() {
-  if (typeof window === 'undefined' || !('serviceWorker' in navigator) || !('PushManager' in window)) {
-    console.log('Push notifications not supported in this browser context.');
+  if (typeof window === 'undefined' || !('Notification' in window)) {
+    console.log('Notification API not supported in this browser.');
     return false;
   }
 
@@ -34,41 +34,48 @@ export async function initPushNotifications() {
     // 1. Request Notification Permission
     const permission = await Notification.requestPermission();
     if (permission !== 'granted') {
-      console.log('Push notification permission denied.');
+      console.log('Push notification permission denied by user.');
       return false;
     }
 
     // 2. Fetch VAPID Public Key from backend
-    const keyRes = await api.get('/chat/notifications/vapid-public-key');
-    const vapidPublicKey = keyRes.data?.vapidPublicKey;
-    if (!vapidPublicKey) {
-      console.error('VAPID public key not returned from backend.');
-      return false;
+    let vapidPublicKey = null;
+    try {
+      const keyRes = await api.get('/chat/notifications/vapid-public-key');
+      vapidPublicKey = keyRes.data?.vapidPublicKey;
+    } catch (e) {
+      console.warn('⚠️ Could not fetch VAPID key:', e.message);
     }
 
-    // 3. Register or get Service Worker registration
-    let registration = await navigator.serviceWorker.getRegistration();
-    if (!registration) {
-      registration = await navigator.serviceWorker.register('/sw.js');
+    // 3. Register Service Worker and PushManager if available
+    if ('serviceWorker' in navigator && 'PushManager' in window && vapidPublicKey) {
+      try {
+        let registration = await navigator.serviceWorker.getRegistration();
+        if (!registration) {
+          registration = await navigator.serviceWorker.register('/push-sw.js');
+        }
+        await navigator.serviceWorker.ready;
+
+        let subscription = await registration.pushManager.getSubscription();
+        if (!subscription) {
+          const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
+          subscription = await registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: convertedVapidKey
+          });
+        }
+
+        if (subscription) {
+          await api.post('/chat/notifications/subscribe', {
+            subscription: subscription.toJSON()
+          });
+        }
+      } catch (swErr) {
+        console.warn('⚠️ Service Worker PushManager subscription warning:', swErr.message);
+      }
     }
-    await navigator.serviceWorker.ready;
 
-    // 4. Check existing push subscription or create new
-    let subscription = await registration.pushManager.getSubscription();
-    if (!subscription) {
-      const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
-      subscription = await registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: convertedVapidKey
-      });
-    }
-
-    // 5. Send subscription to backend
-    await api.post('/chat/notifications/subscribe', {
-      subscription: subscription.toJSON()
-    });
-
-    console.log('✅ Web Push Notification registered & subscribed successfully!');
+    console.log('✅ Web Push Notification permission granted & active!');
     return true;
   } catch (err) {
     console.error('Failed to initialize push notifications:', err);
@@ -77,31 +84,37 @@ export async function initPushNotifications() {
 }
 
 export async function isPushSubscribed() {
-  if (typeof window === 'undefined' || !('serviceWorker' in navigator) || !('PushManager' in window)) {
+  if (typeof window === 'undefined' || !('Notification' in window)) {
     return false;
   }
   try {
     if (Notification.permission !== 'granted') return false;
-    const registration = await navigator.serviceWorker.getRegistration();
-    if (!registration) return false;
-    const subscription = await registration.pushManager.getSubscription();
-    return !!subscription;
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+      const registration = await navigator.serviceWorker.getRegistration();
+      if (registration) {
+        const subscription = await registration.pushManager.getSubscription();
+        if (subscription) return true;
+      }
+    }
+    return Notification.permission === 'granted';
   } catch (err) {
-    return false;
+    return Notification.permission === 'granted';
   }
 }
 
 export async function unsubscribePushNotifications() {
-  if (typeof window === 'undefined' || !('serviceWorker' in navigator) || !('PushManager' in window)) {
+  if (typeof window === 'undefined' || !('Notification' in window)) {
     return false;
   }
   try {
-    const registration = await navigator.serviceWorker.getRegistration();
-    if (registration) {
-      const subscription = await registration.pushManager.getSubscription();
-      if (subscription) {
-        await api.post('/chat/notifications/unsubscribe', { endpoint: subscription.endpoint });
-        await subscription.unsubscribe();
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+      const registration = await navigator.serviceWorker.getRegistration();
+      if (registration) {
+        const subscription = await registration.pushManager.getSubscription();
+        if (subscription) {
+          await api.post('/chat/notifications/unsubscribe', { endpoint: subscription.endpoint });
+          await subscription.unsubscribe();
+        }
       }
     }
     return true;
