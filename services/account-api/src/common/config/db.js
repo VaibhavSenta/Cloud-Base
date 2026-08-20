@@ -5,10 +5,10 @@ const dns = require('dns');
 dns.setDefaultResultOrder('ipv4first');
 
 const connectDB = async () => {
-  const connString = process.env.CONNECTION || "mongodb://localhost:27017/cloudbase";
+  const connString = process.env.CONNECTION;
   try {
     mongoose.set('autoIndex', false);
-    const conn = await mongoose.connect(connString);
+    const conn = await mongoose.connect(connString,{dbName : "nothingbox"});
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
     console.error(`❌ Error connecting to MongoDB: ${error.message}`);
