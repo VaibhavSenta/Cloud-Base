@@ -49,6 +49,9 @@ export default function AuthScreen({ onAuthComplete }) {
                 email: ssoUser.email || ''
               }, 'sso-cookie');
               return;
+            } else {
+              console.log('🔑 SSO: No chat profile created yet. Rendering Choose Username screen.');
+              if (isMounted) setStage('username');
             }
           } catch (profileErr) {
             console.error('🔑 Profile lookup failed:', profileErr);

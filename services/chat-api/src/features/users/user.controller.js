@@ -139,8 +139,8 @@ const getProfile = async (req, res) => {
     const profile = await ChatProfile.findOne({ userId });
     
     if (!profile) {
-      console.log(`⚠️ Chat Profile not found for userId: "${userId}"`);
-      return res.status(404).json({ error: 'Profile not found. Set up your Chat username.' });
+      console.log(`ℹ️ Chat Profile not created yet for userId: "${userId}". Prompting Username setup.`);
+      return res.status(200).json({ profile: null, message: 'Profile not found. Set up your Chat username.' });
     }
 
     return res.status(200).json({ profile });
