@@ -1,5 +1,8 @@
 /* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const mongoose = require('mongoose');
+const dns = require('dns');
+
+dns.setDefaultResultOrder('ipv4first');
 
 const connectDB = async () => {
   const connString = process.env.CONNECTION || "mongodb://localhost:27017/cloudbase";

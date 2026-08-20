@@ -1,4 +1,5 @@
 /* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
+require('dns').setDefaultResultOrder('ipv4first');
 const express = require('express');
 const http = require('http');
 const cors = require('cors');

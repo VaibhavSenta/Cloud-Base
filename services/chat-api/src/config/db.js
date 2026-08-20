@@ -1,6 +1,9 @@
 /* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 const mongoose = require('mongoose');
 const path = require('path');
+const dns = require('dns');
+
+dns.setDefaultResultOrder('ipv4first');
 
 // Load environment variables from .env.local if present
 require('dotenv').config({ path: path.join(__dirname, '../../.env.local') });
