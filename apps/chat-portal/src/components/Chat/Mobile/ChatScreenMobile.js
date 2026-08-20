@@ -8,7 +8,7 @@ import styles from './ChatScreenMobile.module.css';
 import Footer from '@/components/Footer/Footer';
 import Header from '@/components/Header/Header';
 import { triggerHaptic } from '@/utils/haptics';
-import { initPushNotifications } from '@/utils/pushNotifications';
+import { initPushNotifications, isPushSubscribed, unsubscribePushNotifications } from '@/utils/pushNotifications';
 
 export default function ChatScreenMobile({
   profile,
@@ -213,10 +213,32 @@ export default function ChatScreenMobile({
     }
   }, [isConnected, offlineQueue.length, syncOfflineQueue]);
 
-  // Initialize Web Push Notifications on mount
+  const [pushEnabled, setPushEnabled] = useState(false);
+  const [isTogglingPush, setIsTogglingPush] = useState(false);
+
+  // Check push subscription status when opening settings tab
   useEffect(() => {
-    initPushNotifications();
-  }, []);
+    if (activeTab === 'settings') {
+      isPushSubscribed().then(setPushEnabled);
+    }
+  }, [activeTab]);
+
+  const handleTogglePushNotifications = async () => {
+    setIsTogglingPush(true);
+    try {
+      if (pushEnabled) {
+        await unsubscribePushNotifications();
+        setPushEnabled(false);
+      } else {
+        const success = await initPushNotifications();
+        setPushEnabled(success);
+      }
+    } catch (err) {
+      console.error('Failed to toggle push notifications:', err);
+    } finally {
+      setIsTogglingPush(false);
+    }
+  };
 
   useEffect(() => {
     const handleOnline = () => {
@@ -902,6 +924,17 @@ export default function ChatScreenMobile({
                     <div className={styles.profileLabel}>EMAIL ADDRESS</div>
                     <div className={styles.profileValue}>{localProfile.email || 'None'}</div>
                   </div>
+                </div>
+
+                <div className={styles.pushSettingCard}>
+                  <span className={styles.settingsRowLabel}>Push Notifications</span>
+                  <button 
+                    className={`${styles.pushToggleBtn} ${pushEnabled ? styles.pushToggleBtnActive : ''}`}
+                    onClick={handleTogglePushNotifications}
+                    disabled={isTogglingPush}
+                  >
+                    {isTogglingPush ? '...' : (pushEnabled ? 'ON' : 'OFF')}
+                  </button>
                 </div>
 
                 <div className={styles.settingsList}>

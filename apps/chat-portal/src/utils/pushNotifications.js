@@ -75,3 +75,38 @@ export async function initPushNotifications() {
     return false;
   }
 }
+
+export async function isPushSubscribed() {
+  if (typeof window === 'undefined' || !('serviceWorker' in navigator) || !('PushManager' in window)) {
+    return false;
+  }
+  try {
+    if (Notification.permission !== 'granted') return false;
+    const registration = await navigator.serviceWorker.getRegistration();
+    if (!registration) return false;
+    const subscription = await registration.pushManager.getSubscription();
+    return !!subscription;
+  } catch (err) {
+    return false;
+  }
+}
+
+export async function unsubscribePushNotifications() {
+  if (typeof window === 'undefined' || !('serviceWorker' in navigator) || !('PushManager' in window)) {
+    return false;
+  }
+  try {
+    const registration = await navigator.serviceWorker.getRegistration();
+    if (registration) {
+      const subscription = await registration.pushManager.getSubscription();
+      if (subscription) {
+        await api.post('/chat/notifications/unsubscribe', { endpoint: subscription.endpoint });
+        await subscription.unsubscribe();
+      }
+    }
+    return true;
+  } catch (err) {
+    console.error('Failed to unsubscribe push notifications:', err);
+    return false;
+  }
+}
