@@ -84,7 +84,7 @@ export default function ChatSettingsPage() {
         <div style={{
           background: 'rgba(255, 255, 255, 0.02)',
           border: '1px solid #262626',
-          borderRadius: '16px',
+          borderRadius: '2rem',
           padding: '40px 24px',
           maxWidth: '400px',
           width: '100%',
@@ -135,7 +135,7 @@ export default function ChatSettingsPage() {
       <div style={{
         background: 'rgba(255, 255, 255, 0.02)',
         border: '1px solid #262626',
-        borderRadius: '16px',
+        borderRadius: '2rem',
         padding: '40px 24px',
         maxWidth: '400px',
         width: '100%',
