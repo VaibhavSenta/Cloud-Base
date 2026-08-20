@@ -18,7 +18,7 @@ const sendVerificationEmail = async ({ email, token }) => {
     console.log(`Code: ${otpCode}`);
     console.log('============================================================\n');
   } else {
-    const frontendHost = process.env.FRONTEND_URL || 'http://172.20.10.2:3000';
+    const frontendHost = process.env.FRONTEND_URL || 'http://172.20.10.2:3001';
     verificationLink = `${frontendHost}/dashboard/verify-email?token=${token}`;
     console.log('\n============================================================');
     console.log('✉️  EMAIL VERIFICATION LINK SENT');
