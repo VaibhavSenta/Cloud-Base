@@ -981,3 +981,12 @@
 .capsuleIconActive {
   opacity: 1;
 }
+
+.friendsSectionTitle {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  padding: 12px 18px 8px 18px;
+  margin: 0;
+}
