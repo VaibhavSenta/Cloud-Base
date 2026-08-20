@@ -909,72 +909,105 @@ export default function ChatScreenMobile({
             )}
 
             {activeTab === 'settings' && !isEditingProfile && (
-              /* SETTINGS VIEW */
+              /* APPLE-STYLE GROUPED INSET SETTINGS VIEW */
               <div className={styles.settingsSection}>
-                <div className={styles.settingsAvatarContainer}>
-                  {localProfile.avatarUrl ? (
-                    <img src={localProfile.avatarUrl} alt="Avatar" className={styles.largeAvatar} />
-                  ) : (
-                    <div className={styles.largeAvatarPlaceholder}>
-                      {localProfile.firstName ? localProfile.firstName[0].toUpperCase() : '?'}
+                {/* HERO PROFILE HEADER */}
+                <div className={styles.appleHeaderHero}>
+                  <div className={styles.largeAvatarWrapper}>
+                    {localProfile.avatarUrl ? (
+                      <img src={localProfile.avatarUrl} alt="Avatar" className={styles.largeAvatarImg} />
+                    ) : (
+                      <div className={styles.largeAvatarInitial}>
+                        {localProfile.firstName ? localProfile.firstName[0].toUpperCase() : '?'}
+                      </div>
+                    )}
+                  </div>
+                  <h3 className={styles.heroName}>
+                    {localProfile.firstName} {localProfile.lastName}
+                  </h3>
+                  <span className={styles.heroUsernamePill}>
+                    @{localProfile.chatUsername}
+                  </span>
+                </div>
+
+                {/* GROUP 1: ACCOUNT DETAILS */}
+                <div className={styles.appleGroupSection}>
+                  <span className={styles.appleGroupTitle}>Account Details</span>
+                  <div className={styles.appleGroupCard}>
+                    <div className={styles.appleRow}>
+                      <span className={styles.appleRowLabel}>Display Name</span>
+                      <span className={styles.appleRowValue}>{localProfile.firstName} {localProfile.lastName}</span>
                     </div>
-                  )}
-                </div>
-
-                <div className={styles.profileCard}>
-                  <div className={styles.profileMeta}>
-                    <div className={styles.profileLabel}>DISPLAY NAME</div>
-                    <div className={styles.profileValue}>{localProfile.firstName} {localProfile.lastName}</div>
-                  </div>
-                  <div className={styles.profileMeta}>
-                    <div className={styles.profileLabel}>CHAT USERNAME</div>
-                    <div className={styles.profileValue}>@{localProfile.chatUsername}</div>
-                  </div>
-                  <div className={styles.profileMeta}>
-                    <div className={styles.profileLabel}>EMAIL ADDRESS</div>
-                    <div className={styles.profileValue}>{localProfile.email || 'None'}</div>
+                    <div className={styles.appleRow}>
+                      <span className={styles.appleRowLabel}>Chat Username</span>
+                      <span className={styles.appleRowValue}>@{localProfile.chatUsername}</span>
+                    </div>
+                    <div className={styles.appleRow}>
+                      <span className={styles.appleRowLabel}>Email Address</span>
+                      <span className={styles.appleRowValue}>{localProfile.email || 'None'}</span>
+                    </div>
                   </div>
                 </div>
 
-                <div className={styles.pushSettingCard}>
-                  <span className={styles.settingsRowLabel}>Push Notifications</span>
-                  <button 
-                    className={`${styles.pushToggleBtn} ${pushEnabled ? styles.pushToggleBtnActive : ''}`}
-                    onClick={handleTogglePushNotifications}
-                    disabled={isTogglingPush}
-                  >
-                    {isTogglingPush ? '...' : (pushEnabled ? 'ON' : 'OFF')}
-                  </button>
+                {/* GROUP 2: PREFERENCES */}
+                <div className={styles.appleGroupSection}>
+                  <span className={styles.appleGroupTitle}>Preferences</span>
+                  <div className={styles.appleGroupCard}>
+                    <div className={styles.appleRow}>
+                      <span className={styles.appleRowLabel}>Push Notifications</span>
+                      <button 
+                        className={`${styles.pushToggleBtn} ${pushEnabled ? styles.pushToggleBtnActive : ''}`}
+                        onClick={handleTogglePushNotifications}
+                        disabled={isTogglingPush}
+                      >
+                        {isTogglingPush ? '...' : (pushEnabled ? 'ON' : 'OFF')}
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
-                <div className={styles.settingsList}>
+                {/* GROUP 3: SECURITY & MANAGEMENT */}
+                <div className={styles.appleGroupSection}>
+                  <span className={styles.appleGroupTitle}>Account Management</span>
+                  <div className={styles.appleGroupCard}>
+                    <div className={styles.appleRow}>
+                      <button 
+                        onClick={() => {
+                          setIsEditingProfile(true);
+                          setEditFirstName(localProfile.firstName || '');
+                          setEditLastName(localProfile.lastName || '');
+                          setAvatarPreview(localProfile.avatarUrl || '');
+                          setProfileError('');
+                        }} 
+                        className={styles.appleRowActionBtn}
+                      >
+                        <span className={styles.appleActionLabel}>Edit Profile Details</span>
+                        <span className={styles.appleActionArrow}>Edit ›</span>
+                      </button>
+                    </div>
+                    <div className={styles.appleRow}>
+                      <a 
+                        href={`${config.accountPortalUrl}/dashboard`} 
+                        target="_blank" 
+                        rel="noreferrer" 
+                        className={styles.appleRowActionBtn}
+                        style={{ textDecoration: 'none' }}
+                      >
+                        <span className={styles.appleActionLabel}>Manage Security & 2FA</span>
+                        <span className={styles.appleActionArrow}>Portal ↗</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                {/* GROUP 4: SESSION LOGOUT */}
+                <div className={styles.appleGroupSection}>
                   <button 
                     onClick={() => {
-                      setIsEditingProfile(true);
-                      setEditFirstName(localProfile.firstName || '');
-                      setEditLastName(localProfile.lastName || '');
-                      setAvatarPreview(localProfile.avatarUrl || '');
-                      setProfileError('');
-                    }} 
-                    className={styles.editProfileBtn}
-                  >
-                    Edit Profile Details
-                  </button>
-                  <a 
-                    href={`${config.accountPortalUrl}/dashboard`} 
-                    target="_blank" 
-                    rel="noreferrer" 
-                    className={styles.settingsLink}
-                  >
-                    Manage Security & 2FA ↗
-                  </a>
-                  <button 
-                    onClick={() => {
-                      // Perform clean cookie logout
                       document.cookie = "token=; domain=localhost; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
                       window.location.reload();
                     }} 
-                    className={styles.logoutBtn}
+                    className={styles.appleLogoutBtn}
                   >
                     Logout Account
                   </button>
