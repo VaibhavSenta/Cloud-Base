@@ -139,8 +139,62 @@ const acceptRequest = async (req, res) => {
   }
 };
 
+/**
+ * Reject / Decline Incoming Message Request
+ */
+const rejectRequest = async (req, res) => {
+  try {
+    const { conversationId } = req.params;
+    const currentUserId = req.user.userId || req.user.id || req.user._id;
+
+    const conversation = await Conversation.findOne({ conversationId });
+    if (!conversation) {
+      return res.status(404).json({ error: 'Conversation not found.' });
+    }
+
+    // Check participation
+    const isParticipant = String(conversation.participantA) === String(currentUserId) ||
+                          String(conversation.participantB) === String(currentUserId);
+    if (!isParticipant) {
+      return res.status(403).json({ error: 'Not authorized to reject this request.' });
+    }
+
+    await Conversation.deleteOne({ conversationId });
+    return res.status(200).json({ status: 'success', message: 'Request declined and removed.' });
+  } catch (error) {
+    return res.status(500).json({ error: 'Failed to reject message request.' });
+  }
+};
+
+/**
+ * Cancel Pending Sent Request
+ */
+const cancelRequest = async (req, res) => {
+  try {
+    const { conversationId } = req.params;
+    const currentUserId = req.user.userId || req.user.id || req.user._id;
+
+    const conversation = await Conversation.findOne({ conversationId });
+    if (!conversation) {
+      return res.status(404).json({ error: 'Conversation not found.' });
+    }
+
+    // Only sender can cancel
+    if (String(conversation.requestedBy) !== String(currentUserId)) {
+      return res.status(403).json({ error: 'Only the sender can cancel this request.' });
+    }
+
+    await Conversation.deleteOne({ conversationId });
+    return res.status(200).json({ status: 'success', message: 'Sent request cancelled.' });
+  } catch (error) {
+    return res.status(500).json({ error: 'Failed to cancel sent request.' });
+  }
+};
+
 module.exports = {
   createOrGetConversation,
   getConversations,
-  acceptRequest
+  acceptRequest,
+  rejectRequest,
+  cancelRequest
 };

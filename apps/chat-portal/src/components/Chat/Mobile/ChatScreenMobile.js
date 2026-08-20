@@ -362,14 +362,47 @@ export default function ChatScreenMobile({
   };
 
   // Handle Accept Message Request
-  const handleAcceptRequest = async () => {
-    if (!activeConv) return;
+  const handleAcceptRequest = async (convToAccept) => {
+    const target = convToAccept || activeConv;
+    if (!target) return;
     try {
-      await api.post(`/chat/conversations/${activeConv.conversationId}/accept`);
-      setActiveConv(prev => ({ ...prev, status: 'active' }));
+      await api.post(`/chat/conversations/${target.conversationId}/accept`);
+      if (activeConv && activeConv.conversationId === target.conversationId) {
+        setActiveConv(prev => ({ ...prev, status: 'active' }));
+      }
       fetchConversations();
     } catch (err) {
       console.error('Failed to accept request:', err);
+    }
+  };
+
+  // Handle Reject / Decline Message Request
+  const handleRejectRequest = async (convToReject) => {
+    const target = convToReject || activeConv;
+    if (!target) return;
+    try {
+      await api.post(`/chat/conversations/${target.conversationId}/reject`);
+      if (activeConv && activeConv.conversationId === target.conversationId) {
+        setActiveConv(null);
+      }
+      fetchConversations();
+    } catch (err) {
+      console.error('Failed to reject request:', err);
+    }
+  };
+
+  // Handle Cancel Sent Request
+  const handleCancelRequest = async (convToCancel) => {
+    const target = convToCancel || activeConv;
+    if (!target) return;
+    try {
+      await api.post(`/chat/conversations/${target.conversationId}/cancel`);
+      if (activeConv && activeConv.conversationId === target.conversationId) {
+        setActiveConv(null);
+      }
+      fetchConversations();
+    } catch (err) {
+      console.error('Failed to cancel request:', err);
     }
   };
 
@@ -415,16 +448,34 @@ export default function ChatScreenMobile({
         {activeConv ? (
           /* CHAT THREAD VIEW */
           <div className={styles.chatContainer}>
-            {/* Opt-In Message Request Banner */}
+            {/* Opt-In Message Request Banner (Incoming) */}
             {activeConv.status === 'pending' && String(activeConv.requestedBy) !== String(localProfile.userId) && (
               <div className={styles.requestBanner}>
                 <div className={styles.requestTitle}>Message Request</div>
                 <div className={styles.requestSubtitle}>
                   @{activeConv.partner?.chatUsername} wants to start a chat with you.
                 </div>
-                <div className={styles.requestActions}>
-                  <button className={styles.textBtnPrimary} onClick={handleAcceptRequest}>
+                <div className={styles.requestActions} style={{ display: 'flex', gap: '10px' }}>
+                  <button className={styles.textBtnPrimary} onClick={() => handleAcceptRequest(activeConv)}>
                     Accept Request
+                  </button>
+                  <button className={styles.textBtnDanger} onClick={() => handleRejectRequest(activeConv)}>
+                    Decline
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Sent Request Pending Banner */}
+            {activeConv.status === 'pending' && String(activeConv.requestedBy) === String(localProfile.userId) && (
+              <div className={styles.requestBanner}>
+                <div className={styles.requestTitle}>Request Pending</div>
+                <div className={styles.requestSubtitle}>
+                  Waiting for @{activeConv.partner?.chatUsername} to accept your request.
+                </div>
+                <div className={styles.requestActions}>
+                  <button className={styles.textBtnDanger} onClick={() => handleCancelRequest(activeConv)}>
+                    Cancel Request
                   </button>
                 </div>
               </div>
@@ -563,130 +614,181 @@ export default function ChatScreenMobile({
             {activeTab === 'friends' && (
               /* FRIENDS VIEW */
               <div className={styles.friendsTabContainer}>
-                {/* Floating Capsule Bar */}
-                <div className={styles.verticalCapsule}>
-                  <button 
-                    className={styles.capsuleActionBtn} 
-                    onClick={() => { triggerHaptic.selection(); setFriendsSubTab('friendRequests'); }}
-                    title="Friend Requests"
-                  >
-                    <img 
-                      src="/friendRequests.svg" 
-                      alt="Friend Requests" 
-                      className={`${styles.capsuleIcon} ${friendsSubTab === 'friendRequests' ? styles.capsuleIconActive : ''}`} 
-                    />
-                  </button>
-                  <button 
-                    className={styles.capsuleActionBtn} 
-                    onClick={() => { triggerHaptic.selection(); setFriendsSubTab('allFriends'); }}
-                    title="All Friends"
-                  >
-                    <img 
-                      src="/allfriends.svg" 
-                      alt="All Friends" 
-                      className={`${styles.capsuleIcon} ${friendsSubTab === 'allFriends' ? styles.capsuleIconActive : ''}`} 
-                    />
-                  </button>
+                {/* Segment Control Sub-Tabs */}
+                <div style={{ padding: '8px 18px 14px 18px' }}>
+                  <div className={styles.segmentControl}>
+                    <button 
+                      className={`${styles.segmentBtn} ${friendsSubTab === 'allFriends' ? styles.segmentBtnActive : ''}`}
+                      onClick={() => { triggerHaptic.selection(); setFriendsSubTab('allFriends'); }}
+                    >
+                      Friends ({conversations.filter(c => c.status === 'active').length})
+                    </button>
+                    <button 
+                      className={`${styles.segmentBtn} ${friendsSubTab === 'friendRequests' ? styles.segmentBtnActive : ''}`}
+                      onClick={() => { triggerHaptic.selection(); setFriendsSubTab('friendRequests'); }}
+                    >
+                      Requests ({conversations.filter(c => c.status === 'pending' && String(c.requestedBy) !== String(localProfile?.userId)).length})
+                    </button>
+                    <button 
+                      className={`${styles.segmentBtn} ${friendsSubTab === 'sentRequests' ? styles.segmentBtnActive : ''}`}
+                      onClick={() => { triggerHaptic.selection(); setFriendsSubTab('sentRequests'); }}
+                    >
+                      Sent ({conversations.filter(c => c.status === 'pending' && String(c.requestedBy) === String(localProfile?.userId)).length})
+                    </button>
+                  </div>
                 </div>
 
-                {/* All Friends List */}
+                {/* 1. All Friends List */}
                 {friendsSubTab === 'allFriends' && (
-                  <>
-                    <h2 className={styles.friendsSectionTitle}>Friends</h2>
-                    <div className={styles.conversationList}>
-                      {conversations.filter(c => c.status === 'active').length === 0 ? (
-                        <div className={styles.emptyState}>
-                          No friends yet. Accept a message request or chat with active users!
-                        </div>
-                      ) : (
-                        conversations
-                          .filter(c => c.status === 'active')
-                          .map((conv, index, arr) => {
-                            const initials = (conv.partner?.chatUsername || 'U').substring(0, 2).toUpperCase();
-                            return (
-                              <div key={conv.conversationId}>
-                                <div 
-                                  className={styles.conversationItem}
-                                  onClick={() => handleSelectConversation(conv)}
-                                  style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '12px 18px', background: 'transparent' }}
-                                >
-                                  <div className={styles.iosAvatarContainer}>
-                                    {conv.partner?.avatarUrl ? (
-                                      <img src={conv.partner.avatarUrl} alt="Avatar" className={styles.iosAvatar} />
-                                    ) : (
-                                      <div className={styles.iosInitialsAvatar}>{initials}</div>
-                                    )}
-                                  </div>
+                  <div className={styles.conversationList}>
+                    {conversations.filter(c => c.status === 'active').length === 0 ? (
+                      <div className={styles.emptyState}>
+                        No active friends yet. Use Search to find users and connect!
+                      </div>
+                    ) : (
+                      conversations
+                        .filter(c => c.status === 'active')
+                        .map((conv, index, arr) => {
+                          const initials = (conv.partner?.chatUsername || 'U').substring(0, 2).toUpperCase();
+                          return (
+                            <div key={conv.conversationId}>
+                              <div 
+                                className={styles.conversationItem}
+                                onClick={() => handleSelectConversation(conv)}
+                                style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '12px 18px', background: 'transparent' }}
+                              >
+                                <div className={styles.iosAvatarContainer}>
+                                  {conv.partner?.avatarUrl ? (
+                                    <img src={conv.partner.avatarUrl} alt="Avatar" className={styles.iosAvatar} />
+                                  ) : (
+                                    <div className={styles.iosInitialsAvatar}>{initials}</div>
+                                  )}
+                                </div>
 
-                                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '3px' }}>
-                                    <div className={styles.convUsername}>
-                                      @{conv.partner?.chatUsername || 'User'}
-                                    </div>
-                                    <div className={styles.convSnippet} style={{ fontSize: '0.78rem', color: '#8e8e93' }}>
-                                      {conv.partner?.firstName || ''} {conv.partner?.lastName || ''}
-                                    </div>
+                                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                                  <div className={styles.convUsername}>
+                                    @{conv.partner?.chatUsername || 'User'}
+                                  </div>
+                                  <div className={styles.convSnippet} style={{ fontSize: '0.78rem', color: '#8e8e93' }}>
+                                    {conv.partner?.firstName || ''} {conv.partner?.lastName || ''}
                                   </div>
                                 </div>
-                                {index < arr.length - 1 && (
-                                  <div className={styles.iosSeparator} />
-                                )}
+
+                                <button className={styles.textBtnPrimary} onClick={(e) => { e.stopPropagation(); handleSelectConversation(conv); }}>
+                                  Chat
+                                </button>
                               </div>
-                            );
-                          })
-                      )}
-                    </div>
-                  </>
+                              {index < arr.length - 1 && (
+                                <div className={styles.iosSeparator} />
+                              )}
+                            </div>
+                          );
+                        })
+                    )}
+                  </div>
                 )}
 
-                {/* Friend Requests List */}
+                {/* 2. Received Friend Requests List */}
                 {friendsSubTab === 'friendRequests' && (
-                  <>
-                    <h2 className={styles.friendsSectionTitle}>Requests</h2>
-                    <div className={styles.conversationList}>
-                      {conversations.filter(c => c.status === 'pending' && String(c.requestedBy) !== String(localProfile?.userId)).length === 0 ? (
-                        <div className={styles.emptyState}>
-                          No pending friend requests right now.
-                        </div>
-                      ) : (
-                        conversations
-                          .filter(c => c.status === 'pending' && String(c.requestedBy) !== String(localProfile?.userId))
-                          .map((conv, index, arr) => {
-                            const initials = (conv.partner?.chatUsername || 'U').substring(0, 2).toUpperCase();
-                            return (
-                              <div key={conv.conversationId}>
-                                <div 
-                                  className={styles.conversationItem}
-                                  onClick={() => handleSelectConversation(conv)}
-                                  style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '12px 18px', background: 'transparent' }}
-                                >
-                                  <div className={styles.iosAvatarContainer}>
-                                    {conv.partner?.avatarUrl ? (
-                                      <img src={conv.partner.avatarUrl} alt="Avatar" className={styles.iosAvatar} />
-                                    ) : (
-                                      <div className={styles.iosInitialsAvatar}>{initials}</div>
-                                    )}
-                                  </div>
-
-                                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '3px' }}>
-                                    <div className={styles.convUsername}>
-                                      @{conv.partner?.chatUsername || 'User'}
-                                    </div>
-                                    <div className={styles.convSnippet} style={{ fontSize: '0.78rem', color: '#8e8e93' }}>
-                                      {conv.partner?.firstName || ''} {conv.partner?.lastName || ''}
-                                    </div>
-                                  </div>
-
-                                  <div className={styles.badgeRequest}>REQUEST</div>
+                  <div className={styles.conversationList}>
+                    {conversations.filter(c => c.status === 'pending' && String(c.requestedBy) !== String(localProfile?.userId)).length === 0 ? (
+                      <div className={styles.emptyState}>
+                        No pending incoming friend requests.
+                      </div>
+                    ) : (
+                      conversations
+                        .filter(c => c.status === 'pending' && String(c.requestedBy) !== String(localProfile?.userId))
+                        .map((conv, index, arr) => {
+                          const initials = (conv.partner?.chatUsername || 'U').substring(0, 2).toUpperCase();
+                          return (
+                            <div key={conv.conversationId}>
+                              <div 
+                                className={styles.conversationItem}
+                                style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '12px 18px', background: 'transparent' }}
+                              >
+                                <div className={styles.iosAvatarContainer}>
+                                  {conv.partner?.avatarUrl ? (
+                                    <img src={conv.partner.avatarUrl} alt="Avatar" className={styles.iosAvatar} />
+                                  ) : (
+                                    <div className={styles.iosInitialsAvatar}>{initials}</div>
+                                  )}
                                 </div>
-                                {index < arr.length - 1 && (
-                                  <div className={styles.iosSeparator} />
-                                )}
+
+                                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                                  <div className={styles.convUsername}>
+                                    @{conv.partner?.chatUsername || 'User'}
+                                  </div>
+                                  <div className={styles.convSnippet} style={{ fontSize: '0.78rem', color: '#8e8e93' }}>
+                                    Wants to start a conversation
+                                  </div>
+                                </div>
+
+                                <div style={{ display: 'flex', gap: '8px' }}>
+                                  <button className={styles.textBtnPrimary} onClick={() => handleAcceptRequest(conv)}>
+                                    Accept
+                                  </button>
+                                  <button className={styles.textBtnDanger} onClick={() => handleRejectRequest(conv)}>
+                                    Decline
+                                  </button>
+                                </div>
                               </div>
-                            );
-                          })
-                      )}
-                    </div>
-                  </>
+                              {index < arr.length - 1 && (
+                                <div className={styles.iosSeparator} />
+                              )}
+                            </div>
+                          );
+                        })
+                    )}
+                  </div>
+                )}
+
+                {/* 3. Sent Requests List */}
+                {friendsSubTab === 'sentRequests' && (
+                  <div className={styles.conversationList}>
+                    {conversations.filter(c => c.status === 'pending' && String(c.requestedBy) === String(localProfile?.userId)).length === 0 ? (
+                      <div className={styles.emptyState}>
+                        No pending sent requests.
+                      </div>
+                    ) : (
+                      conversations
+                        .filter(c => c.status === 'pending' && String(c.requestedBy) === String(localProfile?.userId))
+                        .map((conv, index, arr) => {
+                          const initials = (conv.partner?.chatUsername || 'U').substring(0, 2).toUpperCase();
+                          return (
+                            <div key={conv.conversationId}>
+                              <div 
+                                className={styles.conversationItem}
+                                style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '12px 18px', background: 'transparent' }}
+                              >
+                                <div className={styles.iosAvatarContainer}>
+                                  {conv.partner?.avatarUrl ? (
+                                    <img src={conv.partner.avatarUrl} alt="Avatar" className={styles.iosAvatar} />
+                                  ) : (
+                                    <div className={styles.iosInitialsAvatar}>{initials}</div>
+                                  )}
+                                </div>
+
+                                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                                  <div className={styles.convUsername}>
+                                    @{conv.partner?.chatUsername || 'User'}
+                                  </div>
+                                  <div className={styles.convSnippet} style={{ fontSize: '0.78rem', color: '#8e8e93' }}>
+                                    Request Pending...
+                                  </div>
+                                </div>
+
+                                <button className={styles.textBtnDanger} onClick={() => handleCancelRequest(conv)}>
+                                  Cancel
+                                </button>
+                              </div>
+                              {index < arr.length - 1 && (
+                                <div className={styles.iosSeparator} />
+                              )}
+                            </div>
+                          );
+                        })
+                    )}
+                  </div>
                 )}
               </div>
             )}
@@ -707,19 +809,36 @@ export default function ChatScreenMobile({
                 {searchResult && (
                   <div 
                     className={styles.conversationItem} 
-                    style={{ marginTop: '14px', borderRadius: '16px', background: '#050505', border: '1px solid rgba(255, 255, 255, 0.05)' }}
-                    onClick={() => {
-                      handleSelectConversation({
-                        ...searchResult.conversation,
-                        partner: searchResult.targetUser
-                      });
-                    }}
+                    style={{ marginTop: '14px', borderRadius: '16px', background: '#050505', border: '1px solid rgba(255, 255, 255, 0.05)', padding: '14px 18px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
                   >
                     <div>
                       <div className={styles.convUsername}>@{searchResult.targetUser.chatUsername}</div>
-                      <div className={styles.convSnippet}>Click to open messaging thread</div>
+                      <div className={styles.convSnippet}>
+                        {searchResult.conversation.status === 'active' 
+                          ? 'Already connected as friends' 
+                          : (String(searchResult.conversation.requestedBy) === String(localProfile.userId) ? 'Request sent (pending)' : 'Incoming request pending')
+                        }
+                      </div>
                     </div>
-                    <button className={styles.textBtnPrimary}>Chat</button>
+
+                    {searchResult.conversation.status === 'active' ? (
+                      <button className={styles.textBtnPrimary} onClick={() => handleSelectConversation({ ...searchResult.conversation, partner: searchResult.targetUser })}>
+                        Open Chat
+                      </button>
+                    ) : String(searchResult.conversation.requestedBy) === String(localProfile.userId) ? (
+                      <button className={styles.textBtnDanger} onClick={() => handleCancelRequest(searchResult.conversation)}>
+                        Cancel Request
+                      </button>
+                    ) : (
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        <button className={styles.textBtnPrimary} onClick={() => handleAcceptRequest(searchResult.conversation)}>
+                          Accept
+                        </button>
+                        <button className={styles.textBtnDanger} onClick={() => handleRejectRequest(searchResult.conversation)}>
+                          Decline
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

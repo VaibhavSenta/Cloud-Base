@@ -94,6 +94,24 @@
   box-shadow: 0 4px 14px rgba(0, 149, 246, 0.25);
 }
 
+.textBtnDanger {
+  background: rgba(255, 59, 48, 0.1);
+  border: 1px solid rgba(255, 59, 48, 0.25);
+  color: #ff3b30;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.textBtnDanger:hover {
+  background: rgba(255, 59, 48, 0.2);
+}
+
 /* Search Bar (Strict Exact Match) */
 .searchSection {
   display: flex;
