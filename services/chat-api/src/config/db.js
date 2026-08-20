@@ -15,6 +15,15 @@ const connectDB = async () => {
     mongoose.set('autoIndex', false);
     await mongoose.connect(mongoURI, { dbName: "nothingbox" });
     console.log('✅ [Chat-API] MongoDB Connected successfully.');
+
+    // Seed BloomFilter with existing usernames
+    const { globalBloomFilter } = require('../utils/bloomFilter');
+    const ChatProfile = require('../features/users/user.model');
+    const existingProfiles = await ChatProfile.find({}, 'chatUsername');
+    existingProfiles.forEach(p => {
+      if (p.chatUsername) globalBloomFilter.add(p.chatUsername);
+    });
+    console.log(`✅ [Chat-API] Seeded BloomFilter with ${existingProfiles.length} usernames.`);
   } catch (error) {
     console.error(`❌ [Chat-API] MongoDB Connection Error: ${error.message}`);
     process.exit(1);
