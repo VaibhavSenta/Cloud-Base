@@ -9,9 +9,7 @@ export default function ConnectedServicesDesktop({ connectedServices }) {
   const router = useRouter();
 
   const services = [
-    { id: 'vault', name: 'Cloud Vault', tagline: 'Secure storage & sync parameters', path: '/dashboard/connected-services/vault' },
-    { id: 'chat', name: 'Cloud Chat', tagline: 'Encrypted communication terminal', path: '/dashboard/connected-services/chat' },
-    { id: 'social', name: 'Cloud Social', tagline: 'Privacy-focused fediverse sharing', path: '/dashboard/connected-services/social' }
+    { id: 'chat', name: 'Nothingbox Chat', tagline: 'Encrypted messaging & communication hub', path: '/dashboard/connected-services/chat' }
   ];
 
   const connectedList = services.filter(service => 

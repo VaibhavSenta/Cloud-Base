@@ -20,31 +20,13 @@ export default function ServiceConsentPage() {
   const serviceId = params.serviceId;
 
   const servicesDetails = {
-    vault: {
-      name: 'Cloud Vault',
-      description: 'Zero-knowledge encrypted cloud locker to archive, partition, and sync user assets.',
-      scopes: [
-        'Read core identity attributes (Name, Email, Profile Picture)',
-        'Create and partition isolated document workspace directories',
-        'Issue secure file upload/download signatures to local devices'
-      ]
-    },
     chat: {
-      name: 'Cloud Chat',
+      name: 'Nothingbox Chat',
       description: 'End-to-end encrypted messaging terminal for real-time channel sync.',
       scopes: [
         'Read core identity attributes (Name, Email, Profile Picture)',
         'Manage real-time notifications and message delivery routing parameters',
         'Store and verify asymmetric session keys for message encryption validation'
-      ]
-    },
-    social: {
-      name: 'Cloud Social',
-      description: 'Privacy-first sharing hub with custom audience bounds and fediverse relays.',
-      scopes: [
-        'Read core identity attributes (Name, Email, Profile Picture)',
-        'Publish public profile metadata and manage active network links',
-        'Configure custom content safety parameters and encryption boundaries'
       ]
     }
   };
@@ -69,7 +51,9 @@ export default function ServiceConsentPage() {
         }
       }
       await queryClient.invalidateQueries({ queryKey: ['user'] });
-      window.location.href = `/dashboard/connected-services/${serviceId}`;
+      
+      const chatPortalUrl = process.env.NEXT_PUBLIC_CHAT_PORTAL_URL || 'http://chat.nothingbox.test';
+      window.location.href = chatPortalUrl;
     },
     onError: (err) => {
       setErrorMessage(err.response?.data?.message || 'Failed to authenticate and link service');

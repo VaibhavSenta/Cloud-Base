@@ -126,6 +126,29 @@ const createProfile = async (req, res) => {
     // Insert into global Bloom Filter bitArray instantly
     globalBloomFilter.add(cleanedUsername);
 
+    // Automatically link 'chat' service in account-api user.connectedServices
+    try {
+      const axios = require('axios');
+      const accountApiUrl = process.env.ACCOUNT_API_URL || 'http://localhost:5010';
+      let token = req.cookies?.cb_chat_token || req.cookies?.token;
+      if (!token && req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+        token = req.headers.authorization.split(' ')[1];
+      }
+      if (token) {
+        await axios.post(
+          `${accountApiUrl}/api/v1/auth/connect-service`,
+          { serviceId: 'chat' },
+          { 
+            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true 
+          }
+        );
+        console.log(`🔗 [Chat-API] Automatically linked 'chat' service in account-api for userId: ${userId}`);
+      }
+    } catch (connectErr) {
+      console.warn('⚠️ [Chat-API] Could not auto-sync connect-service to account-api:', connectErr.message);
+    }
+
     return res.status(201).json({ status: 'success', profile: newProfile });
   } catch (error) {
     return res.status(500).json({ error: `Internal server error during profile creation: ${error.message}` });

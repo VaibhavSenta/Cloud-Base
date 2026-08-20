@@ -140,14 +140,36 @@ export default function ChatSettingsPage() {
         width: '100%',
         boxSizing: 'border-box'
       }} className="glass">
-        <h2 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '8px' }}>Cloud Chat Settings</h2>
+        <h2 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '8px' }}>Nothingbox Chat Settings</h2>
         <p style={{ fontSize: '0.82rem', color: '#888888', lineHeight: 1.4, marginBottom: '24px' }}>
-          Configure message retention policies, notification settings, and encrypted peer keys for Cloud Chat.
+          Configure message retention policies, notification settings, and encrypted peer keys for Nothingbox Chat.
         </p>
         
         {errorMessage && (
           <p style={{ color: '#ff453a', fontSize: '0.78rem', marginBottom: '16px' }}>{errorMessage}</p>
         )}
+
+        <button 
+          onClick={() => {
+            const chatPortalUrl = process.env.NEXT_PUBLIC_CHAT_PORTAL_URL || 'http://chat.nothingbox.test';
+            window.location.href = chatPortalUrl;
+          }}
+          style={{
+            display: 'block',
+            width: '100%',
+            background: '#0095f6',
+            border: 'none',
+            color: '#ffffff',
+            fontWeight: 'bold',
+            fontSize: '0.85rem',
+            padding: '12px',
+            borderRadius: '100px',
+            cursor: 'pointer',
+            marginBottom: '12px'
+          }}
+        >
+          Launch Nothingbox Chat
+        </button>
 
         <button 
           onClick={() => disconnectMutation.mutate()}

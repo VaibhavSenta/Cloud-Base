@@ -44,28 +44,12 @@ export default function ExploreServicesPage() {
 
   const servicesList = [
     {
-      id: 'vault',
-      name: 'Cloud Vault',
-      category: 'STORAGE & SYNC',
-      monogram: 'CV',
-      description: 'Encrypted file storage, secure document sync, and background backup rotation.',
-      path: '/dashboard/connected-services/vault'
-    },
-    {
       id: 'chat',
-      name: 'Cloud Chat',
+      name: 'Nothingbox Chat',
       category: 'MESSAGING & COMMUNICATION',
-      monogram: 'CC',
+      monogram: 'NC',
       description: 'Encrypted end-to-end messaging, notification controls, and metadata privacy limits.',
       path: '/dashboard/connected-services/chat'
-    },
-    {
-      id: 'social',
-      name: 'Cloud Social',
-      category: 'PRIVACY FEDIVERSE',
-      monogram: 'CS',
-      description: 'Privacy-focused social sharing, fediverse connection settings, and customizable feed bounds.',
-      path: '/dashboard/connected-services/social'
     }
   ];
 
