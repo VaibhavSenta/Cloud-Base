@@ -230,8 +230,18 @@ export default function ChatScreenMobile({
         await unsubscribePushNotifications();
         setPushEnabled(false);
       } else {
+        if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'denied') {
+          alert('Notification permission is currently BLOCKED in your browser. Click the lock/tune icon in the URL bar to allow notifications for this site.');
+          setIsTogglingPush(false);
+          return;
+        }
+
         const success = await initPushNotifications();
         setPushEnabled(success);
+
+        if (!success && typeof window !== 'undefined' && !window.isSecureContext) {
+          alert('Browser Security Notice: Web Push Notifications require a Secure Origin (HTTPS or http://localhost:3003). Custom HTTP domain http://chat.nothingbox.test is blocked by browser security. Please open http://localhost:3003 or use HTTPS.');
+        }
       }
     } catch (err) {
       console.error('Failed to toggle push notifications:', err);
