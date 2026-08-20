@@ -35,14 +35,9 @@ const signup = async (req, res) => {
     const deviceInfo = sessionService.parseDeviceInfo(req);
     const result = await authService.createAccount(req.body, deviceInfo);
     
-    res.cookie('token', result.token, {
-        httpOnly: true,
-        secure: false, 
-        sameSite: 'lax',
-        path: '/',
-        domain: 'localhost',
-        maxAge: 7 * 24 * 60 * 60 * 1000 
-    });
+    res.cookie('token', result.token, cookieConfig);
+    res.cookie('cb_chat_token', result.token, cookieConfig);
+    res.cookie('cb_account_token', result.token, cookieConfig);
     res.status(201).json({ success: true, data: result });
   } catch (error) {
     console.error('❌ Signup Error:', error.message);
