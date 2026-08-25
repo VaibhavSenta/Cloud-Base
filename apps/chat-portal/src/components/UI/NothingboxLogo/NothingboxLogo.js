@@ -51,12 +51,22 @@ export default function NothingboxLogo({ size = 36, className = '' }) {
           fill="#ffffff" 
         />
 
-        {/* 4. Inner Fine Stitched Dotted Contour Line */}
+        {/* 4. Solid Black Inset Outline Triangle inside White Triangle */}
         <path 
-          d="M 235,115 Q 250,95 265,115 L 395,360 Q 405,378 385,378 L 115,378 Q 95,378 105,360 Z" 
-          stroke="#48484a" 
-          strokeWidth="5" 
-          strokeDasharray="10 14"
+          d="M 233,100 Q 250,80 267,100 L 405,365 Q 415,382 393,382 L 107,382 Q 85,382 95,365 Z" 
+          stroke="#000000" 
+          strokeWidth="8" 
+          strokeLinejoin="round" 
+          strokeLinecap="round" 
+          fill="none" 
+        />
+
+        {/* 5. Innermost Fine Stitched Dotted Contour Line inside Black Outline */}
+        <path 
+          d="M 235,120 Q 250,102 265,120 L 388,355 Q 396,370 378,370 L 122,370 Q 104,370 112,355 Z" 
+          stroke="#666666" 
+          strokeWidth="4" 
+          strokeDasharray="8 10"
           strokeLinejoin="round" 
           strokeLinecap="round" 
           fill="none" 
