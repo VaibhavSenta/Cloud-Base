@@ -51,12 +51,12 @@ export default function NothingboxLogo({ size = 36, className = '' }) {
           fill="#ffffff" 
         />
 
-        {/* 4. Inner Stitched Dotted Contour Line (Silky Smooth Rounded Curve Corner) */}
+        {/* 4. Inner Fine Stitched Dotted Line (Sleek Thinner Stroke + Wider Gap) */}
         <path 
           d="M 235,115 Q 250,95 265,115 L 395,360 Q 405,378 385,378 L 115,378 Q 95,378 105,360 Z" 
-          stroke="#48484a" 
-          strokeWidth="10" 
-          strokeDasharray="14 10"
+          stroke="#55555e" 
+          strokeWidth="5" 
+          strokeDasharray="10 14"
           strokeLinejoin="round" 
           strokeLinecap="round" 
           fill="none" 
