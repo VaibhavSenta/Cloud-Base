@@ -577,22 +577,28 @@
   color: #0095f6;
 }
 
-.appleLogoutBtn {
-  width: 100%;
-  background: rgba(255, 59, 48, 0.1);
-  border: 1px solid rgba(255, 59, 48, 0.25);
-  color: #ff3b30;
-  padding: 16px;
+.appleGroupCardDanger {
+  background-color: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 2rem;
-  font-size: 0.85rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-align: center;
+  overflow: hidden;
 }
 
-.appleLogoutBtn:hover {
-  background: rgba(255, 59, 48, 0.2);
+.appleDangerRowBtn {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #ff4d4d;
+  padding: 16px 20px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.2s ease;
+}
+
+.appleDangerRowBtn:hover {
+  background-color: rgba(255, 77, 77, 0.06);
 }
 
 .searchError {

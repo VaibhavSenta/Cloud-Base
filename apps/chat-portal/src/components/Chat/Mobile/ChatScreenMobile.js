@@ -996,15 +996,17 @@ export default function ChatScreenMobile({
 
                 {/* GROUP 4: SESSION LOGOUT */}
                 <div className={styles.appleGroupSection}>
-                  <button 
-                    onClick={() => {
-                      document.cookie = "token=; domain=localhost; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-                      window.location.reload();
-                    }} 
-                    className={styles.appleLogoutBtn}
-                  >
-                    Logout Account
-                  </button>
+                  <div className={styles.appleGroupCardDanger}>
+                    <button 
+                      onClick={() => {
+                        document.cookie = "token=; domain=localhost; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+                        window.location.reload();
+                      }} 
+                      className={styles.appleDangerRowBtn}
+                    >
+                      Logout Account
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
