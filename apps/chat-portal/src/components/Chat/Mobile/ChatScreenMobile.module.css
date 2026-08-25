@@ -605,7 +605,7 @@
    iOS Bottom Sheet Profile Modal (IMG_2246.PNG Style)
    ========================================================================== */
 .iosSheetBackdrop {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
@@ -617,15 +617,16 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  border-radius: 2rem;
+  overflow: hidden;
   animation: fadeIn 0.3s ease-out forwards;
 }
 
 .iosSheetContainer {
   width: 100%;
-  height: calc(100vh - 48px);
+  height: 100%;
   background-color: #121212;
-  border-top-left-radius: 2rem;
-  border-top-right-radius: 2rem;
+  border-radius: 2rem;
   border-top: 1px solid rgba(255, 255, 255, 0.15);
   display: flex;
   flex-direction: column;
