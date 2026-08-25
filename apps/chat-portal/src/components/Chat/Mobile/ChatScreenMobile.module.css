@@ -688,6 +688,19 @@
   padding: 20px 24px 14px 24px;
 }
 
+.iosSheetTitleGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.iosSheetLogo {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
 .iosSheetTitle {
   font-size: 1.15rem;
   font-weight: 800;

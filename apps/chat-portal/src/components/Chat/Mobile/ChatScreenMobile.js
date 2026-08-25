@@ -1059,7 +1059,10 @@ export default function ChatScreenMobile({
         <div className={`${styles.iosSheetBackdrop} ${isClosingSheet ? styles.iosSheetBackdropClosing : ''}`} onClick={handleCloseProfileModal}>
           <div className={`${styles.iosSheetContainer} ${isClosingSheet ? styles.iosSheetContainerClosing : ''}`} onClick={(e) => e.stopPropagation()}>
             <div className={styles.iosSheetHeader}>
-              <span className={styles.iosSheetTitle}>Nothingbox Account</span>
+              <div className={styles.iosSheetTitleGroup}>
+                <img src="/icons/icon-192x192.png" alt="Nothingbox Chat Logo" className={styles.iosSheetLogo} />
+                <span className={styles.iosSheetTitle}>Nothingbox Chat</span>
+              </div>
               <button className={styles.iosCloseBtn} onClick={handleCloseProfileModal}>✕</button>
             </div>
 
