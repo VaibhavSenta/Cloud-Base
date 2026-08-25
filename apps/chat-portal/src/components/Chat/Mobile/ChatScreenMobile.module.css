@@ -501,7 +501,9 @@
 }
 
 .appleGroupCard {
-  background-color: #000000;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 2rem;
   padding: 0 20px;
@@ -578,8 +580,10 @@
 }
 
 .appleGroupCardDanger {
-  background-color: #000000;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 77, 77, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 77, 77, 0.2);
   border-radius: 2rem;
   overflow: hidden;
 }
@@ -610,9 +614,9 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   z-index: 9999;
   display: flex;
   flex-direction: column;
@@ -630,9 +634,11 @@
   width: 100%;
   height: calc(100% - 16px);
   margin-top: 16px;
-  background-color: #121212;
+  background-color: rgba(18, 18, 18, 0.82);
+  backdrop-filter: blur(35px);
+  -webkit-backdrop-filter: blur(35px);
   border-radius: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   display: flex;
   flex-direction: column;
   overflow: hidden;
