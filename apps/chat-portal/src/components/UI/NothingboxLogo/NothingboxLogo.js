@@ -14,69 +14,45 @@ export default function NothingboxLogo({ size = 36, className = '' }) {
         xmlns="http://www.w3.org/2000/svg"
         className={styles.logoSvg}
       >
-        <defs>
-          <linearGradient id="nbBlueGrad" x1="50" y1="50" x2="450" y2="450" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#0095f6" />
-            <stop offset="100%" stopColor="#0055b3" />
-          </linearGradient>
-
-          <linearGradient id="nbWhiteGrad" x1="100" y1="50" x2="400" y2="450" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#ffffff" />
-            <stop offset="100%" stopColor="#d1d1d6" />
-          </linearGradient>
-
-          {/* Clip path for right triangle leg to create 3D interlock weave */}
-          <clipPath id="rightTriangleWeave">
-            <rect x="230" y="40" width="270" height="260" />
-          </clipPath>
-        </defs>
-
-        {/* 1. Base Silver Triangle */}
+        {/* 1. Backmost Triangle 1: Pointing DOWN (Dark Grey Outline) */}
         <polygon 
-          points="250,45 440,415 60,415" 
-          stroke="url(#nbWhiteGrad)" 
-          strokeWidth="24" 
+          points="250,460 70,140 430,140" 
+          stroke="#55555e" 
+          strokeWidth="18" 
           strokeLinejoin="round" 
           strokeLinecap="round" 
           fill="none" 
         />
 
-        {/* 2. Main Blue Octagon Loop (passes UNDER triangle's right leg, OVER triangle's bottom-left leg) */}
-        <polygon
-          points="
-            170,85 330,85 
-            430,185 430,345 
-            330,425 170,425 
-            70,345 70,185
-          "
-          stroke="url(#nbBlueGrad)"
-          strokeWidth="24"
-          strokeLinejoin="round"
-          strokeLinecap="round"
-          fill="none"
-        />
-
-        {/* 3. Woven Right Triangle Leg (passes OVER the Octagon to complete 3D interlock weave!) */}
+        {/* 2. Middle Triangle 2: Rotated / Tilted (Mid Grey Outline) */}
         <polygon 
-          points="250,45 440,415 60,415" 
-          stroke="url(#nbWhiteGrad)" 
-          strokeWidth="24" 
+          points="60,280 390,60 390,440" 
+          stroke="#8e8e93" 
+          strokeWidth="18" 
           strokeLinejoin="round" 
           strokeLinecap="round" 
           fill="none" 
-          clipPath="url(#rightTriangleWeave)"
         />
 
-        {/* 4. Center High-Contrast Capsule Pill */}
-        <rect 
-          x="175" 
-          y="225" 
-          width="150" 
-          height="70" 
-          rx="35" 
+        {/* 3. Foremost Main Triangle: Pointing UP (White Outer Border & White Fill) */}
+        <polygon 
+          points="250,60 440,390 60,390" 
+          stroke="#ffffff" 
+          strokeWidth="24" 
+          strokeLinejoin="round" 
+          strokeLinecap="round" 
           fill="#ffffff" 
-          stroke="#0095f6"
-          strokeWidth="8"
+        />
+
+        {/* 4. Inner Stitched Dashed Line inside Main Triangle */}
+        <polygon 
+          points="250,105 405,365 95,365" 
+          stroke="#666666" 
+          strokeWidth="8" 
+          strokeDasharray="12 10"
+          strokeLinejoin="round" 
+          strokeLinecap="round" 
+          fill="none" 
         />
       </svg>
     </div>
