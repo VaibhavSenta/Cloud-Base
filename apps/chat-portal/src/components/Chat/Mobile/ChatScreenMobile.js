@@ -21,6 +21,7 @@ export default function ChatScreenMobile({
   const [activeTab, setActiveTab] = useState('chat'); // 'chat', 'search', 'settings'
   const [friendsSubTab, setFriendsSubTab] = useState('allFriends'); // 'allFriends', 'friendRequests'
   const [localProfile, setLocalProfile] = useState(profile);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [editFirstName, setEditFirstName] = useState(profile?.firstName || '');
   const [editLastName, setEditLastName] = useState(profile?.lastName || '');
@@ -475,7 +476,14 @@ export default function ChatScreenMobile({
         activeConv={activeConv}
         setActiveConv={setActiveConv}
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        setActiveTab={(tab) => {
+          if (tab === 'settings') {
+            setIsProfileModalOpen(true);
+          } else {
+            setActiveTab(tab);
+          }
+        }}
+        onProfileClick={() => setIsProfileModalOpen(true)}
         profile={localProfile}
         chatSearchText={chatSearchText}
         setChatSearchText={setChatSearchText}
@@ -1018,7 +1026,13 @@ export default function ChatScreenMobile({
       {!activeConv && (
         <Footer
           activeTab={activeTab}
-          setActiveTab={setActiveTab}
+          setActiveTab={(tab) => {
+            if (tab === 'settings') {
+              setIsProfileModalOpen(true);
+            } else {
+              setActiveTab(tab);
+            }
+          }}
           profile={localProfile}
           searchUsername={searchUsername}
           setSearchUsername={setSearchUsername}
@@ -1028,6 +1042,95 @@ export default function ChatScreenMobile({
           hasFriendsUpdate={hasFriendsUpdate}
           hasGroupsUpdate={hasGroupsUpdate}
         />
+      )}
+
+      {/* 4. iOS BOTTOM SHEET PROFILE MODAL (IMG_2246.PNG Style) */}
+      {isProfileModalOpen && (
+        <div className={styles.iosSheetBackdrop} onClick={() => setIsProfileModalOpen(false)}>
+          <div className={styles.iosSheetContainer} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.iosSheetHeader}>
+              <span className={styles.iosSheetTitle}>Nothingbox Account</span>
+              <button className={styles.iosCloseBtn} onClick={() => setIsProfileModalOpen(false)}>✕</button>
+            </div>
+
+            <div className={styles.iosSheetBody}>
+              {/* Group 1: User Info & Account Center Link */}
+              <div className={styles.appleGroupCard}>
+                <div className={styles.iosUserRow} onClick={() => {
+                  setIsEditingProfile(true);
+                  setEditFirstName(localProfile.firstName || '');
+                  setEditLastName(localProfile.lastName || '');
+                  setAvatarPreview(localProfile.avatarUrl || '');
+                  setProfileError('');
+                }}>
+                  {localProfile.avatarUrl ? (
+                    <img src={localProfile.avatarUrl} alt="Avatar" className={styles.iosUserAvatar} />
+                  ) : (
+                    <div className={styles.largeAvatarPlaceholder} style={{ width: '54px', height: '54px' }}>
+                      <img src="/profile-icon.svg" alt="Default Avatar" className={styles.defaultUserIcon} style={{ width: '28px', height: '28px' }} />
+                    </div>
+                  )}
+                  <div className={styles.iosUserMeta}>
+                    <span className={styles.iosUserName}>
+                      {localProfile.firstName || localProfile.chatUsername} {localProfile.lastName || ''}
+                    </span>
+                    <span className={styles.iosUserSubtitle}>Account info and settings</span>
+                  </div>
+                  <span className={styles.appleActionArrow}>›</span>
+                </div>
+
+                <a 
+                  href={`${config.accountPortalUrl}/dashboard`} 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className={styles.iosServiceRow}
+                >
+                  <div className={styles.iosServiceLeft}>
+                    <img src="/profile-icon.svg" alt="Icon" className={styles.defaultUserIcon} style={{ width: '20px', height: '20px' }} />
+                    <span className={styles.iosServiceTitle}>Account Center</span>
+                  </div>
+                  <div className={styles.iosServiceRight}>
+                    <span>{localProfile.chatUsername}</span>
+                    <span>↗</span>
+                  </div>
+                </a>
+              </div>
+
+              {/* Group 2: Preferences & Security */}
+              <div className={styles.appleGroupCard}>
+                <div className={styles.appleRow}>
+                  <span className={styles.appleRowLabel}>Push Notifications</span>
+                  <button 
+                    className={`${styles.pushToggleBtn} ${pushEnabled ? styles.pushToggleBtnActive : ''}`}
+                    onClick={handleTogglePushNotifications}
+                    disabled={isTogglingPush}
+                  >
+                    {isTogglingPush ? '...' : (pushEnabled ? 'ON' : 'OFF')}
+                  </button>
+                </div>
+                <div className={styles.appleRow}>
+                  <a href={`${config.accountPortalUrl}/dashboard`} target="_blank" rel="noreferrer" className={styles.appleRowActionBtn} style={{ textDecoration: 'none' }}>
+                    <span className={styles.appleActionLabel}>Manage Security & 2FA</span>
+                    <span className={styles.appleActionArrow}>↗</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Group 3: Session Logout */}
+              <div className={styles.appleGroupCardDanger}>
+                <button 
+                  onClick={() => {
+                    document.cookie = "token=; domain=localhost; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+                    window.location.reload();
+                  }} 
+                  className={styles.appleDangerRowBtn}
+                >
+                  Logout Account
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
