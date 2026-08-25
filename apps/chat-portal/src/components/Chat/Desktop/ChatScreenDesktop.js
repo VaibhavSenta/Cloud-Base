@@ -174,6 +174,7 @@ export default function ChatScreenDesktop({
     setIsSearching(true);
     setSearchError('');
     setSearchResult(null);
+    setActiveTab('search');
 
     try {
       const response = await api.get(`/chat/users/search?username=${encodeURIComponent(searchUsername.trim())}`);
