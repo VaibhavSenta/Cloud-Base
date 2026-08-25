@@ -842,9 +842,7 @@ export default function ChatScreenMobile({
                       {avatarPreview ? (
                         <img src={avatarPreview} alt="Avatar Preview" className={styles.avatarPreviewImg} />
                       ) : (
-                        <div className={styles.avatarPlaceholderText}>
-                          {localProfile.firstName ? localProfile.firstName[0].toUpperCase() : '?'}
-                        </div>
+                        <img src="/profile-icon.svg" alt="Default Avatar" className={styles.defaultUserIcon} />
                       )}
                       <label className={styles.avatarUploadLabel}>
                         Change
@@ -917,16 +915,14 @@ export default function ChatScreenMobile({
                     {localProfile.avatarUrl ? (
                       <img src={localProfile.avatarUrl} alt="Avatar" className={styles.largeAvatarImg} />
                     ) : (
-                      <div className={styles.largeAvatarInitial}>
-                        {localProfile.firstName ? localProfile.firstName[0].toUpperCase() : '?'}
-                      </div>
+                      <img src="/profile-icon.svg" alt="Default Avatar" className={styles.defaultUserIcon} />
                     )}
                   </div>
                   <h3 className={styles.heroName}>
                     {localProfile.firstName} {localProfile.lastName}
                   </h3>
                   <span className={styles.heroUsernamePill}>
-                    @{localProfile.chatUsername}
+                    {localProfile.chatUsername}
                   </span>
                 </div>
 
@@ -940,7 +936,7 @@ export default function ChatScreenMobile({
                     </div>
                     <div className={styles.appleRow}>
                       <span className={styles.appleRowLabel}>Chat Username</span>
-                      <span className={styles.appleRowValue}>@{localProfile.chatUsername}</span>
+                      <span className={styles.appleRowValue}>{localProfile.chatUsername}</span>
                     </div>
                     <div className={styles.appleRow}>
                       <span className={styles.appleRowLabel}>Email Address</span>
@@ -982,7 +978,6 @@ export default function ChatScreenMobile({
                         className={styles.appleRowActionBtn}
                       >
                         <span className={styles.appleActionLabel}>Edit Profile Details</span>
-                        <span className={styles.appleActionArrow}>Edit ›</span>
                       </button>
                     </div>
                     <div className={styles.appleRow}>
@@ -994,7 +989,6 @@ export default function ChatScreenMobile({
                         style={{ textDecoration: 'none' }}
                       >
                         <span className={styles.appleActionLabel}>Manage Security & 2FA</span>
-                        <span className={styles.appleActionArrow}>Portal ↗</span>
                       </a>
                     </div>
                   </div>
