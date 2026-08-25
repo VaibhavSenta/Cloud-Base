@@ -15,40 +15,33 @@ export default function NothingboxLogo({ size = 36, className = '' }) {
         className={styles.logoSvg}
       >
         <defs>
-          {/* Pure White Glow Gradient for Main Triangle */}
           <linearGradient id="nbWhiteGlow" x1="250" y1="50" x2="250" y2="400" gradientUnits="userSpaceOnUse">
             <stop offset="0%" stopColor="#ffffff" />
             <stop offset="100%" stopColor="#e5e5ea" />
           </linearGradient>
-
-          {/* Signature Instagram Blue Gradient for Middle Star Accent */}
-          <linearGradient id="nbBlueAccent" x1="60" y1="60" x2="400" y2="440" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#0095f6" />
-            <stop offset="100%" stopColor="#0066cc" />
-          </linearGradient>
         </defs>
 
-        {/* 1. Backmost Downward Triangle (Graphite Dark Grey) */}
+        {/* 1. Backmost Downward Triangle (Soft Smooth Rounded Dark Grey Outline) */}
         <path 
           d="M 230,445 Q 250,470 270,445 L 420,165 Q 435,140 410,140 L 90,140 Q 65,140 80,165 Z" 
-          stroke="#3a3a3c" 
+          stroke="#48484a" 
           strokeWidth="20" 
           strokeLinejoin="round" 
           strokeLinecap="round" 
           fill="none" 
         />
 
-        {/* 2. Middle Tilted Triangle (Signature Instagram Blue Accent) */}
+        {/* 2. Middle Tilted Triangle (Classic Mid Grey Outline) */}
         <path 
           d="M 75,265 Q 55,280 75,295 L 375,435 Q 395,445 395,420 L 395,80 Q 395,55 375,65 Z" 
-          stroke="url(#nbBlueAccent)" 
-          strokeWidth="22" 
+          stroke="#8e8e93" 
+          strokeWidth="20" 
           strokeLinejoin="round" 
           strokeLinecap="round" 
           fill="none" 
         />
 
-        {/* 3. Foremost Upward Triangle (Smooth Rounded Pure White Border & Fill) */}
+        {/* 3. Foremost Upward Triangle (Smooth Rounded Outer White Border & Fill) */}
         <path 
           d="M 230,75 Q 250,50 270,75 L 425,370 Q 440,395 415,395 L 85,395 Q 60,395 75,370 Z" 
           stroke="url(#nbWhiteGlow)" 
