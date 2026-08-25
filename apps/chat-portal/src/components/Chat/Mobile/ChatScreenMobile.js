@@ -7,6 +7,7 @@ import { config } from '@/utils/config';
 import styles from './ChatScreenMobile.module.css';
 import Footer from '@/components/Footer/Footer';
 import Header from '@/components/Header/Header';
+import NothingboxLogo from '@/components/UI/NothingboxLogo/NothingboxLogo';
 import { triggerHaptic } from '@/utils/haptics';
 import { initPushNotifications, isPushSubscribed, unsubscribePushNotifications } from '@/utils/pushNotifications';
 
@@ -1060,7 +1061,7 @@ export default function ChatScreenMobile({
           <div className={`${styles.iosSheetContainer} ${isClosingSheet ? styles.iosSheetContainerClosing : ''}`} onClick={(e) => e.stopPropagation()}>
             <div className={styles.iosSheetHeader}>
               <div className={styles.iosSheetTitleGroup}>
-                <img src="/icons/icon-192x192.png" alt="Nothingbox Chat Logo" className={styles.iosSheetLogo} />
+                <NothingboxLogo size={24} />
                 <span className={styles.iosSheetTitle}>Nothingbox Chat</span>
               </div>
               <button className={styles.iosCloseBtn} onClick={handleCloseProfileModal}>✕</button>
