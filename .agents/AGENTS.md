@@ -18,3 +18,5 @@
 - **Network testing IP**: Use `172.20.10.2` for local network testing.
 - **Environment variables**: Prompt Vaibhav immediately when a new `.env` parameter is added or modified.
 - **Copyright Notice**: Always include the comment `/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */` (or file-type equivalent `#` or `<!-- -->`) at the absolute top of all new or modified source files.
+- **Mandatory Post-Implementation Testing Policy**: Never declare a task, feature, or UI modification complete without running end-to-end empirical testing and runtime verification. Implementation alone is incomplete until verified.
+
