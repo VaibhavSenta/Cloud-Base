@@ -7,7 +7,7 @@ import { config } from '@/utils/config';
 import styles from './ChatScreenMobile.module.css';
 import Footer from '@/components/Footer/Footer';
 import Header from '@/components/Header/Header';
-import NothingboxLogo from '@/components/UI/NothingboxLogo/NothingboxLogo';
+import { NothingboxLogo } from '@cloudbase/ui-brand';
 import { triggerHaptic } from '@/utils/haptics';
 import { initPushNotifications, isPushSubscribed, unsubscribePushNotifications } from '@/utils/pushNotifications';
 

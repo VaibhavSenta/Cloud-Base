@@ -11,7 +11,7 @@ const withPWA = withPWAInit({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Turbopack compatibility if needed
-  transpilePackages: ['lucide-react', 'next-pwa', 'secure-query-cache'],
+  transpilePackages: ['lucide-react', 'next-pwa', 'secure-query-cache', '@cloudbase/ui-brand'],
   allowedDevOrigins: [
     'localhost', '*.localhost',
     'nothingbox.site', '*.nothingbox.site',

@@ -11,7 +11,7 @@ const withPWA = withPWAInit({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ['lucide-react', 'next-pwa'],
+  transpilePackages: ['lucide-react', 'next-pwa', '@cloudbase/ui-brand'],
   allowedDevOrigins: [
     'localhost', '*.localhost',
     'nothingbox.site', '*.nothingbox.site',

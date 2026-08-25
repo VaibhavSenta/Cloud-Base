@@ -1,0 +1,13 @@
+{
+  "name": "@cloudbase/ui-brand",
+  "version": "1.0.0",
+  "description": "Official shared Nothingbox UI Brand & Logo System for Cloud-Base Ecosystem",
+  "main": "index.js",
+  "module": "index.js",
+  "author": "Vaibhav Senta",
+  "license": "ISC",
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  }
+}
