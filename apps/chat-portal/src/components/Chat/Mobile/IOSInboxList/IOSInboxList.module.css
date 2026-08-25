@@ -1,0 +1,123 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
+.conversationList {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+}
+
+.conversationItem {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 18px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.conversationItem:active {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+.avatarContainer {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.initialsAvatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1c1c1e 0%, #2c2c2e 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.convMeta {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.convUsername {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.convSnippet {
+  font-size: 0.75rem;
+  color: #8e8e93;
+  margin-top: 2px;
+}
+
+.convSnippetUnread {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.convRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.timeText {
+  font-size: 0.78rem;
+  color: #8e8e93;
+}
+
+.infoBtn {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #0095f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-family: serif;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 0.2s ease;
+}
+
+.infoBtn:hover {
+  background-color: rgba(0, 149, 246, 0.15);
+}
+
+.separator {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.08);
+  margin-left: 74px;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 60px 24px;
+  color: #555555;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+}

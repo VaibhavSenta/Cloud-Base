@@ -1,0 +1,349 @@
+/* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
+
+/* ========================================================================
+   iOS Bottom Sheet Profile Modal (IMG_2246.PNG Style)
+   ======================================================================== */
+.backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border-radius: 2rem;
+  overflow: hidden;
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.backdropClosing {
+  animation: fadeOut 0.5s ease-in forwards !important;
+}
+
+.container {
+  width: 100%;
+  height: calc(100% - 16px);
+  margin-top: 16px;
+  background-color: rgba(18, 18, 18, 0.82);
+  backdrop-filter: blur(35px);
+  -webkit-backdrop-filter: blur(35px);
+  border-radius: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 -16px 48px rgba(0, 0, 0, 0.95);
+  animation: iosSlideUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform;
+  padding-bottom: max(24px, env(safe-area-inset-bottom));
+}
+
+.containerClosing {
+  animation: iosSlideDown 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+@keyframes iosSlideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes iosSlideDown {
+  from { transform: translateY(0); }
+  to { transform: translateY(100%); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 14px 24px;
+}
+
+.titleGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.closeBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.closeBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Body */
+.body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 20px 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Group Card */
+.groupCard {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 2rem;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.groupSection {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.groupTitle {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #8e8e93;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding-left: 14px;
+}
+
+/* Rows */
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.rowLabel {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #8e8e93;
+}
+
+.rowValue {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #ffffff;
+  text-align: right;
+}
+
+.rowActionBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  text-align: left;
+}
+
+.actionLabel {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.actionArrow {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #0095f6;
+}
+
+/* User Row */
+.userRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 0;
+  cursor: pointer;
+}
+
+.userAvatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.avatarPlaceholder {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.defaultIcon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  opacity: 0.6;
+}
+
+.userMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+}
+
+.userName {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.userSubtitle {
+  font-size: 0.78rem;
+  color: #8e8e93;
+  font-weight: 500;
+}
+
+/* Service Row */
+.serviceRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.serviceLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.serviceIconWrapper {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.serviceIcon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  opacity: 0.6;
+}
+
+.serviceTitle {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.serviceRight {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #8e8e93;
+}
+
+/* Push Toggle */
+.pushToggleBtn {
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #8e8e93;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pushToggleBtnActive {
+  background-color: rgba(0, 149, 246, 0.15);
+  border-color: #0095f6;
+  color: #0095f6;
+}
+
+/* Danger Card */
+.dangerCard {
+  background: rgba(255, 77, 77, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 77, 77, 0.2);
+  border-radius: 2rem;
+  overflow: hidden;
+}
+
+.dangerBtn {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #ff4d4d;
+  padding: 16px 20px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.2s ease;
+}
+
+.dangerBtn:hover {
+  background-color: rgba(255, 77, 77, 0.06);
+}

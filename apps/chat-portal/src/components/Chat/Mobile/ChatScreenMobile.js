@@ -10,6 +10,11 @@ import Header from '@/components/Header/Header';
 import { NothingboxLogo } from '@cloudbase/ui-brand';
 import { triggerHaptic } from '@/utils/haptics';
 import { initPushNotifications, isPushSubscribed, unsubscribePushNotifications } from '@/utils/pushNotifications';
+import IOSHeader from './IOSHeader/IOSHeader';
+import IOSInboxList from './IOSInboxList/IOSInboxList';
+import IOSChatThread from './IOSChatThread/IOSChatThread';
+import IOSAccountSheet from './IOSAccountSheet/IOSAccountSheet';
+import IOSBottomNav from './IOSBottomNav/IOSBottomNav';
 
 export default function ChatScreenMobile({
   profile,
@@ -483,7 +488,7 @@ export default function ChatScreenMobile({
   return (
     <div className={styles.wrapper}>
       {/* 1. HEADER BAR */}
-      <Header
+      <IOSHeader
         activeConv={activeConv}
         setActiveConv={setActiveConv}
         activeTab={activeTab}
@@ -504,167 +509,32 @@ export default function ChatScreenMobile({
       <main className={styles.mainContent}>
         {activeConv ? (
           /* CHAT THREAD VIEW */
-          <div className={styles.chatContainer}>
-            {/* Opt-In Message Request Banner (Incoming) */}
-            {activeConv.status === 'pending' && String(activeConv.requestedBy) !== String(localProfile.userId) && (
-              <div className={styles.requestBanner}>
-                <div className={styles.requestTitle}>Message Request</div>
-                <div className={styles.requestSubtitle}>
-                  @{activeConv.partner?.chatUsername} wants to start a chat with you.
-                </div>
-                <div className={styles.requestActions} style={{ display: 'flex', gap: '10px' }}>
-                  <button className={styles.textBtnPrimary} onClick={() => handleAcceptRequest(activeConv)}>
-                    Accept Request
-                  </button>
-                  <button className={styles.textBtnDanger} onClick={() => handleRejectRequest(activeConv)}>
-                    Decline
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* Sent Request Pending Banner */}
-            {activeConv.status === 'pending' && String(activeConv.requestedBy) === String(localProfile.userId) && (
-              <div className={styles.requestBanner}>
-                <div className={styles.requestTitle}>Request Pending</div>
-                <div className={styles.requestSubtitle}>
-                  Waiting for @{activeConv.partner?.chatUsername} to accept your request.
-                </div>
-                <div className={styles.requestActions}>
-                  <button className={styles.textBtnDanger} onClick={() => handleCancelRequest(activeConv)}>
-                    Cancel Request
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* Messages Area */}
-            <div className={styles.messagesList}>
-              {messages.map((msg, index) => {
-                const isMine = String(msg.senderId) === String(localProfile.userId);
-
-                return (
-                  <div 
-                    key={msg.messageId || index} 
-                    className={`${styles.messageRow} ${isMine ? styles.messageRowSent : styles.messageRowReceived}`}
-                  >
-                    <div className={styles.bubbleWrapper}>
-                      {/* Delivered Line */}
-                      {isMine && msg.status === 'delivered' && (
-                        <div className={styles.deliveredLine} />
-                      )}
-
-                      <div className={`
-                        ${styles.bubble} 
-                        ${isMine ? styles.bubbleSent : styles.bubbleReceived}
-                        ${isMine && msg.status === 'sent' ? styles.bubbleStateSent : ''}
-                      `}>
-                        {isMine && msg.status === 'failed' && (
-                          <span className={styles.failedDot} title="Failed to send" />
-                        )}
-                        {msg.decryptedText || msg.encryptedPayload}
-                      </div>
-                    </div>
-
-                    <span className={styles.timestamp}>
-                      {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    </span>
-                  </div>
-                );
-              })}
-              <div ref={messagesEndRef} />
-            </div>
-
-            {/* Typing Indicator */}
-            <div className={styles.typingContainer}>
-              {partnerTyping && (
-                <div className={styles.typingWave}>
-                  <span className={styles.dot} />
-                  <span className={styles.dot} />
-                </div>
-              )}
-            </div>
-
-            {/* Input Bar */}
-            <form onSubmit={handleSendMessage} className={styles.inputBar}>
-              <input
-                type="text"
-                placeholder={activeConv.status === 'pending' ? 'Message request pending...' : 'Type message...'}
-                className={styles.inputField}
-                value={text}
-                onChange={handleTextChange}
-                disabled={activeConv.status === 'pending' && String(activeConv.requestedBy) !== String(localProfile.userId)}
-              />
-              <button 
-                type="submit" 
-                className={styles.sendBtn} 
-                disabled={!text.trim() || !isConnected}
-              >
-                Send
-              </button>
-            </form>
-          </div>
+          <IOSChatThread
+            activeConv={activeConv}
+            messages={messages}
+            localProfile={localProfile}
+            text={text}
+            onTextChange={handleTextChange}
+            onSendMessage={handleSendMessage}
+            partnerTyping={partnerTyping}
+            isConnected={isConnected}
+            onAcceptRequest={handleAcceptRequest}
+            onRejectRequest={handleRejectRequest}
+            onCancelRequest={handleCancelRequest}
+            messagesEndRef={messagesEndRef}
+          />
         ) : (
           /* MAIN TABS */
           <div className={styles.tabContainer}>
             {activeTab === 'chat' && (
               /* CONVERSATIONS LIST / INBOX (iOS Style) */
               <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%' }}>
-                <div className={styles.conversationList}>
-                  {filteredConversations.length === 0 ? (
-                    <div className={styles.emptyState}>
-                      {chatFilter === 'requests' 
-                        ? 'No message requests.' 
-                        : 'No active chats yet. Go to "Search" to find users.'
-                      }
-                    </div>
-                  ) : (
-                    filteredConversations.map((conv, index) => {
-                      const initials = (conv.partner?.chatUsername || 'U').substring(0, 2).toUpperCase();
-                      const timeText = conv.lastMessageTimestamp 
-                        ? new Date(conv.lastMessageTimestamp).toLocaleDateString([], { month: 'short', day: 'numeric' })
-                        : 'Tap to open';
-
-                      return (
-                        <div key={conv.conversationId}>
-                          <div 
-                            className={styles.conversationItem}
-                            onClick={() => handleSelectConversation(conv)}
-                            style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '12px 18px', background: 'transparent' }}
-                          >
-                            <div className={styles.iosAvatarContainer}>
-                              {conv.partner?.avatarUrl ? (
-                                <img src={conv.partner.avatarUrl} alt="Avatar" className={styles.iosAvatar} />
-                              ) : (
-                                <div className={styles.iosInitialsAvatar}>{initials}</div>
-                              )}
-                            </div>
-
-                            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '3px' }}>
-                              <div className={styles.convUsername}>
-                                @{conv.partner?.chatUsername || 'User'}
-                              </div>
-                              <div className={styles.convSnippet}>
-                                {conv.status === 'pending' ? 'Message Request Pending' : 'Tap to open chat'}
-                              </div>
-                            </div>
-
-                            <div className={styles.iosConvMeta}>
-                              <div className={styles.iosTimeText}>{timeText}</div>
-                              <div className={styles.iosInfoBtn} onClick={(e) => {
-                                e.stopPropagation();
-                                console.log('Info clicked for:', conv.conversationId);
-                              }}>i</div>
-                            </div>
-                          </div>
-                          {index < filteredConversations.length - 1 && (
-                            <div className={styles.iosSeparator} />
-                          )}
-                        </div>
-                      );
-                    })
-                  )}
-                </div>
+                <IOSInboxList
+                  filteredConversations={filteredConversations}
+                  onSelectConversation={handleSelectConversation}
+                  localProfile={localProfile}
+                  chatFilter={chatFilter}
+                />
               </div>
             )}
 
@@ -1035,7 +905,7 @@ export default function ChatScreenMobile({
 
       {/* 3. FOOTER / BOTTOM BAR */}
       {!activeConv && (
-        <Footer
+        <IOSBottomNav
           activeTab={activeTab}
           setActiveTab={(tab) => {
             if (tab === 'settings') {
@@ -1056,135 +926,28 @@ export default function ChatScreenMobile({
       )}
 
       {/* 4. iOS BOTTOM SHEET PROFILE MODAL (IMG_2246.PNG Style) */}
-      {isProfileModalOpen && (
-        <div className={`${styles.iosSheetBackdrop} ${isClosingSheet ? styles.iosSheetBackdropClosing : ''}`} onClick={handleCloseProfileModal}>
-          <div className={`${styles.iosSheetContainer} ${isClosingSheet ? styles.iosSheetContainerClosing : ''}`} onClick={(e) => e.stopPropagation()}>
-            <div className={styles.iosSheetHeader}>
-              <div className={styles.iosSheetTitleGroup}>
-                <NothingboxLogo size={34} />
-                <span className={styles.iosSheetTitle}>Nothingbox Chat</span>
-              </div>
-              <button className={styles.iosCloseBtn} onClick={handleCloseProfileModal}>✕</button>
-            </div>
-
-            <div className={styles.iosSheetBody}>
-              {/* Group 1: User Info & Account Center Link (IMG_2246.PNG Style) */}
-              <div className={styles.appleGroupCard}>
-                <div className={styles.iosUserRow} onClick={() => {
-                  setIsEditingProfile(true);
-                  setEditFirstName(localProfile.firstName || '');
-                  setEditLastName(localProfile.lastName || '');
-                  setAvatarPreview(localProfile.avatarUrl || '');
-                  setProfileError('');
-                }}>
-                  {localProfile.avatarUrl ? (
-                    <img src={localProfile.avatarUrl} alt="Avatar" className={styles.iosUserAvatar} />
-                  ) : (
-                    <div className={styles.largeAvatarPlaceholder} style={{ width: '54px', height: '54px' }}>
-                      <img src="/profile-icon.svg" alt="Default Avatar" className={styles.defaultUserIcon} style={{ width: '28px', height: '28px' }} />
-                    </div>
-                  )}
-                  <div className={styles.iosUserMeta}>
-                    <span className={styles.iosUserName}>
-                      {localProfile.firstName || localProfile.chatUsername} {localProfile.lastName || ''}
-                    </span>
-                    <span className={styles.iosUserSubtitle}>Account info, payments and settings</span>
-                  </div>
-                  <span className={styles.appleActionArrow}>›</span>
-                </div>
-
-                <a 
-                  href={`${config.accountPortalUrl}/dashboard`} 
-                  target="_blank" 
-                  rel="noreferrer" 
-                  className={styles.iosServiceRow}
-                >
-                  <div className={styles.iosServiceLeft}>
-                    <div className={styles.streamAvatarPlaceholder} style={{ width: '32px', height: '32px' }}>
-                      <img src="/profile-icon.svg" alt="Icon" className={styles.defaultUserIcon} style={{ width: '18px', height: '18px' }} />
-                    </div>
-                    <span className={styles.iosServiceTitle}>Account Center</span>
-                  </div>
-                  <div className={styles.iosServiceRight}>
-                    <span>{localProfile.chatUsername}</span>
-                    <span>↗</span>
-                  </div>
-                </a>
-              </div>
-
-              {/* Group 2: Account Details */}
-              <div className={styles.appleGroupSection}>
-                <span className={styles.appleGroupTitle}>Account Info</span>
-                <div className={styles.appleGroupCard}>
-                  <div className={styles.appleRow}>
-                    <span className={styles.appleRowLabel}>Display Name</span>
-                    <span className={styles.appleRowValue}>{localProfile.firstName} {localProfile.lastName}</span>
-                  </div>
-                  <div className={styles.appleRow}>
-                    <span className={styles.appleRowLabel}>Chat Username</span>
-                    <span className={styles.appleRowValue}>{localProfile.chatUsername}</span>
-                  </div>
-                  <div className={styles.appleRow}>
-                    <span className={styles.appleRowLabel}>Email Address</span>
-                    <span className={styles.appleRowValue}>{localProfile.email || 'None'}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Group 3: Preferences & Management */}
-              <div className={styles.appleGroupSection}>
-                <span className={styles.appleGroupTitle}>Preferences & Security</span>
-                <div className={styles.appleGroupCard}>
-                  <div className={styles.appleRow}>
-                    <span className={styles.appleRowLabel}>Push Notifications</span>
-                    <button 
-                      className={`${styles.pushToggleBtn} ${pushEnabled ? styles.pushToggleBtnActive : ''}`}
-                      onClick={handleTogglePushNotifications}
-                      disabled={isTogglingPush}
-                    >
-                      {isTogglingPush ? '...' : (pushEnabled ? 'ON' : 'OFF')}
-                    </button>
-                  </div>
-                  <div className={styles.appleRow}>
-                    <button 
-                      onClick={() => {
-                        setIsEditingProfile(true);
-                        setEditFirstName(localProfile.firstName || '');
-                        setEditLastName(localProfile.lastName || '');
-                        setAvatarPreview(localProfile.avatarUrl || '');
-                        setProfileError('');
-                      }} 
-                      className={styles.appleRowActionBtn}
-                    >
-                      <span className={styles.appleActionLabel}>Edit Profile Details</span>
-                    </button>
-                  </div>
-                  <div className={styles.appleRow}>
-                    <a href={`${config.accountPortalUrl}/dashboard`} target="_blank" rel="noreferrer" className={styles.appleRowActionBtn} style={{ textDecoration: 'none' }}>
-                      <span className={styles.appleActionLabel}>Manage Security & 2FA</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              {/* Group 4: Session Logout (Danger Zone Card with 2rem border radius) */}
-              <div className={styles.appleGroupSection} style={{ marginBottom: '32px' }}>
-                <div className={styles.appleGroupCardDanger}>
-                  <button 
-                    onClick={() => {
-                      document.cookie = "token=; domain=localhost; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-                      window.location.reload();
-                    }} 
-                    className={styles.appleDangerRowBtn}
-                  >
-                    Logout Account
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <IOSAccountSheet
+        isOpen={isProfileModalOpen}
+        isClosing={isClosingSheet}
+        onClose={handleCloseProfileModal}
+        localProfile={localProfile}
+        pushEnabled={pushEnabled}
+        isTogglingPush={isTogglingPush}
+        onTogglePush={handleTogglePushNotifications}
+        onEditProfile={() => {
+          setIsProfileModalOpen(false);
+          setActiveTab('settings');
+          setIsEditingProfile(true);
+          setEditFirstName(localProfile.firstName || '');
+          setEditLastName(localProfile.lastName || '');
+          setAvatarPreview(localProfile.avatarUrl || '');
+          setProfileError('');
+        }}
+        onLogout={() => {
+          document.cookie = "token=; domain=localhost; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+          window.location.reload();
+        }}
+      />
     </div>
   );
 }

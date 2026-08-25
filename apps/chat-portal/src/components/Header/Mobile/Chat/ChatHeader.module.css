@@ -29,6 +29,12 @@
   align-items: center;
 }
 
+.titleGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .largeTitle {
   font-size: 1.6rem;
   font-weight: 800;

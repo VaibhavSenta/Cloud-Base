@@ -1,6 +1,7 @@
 /* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 'use client';
 
+import { NothingboxLogo } from '@cloudbase/ui-brand';
 import styles from './ChatHeader.module.css';
 
 export default function ChatHeader({
@@ -13,7 +14,10 @@ export default function ChatHeader({
     <header className={`${styles.header} ${styles.chatHeader}`}>
       <div className={styles.chatHeaderContainer}>
         <div className={styles.largeTitleRow}>
-          <h1 className={styles.largeTitle}>Nothingbox Chat</h1>
+          <div className={styles.titleGroup}>
+            <NothingboxLogo size={34} />
+            <h1 className={styles.largeTitle}>Nothingbox Chat</h1>
+          </div>
           
           <button
             className={styles.profileBtn}
