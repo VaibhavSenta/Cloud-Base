@@ -34,7 +34,6 @@ export default function ChatScreenDesktop({
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [editFirstName, setEditFirstName] = useState(profile?.firstName || '');
   const [editLastName, setEditLastName] = useState(profile?.lastName || '');
-  const [avatarPreview, setAvatarPreview] = useState(profile?.avatarUrl || '');
   const [selectedFile, setSelectedFile] = useState(null);
   const [isSavingProfile, setIsSavingProfile] = useState(false);
   const [profileError, setProfileError] = useState('');
@@ -229,66 +228,60 @@ export default function ChatScreenDesktop({
     }
   };
 
-  // Save Profile Details
-  const handleSaveProfile = async (e) => {
-    e.preventDefault();
-    setIsSavingProfile(true);
-    setProfileError('');
-    try {
-      let avatarUrl = localProfile.avatarUrl;
-      if (selectedFile) {
-        const formData = new FormData();
-        formData.append('avatar', selectedFile);
-        const uploadRes = await api.post('/chat/users/upload-avatar', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        });
-        if (uploadRes.data?.avatarUrl) {
-          avatarUrl = uploadRes.data.avatarUrl;
-        }
-      }
-
-      const updateRes = await api.put('/chat/users/profile', {
-        firstName: editFirstName.trim(),
-        lastName: editLastName.trim(),
-        avatarUrl
-      });
-
-      if (updateRes.data?.profile) {
-        setLocalProfile((prev) => ({
-          ...prev,
-          ...updateRes.data.profile,
-          firstName: editFirstName.trim(),
-          lastName: editLastName.trim(),
-          avatarUrl
-        }));
-        setIsEditingProfile(false);
-      }
-    } catch (err) {
-      setProfileError(err.response?.data?.error || 'Failed to update profile.');
-    } finally {
-      setIsSavingProfile(false);
-    }
-  };
-
   return (
     <div className={styles.desktopContainer}>
-      {/* LEFT SIDEBAR PANEL (350px) */}
-      <div className={styles.sidebar}>
-        {/* HEADER */}
-        <div className={styles.sidebarHeader}>
-          <span className={styles.brandTitle}>Nothingbox</span>
-          <div className={styles.userBadge} onClick={() => setActiveTab('settings')}>
+      {/* COLUMN 1: Leftmost App Navigation Rail (260px) */}
+      <div className={styles.colNavRail}>
+        <div className={styles.railTopSection}>
+          <div className={styles.railBrandHeader}>
+            <span className={styles.railBrandTitle}>Nothingbox</span>
+          </div>
+
+          <div className={styles.railUserCard} onClick={() => setActiveTab('settings')}>
             {localProfile.avatarUrl ? (
-              <img src={localProfile.avatarUrl} alt="Avatar" className={styles.userBadgeAvatar} />
+              <img src={localProfile.avatarUrl} alt="Avatar" className={styles.railAvatar} />
             ) : (
-              <img src="/profile-icon.svg" alt="Default Avatar" className={styles.defaultUserIcon} style={{ width: '16px', height: '16px' }} />
+              <div className={styles.streamAvatarPlaceholder}>
+                <img src="/profile-icon.svg" alt="Default Avatar" className={styles.defaultUserIcon} />
+              </div>
             )}
-            <span className={styles.userBadgeName}>{localProfile.firstName || localProfile.chatUsername}</span>
+            <div className={styles.railUserMeta}>
+              <span className={styles.railUserName}>{localProfile.firstName || localProfile.chatUsername}</span>
+              <span className={styles.railUserTag}>{localProfile.chatUsername}</span>
+            </div>
+          </div>
+
+          <div className={styles.railMenu}>
+            <button
+              className={`${styles.railMenuBtn} ${activeTab === 'chats' ? styles.railMenuBtnActive : ''}`}
+              onClick={() => setActiveTab('chats')}
+            >
+              Chats Stream
+            </button>
+            <button
+              className={`${styles.railMenuBtn} ${activeTab === 'friends' ? styles.railMenuBtnActive : ''}`}
+              onClick={() => setActiveTab('friends')}
+            >
+              Friend Requests
+            </button>
+            <button
+              className={`${styles.railMenuBtn} ${activeTab === 'settings' ? styles.railMenuBtnActive : ''}`}
+              onClick={() => setActiveTab('settings')}
+            >
+              App Settings
+            </button>
           </div>
         </div>
 
-        {/* SEARCH USER BAR */}
-        <div className={styles.sidebarSearchSection}>
+        <div className={styles.railStatusCard}>
+          <span className={isConnected ? styles.onlineDot : styles.offlineDot}></span>
+          <span>{isConnected ? 'Connected to Socket' : 'Connecting...'}</span>
+        </div>
+      </div>
+
+      {/* COLUMN 2: Middle Stream & Search Panel (340px) */}
+      <div className={styles.colMiddlePanel}>
+        <div className={styles.middleSearchArea}>
           <form onSubmit={handleSearch} className={styles.searchForm}>
             <input
               type="text"
@@ -304,37 +297,23 @@ export default function ChatScreenDesktop({
           {searchError && <div style={{ color: '#8e8e93', fontSize: '0.75rem' }}>{searchError}</div>}
         </div>
 
-        {/* SUB-TAB CAPSULE BAR */}
-        <div className={styles.tabNav}>
-          <button
-            className={`${styles.tabBtn} ${activeTab === 'chats' ? styles.activeTabBtn : ''}`}
-            onClick={() => setActiveTab('chats')}
-          >
-            Chats
-          </button>
-          <button
-            className={`${styles.tabBtn} ${activeTab === 'friends' ? styles.activeTabBtn : ''}`}
-            onClick={() => setActiveTab('friends')}
-          >
-            Friends
-          </button>
-          <button
-            className={`${styles.tabBtn} ${activeTab === 'settings' ? styles.activeTabBtn : ''}`}
-            onClick={() => setActiveTab('settings')}
-          >
-            Settings
-          </button>
-        </div>
+        <span className={styles.middleHeaderTitle}>
+          {activeTab === 'chats' && 'Active Conversations'}
+          {activeTab === 'friends' && 'Friend Requests'}
+          {activeTab === 'search' && 'User Lookup Result'}
+          {activeTab === 'settings' && 'Account Settings'}
+        </span>
 
-        {/* CONVERSATIONS LIST STREAM */}
-        <div className={styles.sidebarList}>
+        <div className={styles.middleStreamList}>
           {activeTab === 'search' && searchResult && (
-            <div className={styles.convItem} style={{ marginBottom: '12px' }}>
-              <div className={styles.convLeft}>
-                <img src="/profile-icon.svg" alt="User" className={styles.defaultUserIcon} style={{ width: '28px', height: '28px' }} />
-                <div className={styles.convMeta}>
-                  <span className={styles.convName}>{searchResult.targetUser.chatUsername}</span>
-                  <span className={styles.convSnippet}>
+            <div className={styles.streamCard} style={{ marginBottom: '12px' }}>
+              <div className={styles.streamLeft}>
+                <div className={styles.streamAvatarPlaceholder}>
+                  <img src="/profile-icon.svg" alt="User" className={styles.defaultUserIcon} />
+                </div>
+                <div className={styles.streamMeta}>
+                  <span className={styles.streamName}>{searchResult.targetUser.chatUsername}</span>
+                  <span className={styles.streamSnippet}>
                     {searchResult.conversation ? searchResult.conversation.status : 'Not connected'}
                   </span>
                 </div>
@@ -370,20 +349,20 @@ export default function ChatScreenDesktop({
                 return (
                   <div
                     key={c._id}
-                    className={`${styles.convItem} ${isSelected ? styles.activeConvItem : ''}`}
+                    className={`${styles.streamCard} ${isSelected ? styles.streamCardActive : ''}`}
                     onClick={() => handleSelectConversation({ ...c, partner })}
                   >
-                    <div className={styles.convLeft}>
+                    <div className={styles.streamLeft}>
                       {partner.avatarUrl ? (
-                        <img src={partner.avatarUrl} alt="Avatar" className={styles.convAvatar} />
+                        <img src={partner.avatarUrl} alt="Avatar" className={styles.streamAvatar} />
                       ) : (
-                        <div className={styles.convInitial}>
+                        <div className={styles.streamAvatarPlaceholder}>
                           <img src="/profile-icon.svg" alt="User" className={styles.defaultUserIcon} />
                         </div>
                       )}
-                      <div className={styles.convMeta}>
-                        <span className={styles.convName}>{partner.chatUsername || 'Friend'}</span>
-                        <span className={styles.convSnippet}>{c.lastMessage || 'Connected'}</span>
+                      <div className={styles.streamMeta}>
+                        <span className={styles.streamName}>{partner.chatUsername || 'Friend'}</span>
+                        <span className={styles.streamSnippet}>{c.lastMessage || 'Connected'}</span>
                       </div>
                     </div>
                   </div>
@@ -397,12 +376,14 @@ export default function ChatScreenDesktop({
                 const isIncoming = String(c.requestedBy) !== String(localProfile.userId);
                 const partner = c.participants?.find((p) => String(p.userId) !== String(localProfile.userId)) || {};
                 return (
-                  <div key={c._id} className={styles.convItem}>
-                    <div className={styles.convLeft}>
-                      <img src="/profile-icon.svg" alt="User" className={styles.defaultUserIcon} style={{ width: '24px', height: '24px' }} />
-                      <div className={styles.convMeta}>
-                        <span className={styles.convName}>{partner.chatUsername || 'User'}</span>
-                        <span className={styles.convSnippet}>{isIncoming ? 'Incoming Request' : 'Sent Request'}</span>
+                  <div key={c._id} className={styles.streamCard}>
+                    <div className={styles.streamLeft}>
+                      <div className={styles.streamAvatarPlaceholder}>
+                        <img src="/profile-icon.svg" alt="User" className={styles.defaultUserIcon} />
+                      </div>
+                      <div className={styles.streamMeta}>
+                        <span className={styles.streamName}>{partner.chatUsername || 'User'}</span>
+                        <span className={styles.streamSnippet}>{isIncoming ? 'Incoming Request' : 'Sent Request'}</span>
                       </div>
                     </div>
                     {isIncoming ? (
@@ -425,23 +406,23 @@ export default function ChatScreenDesktop({
         </div>
       </div>
 
-      {/* RIGHT MAIN WORKSPACE PANEL (FLEX-1) */}
-      <div className={styles.mainWorkspace}>
+      {/* COLUMN 3: Right Main Workspace Panel (Flex-1) */}
+      <div className={styles.colMainWorkspace}>
         {activeTab === 'settings' ? (
-          /* SETTINGS VIEW WORKSPACE */
+          /* SETTINGS WORKSPACE */
           <div className={styles.desktopSettingsContainer}>
-            <div className={styles.appleHeaderHero} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', marginBottom: '24px' }}>
-              <div style={{ width: '90px', height: '90px', borderRadius: '50%', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.12)', backgroundColor: '#050505', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', marginBottom: '28px' }}>
+              <div style={{ width: '96px', height: '96px', borderRadius: '50%', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.12)', backgroundColor: '#050505', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 {localProfile.avatarUrl ? (
                   <img src={localProfile.avatarUrl} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 ) : (
-                  <img src="/profile-icon.svg" alt="Default Avatar" className={styles.defaultUserIcon} style={{ width: '45px', height: '45px' }} />
+                  <img src="/profile-icon.svg" alt="Default Avatar" className={styles.defaultUserIcon} style={{ width: '48px', height: '48px' }} />
                 )}
               </div>
-              <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#ffffff', margin: 0 }}>
+              <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#ffffff', margin: 0 }}>
                 {localProfile.firstName} {localProfile.lastName}
               </h3>
-              <span style={{ fontSize: '0.78rem', fontWeight: 600, color: '#8e8e93', backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', padding: '4px 14px', borderRadius: '20px' }}>
+              <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#8e8e93', backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', padding: '4px 16px', borderRadius: '20px' }}>
                 {localProfile.chatUsername}
               </span>
             </div>
@@ -487,11 +468,6 @@ export default function ChatScreenDesktop({
               <span className={styles.appleGroupTitle}>Account Management</span>
               <div className={styles.appleGroupCard}>
                 <div className={styles.appleRow}>
-                  <button onClick={() => setIsEditingProfile(true)} className={styles.appleRowActionBtn}>
-                    <span className={styles.appleActionLabel}>Edit Profile Details</span>
-                  </button>
-                </div>
-                <div className={styles.appleRow}>
                   <a href={`${config.accountPortalUrl}/dashboard`} target="_blank" rel="noreferrer" className={styles.appleRowActionBtn} style={{ textDecoration: 'none' }}>
                     <span className={styles.appleActionLabel}>Manage Security & 2FA</span>
                   </a>
@@ -517,12 +493,12 @@ export default function ChatScreenDesktop({
         ) : activeConversation ? (
           /* ACTIVE CHAT WORKSPACE */
           <>
-            <div className={styles.chatHeader}>
+            <div className={styles.workspaceChatHeader}>
               <div className={styles.partnerInfo}>
                 {activeConversation.partner?.avatarUrl ? (
                   <img src={activeConversation.partner.avatarUrl} alt="Avatar" className={styles.partnerAvatar} />
                 ) : (
-                  <div className={styles.convInitial}>
+                  <div className={styles.streamAvatarPlaceholder}>
                     <img src="/profile-icon.svg" alt="User" className={styles.defaultUserIcon} />
                   </div>
                 )}
@@ -565,9 +541,9 @@ export default function ChatScreenDesktop({
             </form>
           </>
         ) : (
-          /* EMPTY WORKSPACE */
+          /* PRO EMPTY WORKSPACE */
           <div className={styles.emptyState}>
-            <span className={styles.emptyTitle}>Nothingbox Chat</span>
+            <span className={styles.emptyTitle}>Nothingbox Chat Pro</span>
             <span className={styles.emptySubtitle}>Select a conversation or search a username to start messaging.</span>
           </div>
         )}
