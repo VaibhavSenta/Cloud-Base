@@ -1061,7 +1061,7 @@ export default function ChatScreenMobile({
           <div className={`${styles.iosSheetContainer} ${isClosingSheet ? styles.iosSheetContainerClosing : ''}`} onClick={(e) => e.stopPropagation()}>
             <div className={styles.iosSheetHeader}>
               <div className={styles.iosSheetTitleGroup}>
-                <NothingboxLogo size={24} />
+                <NothingboxLogo size={34} />
                 <span className={styles.iosSheetTitle}>Nothingbox Chat</span>
               </div>
               <button className={styles.iosCloseBtn} onClick={handleCloseProfileModal}>✕</button>
