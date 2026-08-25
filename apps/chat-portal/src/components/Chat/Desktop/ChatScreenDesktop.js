@@ -527,18 +527,20 @@ export default function ChatScreenDesktop({
               <div ref={messagesEndRef} />
             </div>
 
-            <form onSubmit={handleSendMessage} className={styles.chatInputArea}>
-              <input
-                type="text"
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                placeholder="Type a message..."
-                className={styles.msgInput}
-              />
-              <button type="submit" className={styles.sendBtn} disabled={!newMessage.trim()}>
-                Send
-              </button>
-            </form>
+            <div className={styles.chatInputWrapper}>
+              <form onSubmit={handleSendMessage} className={styles.chatInputArea}>
+                <input
+                  type="text"
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  placeholder="Type a message..."
+                  className={styles.msgInput}
+                />
+                <button type="submit" className={styles.sendBtn} disabled={!newMessage.trim()}>
+                  Send
+                </button>
+              </form>
+            </div>
           </>
         ) : (
           /* PRO EMPTY WORKSPACE */
