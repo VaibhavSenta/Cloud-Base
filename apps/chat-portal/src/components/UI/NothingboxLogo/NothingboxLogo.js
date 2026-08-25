@@ -3,7 +3,7 @@
 
 import styles from './NothingboxLogo.module.css';
 
-export default function NothingboxLogo({ size = 28, className = '' }) {
+export default function NothingboxLogo({ size = 36, className = '' }) {
   return (
     <div className={`${styles.logoWrapper} ${className}`} style={{ width: `${size}px`, height: `${size}px` }}>
       <svg 
@@ -15,73 +15,55 @@ export default function NothingboxLogo({ size = 28, className = '' }) {
         className={styles.logoSvg}
       >
         <defs>
-          {/* High Contrast Bright Silver Gradient for Outer Octagon */}
-          <linearGradient id="nbOctagonBright" x1="55" y1="55" x2="445" y2="445" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#ffffff" />
-            <stop offset="60%" stopColor="#d1d1d6" />
-            <stop offset="100%" stopColor="#8e8e93" />
-          </linearGradient>
-
-          {/* Secondary Light Grey Gradient for Square */}
-          <linearGradient id="nbSquareBright" x1="85" y1="85" x2="415" y2="415" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#8e8e93" />
-            <stop offset="50%" stopColor="#ffffff" />
-            <stop offset="100%" stopColor="#aeaeb2" />
-          </linearGradient>
-
-          {/* Vivid Instagram Blue Gradient for Center Pill */}
-          <linearGradient id="nbPillVivid" x1="170" y1="210" x2="330" y2="290" gradientUnits="userSpaceOnUse">
+          {/* Vivid Instagram Blue Gradient */}
+          <linearGradient id="nbBlueGrad" x1="50" y1="50" x2="450" y2="450" gradientUnits="userSpaceOnUse">
             <stop offset="0%" stopColor="#0095f6" />
-            <stop offset="100%" stopColor="#0077e6" />
+            <stop offset="100%" stopColor="#0055b3" />
           </linearGradient>
 
-          {/* Sharp High Contrast Glow Filter */}
-          <filter id="pillVividGlow" x="130" y="170" width="240" height="160" filterUnits="userSpaceOnUse">
-            <feGaussianBlur stdDeviation="12" result="blur" />
-            <feComposite in="SourceGraphic" in2="blur" operator="over" />
-          </filter>
+          {/* Crisp Pure White Silver Gradient */}
+          <linearGradient id="nbWhiteGrad" x1="100" y1="50" x2="400" y2="450" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#ffffff" />
+            <stop offset="100%" stopColor="#d1d1d6" />
+          </linearGradient>
         </defs>
 
-        {/* 1. Bright Inner Square Outline */}
-        <rect 
-          x="85" 
-          y="85" 
-          width="330" 
-          height="330" 
-          rx="14"
-          stroke="url(#nbSquareBright)" 
-          strokeWidth="22" 
+        {/* 1. Interlocking Sharp Triangle (White Silver) */}
+        <polygon 
+          points="250,50 440,410 60,410" 
+          stroke="url(#nbWhiteGrad)" 
+          strokeWidth="32" 
+          strokeLinejoin="round" 
+          strokeLinecap="round" 
           fill="none" 
         />
 
-        {/* 2. Bright Interlocking Octagon Loop */}
+        {/* 2. Interlocking Octagon Loop (Instagram Blue Accent) */}
         <polygon
           points="
-            165,55 335,55 
-            445,165 445,335 
-            335,445 165,445 
-            55,335 55,165
+            170,90 330,90 
+            430,190 430,350 
+            330,430 170,430 
+            70,350 70,190
           "
-          stroke="url(#nbOctagonBright)"
+          stroke="url(#nbBlueGrad)"
           strokeWidth="28"
           strokeLinejoin="round"
           strokeLinecap="round"
           fill="none"
         />
 
-        {/* 3. High-Contrast Vivid Instagram Blue Pill Capsule */}
-        <g filter="url(#pillVividGlow)">
-          <rect 
-            x="170" 
-            y="210" 
-            width="160" 
-            height="80" 
-            rx="40" 
-            fill="url(#nbPillVivid)" 
-            stroke="#ffffff"
-            strokeWidth="4"
-          />
-        </g>
+        {/* 3. Center Solid High-Contrast Pill Capsule */}
+        <rect 
+          x="175" 
+          y="225" 
+          width="150" 
+          height="70" 
+          rx="35" 
+          fill="#ffffff" 
+          stroke="#0095f6"
+          strokeWidth="10"
+        />
       </svg>
     </div>
   );
