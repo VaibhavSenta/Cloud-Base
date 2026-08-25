@@ -22,7 +22,17 @@ export default function ChatScreenMobile({
   const [friendsSubTab, setFriendsSubTab] = useState('allFriends'); // 'allFriends', 'friendRequests'
   const [localProfile, setLocalProfile] = useState(profile);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isClosingSheet, setIsClosingSheet] = useState(false);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
+
+  const handleCloseProfileModal = () => {
+    if (isClosingSheet) return;
+    setIsClosingSheet(true);
+    setTimeout(() => {
+      setIsProfileModalOpen(false);
+      setIsClosingSheet(false);
+    }, 600);
+  };
   const [editFirstName, setEditFirstName] = useState(profile?.firstName || '');
   const [editLastName, setEditLastName] = useState(profile?.lastName || '');
   const [avatarPreview, setAvatarPreview] = useState(profile?.avatarUrl || '');
@@ -1046,11 +1056,11 @@ export default function ChatScreenMobile({
 
       {/* 4. iOS BOTTOM SHEET PROFILE MODAL (IMG_2246.PNG Style) */}
       {isProfileModalOpen && (
-        <div className={styles.iosSheetBackdrop} onClick={() => setIsProfileModalOpen(false)}>
-          <div className={styles.iosSheetContainer} onClick={(e) => e.stopPropagation()}>
+        <div className={`${styles.iosSheetBackdrop} ${isClosingSheet ? styles.iosSheetBackdropClosing : ''}`} onClick={handleCloseProfileModal}>
+          <div className={`${styles.iosSheetContainer} ${isClosingSheet ? styles.iosSheetContainerClosing : ''}`} onClick={(e) => e.stopPropagation()}>
             <div className={styles.iosSheetHeader}>
               <span className={styles.iosSheetTitle}>Nothingbox Account</span>
-              <button className={styles.iosCloseBtn} onClick={() => setIsProfileModalOpen(false)}>✕</button>
+              <button className={styles.iosCloseBtn} onClick={handleCloseProfileModal}>✕</button>
             </div>
 
             <div className={styles.iosSheetBody}>

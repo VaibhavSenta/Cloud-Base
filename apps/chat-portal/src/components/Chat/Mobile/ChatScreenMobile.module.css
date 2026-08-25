@@ -619,7 +619,11 @@
   justify-content: flex-end;
   border-radius: 2rem;
   overflow: hidden;
-  animation: fadeIn 0.45s ease-out forwards;
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.iosSheetBackdropClosing {
+  animation: fadeOut 0.5s ease-in forwards !important;
 }
 
 .iosSheetContainer {
@@ -632,9 +636,13 @@
   flex-direction: column;
   overflow: hidden;
   box-shadow: 0 -16px 48px rgba(0, 0, 0, 0.95);
-  animation: iosSlideUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: iosSlideUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   will-change: transform;
   padding-bottom: max(24px, env(safe-area-inset-bottom));
+}
+
+.iosSheetContainerClosing {
+  animation: iosSlideDown 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
 }
 
 @keyframes iosSlideUp {
@@ -646,12 +654,30 @@
   }
 }
 
+@keyframes iosSlideDown {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 }
 
