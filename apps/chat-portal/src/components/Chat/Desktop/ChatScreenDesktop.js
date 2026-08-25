@@ -230,12 +230,20 @@ export default function ChatScreenDesktop({
 
   return (
     <div className={styles.desktopContainer}>
-      {/* COLUMN 1: Leftmost App Navigation Rail (260px) */}
-      <div className={styles.colNavRail}>
-        <div className={styles.railTopSection}>
-          <div className={styles.railBrandHeader}>
-            <span className={styles.railBrandTitle}>Nothingbox</span>
-          </div>
+      <div className={styles.macAppWindow}>
+        {/* COLUMN 1: Leftmost App Navigation Rail (260px) */}
+        <div className={styles.colNavRail}>
+          <div className={styles.railTopSection}>
+            {/* macOS Window Controls */}
+            <div className={styles.macTrafficLights}>
+              <span className={styles.macDotRed}></span>
+              <span className={styles.macDotYellow}></span>
+              <span className={styles.macDotGreen}></span>
+            </div>
+
+            <div className={styles.railBrandHeader}>
+              <span className={styles.railBrandTitle}>Nothingbox</span>
+            </div>
 
           <div className={styles.railUserCard} onClick={() => setActiveTab('settings')}>
             {localProfile.avatarUrl ? (
@@ -551,5 +559,6 @@ export default function ChatScreenDesktop({
         )}
       </div>
     </div>
+  </div>
   );
 }

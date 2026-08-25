@@ -2,13 +2,29 @@
 
 .desktopContainer {
   display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100vw;
   height: 100vh;
   background-color: #000000;
   color: #ffffff;
-  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', Roboto, sans-serif;
   overflow: hidden;
   box-sizing: border-box;
+  padding: 16px;
+}
+
+.macAppWindow {
+  width: 100%;
+  height: 100%;
+  max-width: 1600px;
+  max-height: 1000px;
+  background-color: #050505;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1.25rem;
+  overflow: hidden;
+  display: flex;
+  box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.9), 0 0 1px 1px rgba(255, 255, 255, 0.08);
 }
 
 /* ==========================================================================
@@ -17,14 +33,49 @@
 .colNavRail {
   width: 260px;
   height: 100%;
-  background-color: #000000;
+  background-color: rgba(10, 10, 10, 0.95);
   border-right: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 24px 18px;
+  padding: 16px 18px 24px 18px;
   flex-shrink: 0;
   box-sizing: border-box;
+  backdrop-filter: blur(30px);
+}
+
+/* macOS Traffic Light Controls */
+.macTrafficLights {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  margin-bottom: 4px;
+}
+
+.macDotRed {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #ff5f57;
+  border: 0.5px solid rgba(0, 0, 0, 0.2);
+}
+
+.macDotYellow {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #febc2e;
+  border: 0.5px solid rgba(0, 0, 0, 0.2);
+}
+
+.macDotGreen {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #28c840;
+  border: 0.5px solid rgba(0, 0, 0, 0.2);
 }
 
 .railTopSection {
