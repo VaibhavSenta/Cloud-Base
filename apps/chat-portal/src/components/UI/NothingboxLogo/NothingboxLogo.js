@@ -15,46 +15,46 @@ export default function NothingboxLogo({ size = 28, className = '' }) {
         className={styles.logoSvg}
       >
         <defs>
-          {/* Metallic Glass Gradient for Light Square */}
-          <linearGradient id="nbSquareGradient" x1="85" y1="85" x2="415" y2="415" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.95" />
-            <stop offset="50%" stopColor="#8e8e93" stopOpacity="0.6" />
-            <stop offset="100%" stopColor="#ffffff" stopOpacity="0.2" />
+          {/* High Contrast Bright Silver Gradient for Outer Octagon */}
+          <linearGradient id="nbOctagonBright" x1="55" y1="55" x2="445" y2="445" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#ffffff" />
+            <stop offset="60%" stopColor="#d1d1d6" />
+            <stop offset="100%" stopColor="#8e8e93" />
           </linearGradient>
 
-          {/* Dark Glass Gradient for Interlocking Octagon */}
-          <linearGradient id="nbOctagonGradient" x1="55" y1="55" x2="445" y2="445" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#3a3a3c" />
-            <stop offset="50%" stopColor="#1c1c1e" />
-            <stop offset="100%" stopColor="#000000" />
+          {/* Secondary Light Grey Gradient for Square */}
+          <linearGradient id="nbSquareBright" x1="85" y1="85" x2="415" y2="415" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#8e8e93" />
+            <stop offset="50%" stopColor="#ffffff" />
+            <stop offset="100%" stopColor="#aeaeb2" />
           </linearGradient>
 
-          {/* Instagram Blue Glowing Center Pill Gradient */}
-          <linearGradient id="nbPillGradient" x1="175" y1="215" x2="325" y2="285" gradientUnits="userSpaceOnUse">
+          {/* Vivid Instagram Blue Gradient for Center Pill */}
+          <linearGradient id="nbPillVivid" x1="170" y1="210" x2="330" y2="290" gradientUnits="userSpaceOnUse">
             <stop offset="0%" stopColor="#0095f6" />
-            <stop offset="100%" stopColor="#0066cc" />
+            <stop offset="100%" stopColor="#0077e6" />
           </linearGradient>
 
-          {/* Soft Glow Filter for Center Pill */}
-          <filter id="bluePillGlow" x="145" y="185" width="210" height="130" filterUnits="userSpaceOnUse">
-            <feGaussianBlur stdDeviation="8" result="blur" />
+          {/* Sharp High Contrast Glow Filter */}
+          <filter id="pillVividGlow" x="130" y="170" width="240" height="160" filterUnits="userSpaceOnUse">
+            <feGaussianBlur stdDeviation="12" result="blur" />
             <feComposite in="SourceGraphic" in2="blur" operator="over" />
           </filter>
         </defs>
 
-        {/* 1. Light Metallic Glass Square Outline */}
+        {/* 1. Bright Inner Square Outline */}
         <rect 
           x="85" 
           y="85" 
           width="330" 
           height="330" 
-          rx="12"
-          stroke="url(#nbSquareGradient)" 
-          strokeWidth="16" 
+          rx="14"
+          stroke="url(#nbSquareBright)" 
+          strokeWidth="22" 
           fill="none" 
         />
 
-        {/* 2. Dark Interlocking Octagon Loop */}
+        {/* 2. Bright Interlocking Octagon Loop */}
         <polygon
           points="
             165,55 335,55 
@@ -62,22 +62,24 @@ export default function NothingboxLogo({ size = 28, className = '' }) {
             335,445 165,445 
             55,335 55,165
           "
-          stroke="url(#nbOctagonGradient)"
-          strokeWidth="22"
+          stroke="url(#nbOctagonBright)"
+          strokeWidth="28"
           strokeLinejoin="round"
           strokeLinecap="round"
           fill="none"
         />
 
-        {/* 3. Glowing Instagram Blue Center Capsule Pill */}
-        <g filter="url(#bluePillGlow)">
+        {/* 3. High-Contrast Vivid Instagram Blue Pill Capsule */}
+        <g filter="url(#pillVividGlow)">
           <rect 
-            x="175" 
-            y="215" 
-            width="150" 
-            height="70" 
-            rx="35" 
-            fill="url(#nbPillGradient)" 
+            x="170" 
+            y="210" 
+            width="160" 
+            height="80" 
+            rx="40" 
+            fill="url(#nbPillVivid)" 
+            stroke="#ffffff"
+            strokeWidth="4"
           />
         </g>
       </svg>
