@@ -622,7 +622,7 @@
 
 .iosSheetContainer {
   width: 100%;
-  max-height: 90vh;
+  height: calc(100vh - 44px);
   background-color: #121212;
   border-top-left-radius: 2.2rem;
   border-top-right-radius: 2.2rem;
