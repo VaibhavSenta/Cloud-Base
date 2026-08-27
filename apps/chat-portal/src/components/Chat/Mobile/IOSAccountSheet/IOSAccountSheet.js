@@ -26,6 +26,8 @@ export default function IOSAccountSheet({
   onLogout
 }) {
   const [currentView, setCurrentView] = useState('main'); // 'main' | 'details'
+  const [readReceipts, setReadReceipts] = useState(true);
+  const [lastSeenEnabled, setLastSeenEnabled] = useState(true);
 
   // Reset to main view whenever modal opens
   useEffect(() => {
@@ -214,14 +216,40 @@ export default function IOSAccountSheet({
               <div className={styles.groupSection}>
                 <span className={styles.groupTitle}>Preferences</span>
                 <div className={styles.groupCard}>
+                  {/* Block list */}
                   <div className={styles.row}>
-                    <span className={styles.rowLabel}>Push Notifications</span>
+                    <div className={styles.rowMeta}>
+                      <span className={styles.rowLabel}>Block list</span>
+                      <span className={styles.rowSubLabel}>Manage blocked contacts</span>
+                    </div>
+                    <span className={styles.rowValue} style={{ color: '#8e8e93', fontSize: '0.82rem' }}>0 blocked</span>
+                  </div>
+
+                  {/* Read receipts */}
+                  <div className={styles.row}>
+                    <div className={styles.rowMeta}>
+                      <span className={styles.rowLabel}>Read receipts</span>
+                      <span className={styles.rowSubLabel}>Toggle &quot;seen&quot; indicators</span>
+                    </div>
                     <button
-                      className={`${styles.pushToggleBtn} ${pushEnabled ? styles.pushToggleBtnActive : ''}`}
-                      onClick={onTogglePush}
-                      disabled={isTogglingPush}
+                      className={`${styles.pushToggleBtn} ${readReceipts ? styles.pushToggleBtnActive : ''}`}
+                      onClick={() => setReadReceipts(prev => !prev)}
                     >
-                      {isTogglingPush ? '...' : (pushEnabled ? 'ON' : 'OFF')}
+                      {readReceipts ? 'ON' : 'OFF'}
+                    </button>
+                  </div>
+
+                  {/* Last seen status */}
+                  <div className={styles.row}>
+                    <div className={styles.rowMeta}>
+                      <span className={styles.rowLabel}>Last seen status</span>
+                      <span className={styles.rowSubLabel}>Hide online presence</span>
+                    </div>
+                    <button
+                      className={`${styles.pushToggleBtn} ${lastSeenEnabled ? styles.pushToggleBtnActive : ''}`}
+                      onClick={() => setLastSeenEnabled(prev => !prev)}
+                    >
+                      {lastSeenEnabled ? 'ON' : 'OFF'}
                     </button>
                   </div>
                 </div>
@@ -231,11 +259,29 @@ export default function IOSAccountSheet({
               <div className={styles.groupSection} style={{ marginBottom: '32px' }}>
                 <span className={styles.groupTitle}>Settings</span>
                 <div className={styles.groupCard}>
+                  {/* Push Notifications */}
+                  <div className={styles.row}>
+                    <div className={styles.rowMeta}>
+                      <span className={styles.rowLabel}>Push Notifications</span>
+                      <span className={styles.rowSubLabel}>Real-time message alerts</span>
+                    </div>
+                    <button
+                      className={`${styles.pushToggleBtn} ${pushEnabled ? styles.pushToggleBtnActive : ''}`}
+                      onClick={onTogglePush}
+                      disabled={isTogglingPush}
+                    >
+                      {isTogglingPush ? '...' : (pushEnabled ? 'ON' : 'OFF')}
+                    </button>
+                  </div>
+
+                  {/* Manage Security & 2FA */}
                   <div className={styles.row}>
                     <a href={`${config.accountPortalUrl}/dashboard`} target="_blank" rel="noreferrer" className={styles.rowActionBtn} style={{ textDecoration: 'none' }}>
                       <span className={styles.actionLabel}>Manage Security & 2FA</span>
                     </a>
                   </div>
+
+                  {/* Account Center Settings */}
                   <div className={styles.row}>
                     <a href={`${config.accountPortalUrl}/dashboard`} target="_blank" rel="noreferrer" className={styles.rowActionBtn} style={{ textDecoration: 'none' }}>
                       <span className={styles.actionLabel}>Account Center Settings</span>
