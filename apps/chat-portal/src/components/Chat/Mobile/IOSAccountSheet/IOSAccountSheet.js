@@ -89,7 +89,7 @@ export default function IOSAccountSheet({
 
           {/* Group 2: Account Details */}
           <div className={styles.groupSection}>
-            <span className={styles.groupTitle}>Account Info</span>
+            <span className={styles.groupTitle}>Profile Info</span>
             <div className={styles.groupCard}>
               <div className={styles.row}>
                 <span className={styles.rowLabel}>Display Name</span>
