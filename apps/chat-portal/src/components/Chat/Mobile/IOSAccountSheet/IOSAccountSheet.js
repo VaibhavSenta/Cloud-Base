@@ -1,9 +1,10 @@
 /* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { NothingboxLogo } from '@cloudbase/ui-brand';
 import { config } from '@/utils/config';
+import api from '@/utils/api';
 import styles from './IOSAccountSheet.module.css';
 
 /**
@@ -19,6 +20,7 @@ export default function IOSAccountSheet({
   isClosing,
   onClose,
   localProfile,
+  onUpdateProfile,
   pushEnabled,
   isTogglingPush,
   onTogglePush,
@@ -29,12 +31,80 @@ export default function IOSAccountSheet({
   const [readReceipts, setReadReceipts] = useState(true);
   const [lastSeenEnabled, setLastSeenEnabled] = useState(true);
 
+  // Inline Nickname Editing States
+  const [isEditingNickname, setIsEditingNickname] = useState(false);
+  const [nicknameInput, setNicknameInput] = useState('');
+  const [nicknameError, setNicknameError] = useState('');
+  const [isSavingNickname, setIsSavingNickname] = useState(false);
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const avatarInputRef = useRef(null);
+
   // Reset to main view whenever modal opens
   useEffect(() => {
     if (isOpen) {
       setCurrentView('main');
+      setIsEditingNickname(false);
+      setNicknameError('');
     }
   }, [isOpen]);
+
+  // Handle Nickname Save
+  const handleSaveNickname = async () => {
+    const cleaned = (nicknameInput || '').trim().toLowerCase().replace(/@/g, '');
+    if (!cleaned || cleaned === localProfile.chatUsername) {
+      setIsEditingNickname(false);
+      return;
+    }
+    if (cleaned.length < 3) {
+      setNicknameError('Must be at least 3 characters');
+      return;
+    }
+    setIsSavingNickname(true);
+    setNicknameError('');
+    try {
+      const res = await api.put('/chat/users/profile/username', { username: cleaned });
+      if (res.data?.status === 'success' || res.data?.profile) {
+        if (onUpdateProfile) {
+          onUpdateProfile({ ...localProfile, chatUsername: cleaned });
+        }
+        setIsEditingNickname(false);
+      }
+    } catch (err) {
+      setNicknameError(err.response?.data?.error || err.message || 'Username already taken');
+    } finally {
+      setIsSavingNickname(false);
+    }
+  };
+
+  // Handle Avatar Image Upload
+  const handleAvatarFileChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) return;
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image size exceeds 5MB limit.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      const base64Data = event.target.result;
+      setIsUploadingAvatar(true);
+      try {
+        const res = await api.put('/chat/users/profile/avatar', { avatarUrl: base64Data });
+        if (res.data?.status === 'success' || res.data?.profile) {
+          if (onUpdateProfile) {
+            onUpdateProfile({ ...localProfile, avatarUrl: base64Data });
+          }
+        }
+      } catch (err) {
+        console.error('Failed to upload avatar:', err);
+      } finally {
+        setIsUploadingAvatar(false);
+      }
+    };
+    reader.readAsDataURL(file);
+  };
 
   if (!isOpen) return null;
 
@@ -48,6 +118,15 @@ export default function IOSAccountSheet({
         className={`${styles.container} ${isClosing ? styles.containerClosing : ''}`}
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Hidden Avatar Input for Chat Profile */}
+        <input
+          type="file"
+          ref={avatarInputRef}
+          accept="image/*"
+          style={{ display: 'none' }}
+          onChange={handleAvatarFileChange}
+        />
+
         {currentView === 'main' ? (
           <>
             {/* Sheet Header */}
@@ -135,7 +214,7 @@ export default function IOSAccountSheet({
                     </button>
                   </div>
                   <div className={styles.row}>
-                    <button onClick={onEditProfile} className={styles.rowActionBtn}>
+                    <button onClick={() => setCurrentView('details')} className={styles.rowActionBtn}>
                       <span className={styles.actionLabel}>Edit Profile Details</span>
                     </button>
                   </div>
@@ -176,7 +255,8 @@ export default function IOSAccountSheet({
               <div className={styles.groupSection}>
                 <span className={styles.groupTitle}>Profile Details</span>
                 <div className={styles.groupCard}>
-                  <div className={styles.userRow} onClick={onEditProfile}>
+                  {/* Avatar upload row */}
+                  <div className={styles.userRow} onClick={() => avatarInputRef.current?.click()}>
                     {localProfile.avatarUrl ? (
                       <img src={localProfile.avatarUrl} alt="Avatar" className={styles.userAvatar} />
                     ) : (
@@ -188,26 +268,83 @@ export default function IOSAccountSheet({
                       <span className={styles.userName}>
                         {localProfile.firstName || ''} {localProfile.lastName || ''}
                       </span>
-                      <span className={styles.userSubtitle}>@{localProfile.chatUsername}</span>
+                      <span className={styles.userSubtitle}>
+                        {isUploadingAvatar ? 'Uploading avatar...' : 'Tap to change chat avatar'}
+                      </span>
                     </div>
                   </div>
 
+                  {/* Display Name (Read-only from Account Portal) */}
                   <div className={styles.row}>
                     <span className={styles.rowLabel}>Display Name</span>
                     <span className={styles.rowValue}>{localProfile.firstName} {localProfile.lastName}</span>
                   </div>
-                  <div className={styles.row}>
-                    <span className={styles.rowLabel}>Nickname</span>
-                    <span className={styles.rowValue}>{localProfile.chatUsername}</span>
-                  </div>
+
+                  {/* Nickname with Inline Editing */}
+                  {isEditingNickname ? (
+                    <div className={styles.inlineEditBlock}>
+                      <div className={styles.row}>
+                        <span className={styles.rowLabel}>Nickname</span>
+                        <div className={styles.inlineInputGroup}>
+                          <span className={styles.atSymbol}>@</span>
+                          <input
+                            type="text"
+                            className={styles.inlineInput}
+                            value={nicknameInput}
+                            onChange={(e) => setNicknameInput(e.target.value.toLowerCase().replace(/[^a-z0-9_\.]/g, ''))}
+                            placeholder="username"
+                            autoFocus
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') handleSaveNickname();
+                              if (e.key === 'Escape') {
+                                setIsEditingNickname(false);
+                                setNicknameError('');
+                              }
+                            }}
+                          />
+                          <button
+                            className={styles.saveBtn}
+                            onClick={handleSaveNickname}
+                            disabled={isSavingNickname}
+                          >
+                            {isSavingNickname ? '...' : 'Save'}
+                          </button>
+                          <button
+                            className={styles.cancelBtn}
+                            onClick={() => {
+                              setIsEditingNickname(false);
+                              setNicknameError('');
+                            }}
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      </div>
+                      {nicknameError && (
+                        <div className={styles.errorText}>{nicknameError}</div>
+                      )}
+                    </div>
+                  ) : (
+                    <div
+                      className={styles.rowClickable}
+                      onClick={() => {
+                        setIsEditingNickname(true);
+                        setNicknameInput(localProfile.chatUsername || '');
+                        setNicknameError('');
+                      }}
+                    >
+                      <span className={styles.rowLabel}>Nickname</span>
+                      <div className={styles.rowValueWithHint}>
+                        <span className={styles.rowValue}>{localProfile.chatUsername}</span>
+                        <span className={styles.editHint}>Edit</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Email (Read-only from Account Portal) */}
                   <div className={styles.row}>
                     <span className={styles.rowLabel}>Email</span>
                     <span className={styles.rowValue}>{localProfile.email || 'None'}</span>
-                  </div>
-                  <div className={styles.row}>
-                    <button onClick={onEditProfile} className={styles.rowActionBtn}>
-                      <span className={styles.actionLabel}>Change Profile Details</span>
-                    </button>
                   </div>
                 </div>
               </div>

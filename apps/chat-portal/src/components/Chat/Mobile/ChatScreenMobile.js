@@ -931,6 +931,7 @@ export default function ChatScreenMobile({
         isClosing={isClosingSheet}
         onClose={handleCloseProfileModal}
         localProfile={localProfile}
+        onUpdateProfile={setLocalProfile}
         pushEnabled={pushEnabled}
         isTogglingPush={isTogglingPush}
         onTogglePush={handleTogglePushNotifications}

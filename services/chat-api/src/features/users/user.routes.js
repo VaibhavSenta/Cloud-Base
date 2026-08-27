@@ -35,6 +35,7 @@ router.post('/logout-session', userController.logoutSession);
 router.post('/profile', verifyAuth, userController.createProfile);
 router.get('/profile', verifyAuth, userController.getProfile);
 router.put('/profile/avatar', verifyAuth, userController.updateAvatarUrl);
+router.put('/profile/username', verifyAuth, userController.updateUsername);
 router.put('/profile/public-key', verifyAuth, userController.updatePublicKey);
 router.put('/profile/encrypted-private-key', verifyAuth, userController.updateEncryptedPrivateKey);
 router.get('/search', verifyAuth, userController.searchUser);

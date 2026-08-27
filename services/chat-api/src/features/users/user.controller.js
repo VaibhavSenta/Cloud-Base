@@ -297,6 +297,64 @@ const updateAvatarUrl = async (req, res) => {
   }
 };
 
+const updateUsername = async (req, res) => {
+  try {
+    const { username } = req.body;
+    const userId = String(req.user.userId || req.user.id || req.user._id);
+
+    if (!username) {
+      return res.status(400).json({ error: 'Username parameter is required.' });
+    }
+
+    const cleanedUsername = username.trim().toLowerCase().replace(/@/g, '');
+
+    if (cleanedUsername.length < 3) {
+      return res.status(400).json({ error: 'Username must be at least 3 characters.' });
+    }
+
+    if (cleanedUsername.length > 30) {
+      return res.status(400).json({ error: 'Username cannot exceed 30 characters.' });
+    }
+
+    const usernameRegex = /^[a-z0-9_\.]+$/;
+    if (!usernameRegex.test(cleanedUsername)) {
+      return res.status(400).json({ error: 'Only lowercase letters, numbers, underscores, and periods are allowed.' });
+    }
+
+    if (cleanedUsername.startsWith('.') || cleanedUsername.endsWith('.')) {
+      return res.status(400).json({ error: 'Username cannot start or end with a period.' });
+    }
+
+    if (cleanedUsername.includes('..')) {
+      return res.status(400).json({ error: 'Username cannot contain consecutive periods.' });
+    }
+
+    const profile = await ChatProfile.findOne({ userId });
+    if (!profile) {
+      return res.status(404).json({ error: 'Chat profile not found.' });
+    }
+
+    if (profile.chatUsername === cleanedUsername) {
+      return res.status(200).json({ status: 'success', profile });
+    }
+
+    const existing = await ChatProfile.findOne({ chatUsername: cleanedUsername });
+    if (existing && String(existing.userId) !== userId) {
+      return res.status(400).json({ error: 'Username is already taken.' });
+    }
+
+    profile.chatUsername = cleanedUsername;
+    await profile.save();
+
+    globalBloomFilter.add(cleanedUsername);
+
+    console.log(`👤 [Chat-API] Updated chatUsername to "${cleanedUsername}" for userId: ${userId}`);
+    return res.status(200).json({ status: 'success', profile });
+  } catch (error) {
+    return res.status(500).json({ error: `Internal server error during username update: ${error.message}` });
+  }
+};
+
 module.exports = {
   getBloomFilter,
   checkUsername,
@@ -306,5 +364,6 @@ module.exports = {
   logoutSession,
   updatePublicKey,
   updateEncryptedPrivateKey,
-  updateAvatarUrl
+  updateAvatarUrl,
+  updateUsername
 };
