@@ -35,7 +35,9 @@ export default function PersonalInfoDesktop({
   dragStart,
   setDragStart,
   imgRef,
-  cropImage
+  cropImage,
+  isLandscape,
+  constrainPosition
 }) {
   const [activeField, setActiveField] = useState(editField || 'username');
 
@@ -121,6 +123,8 @@ export default function PersonalInfoDesktop({
         setDragStart={setDragStart}
         imgRef={imgRef}
         cropImage={cropImage}
+        isLandscape={isLandscape}
+        constrainPosition={constrainPosition}
       />
     </div>
   );
