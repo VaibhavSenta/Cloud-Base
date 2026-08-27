@@ -16,7 +16,7 @@ api.interceptors.request.use(
   (reqConfig) => {
     if (typeof window !== 'undefined') {
       const token = window.__cb_session_token;
-      if (token) {
+      if (token && token !== 'sso-cookie' && token !== 'undefined' && token !== 'null') {
         reqConfig.headers.Authorization = `Bearer ${token}`;
       }
     }
