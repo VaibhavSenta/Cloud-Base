@@ -61,7 +61,7 @@ export default function IOSAccountSheet({
                 <span className={styles.userName}>
                   {localProfile.chatUsername || localProfile.username || 'User'}
                 </span>
-                <span className={styles.userSubtitle}>Account info, payments and settings</span>
+                <span className={styles.userSubtitle}>Profile info and settings</span>
               </div>
             </div>
 
