@@ -27,10 +27,11 @@ export default function IOSAccountSheet({
   if (!isOpen) return null;
 
   return (
-    <div
-      className={`${styles.backdrop} ${isClosing ? styles.backdropClosing : ''}`}
-      onClick={onClose}
-    >
+    <>
+      <div
+        className={`${styles.backdrop} ${isClosing ? styles.backdropClosing : ''}`}
+        onClick={onClose}
+      />
       <div
         className={`${styles.container} ${isClosing ? styles.containerClosing : ''}`}
         onClick={(e) => e.stopPropagation()}
@@ -138,6 +139,6 @@ export default function IOSAccountSheet({
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
