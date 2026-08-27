@@ -82,14 +82,16 @@
 .backBtn {
   background: none;
   border: none;
-  color: #0095f6;
-  font-size: 0.92rem;
-  font-weight: 600;
+  color: #ffffff;
   cursor: pointer;
-  padding: 4px 0;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   outline: none;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
+  transition: opacity 0.2s ease;
 }
 
 .backBtn:focus,
@@ -97,6 +99,13 @@
 .backBtn:focus-visible {
   outline: none !important;
   box-shadow: none !important;
+}
+
+.backArrow {
+  width: 20px;
+  height: 20px;
+  color: #ffffff;
+  display: block;
 }
 
 .titleGroup {

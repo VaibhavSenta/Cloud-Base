@@ -159,8 +159,11 @@ export default function IOSAccountSheet({
           /* Sub-page view: Profile Details, Preferences, Settings */
           <>
             <div className={styles.subPageHeader}>
-              <button className={styles.backBtn} onClick={() => setCurrentView('main')}>
-                Back
+              <button className={styles.backBtn} onClick={() => setCurrentView('main')} title="Back">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={styles.backArrow}>
+                  <line x1="19" y1="12" x2="5" y2="12"></line>
+                  <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
               </button>
               <span className={styles.title}>Settings</span>
               <button className={styles.closeBtn} onClick={onClose}>✕</button>
