@@ -100,7 +100,7 @@ export default function IOSAccountSheet({
                 <span className={styles.rowValue}>{localProfile.chatUsername}</span>
               </div>
               <div className={styles.row}>
-                <span className={styles.rowLabel}>Email Address</span>
+                <span className={styles.rowLabel}>Email</span>
                 <span className={styles.rowValue}>{localProfile.email || 'None'}</span>
               </div>
             </div>
