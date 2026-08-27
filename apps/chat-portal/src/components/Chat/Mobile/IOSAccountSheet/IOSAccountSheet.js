@@ -280,65 +280,48 @@ export default function IOSAccountSheet({
                     <span className={styles.rowValue}>{localProfile.firstName} {localProfile.lastName}</span>
                   </div>
 
-                  {/* Nickname with Inline Editing */}
-                  {isEditingNickname ? (
-                    <div className={styles.inlineEditBlock}>
-                      <div className={styles.row}>
-                        <span className={styles.rowLabel}>Nickname</span>
-                        <div className={styles.inlineInputGroup}>
-                          <span className={styles.atSymbol}>@</span>
-                          <input
-                            type="text"
-                            className={styles.inlineInput}
-                            value={nicknameInput}
-                            onChange={(e) => setNicknameInput(e.target.value.toLowerCase().replace(/[^a-z0-9_\.]/g, ''))}
-                            placeholder="username"
-                            autoFocus
-                            onKeyDown={(e) => {
-                              if (e.key === 'Enter') handleSaveNickname();
-                              if (e.key === 'Escape') {
-                                setIsEditingNickname(false);
-                                setNicknameError('');
-                              }
-                            }}
-                          />
-                          <button
-                            className={styles.saveBtn}
-                            onClick={handleSaveNickname}
-                            disabled={isSavingNickname}
-                          >
-                            {isSavingNickname ? '...' : 'Save'}
-                          </button>
-                          <button
-                            className={styles.cancelBtn}
-                            onClick={() => {
-                              setIsEditingNickname(false);
-                              setNicknameError('');
-                            }}
-                          >
-                            ✕
-                          </button>
-                        </div>
-                      </div>
-                      {nicknameError && (
-                        <div className={styles.errorText}>{nicknameError}</div>
-                      )}
-                    </div>
-                  ) : (
-                    <div
-                      className={styles.rowClickable}
-                      onClick={() => {
+                  {/* Nickname with Direct Inline Cursor Editing */}
+                  <div
+                    className={styles.rowClickable}
+                    onClick={() => {
+                      if (!isEditingNickname) {
                         setIsEditingNickname(true);
                         setNicknameInput(localProfile.chatUsername || '');
                         setNicknameError('');
-                      }}
-                    >
-                      <span className={styles.rowLabel}>Nickname</span>
-                      <div className={styles.rowValueWithHint}>
-                        <span className={styles.rowValue}>{localProfile.chatUsername}</span>
-                        <span className={styles.editHint}>Edit</span>
-                      </div>
-                    </div>
+                      }
+                    }}
+                  >
+                    <span className={styles.rowLabel}>Nickname</span>
+                    {isEditingNickname ? (
+                      <input
+                        type="text"
+                        className={styles.nicknameInput}
+                        value={nicknameInput}
+                        onChange={(e) => setNicknameInput(e.target.value.toLowerCase().replace(/[^a-z0-9_\.]/g, ''))}
+                        autoFocus
+                        onFocus={(e) => {
+                          const val = e.target.value;
+                          e.target.setSelectionRange(val.length, val.length);
+                        }}
+                        onBlur={() => {
+                          handleSaveNickname();
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.target.blur();
+                          }
+                          if (e.key === 'Escape') {
+                            setIsEditingNickname(false);
+                            setNicknameError('');
+                          }
+                        }}
+                      />
+                    ) : (
+                      <span className={styles.rowValue}>{localProfile.chatUsername}</span>
+                    )}
+                  </div>
+                  {nicknameError && (
+                    <div className={styles.errorText} style={{ paddingLeft: '14px' }}>{nicknameError}</div>
                   )}
 
                   {/* Email (Read-only from Account Portal) */}
