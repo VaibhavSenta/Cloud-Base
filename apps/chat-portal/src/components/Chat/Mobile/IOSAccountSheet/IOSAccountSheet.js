@@ -59,7 +59,7 @@ export default function IOSAccountSheet({
               )}
               <div className={styles.userMeta}>
                 <span className={styles.userName}>
-                  {localProfile.firstName || localProfile.chatUsername} {localProfile.lastName || ''}
+                  {localProfile.chatUsername || localProfile.username || 'User'}
                 </span>
                 <span className={styles.userSubtitle}>Account info, payments and settings</span>
               </div>
@@ -73,12 +73,16 @@ export default function IOSAccountSheet({
             >
               <div className={styles.serviceLeft}>
                 <div className={styles.serviceIconWrapper}>
-                  <img src="/profile-icon.svg" alt="Icon" className={styles.serviceIcon} />
+                  {localProfile.accountProfilePic || localProfile.profilePic ? (
+                    <img src={localProfile.accountProfilePic || localProfile.profilePic} alt="Account Profile" className={styles.serviceAvatar} />
+                  ) : (
+                    <img src="/profile-icon.svg" alt="Icon" className={styles.serviceIcon} />
+                  )}
                 </div>
                 <span className={styles.serviceTitle}>Account Center</span>
               </div>
               <div className={styles.serviceRight}>
-                <span>{localProfile.chatUsername}</span>
+                <span>{`${localProfile.firstName || ''} ${localProfile.lastName || ''}`.trim() || localProfile.chatUsername}</span>
               </div>
             </a>
           </div>

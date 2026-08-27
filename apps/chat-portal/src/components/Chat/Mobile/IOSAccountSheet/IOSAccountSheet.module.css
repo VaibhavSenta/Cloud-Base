@@ -284,6 +284,14 @@
   opacity: 0.6;
 }
 
+.serviceAvatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
 .serviceTitle {
   font-size: 0.92rem;
   font-weight: 600;

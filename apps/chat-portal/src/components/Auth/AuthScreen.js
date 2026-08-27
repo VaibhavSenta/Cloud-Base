@@ -44,6 +44,7 @@ export default function AuthScreen({ onAuthComplete }) {
               console.log('🔑 SSO: Chat profile active. Bypassing security checks.');
               onAuthComplete({
                 ...profile,
+                accountProfilePic: ssoUser.profilePic || ssoUser.avatarUrl || '',
                 firstName: ssoUser.firstName || ssoUser.username || '',
                 lastName: ssoUser.lastName || '',
                 email: ssoUser.email || ''
@@ -153,6 +154,7 @@ export default function AuthScreen({ onAuthComplete }) {
 
       onAuthComplete({
         ...profile,
+        accountProfilePic: ssoUser.profilePic || ssoUser.avatarUrl || '',
         firstName: ssoUser.firstName || ssoUser.username || '',
         lastName: ssoUser.lastName || '',
         email: ssoUser.email || ''
