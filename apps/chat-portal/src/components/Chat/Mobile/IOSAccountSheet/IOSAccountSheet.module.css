@@ -98,7 +98,16 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
   transition: background-color 0.2s ease;
+}
+
+.closeBtn:focus,
+.closeBtn:active,
+.closeBtn:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .closeBtn:hover {
@@ -179,6 +188,16 @@
   justify-content: space-between;
   cursor: pointer;
   text-align: left;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.rowActionBtn:focus,
+.rowActionBtn:active,
+.rowActionBtn:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .actionLabel {
@@ -200,6 +219,16 @@
   gap: 14px;
   padding: 16px 0;
   cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.userRow:focus,
+.userRow:active,
+.userRow:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .userAvatar {
@@ -257,6 +286,16 @@
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   cursor: pointer;
   text-decoration: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.serviceRow:focus,
+.serviceRow:active,
+.serviceRow:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .serviceLeft {
@@ -317,7 +356,16 @@
   font-size: 0.75rem;
   font-weight: 700;
   cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
   transition: all 0.2s ease;
+}
+
+.pushToggleBtn:focus,
+.pushToggleBtn:active,
+.pushToggleBtn:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .pushToggleBtnActive {
@@ -346,7 +394,16 @@
   font-weight: 600;
   cursor: pointer;
   text-align: center;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
   transition: background-color 0.2s ease;
+}
+
+.dangerBtn:focus,
+.dangerBtn:active,
+.dangerBtn:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .dangerBtn:hover {
