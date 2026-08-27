@@ -66,15 +66,10 @@
 .backBtn:hover,
 .moreBtn:hover {
   opacity: 0.8;
-  color: #0095f6;
 }
 
 .backArrow {
   width: 20px;
   height: 20px;
   color: #ffffff;
-}
-
-.backBtn:hover .backArrow {
-  color: #0095f6;
 }

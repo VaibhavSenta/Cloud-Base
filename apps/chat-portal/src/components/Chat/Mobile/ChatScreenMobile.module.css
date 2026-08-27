@@ -75,9 +75,7 @@
 }
 
 .textBtn:hover {
-  background-color: rgba(0, 149, 246, 0.1);
-  border-color: #0095f6;
-  color: #0095f6;
+  background-color: rgba(255, 255, 255, 0.08);
 }
 
 .textBtnPrimary {
@@ -406,7 +404,6 @@
 .backBtn:hover,
 .moreBtn:hover {
   opacity: 0.8;
-  color: #0095f6;
 }
 
 .statusDot {
@@ -1007,7 +1004,7 @@
 }
 
 .iosInfoBtn:hover {
-  background-color: rgba(0, 149, 246, 0.15);
+  background-color: rgba(255, 255, 255, 0.12);
 }
 
 .iosSeparator {

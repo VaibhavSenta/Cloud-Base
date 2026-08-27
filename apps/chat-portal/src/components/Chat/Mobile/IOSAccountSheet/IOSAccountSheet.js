@@ -62,7 +62,6 @@ export default function IOSAccountSheet({
                 </span>
                 <span className={styles.userSubtitle}>Account info, payments and settings</span>
               </div>
-              <span className={styles.actionArrow}>›</span>
             </div>
 
             <a
@@ -79,7 +78,6 @@ export default function IOSAccountSheet({
               </div>
               <div className={styles.serviceRight}>
                 <span>{localProfile.chatUsername}</span>
-                <span>↗</span>
               </div>
             </a>
           </div>
