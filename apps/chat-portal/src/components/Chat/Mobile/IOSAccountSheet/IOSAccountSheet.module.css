@@ -489,7 +489,7 @@
   outline: none;
   padding: 0;
   margin: 0;
-  caret-color: #0095f6;
+  caret-color: #ffffff;
   width: auto;
   min-width: 80px;
   max-width: 180px;
@@ -498,6 +498,39 @@
 
 .nicknameInput:focus {
   outline: none;
+}
+
+.checkBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.2s ease;
+}
+
+.checkBtn:focus,
+.checkBtn:active,
+.checkBtn:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.checkBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.checkIcon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  display: block;
 }
 
 .errorText {

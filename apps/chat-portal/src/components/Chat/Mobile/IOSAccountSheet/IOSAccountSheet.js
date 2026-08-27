@@ -247,7 +247,13 @@ export default function IOSAccountSheet({
                 </svg>
               </button>
               <span className={styles.title}>Settings</span>
-              <button className={styles.closeBtn} onClick={onClose}>✕</button>
+              {isEditingNickname ? (
+                <button className={styles.checkBtn} onClick={handleSaveNickname} title="Save Nickname">
+                  <img src="/check.svg" alt="Save" className={styles.checkIcon} />
+                </button>
+              ) : (
+                <button className={styles.closeBtn} onClick={onClose}>✕</button>
+              )}
             </div>
 
             <div className={styles.body}>
