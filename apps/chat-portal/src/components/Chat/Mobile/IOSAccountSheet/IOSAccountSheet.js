@@ -40,7 +40,7 @@ export default function IOSAccountSheet({
         <div className={styles.header}>
           <div className={styles.titleGroup}>
             <NothingboxLogo size={34} />
-            <span className={styles.title}>Nothingbox Chat</span>
+            <span className={styles.title}>Chat Profile</span>
           </div>
           <button className={styles.closeBtn} onClick={onClose}>✕</button>
         </div>
