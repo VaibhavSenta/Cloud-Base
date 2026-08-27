@@ -1,6 +1,7 @@
 /* Copyright (c) 2026 Vaibhav Senta. All Rights Reserved. */
 'use client';
 
+import { useState, useEffect } from 'react';
 import { NothingboxLogo } from '@cloudbase/ui-brand';
 import { config } from '@/utils/config';
 import styles from './IOSAccountSheet.module.css';
@@ -24,6 +25,15 @@ export default function IOSAccountSheet({
   onEditProfile,
   onLogout
 }) {
+  const [currentView, setCurrentView] = useState('main'); // 'main' | 'details'
+
+  // Reset to main view whenever modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setCurrentView('main');
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
@@ -36,112 +46,203 @@ export default function IOSAccountSheet({
         className={`${styles.container} ${isClosing ? styles.containerClosing : ''}`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Sheet Header */}
-        <div className={styles.header}>
-          <div className={styles.titleGroup}>
-            <NothingboxLogo size={34} />
-            <span className={styles.title}>Chat Profile</span>
-          </div>
-          <button className={styles.closeBtn} onClick={onClose}>✕</button>
-        </div>
-
-        {/* Sheet Body */}
-        <div className={styles.body}>
-          {/* Group 1: User Info & Account Center Link */}
-          <div className={styles.groupCard}>
-            <div className={styles.userRow} onClick={onEditProfile}>
-              {localProfile.avatarUrl ? (
-                <img src={localProfile.avatarUrl} alt="Avatar" className={styles.userAvatar} />
-              ) : (
-                <div className={styles.avatarPlaceholder}>
-                  <img src="/profile-icon.svg" alt="Default Avatar" className={styles.defaultIcon} />
-                </div>
-              )}
-              <div className={styles.userMeta}>
-                <span className={styles.userName}>
-                  {localProfile.chatUsername || localProfile.username || 'User'}
-                </span>
-                <span className={styles.userSubtitle}>Profile info and settings</span>
+        {currentView === 'main' ? (
+          <>
+            {/* Sheet Header */}
+            <div className={styles.header}>
+              <div className={styles.titleGroup}>
+                <NothingboxLogo size={34} />
+                <span className={styles.title}>Chat Profile</span>
               </div>
+              <button className={styles.closeBtn} onClick={onClose}>✕</button>
             </div>
 
-            <a
-              href={`${config.accountPortalUrl}/dashboard`}
-              target="_blank"
-              rel="noreferrer"
-              className={styles.serviceRow}
-            >
-              <div className={styles.serviceLeft}>
-                <div className={styles.serviceIconWrapper}>
-                  {localProfile.accountProfilePic || localProfile.profilePic ? (
-                    <img src={localProfile.accountProfilePic || localProfile.profilePic} alt="Account Profile" className={styles.serviceAvatar} />
+            {/* Sheet Body */}
+            <div className={styles.body}>
+              {/* Group 1: User Info & Account Center Link */}
+              <div className={styles.groupCard}>
+                <div className={styles.userRow} onClick={() => setCurrentView('details')}>
+                  {localProfile.avatarUrl ? (
+                    <img src={localProfile.avatarUrl} alt="Avatar" className={styles.userAvatar} />
                   ) : (
-                    <img src="/profile-icon.svg" alt="Icon" className={styles.serviceIcon} />
+                    <div className={styles.avatarPlaceholder}>
+                      <img src="/profile-icon.svg" alt="Default Avatar" className={styles.defaultIcon} />
+                    </div>
                   )}
+                  <div className={styles.userMeta}>
+                    <span className={styles.userName}>
+                      {localProfile.chatUsername || localProfile.username || 'User'}
+                    </span>
+                    <span className={styles.userSubtitle}>Profile info, preferences and settings</span>
+                  </div>
                 </div>
-                <span className={styles.serviceTitle}>Account Center</span>
-              </div>
-              <div className={styles.serviceRight}>
-                <span>{`${localProfile.firstName || ''} ${localProfile.lastName || ''}`.trim() || localProfile.chatUsername}</span>
-              </div>
-            </a>
-          </div>
 
-          {/* Group 2: Account Details */}
-          <div className={styles.groupSection}>
-            <span className={styles.groupTitle}>Profile Info</span>
-            <div className={styles.groupCard}>
-              <div className={styles.row}>
-                <span className={styles.rowLabel}>Display Name</span>
-                <span className={styles.rowValue}>{localProfile.firstName} {localProfile.lastName}</span>
-              </div>
-              <div className={styles.row}>
-                <span className={styles.rowLabel}>Nickname</span>
-                <span className={styles.rowValue}>{localProfile.chatUsername}</span>
-              </div>
-              <div className={styles.row}>
-                <span className={styles.rowLabel}>Email</span>
-                <span className={styles.rowValue}>{localProfile.email || 'None'}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Group 3: Preferences & Management */}
-          <div className={styles.groupSection}>
-            <span className={styles.groupTitle}>Preferences & Security</span>
-            <div className={styles.groupCard}>
-              <div className={styles.row}>
-                <span className={styles.rowLabel}>Push Notifications</span>
-                <button
-                  className={`${styles.pushToggleBtn} ${pushEnabled ? styles.pushToggleBtnActive : ''}`}
-                  onClick={onTogglePush}
-                  disabled={isTogglingPush}
+                <a
+                  href={`${config.accountPortalUrl}/dashboard`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={styles.serviceRow}
                 >
-                  {isTogglingPush ? '...' : (pushEnabled ? 'ON' : 'OFF')}
-                </button>
-              </div>
-              <div className={styles.row}>
-                <button onClick={onEditProfile} className={styles.rowActionBtn}>
-                  <span className={styles.actionLabel}>Edit Profile Details</span>
-                </button>
-              </div>
-              <div className={styles.row}>
-                <a href={`${config.accountPortalUrl}/dashboard`} target="_blank" rel="noreferrer" className={styles.rowActionBtn} style={{ textDecoration: 'none' }}>
-                  <span className={styles.actionLabel}>Manage Security & 2FA</span>
+                  <div className={styles.serviceLeft}>
+                    <div className={styles.serviceIconWrapper}>
+                      {localProfile.accountProfilePic || localProfile.profilePic ? (
+                        <img src={localProfile.accountProfilePic || localProfile.profilePic} alt="Account Profile" className={styles.serviceAvatar} />
+                      ) : (
+                        <img src="/profile-icon.svg" alt="Icon" className={styles.serviceIcon} />
+                      )}
+                    </div>
+                    <span className={styles.serviceTitle}>Account Center</span>
+                  </div>
+                  <div className={styles.serviceRight}>
+                    <span>{`${localProfile.firstName || ''} ${localProfile.lastName || ''}`.trim() || localProfile.chatUsername}</span>
+                  </div>
                 </a>
               </div>
-            </div>
-          </div>
 
-          {/* Group 4: Session Logout */}
-          <div className={styles.groupSection} style={{ marginBottom: '32px' }}>
-            <div className={styles.dangerCard}>
-              <button onClick={onLogout} className={styles.dangerBtn}>
-                Logout Account
-              </button>
+              {/* Group 2: Account Details */}
+              <div className={styles.groupSection}>
+                <span className={styles.groupTitle}>Profile Info</span>
+                <div className={styles.groupCard}>
+                  <div className={styles.row}>
+                    <span className={styles.rowLabel}>Display Name</span>
+                    <span className={styles.rowValue}>{localProfile.firstName} {localProfile.lastName}</span>
+                  </div>
+                  <div className={styles.row}>
+                    <span className={styles.rowLabel}>Nickname</span>
+                    <span className={styles.rowValue}>{localProfile.chatUsername}</span>
+                  </div>
+                  <div className={styles.row}>
+                    <span className={styles.rowLabel}>Email</span>
+                    <span className={styles.rowValue}>{localProfile.email || 'None'}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Group 3: Preferences & Management */}
+              <div className={styles.groupSection}>
+                <span className={styles.groupTitle}>Preferences & Security</span>
+                <div className={styles.groupCard}>
+                  <div className={styles.row}>
+                    <span className={styles.rowLabel}>Push Notifications</span>
+                    <button
+                      className={`${styles.pushToggleBtn} ${pushEnabled ? styles.pushToggleBtnActive : ''}`}
+                      onClick={onTogglePush}
+                      disabled={isTogglingPush}
+                    >
+                      {isTogglingPush ? '...' : (pushEnabled ? 'ON' : 'OFF')}
+                    </button>
+                  </div>
+                  <div className={styles.row}>
+                    <button onClick={onEditProfile} className={styles.rowActionBtn}>
+                      <span className={styles.actionLabel}>Edit Profile Details</span>
+                    </button>
+                  </div>
+                  <div className={styles.row}>
+                    <a href={`${config.accountPortalUrl}/dashboard`} target="_blank" rel="noreferrer" className={styles.rowActionBtn} style={{ textDecoration: 'none' }}>
+                      <span className={styles.actionLabel}>Manage Security & 2FA</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Group 4: Session Logout */}
+              <div className={styles.groupSection} style={{ marginBottom: '32px' }}>
+                <div className={styles.dangerCard}>
+                  <button onClick={onLogout} className={styles.dangerBtn}>
+                    Logout Account
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          </>
+        ) : (
+          /* Sub-page view: Profile Details, Preferences, Settings */
+          <>
+            <div className={styles.subPageHeader}>
+              <button className={styles.backBtn} onClick={() => setCurrentView('main')}>
+                Back
+              </button>
+              <span className={styles.title}>Settings</span>
+              <button className={styles.closeBtn} onClick={onClose}>✕</button>
+            </div>
+
+            <div className={styles.body}>
+              {/* Section 1: Profile Details */}
+              <div className={styles.groupSection}>
+                <span className={styles.groupTitle}>Profile Details</span>
+                <div className={styles.groupCard}>
+                  <div className={styles.userRow} onClick={onEditProfile}>
+                    {localProfile.avatarUrl ? (
+                      <img src={localProfile.avatarUrl} alt="Avatar" className={styles.userAvatar} />
+                    ) : (
+                      <div className={styles.avatarPlaceholder}>
+                        <img src="/profile-icon.svg" alt="Default Avatar" className={styles.defaultIcon} />
+                      </div>
+                    )}
+                    <div className={styles.userMeta}>
+                      <span className={styles.userName}>
+                        {localProfile.firstName || ''} {localProfile.lastName || ''}
+                      </span>
+                      <span className={styles.userSubtitle}>@{localProfile.chatUsername}</span>
+                    </div>
+                  </div>
+
+                  <div className={styles.row}>
+                    <span className={styles.rowLabel}>Display Name</span>
+                    <span className={styles.rowValue}>{localProfile.firstName} {localProfile.lastName}</span>
+                  </div>
+                  <div className={styles.row}>
+                    <span className={styles.rowLabel}>Nickname</span>
+                    <span className={styles.rowValue}>{localProfile.chatUsername}</span>
+                  </div>
+                  <div className={styles.row}>
+                    <span className={styles.rowLabel}>Email</span>
+                    <span className={styles.rowValue}>{localProfile.email || 'None'}</span>
+                  </div>
+                  <div className={styles.row}>
+                    <button onClick={onEditProfile} className={styles.rowActionBtn}>
+                      <span className={styles.actionLabel}>Change Profile Details</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 2: Preferences */}
+              <div className={styles.groupSection}>
+                <span className={styles.groupTitle}>Preferences</span>
+                <div className={styles.groupCard}>
+                  <div className={styles.row}>
+                    <span className={styles.rowLabel}>Push Notifications</span>
+                    <button
+                      className={`${styles.pushToggleBtn} ${pushEnabled ? styles.pushToggleBtnActive : ''}`}
+                      onClick={onTogglePush}
+                      disabled={isTogglingPush}
+                    >
+                      {isTogglingPush ? '...' : (pushEnabled ? 'ON' : 'OFF')}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 3: Settings */}
+              <div className={styles.groupSection} style={{ marginBottom: '32px' }}>
+                <span className={styles.groupTitle}>Settings</span>
+                <div className={styles.groupCard}>
+                  <div className={styles.row}>
+                    <a href={`${config.accountPortalUrl}/dashboard`} target="_blank" rel="noreferrer" className={styles.rowActionBtn} style={{ textDecoration: 'none' }}>
+                      <span className={styles.actionLabel}>Manage Security & 2FA</span>
+                    </a>
+                  </div>
+                  <div className={styles.row}>
+                    <a href={`${config.accountPortalUrl}/dashboard`} target="_blank" rel="noreferrer" className={styles.rowActionBtn} style={{ textDecoration: 'none' }}>
+                      <span className={styles.actionLabel}>Account Center Settings</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </>
   );
