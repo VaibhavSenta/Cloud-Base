@@ -96,7 +96,7 @@ export default function IOSAccountSheet({
                 <span className={styles.rowValue}>{localProfile.firstName} {localProfile.lastName}</span>
               </div>
               <div className={styles.row}>
-                <span className={styles.rowLabel}>Chat Username</span>
+                <span className={styles.rowLabel}>Nickname</span>
                 <span className={styles.rowValue}>{localProfile.chatUsername}</span>
               </div>
               <div className={styles.row}>
